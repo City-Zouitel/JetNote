@@ -1,0 +1,67 @@
+package com.example.jetnote.icons
+
+import com.example.jetnote.R
+
+
+const val ADD_CIRCLE_ICON = R.drawable.add_24
+const val ADD_PHOTO_ICON = R.drawable.ic_baseline_add_photo_alternate_24
+const val CAMERA_ICON = R.drawable.camera_24
+const val DASHBOARD_ICON = R.drawable.ic_baseline_dashboard_24
+const val DONE_ICON = R.drawable.check_24
+const val EDIT_ICON = R.drawable.pencil_24
+const val GESTURE_ICON = R.drawable.ic_baseline_gesture_24
+const val MIC_ICON = R.drawable.microphone_24
+const val MIC_ICON_36 = R.drawable.microphone_36
+const val PAUSE_CIRCLE_FILLED_ICON = R.drawable.pause_20
+const val PAUSE_CIRCLE_FILLED_ICON_36 = R.drawable.pause_36
+const val PLAY_CIRCLE_FILLED_ICON = R.drawable.play_20
+const val PLAY_CIRCLE_FILLED_ICON_36 = R.drawable.play_36
+const val REDO_ICON = R.drawable.redo
+const val UNDO_ICON = R.drawable.undo
+const val STOP_CIRCLE_ICON_36 = R.drawable.stop_36
+const val LIST_VIEW_ICON_1 = R.drawable.ic_baseline_view_agenda_24
+const val DELETE_OUTLINE_ICON = R.drawable.ic_baseline_delete_outline_24
+const val CIRCLE_ICON = R.drawable.circle_24
+const val CIRCLE_ICON_18 = R.drawable.circle_18
+const val ERASER_BLACK_ICON = R.drawable.ic_eraser_black_24dp
+const val IMAGE_ICON = R.drawable.picture_24
+const val BELL_ICON = R.drawable.bell_24
+const val BELL_RING_ICON = R.drawable.bell_ring_24
+const val DISK_ICON = R.drawable.disk_24
+const val ADD_ICON = R.drawable.add_24
+const val PLUS_ICON = R.drawable.plus_20
+const val LIGHT_ICON = R.drawable.sun_24
+const val NIGHT_ICON = R.drawable.moon_24
+const val SORT_ICON = R.drawable.sort
+const val SORT_ALPHA_DOWN_ICON = R.drawable.sort_alpha_down_24
+const val SORT_AMOUNT_DOWN_ICON = R.drawable.sort_amount_down_alt_24
+const val SORT_AMOUNT_UP_ICON = R.drawable.sort_amount_up_alt_24
+const val TRASH_ICON = R.drawable.trash_24
+const val RESET_ICON = R.drawable.reset_24
+const val MENU_BURGER_ICON = R.drawable.menu_burger_24
+const val HOME_ICON = R.drawable.home_24
+const val SETTINGS_ICON = R.drawable.settings_24
+const val INTERROGATION_ICON = R.drawable.interrogation_24
+const val CLOUD_ICON = R.drawable.cloud_24
+const val USER_ICON = R.drawable.user_24
+const val SIGN_IN_ICON =  R.drawable.user_add_18
+const val SIGN_OUT_ICON = R.drawable.remove_user_18
+const val REVOKE_ACCESS_ICON = R.drawable.delete_user_18
+const val CALENDAR_ICON = R.drawable.calendar_24
+const val CLOCK_ICON = R.drawable.clock_24
+const val OPACITY_ICON = R.drawable.opacity_24
+const val INBOX = R.drawable.inbox_48
+const val TAGS_ICON = R.drawable.tags_24
+const val OUTLINE_LABEL_ICON = R.drawable.no_label_18
+const val FULL_LABEL_ICON = R.drawable.label_18
+const val ANGLE_DOWN_ICON = R.drawable.angle_small_down_24
+const val ANGLE_UP_ICON = R.drawable.angle_small_up_24
+const val BROOM_ICON = R.drawable.broom_24
+const val SORT_NUMERIC_ICON = R.drawable.sort_numeric_down_24
+const val INTERLINING_ICON = R.drawable.interlining_24
+const val LIST_CHECK_ICON = R.drawable.list_check_24
+const val CROSS_CIRCLE_ICON = R.drawable.cross_circle_18
+const val SHARE_ICON = R.drawable.share_24
+const val CROSS_ICON = R.drawable.cross_18
+const val COPY_ICON = R.drawable.copy_24
+const val COMMENT_EXCLAMATION = R.drawable.comment_exclamation_24
