@@ -5,9 +5,7 @@ JetNote is modern MVVM note android application written by kotlin language and [
 [![Kotlin Version](https://img.shields.io/badge/Kotlin-v1.7.0-blue.svg)](https://kotlinlang.org)
 [![Kotlin Coroutines Version](https://img.shields.io/badge/Coroutines-v1.6.4-blue.svg)](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Actions Status](https://github.com/firebase/quickstart-android/workflows/Android%20CI/badge.svg)](https://github.com/youndon/JetNote/actions)
 [![Android Platform](https://img.shields.io/badge/Platform-Android-green.svg?style=flat)](https://www.android.com/)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c56384a7b0044caea298480b9fde2522)](https://www.codacy.com/gh/codacy/codacy-coverage-reporter/dashboard?)
 
 ## Screenshots
 
