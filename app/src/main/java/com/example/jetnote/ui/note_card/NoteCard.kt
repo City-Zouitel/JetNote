@@ -29,8 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.example.jetnote.cons.*
 import com.example.jetnote.cons.Screens.HOME_SCREEN
 import com.example.jetnote.cons.Screens.TRASH_SCREEN

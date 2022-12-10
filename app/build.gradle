@@ -124,7 +124,6 @@ dependencies {
     implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
     implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
 
-
     // ExoPlayer
     api "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
     api "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
@@ -145,15 +144,8 @@ dependencies {
     //Swipe.
     implementation "me.saket.swipe:swipe:1.0.0"
 
-    //Coil
-    implementation "io.coil-kt:coil-compose:2.2.1"
-    implementation("io.coil-kt:coil-svg:2.2.2")
-
     //Phoenix.
     implementation 'com.jakewharton:process-phoenix:2.1.2'
-
-    //Beetle.
-    implementation "com.karacca:beetle:2.0.1"
 
     //Global Exception Handler.
     implementation "com.github.emirhankolver:GlobalExceptionHandler:1.0.1"
