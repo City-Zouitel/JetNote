@@ -149,3 +149,4 @@ internal val getMaterialColor: @Composable (String) -> Color = {
         SCRIM to MaterialTheme.colorScheme.scrim,
     ).getValue(it)
 }
+

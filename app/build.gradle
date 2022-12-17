@@ -149,6 +149,15 @@ dependencies {
 
     //Global Exception Handler.
     implementation "com.github.emirhankolver:GlobalExceptionHandler:1.0.1"
+    
+    //Coil.
+    implementation "io.coil-kt:coil-compose:2.2.2"
+    implementation("io.coil-kt:coil-svg:2.2.2")
+    implementation "io.coil-kt:coil-gif:2.2.2"
+
+    //
+    implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

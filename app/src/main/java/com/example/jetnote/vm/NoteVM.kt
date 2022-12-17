@@ -1,5 +1,6 @@
 package com.example.jetnote.vm
 
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
@@ -24,11 +25,10 @@ import com.example.jetnote.reposImp.NoteRepoImp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import java.io.*
 import java.net.URL
 import javax.inject.Inject
+
 
 @HiltViewModel
 class NoteVM @Inject constructor(
@@ -89,6 +89,13 @@ class NoteVM @Inject constructor(
                 it.flush()
             }
     }
+
+    fun saveGifLocally(ctx: Context, gifUri: Uri, mediaPath: String) {
+        kotlin.runCatching {
+
+        }
+    }
+
     fun saveAudioLocally(link: String, path: String,name:String) {
         viewModelScope.launch(Dispatchers.IO) {
             isProcessing = true
@@ -101,18 +108,20 @@ class NoteVM @Inject constructor(
         }
     }
     //
-    fun decodeBitmapImage (img:MutableState<Bitmap?>?, photo: MutableState<Bitmap?>?, uri: Uri, c:Context){
+    fun decodeBitmapImage (img: Bitmap?/*, photo: MutableState<Bitmap?>?*/, uri: Uri, c:Context): Bitmap? {
+        var bitImg: Bitmap? = img
         if (Build.VERSION.SDK_INT < 28) {
             runCatching {
-                img?.value = MediaStore.Images.Media.getBitmap(c.contentResolver,uri)
+                bitImg = MediaStore.Images.Media.getBitmap(c.contentResolver,uri)
             }
         } else {
             runCatching {
                 val source = ImageDecoder.createSource(c.contentResolver,uri)
-                img?.value = ImageDecoder.decodeBitmap(source)
+                bitImg = ImageDecoder.decodeBitmap(source)
             }
         }
-            photo?.value?.let { img?.value = it }
+//        photo?.value?.let { img?.value = it }
+        return bitImg
     }
 
     fun imageDecoder(context: Context, uid:String): ImageBitmap? {

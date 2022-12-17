@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">JetNote</string>
+    <string name="app_package">com.example.jetnote</string>
 </resources>

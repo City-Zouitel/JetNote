@@ -1,7 +1,7 @@
 package com.example.jetnote.ui.note_card
 
+import android.net.Uri
 import android.text.format.DateFormat
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -19,7 +19,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -27,6 +26,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
@@ -101,14 +101,17 @@ private fun Card(
 
     val note = entity.note
     val labels = entity.labels
+    val internalPath = ctx.filesDir.path
 
     val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
     val mediaPath = ctx.filesDir.path + "/$AUDIO_FILE/" + note.uid + "." + MP3
+    val imagePath = "$internalPath/$IMAGE_FILE/${note.uid}.$JPEG"
 
     var todoListState by remember { mutableStateOf(false) }
+    val media = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
 
     Card(
         modifier = Modifier
@@ -154,7 +157,7 @@ private fun Card(
         // display the image.
         when (forScreens) {
             HOME_SCREEN, TRASH_SCREEN -> {
-                ImageDisplayed(image = noteVM::imageDecoder.invoke(ctx, note.uid))
+                ImageDisplayed(media = media)
             }
             else -> { Timber.tag(TAG).d("")
             }

@@ -40,6 +40,7 @@ const val CLOUD_ROUTE = "Cloud"
 
 const val MP3 = "mp3"
 const val JPEG = "jpeg"
+const val GIF = "gif"
 
 const val NAME_ORDER = "Name"
 const val DEFAULT_ORDER = "Default"

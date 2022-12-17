@@ -51,7 +51,6 @@ import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.EDIT_ICON
-import com.example.jetnote.ui.ImageDisplayed
 import com.example.jetnote.ui.bottom_bar.AddEditBottomBar
 import com.example.jetnote.ui.bottom_bar.RemindingNote
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
@@ -131,7 +130,7 @@ fun NoteEdit(
     val chooseImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
             imageUriState.value = it
-            viewModule::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
+//            viewModule::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
             img.value = photoState.value
             viewModule::saveImageLocally.invoke(
                 img.value, "$internalPath/$IMAGE_FILE", "$uid.$JPEG"
@@ -143,6 +142,7 @@ fun NoteEdit(
     val remindingValue = remember { mutableStateOf(reminding) }
 
     val audioDurationState = remember { mutableStateOf(0) }
+    val gifUri = remember { mutableStateOf<Uri?>(null) }
 
     BottomSheetScaffold(
         scaffoldState = sheetState,
@@ -220,8 +220,9 @@ fun NoteEdit(
             // display the image.
             item {
                 img.value?.let {
-                    ImageDisplayed(image = it.asImageBitmap())
+//                    ImageDisplayed(image = imageUriState)
                 }
+
             }
             // display the media player.
             item {
