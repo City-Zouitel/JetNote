@@ -1,9 +1,12 @@
 package com.example.jetnote.ui
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.provider.Settings.Global.getString
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material3.Card
@@ -27,6 +30,7 @@ import coil.decode.SvgDecoder
 import coil.request.CachePolicy
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -37,39 +41,17 @@ fun ImageDisplayed(
     Box(
         modifier = Modifier.fillMaxWidth().shadow(20.dp),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Card(
             shape = AbsoluteRoundedCornerShape(15.dp),
             elevation = CardDefaults.cardElevation()
         ) {
-
-            media?.let {
-                GlideImage(
-                    model = it.value,
-                    contentDescription = null
-                )
-
-//                Image(
-//                    rememberAsyncImagePainter(it.value,
-//                        imageLoader = remember {
-//                            ImageLoader(ctx).newBuilder()
-//                                .memoryCachePolicy(CachePolicy.ENABLED)
-//                                .diskCachePolicy(CachePolicy.ENABLED)
-//                                .components(fun ComponentRegistry.Builder.() {
-//                                    add(SvgDecoder.Factory())
-//                                    if (Build.VERSION.SDK_INT >= 28) {
-//                                        add(ImageDecoderDecoder.Factory())
-//                                    } else {
-//                                        add(GifDecoder.Factory())
-//                                    }
-//                                }).build()
-//                        },
-//                        contentScale = ContentScale.FillBounds
-//                    ),
-//                    contentDescription = null,
-//                    modifier = Modifier.size(400.dp)
+//            media?.let {
+//                GlideImage(
+//                    model = it.value,
+//                    contentDescription = null
 //                )
-            }
+//            }
         }
     }
 }

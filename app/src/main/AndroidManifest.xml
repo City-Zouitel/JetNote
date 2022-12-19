@@ -26,6 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JetNote"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
 
         <receiver

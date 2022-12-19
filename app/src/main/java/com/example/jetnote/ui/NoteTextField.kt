@@ -6,6 +6,7 @@ import android.view.OnReceiveContentListener
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import android.widget.EditText
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -14,9 +15,14 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.core.view.inputmethod.InputConnectionCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.jetnote.cons.GIF
 import com.example.jetnote.cons.IMAGE_FILE
 import com.example.jetnote.cons.JPEG
 import com.example.jetnote.vm.NoteVM
+import java.io.FileOutputStream
+import java.net.URI
+import java.net.URL
+import java.nio.channels.Channels
 
 
 @Composable
@@ -56,12 +62,15 @@ fun NoteTextField(
                             val uri = inputContentInfo.contentUri
                             gifUri.value = uri
 
-                            val bitImg = BitmapFactory.decodeFile(uri.path)
-                            val img = noteVM.decodeBitmapImage(bitImg,uri,ctx)
+                            // gif
+                                noteVM.saveGifLocally(ctx,uri,uid)
 
-                            noteVM.saveImageLocally(
-                                img,"$internalPath/$IMAGE_FILE", "$uid.$JPEG"
-                            )
+//                            val bitImg = BitmapFactory.decodeFile(uri.path)
+//                            val img = noteVM.decodeBitmapImage(bitImg,uri,ctx)
+
+                            // png
+//                            noteVM.saveImageLocally(img,"$internalPath/$IMAGE_FILE", "$uid.$JPEG")
+
                             true
                         }
                     return InputConnectionCompat.createWrapper(ic, editorInfo, callback)

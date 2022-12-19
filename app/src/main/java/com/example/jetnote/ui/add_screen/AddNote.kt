@@ -52,6 +52,7 @@ import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.DONE_ICON
+import com.example.jetnote.ui.ImageDisplayed
 import com.example.jetnote.ui.NoteTextField
 import com.example.jetnote.ui.bottom_bar.AddEditBottomBar
 import com.example.jetnote.ui.bottom_bar.RemindingNote
@@ -225,13 +226,7 @@ fun NoteAdd(
 
             // display the image.
             item {
-//                img.value?.let {}
 //                ImageDisplayed(media = imageUriState)
-                GlideImage(
-                    model = imageUriState.value,
-                    contentDescription = null
-                )
-                
             }
 
             // display the media player.
