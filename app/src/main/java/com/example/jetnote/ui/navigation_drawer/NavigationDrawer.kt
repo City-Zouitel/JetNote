@@ -22,6 +22,7 @@ import com.example.jetnote.db.entities.label.Label
 import com.example.jetnote.fp.mailTo
 import com.example.jetnote.fp.sharApp
 import com.example.jetnote.icons.*
+import com.example.jetnote.ui.AppAbout
 import com.example.jetnote.vm.LabelVM
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.launch
@@ -38,7 +39,12 @@ fun NavigationDrawer(
     val ctx = LocalContext.current
     val observeLabels = remember(labelVM,labelVM::getAllLabels).collectAsState()
 
+    val aboutDialogState = remember { mutableStateOf(false) }
+
     val scope = rememberCoroutineScope()
+
+    //
+    if (aboutDialogState.value) AppAbout(aboutDialogState)
 
     DismissibleDrawerSheet(
         modifier = Modifier
@@ -180,7 +186,10 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(INTERROGATION_ICON), null) },
                     selected = false,
                     onClick = {
-
+                        scope.launch {
+                            drawerState.close()
+                        }
+                        aboutDialogState.value = true
                     }
                 )
             }

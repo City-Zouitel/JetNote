@@ -10,8 +10,14 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven("https://jitpack.io")
     }
+    versionCatalogs {
+        create("libraries") {
+            from(files("/gradle/libraries.versions.toml"))
+        }
+    }
+
 }
 rootProject.name = "JetNote"
-include ':app'
+include(":app")

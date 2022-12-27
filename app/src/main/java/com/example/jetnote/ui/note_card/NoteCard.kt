@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -142,6 +143,13 @@ private fun Card(
                     }
                 }
                 selectedNotes?.ifEmpty { selectionState?.value = false }
+            }
+            .drawBehind {
+                if (note.priority.equals(NON,true)) {
+                    normalNotePath(note)
+                } else {
+                    clipNotePath(note)
+                }
             },
         shape = AbsoluteRoundedCornerShape(15.dp),
         border =
@@ -149,9 +157,8 @@ private fun Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp
         ),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(note.color)
-        )
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+
     ) {
 
         // display the image.
@@ -235,14 +242,7 @@ private fun Card(
             }
 
             //Priority.
-            Icon(
-                painter = painterResource(id = CIRCLE_ICON_18),
-                contentDescription = null,
-                tint = getPriorityColor(note.priority),
-                modifier = Modifier
-                    .padding(5.dp)
-                    .size(14.dp)
-            )
+
 
             //
             if (forScreens==HOME_SCREEN && note.reminding != 0L) {
