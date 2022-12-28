@@ -12,11 +12,11 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://jitpack.io")
     }
-    versionCatalogs {
-        create("libraries") {
-            from(files("/gradle/libraries.versions.toml"))
-        }
-    }
+//    versionCatalogs {
+//        create("libraries") {
+//            from(files("/gradle/libraries.versions.toml"))
+//        }
+//    }
 
 }
 rootProject.name = "JetNote"
