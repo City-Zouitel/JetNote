@@ -241,9 +241,6 @@ private fun Card(
                 }
             }
 
-            //Priority.
-
-
             //
             if (forScreens==HOME_SCREEN && note.reminding != 0L) {
                 note.reminding.let {

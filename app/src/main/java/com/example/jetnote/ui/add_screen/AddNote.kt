@@ -12,6 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
@@ -21,7 +23,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +34,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -226,7 +236,7 @@ fun NoteAdd(
 
             // display the image.
             item {
-//                ImageDisplayed(media = imageUriState)
+                ImageDisplayed(media = imageUriState)
             }
 
             // display the media player.
@@ -245,95 +255,96 @@ fun NoteAdd(
             // The Title.
             item {
 
-                NoteTextField(
-                    uid = uid,
-                    gifUri = imageUriState,
-                    txtHint = "Title",
-                    txtSize = 26f,
-                    forSingleLine = true
-                )
-//                OutlinedTextField(
-//                    value = titleState.value ?: "",
-//                    onValueChange = { titleState.value = it },
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(top = 20.dp)
-//                        .focusRequester(focusRequester)
-//                        .onFocusEvent {
-//                            isTitleFieldFocused.value = it.isFocused
-//                        },
-//                    placeholder = {
-//                        Text("Title", color = Color.Gray, fontSize = 24.sp)
-//                    },
-//                    textStyle = TextStyle(
-//                        fontSize = 24.sp,
-//                        fontWeight = FontWeight.Normal,
-//                        fontFamily = FontFamily.Default,
-//                        color = Color(textColorState.value)
-//                    ),
-//                    keyboardOptions = KeyboardOptions(
-//                        capitalization = KeyboardCapitalization.Sentences,
-//                        autoCorrect = false,
-//                        keyboardType = KeyboardType.Text,
-//                        imeAction = ImeAction.Next
-//                    ),
-//                    keyboardActions = KeyboardActions(
-//                        onNext = {
-//                            keyboardManager.moveFocus(FocusDirection.Next)
-//                        }
-//                    ),
-//                    colors = TextFieldDefaults.outlinedTextFieldColors(
-//                        focusedBorderColor = Color.Transparent,
-//                        unfocusedBorderColor = Color.Transparent,
-//                        textColor = contentColorFor(backgroundColor = Color(backgroundColorState.value))
-//                    )
+//                NoteTextField(
+//                    uid = uid,
+//                    gifUri = imageUriState,
+//                    txtHint = "Title",
+//                    txtSize = 26f,
+//                    forSingleLine = true
 //                )
+
+                OutlinedTextField(
+                    value = titleState.value ?: "",
+                    onValueChange = { titleState.value = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp)
+                        .focusRequester(focusRequester)
+                        .onFocusEvent {
+                            isTitleFieldFocused.value = it.isFocused
+                        },
+                    placeholder = {
+                        Text("Title", color = Color.Gray, fontSize = 24.sp)
+                    },
+                    textStyle = TextStyle(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = FontFamily.Default,
+                        color = Color(textColorState.value)
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        autoCorrect = false,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            keyboardManager.moveFocus(FocusDirection.Next)
+                        }
+                    ),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        textColor = contentColorFor(backgroundColor = Color(backgroundColorState.value))
+                    )
+                )
             }
 
             //The Description.
             item {
-                NoteTextField(
-                    uid = uid,
-                    gifUri = imageUriState,
-                    txtHint = "Note",
-                    txtSize = 18f
-                )
-
-//                OutlinedTextField(
-//                    value = descriptionState.value ?: "",
-//                    onValueChange = { descriptionState.value = it },
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .onFocusEvent {
-//                            isDescriptionFieldFocused.value = it.isFocused
-//                            focusState.value = it.isFocused
-//                        },
-//                    placeholder = {
-//                        Text("Note", color = Color.Gray, fontSize = 19.sp)
-//                    },
-//                    textStyle = TextStyle(
-//                        fontSize = 18.sp,
-//                        fontWeight = FontWeight.Normal,
-//                        fontFamily = FontFamily.Default,
-//                        color = Color(textColorState.value)
-//                    ),
-//                    keyboardOptions = KeyboardOptions(
-//                        capitalization = KeyboardCapitalization.Sentences,
-//                        autoCorrect = false,
-//                        keyboardType = KeyboardType.Text,
-//                        imeAction = ImeAction.Default
-//                    ),
-//                    keyboardActions = KeyboardActions(
-//                        onDone = {
-//                            keyboardController?.hide()
-//                            keyboardManager.clearFocus()
-//                        }
-//                    ),
-//                    colors = TextFieldDefaults.outlinedTextFieldColors(
-//                        focusedBorderColor = Color.Transparent,
-//                        unfocusedBorderColor = Color.Transparent
-//                    )
+//                NoteTextField(
+//                    uid = uid,
+//                    gifUri = imageUriState,
+//                    txtHint = "Note",
+//                    txtSize = 18f
 //                )
+
+                OutlinedTextField(
+                    value = descriptionState.value ?: "",
+                    onValueChange = { descriptionState.value = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onFocusEvent {
+                            isDescriptionFieldFocused.value = it.isFocused
+                            focusState.value = it.isFocused
+                        },
+                    placeholder = {
+                        Text("Note", color = Color.Gray, fontSize = 19.sp)
+                    },
+                    textStyle = TextStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = FontFamily.Default,
+                        color = Color(textColorState.value)
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        autoCorrect = false,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Default
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                            keyboardManager.clearFocus()
+                        }
+                    ),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent
+                    )
+                )
             }
 
             // display all added labels.

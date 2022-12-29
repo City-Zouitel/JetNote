@@ -193,21 +193,6 @@ fun NavigationDrawer(
                     }
                 )
             }
-
-            item {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 55.dp)
-                ) {
-                    Text(
-                        text = "version: $APP_VERSION",
-                        fontSize = 8.sp,
-                        color = Color.Gray
-                    )
-                }
-            }
         }
     }
 }
