@@ -113,7 +113,7 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-flowlayout:0.24.11-rc")
 
     // ExoPlayer
-    api ("com.google.android.exoplayer:exoplayer-core:2.18.1")
+    api (libs.exoplayer.core)
     api ("com.google.android.exoplayer:exoplayer-ui:2.18.1")
     api ("com.google.android.exoplayer:extension-mediasession:2.18.1")
 

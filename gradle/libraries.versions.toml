@@ -16,6 +16,9 @@ compose_activity = "1.6.1"
 compose_material3 = "1.0.1"
 compose_constraintlayout = "1.1.0-alpha04"
 
+#Exo
+exo_core = "2.18.1"
+
 #Test.
 junit = "4.13.2"
 
@@ -40,6 +43,9 @@ compose_constraintlayout = { module = "androidx.constraintlayout:constraintlayou
 compose_uitest = { module = "androidx.compose.ui:ui-test", version.ref = "compose" }
 compose_junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 compose_manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
+
+# Exo.
+exoplayer_core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exo_core" }
 
 #Test.
 androidx_junit = { module = "junit:junit", version.ref = "junit" }
