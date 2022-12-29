@@ -7,6 +7,7 @@ JetNote is modern MVVM note android application written by kotlin language and [
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Android Platform](https://img.shields.io/badge/Platform-Android-green.svg?style=flat)](https://www.android.com/)
 [![Android CI](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml/badge.svg)](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/city-zouitel/jetnote/badge)](https://www.codefactor.io/repository/github/city-zouitel/jetnote)
 
 ## Screenshots
 
