@@ -34,7 +34,7 @@ fun AppAbout(aboutDialogState: MutableState<Boolean>) {
     )
 }
 
-val about = "JetNote a note-taking and todo management application.\n\n" +
+val about = "$APP_NAME a note-taking and todo management application.\n\n" +
         " It is developed by City-Zouitel organization on github.\n\n" +
         " And It is intended for archiving and creating notes in which photos," +
         " audio and saved web links, numbers and map locations.\n\n" +
