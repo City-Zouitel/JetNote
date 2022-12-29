@@ -115,7 +115,7 @@ dependencies {
     // ExoPlayer
     api (libs.exoplayer.core)
     api ("com.google.android.exoplayer:exoplayer-ui:2.18.1")
-    api ("com.google.android.exoplayer:extension-mediasession:2.18.1")
+    api ("com.google.android.exoplayer:extension-mediasession:2.18.2")
 
     // Material-Dialogs.
     implementation ("io.github.vanpra.compose-material-dialogs:core:0.8.1-rc")
