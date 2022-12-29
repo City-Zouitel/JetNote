@@ -110,7 +110,7 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.24.11-rc")
     implementation ("com.google.accompanist:accompanist-navigation-animation:0.24.11-rc")
     implementation ("com.google.accompanist:accompanist-swiperefresh:0.24.11-rc")
-    implementation ("com.google.accompanist:accompanist-flowlayout:0.24.11-rc")
+    implementation ("com.google.accompanist:accompanist-flowlayout:0.28.0")
 
     // ExoPlayer
     api (libs.exoplayer.core)
