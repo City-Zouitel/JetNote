@@ -59,42 +59,27 @@ kapt {
     correctErrorTypes = true
 
     arguments {
-        arg("room.schemaLocation", "$projectDir/schemas".toString())
+        arg("room.schemaLocation", "$projectDir/schemas")
     }
 }
 //
 dependencies {
-    implementation ("androidx.core:core-ktx:1.9.0")
-    implementation ("androidx.compose.ui:ui:1.2.0")
-    implementation ("androidx.compose.material3:material3:1.0.0-rc01")
-    implementation ("androidx.compose.ui:ui-tooling-preview:1.2.0")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation ("androidx.activity:activity-compose:1.6.0")
-    implementation ("androidx.appcompat:appcompat:1.5.1")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    //AndroidX.
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.corektx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.runtimektx)
+    implementation(libs.androidx.constraintlayout)
 
-    //Constraint Layout.
-    implementation ("androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha04")
 
-    //Coroutines-play-services.
-//    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
-
-    //Firebase.
-//    implementation platform("com.google.firebase:firebase-bom:30.5.0")
-//    implementation "com.google.firebase:firebase-auth-ktx"
-//    implementation "com.google.firebase:firebase-firestore-ktx"
-//    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.0'
-//    implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
-//    implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
-//    implementation 'com.google.firebase:firebase-auth:21.1.0'
-
-    //Play Services.
-//    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
-    //Play Services Auth.
-//    implementation "com.google.android.gms:play-services-auth:20.3.0"
-
-    //Navigation.
-    implementation("androidx.navigation:navigation-compose:2.5.2")
+    //Compose.
+    implementation (libs.compose.ui)
+    implementation (libs.compose.material3)
+    implementation (libs.compose.activity)
+    implementation (libs.compose.navigation)
+    implementation (libs.compose.toolingpreview)
+    implementation (libs.compose.viewmodel)
+    implementation(libs.compose.constraintlayout)
 
     //Room.
     implementation ("androidx.room:room-ktx:2.4.3")
@@ -158,16 +143,22 @@ dependencies {
     implementation("io.coil-kt:coil-svg:2.2.2")
     implementation ("io.coil-kt:coil-gif:2.2.2")
 
-    //
+    //Glide.
     implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.1")
     implementation ("com.github.bumptech.glide:glide:4.14.2")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
 
 
-    testImplementation ("junit:junit:4.13.2")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.0")
-    androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.2.0")
-    debugImplementation ("androidx.compose.ui:ui-tooling:1.2.0")
-    debugImplementation ("androidx.compose.ui:ui-test-manifest:1.2.0")
+    //Test.
+    testImplementation (libs.androidx.junit)
+    debugImplementation (libs.compose.manifest)
+    debugImplementation (libs.compose.uitest)
+    androidTestImplementation (libs.androidx.extjunit)
+    androidTestImplementation (libs.compose.junit4)
+    androidTestImplementation(libs.bundles.composetest) {
+        exclude(group = "androidx.core", module = "core-ktx")
+        exclude(group = "androidx.customview", module = "customview")
+        exclude(group = "androidx.activity", module = "activity")
+        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-ktx")
+    }
 }
