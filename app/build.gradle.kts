@@ -104,7 +104,7 @@ dependencies {
     implementation ("io.getstream:sketchbook:1.0.4")
 
     //Accompanist.
-    implementation ("com.google.accompanist:accompanist-permissions:0.24.11-rc")
+    implementation ("com.google.accompanist:accompanist-permissions:0.28.0")
     implementation ("com.google.accompanist:accompanist-pager:0.24.11-rc")
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.24.11-rc")
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.24.11-rc")
