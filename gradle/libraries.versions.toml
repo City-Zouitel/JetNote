@@ -41,7 +41,7 @@ camerax = "1.2.0"
 
 #Glide.
 glide = "4.14.2"
-glide_comp = "1.0.0-alpha.1"
+glide_comp = "4.14.0"
 
 #Sketchbook.
 sketchbook = "1.0.4"
