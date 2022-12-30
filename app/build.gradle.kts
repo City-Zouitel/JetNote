@@ -128,7 +128,7 @@ dependencies {
     implementation (libs.sketchbook)
 
     //Timber.
-    implementation (libs.timber)
+//    implementation (libs.timber)
 
     //Swipe.
     implementation (libs.swipe)

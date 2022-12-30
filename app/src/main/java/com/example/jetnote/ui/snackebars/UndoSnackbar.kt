@@ -10,7 +10,6 @@ import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.vm.NoteVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 internal fun UndoSnackbar(
     viewModule: NoteVM,
@@ -26,7 +25,7 @@ internal fun UndoSnackbar(
                 actionLabel = UNDO
             )
             when(snackbarResult)  {
-                SnackbarResult.Dismissed -> Timber.d("Snackbar dismissed")
+                SnackbarResult.Dismissed -> {} // Timber.d("Snackbar dismissed")
                 SnackbarResult.ActionPerformed -> {
                     viewModule.updateNote(
                         Note(

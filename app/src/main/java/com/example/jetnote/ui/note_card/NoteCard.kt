@@ -45,7 +45,6 @@ import com.example.jetnote.vm.*
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
-import timber.log.Timber
 import java.io.File
 import java.util.*
 
@@ -166,7 +165,7 @@ private fun Card(
             HOME_SCREEN, TRASH_SCREEN -> {
                 ImageDisplayed(media = media)
             }
-            else -> { Timber.tag(TAG).d("")
+            else -> { // Timber.tag(TAG).d("")
             }
         }
 
