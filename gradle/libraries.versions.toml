@@ -34,7 +34,7 @@ hilt_nav_comp = "1.0.0"
 hilt_compiler = "1.0.0"
 
 #Accompanist.
-accompanist = "0.24.11-rc"
+accompanist = "0.28.0"
 
 #CameraX.
 camerax = "1.2.0"
