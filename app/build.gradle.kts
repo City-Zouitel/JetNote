@@ -15,7 +15,7 @@ android {
         minSdk = 25
         targetSdk = 33
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -82,80 +82,81 @@ dependencies {
     implementation(libs.compose.constraintlayout)
 
     //Room.
-    implementation ("androidx.room:room-ktx:2.4.3")
-    implementation ("androidx.room:room-runtime:2.4.3")
-    annotationProcessor ("androidx.room:room-compiler:2.4.3")
-    kapt ("androidx.room:room-compiler:2.4.3")
+    implementation (libs.roomkts)
+    implementation (libs.room.runtime)
+    annotationProcessor (libs.room.compiler)
+    kapt (libs.room.compiler)
 
     //DataStore.
-    implementation ("androidx.datastore:datastore-preferences:1.0.0")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    implementation (libs.datastore)
 
-    //Dagger.
-    implementation ("com.google.dagger:dagger:2.42")
-    annotationProcessor ("com.google.dagger:dagger-compiler:2.42")
-    //Hilt.
-    implementation ("com.google.dagger:hilt-android:2.42")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt ("androidx.hilt:hilt-compiler:1.0.0")
-    kapt ("com.google.dagger:hilt-compiler:2.42")
+    //LiveData.
+    implementation (libs.livedatakts)
 
-    //Sketchbook.
-    implementation ("io.getstream:sketchbook:1.0.4")
+    //Dagger-Hilt
+    implementation (libs.dagger)
+    annotationProcessor (libs.dagger.compiler)
+    implementation (libs.dagger.hilt)
+    implementation (libs.hilt.navcomp)
+    kapt (libs.hilt.compiler)
+    kapt (libs.dagger.hiltcompiler)
 
     //Accompanist.
-    implementation ("com.google.accompanist:accompanist-permissions:0.24.11-rc")
-    implementation ("com.google.accompanist:accompanist-pager:0.24.11-rc")
-    implementation ("com.google.accompanist:accompanist-pager-indicators:0.24.11-rc")
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.24.11-rc")
-    implementation ("com.google.accompanist:accompanist-navigation-animation:0.24.11-rc")
-    implementation ("com.google.accompanist:accompanist-swiperefresh:0.24.11-rc")
-    implementation ("com.google.accompanist:accompanist-flowlayout:0.24.11-rc")
+    implementation (libs.accompanist.permissions)
+    implementation (libs.accompanist.pager)
+    implementation (libs.accompanist.pager.indicators)
+    implementation (libs.accompanist.systemuicontroller)
+    implementation (libs.accompanist.navigation.animation)
+    implementation (libs.accompanist.swiperefresh)
+    implementation (libs.accompanist.flowlayout)
 
     // ExoPlayer
     api (libs.exoplayer.core)
-    api ("com.google.android.exoplayer:exoplayer-ui:2.18.1")
-    api ("com.google.android.exoplayer:extension-mediasession:2.18.1")
+    api (libs.exoplayer.ui)
+    api (libs.exoplayer.extension)
 
     // Material-Dialogs.
-    implementation ("io.github.vanpra.compose-material-dialogs:core:0.8.1-rc")
+//    implementation ("io.github.vanpra.compose-material-dialogs:core:0.8.1-rc")
 
     // CameraX
-    implementation ("androidx.camera:camera-core:1.2.0")
-    implementation ("androidx.camera:camera-lifecycle:1.2.0")
-    implementation ("androidx.camera:camera-view:1.2.0")
-    implementation ("androidx.camera:camera-extensions:1.2.0")
+    implementation (libs.camerax.core)
+    implementation (libs.camerax.lifecycle)
+    implementation (libs.camerax.view)
+    implementation (libs.camerax.extensions)
+
+    //Sketchbook.
+    implementation (libs.sketchbook)
 
     //Timber.
-    implementation ("com.jakewharton.timber:timber:5.0.1")
+    implementation (libs.timber)
 
     //Swipe.
-    implementation ("me.saket.swipe:swipe:1.0.0")
+    implementation (libs.swipe)
 
     //Phoenix.
-    implementation ("com.jakewharton:process-phoenix:2.1.2")
+//    implementation ("com.jakewharton:process-phoenix:2.1.2")
 
     //Global Exception Handler.
-    implementation ("com.github.emirhankolver:GlobalExceptionHandler:1.0.1")
+    implementation (libs.globalexception)
 
     //Coil.
-    implementation ("io.coil-kt:coil-compose:2.2.2")
-    implementation("io.coil-kt:coil-svg:2.2.2")
-    implementation ("io.coil-kt:coil-gif:2.2.2")
+//    implementation ("io.coil-kt:coil-compose:2.2.2")
+//    implementation("io.coil-kt:coil-svg:2.2.2")
+//    implementation ("io.coil-kt:coil-gif:2.2.2")
 
     //Glide.
-    implementation ("com.github.bumptech.glide:compose:1.0.0-alpha.1")
-    implementation ("com.github.bumptech.glide:glide:4.14.2")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
-
-    //
+    implementation (libs.glide)
+    implementation (libs.glide.comp)
+    annotationProcessor (libs.glide.compiler)
 
     //Test.
     testImplementation (libs.androidx.junit)
     debugImplementation (libs.compose.manifest)
     debugImplementation (libs.compose.uitest)
+
     androidTestImplementation (libs.androidx.extjunit)
     androidTestImplementation (libs.compose.junit4)
+
     androidTestImplementation(libs.bundles.composetest) {
         exclude(group = "androidx.core", module = "core-ktx")
         exclude(group = "androidx.customview", module = "customview")

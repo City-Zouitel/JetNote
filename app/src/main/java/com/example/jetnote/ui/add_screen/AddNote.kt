@@ -42,18 +42,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.ImageLoader
-import coil.decode.GifDecoder
-import coil.decode.ImageSource
-import coil.request.ImageRequest
-import com.bumptech.glide.Glide
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.load.resource.gif.GifOptions
 import com.example.jetnote.cons.*
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
@@ -63,7 +55,6 @@ import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.DONE_ICON
 import com.example.jetnote.ui.ImageDisplayed
-import com.example.jetnote.ui.NoteTextField
 import com.example.jetnote.ui.bottom_bar.AddEditBottomBar
 import com.example.jetnote.ui.bottom_bar.RemindingNote
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer

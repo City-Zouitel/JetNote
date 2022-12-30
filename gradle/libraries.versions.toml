@@ -9,17 +9,53 @@ constraintlayout = "2.1.4"
 extjunit = "1.1.4"
 
 #Compose.
-compose = "1.3.2"
-compose_nav = "2.5.3"
-compose_viewmodel = "2.5.1"
-compose_activity = "1.6.1"
-compose_material3 = "1.0.1"
-compose_constraintlayout = "1.1.0-alpha05"
+comp = "1.3.2"
+comp_nav = "2.5.3"
+comp_viewmodel = "2.5.1"
+comp_activity = "1.6.1"
+comp_material3 = "1.0.1"
+comp_constraintlayout = "1.1.0-alpha05"
 
-#Exo
-exo_core = "2.18.2"
+#Exo.
+exoplayer = "2.18.2"
 
-#Test.
+#Room.
+room = "2.4.3"
+
+#Datastore.
+datastore = "1.0.0"
+
+#Livedata.
+livedatakts = "2.5.1"
+
+#Dagger-Hilt.
+dagger_hilt = "2.42"
+hilt_nav_comp = "1.0.0"
+hilt_compiler = "1.0.0"
+
+#Accompanist.
+accompanist = "0.24.11-rc"
+
+#CameraX.
+camerax = "1.2.0"
+
+#Glide.
+glide = "4.14.2"
+glide_comp = "1.0.0-alpha.1"
+
+#Sketchbook.
+sketchbook = "1.0.4"
+
+#Timber.
+timber = "5.0.1"
+
+#Swipe.
+swipe = "1.0.0"
+
+#Global Exception Handler.
+global_exception = "1.0.1"
+
+#Junit.
 junit = "4.13.2"
 
 [libraries]
@@ -33,24 +69,78 @@ androidx_constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 androidx_extjunit = { module = "androidx.test.ext:junit", version.ref = "extjunit" }
 
 #Compose.
-compose_ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
-compose_toolingpreview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
-compose_navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose_nav" }
-compose_viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "compose_viewmodel" }
-compose_activity = { module = "androidx.activity:activity-compose", version.ref = "compose_activity" }
-compose_material3 = { module = "androidx.compose.material3:material3", version.ref = "compose_material3" }
-compose_constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose_constraintlayout" }
-compose_uitest = { module = "androidx.compose.ui:ui-test", version.ref = "compose" }
-compose_junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
-compose_manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
+compose_ui = { module = "androidx.compose.ui:ui", version.ref = "comp" }
+compose_toolingpreview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "comp" }
+compose_navigation = { module = "androidx.navigation:navigation-compose", version.ref = "comp_nav" }
+compose_viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "comp_viewmodel" }
+compose_activity = { module = "androidx.activity:activity-compose", version.ref = "comp_activity" }
+compose_material3 = { module = "androidx.compose.material3:material3", version.ref = "comp_material3" }
+compose_constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "comp_constraintlayout" }
+compose_uitest = { module = "androidx.compose.ui:ui-test", version.ref = "comp" }
+compose_junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "comp" }
+compose_manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "comp" }
 
 # Exo.
-exoplayer_core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exo_core" }
+exoplayer_core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
+exoplayer_ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayer" }
+exoplayer_extension = { module = "com.google.android.exoplayer:extension-mediasession", version.ref = "exoplayer" }
 
-#Test.
+#Room.
+roomkts = { module = "androidx.room:room-ktx", version.ref = "room" }
+room_runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room_compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+#DataStore.
+datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+
+#Livedata.
+livedatakts = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "livedatakts" }
+
+#Dagger-Hilt.
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger_hilt" }
+dagger_compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger_hilt" }
+dagger_hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger_hilt" }
+dagger_hiltcompiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger_hilt" }
+hilt_navcomp = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_nav_comp" }
+hilt_compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt_compiler" }
+
+#Accompanist.
+accompanist_permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
+accompanist_pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
+accompanist_pager_indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
+accompanist_systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+accompanist_navigation_animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+accompanist_swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
+accompanist_flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
+
+#CameraX.
+camerax_core = { module = "androidx.camera:camera-core", version.ref = "camerax" }
+camerax_lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camerax" }
+camerax_view = { module = "androidx.camera:camera-view", version.ref = "camerax" }
+camerax_extensions = { module = "androidx.camera:camera-extensions", version.ref = "camerax" }
+
+#Glide.
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide_compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+glide_comp = { module = "com.github.bumptech.glide:compose", version.ref = "glide_comp" }
+
+#Sketchbook.
+sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
+
+#Timber.
+timber = { module = "com.jakewharton.timber:timbe", version.ref = "timber" }
+
+#Swipe.
+swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
+
+#Global Exception Handler.
+globalexception = { module = "com.github.emirhankolver:GlobalExceptionHandler", version.ref = "global_exception" }
+
+#Junit.
 androidx_junit = { module = "junit:junit", version.ref = "junit" }
 
 [bundles]
 compose = ["compose.ui", "compose.toolingpreview", "compose.material3"]
 composetest = ["compose.uitest", "compose.junit4", "compose.manifest"]
+
 [plugins]
