@@ -29,7 +29,7 @@ datastore = "1.0.0"
 livedatakts = "2.5.1"
 
 #Dagger-Hilt.
-dagger_hilt = "2.42"
+dagger_hilt = "2.44.2"
 hilt_nav_comp = "1.0.0"
 hilt_compiler = "1.0.0"
 
