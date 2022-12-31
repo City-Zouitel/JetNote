@@ -3,10 +3,9 @@ package com.example.jetnote.fp
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.UserDictionary
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import com.example.jetnote.cons.*
 import com.example.jetnote.db.entities.note.Note
@@ -22,6 +21,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.withContext
+import ww
+import java.io.BufferedReader
 import java.io.File
 import java.util.UUID
 
@@ -113,6 +114,15 @@ val getPriorityColor :(String) -> Color = {
         LOW -> Color.Cyan
         else -> Color.Transparent
     }
+}
+
+//
+fun MutableState<String?>.filterBadWords(): MutableState<String?> {
+    value?.split(' ')?.onEach {
+        if (it in ww.split(','))
+            value = value!!.replace(it, "***", true)
+    }
+    return this
 }
 
 //

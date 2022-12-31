@@ -51,6 +51,7 @@ import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
+import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.DONE_ICON
@@ -71,7 +72,8 @@ import java.io.File
 @OptIn(
     ExperimentalMaterial3Api::class,
     ExperimentalMaterialApi::class,
-    ExperimentalComposeUiApi::class, ExperimentalGlideComposeApi::class
+    ExperimentalComposeUiApi::class,
+    ExperimentalGlideComposeApi::class
 )
 @Composable
 fun NoteAdd(
@@ -102,7 +104,7 @@ fun NoteAdd(
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
-    val titleState = rememberSaveable { mutableStateOf<String?>(null) }
+    val titleState = rememberSaveable { mutableStateOf<String?>(null) }.filterBadWords()
     val descriptionState = rememberSaveable { mutableStateOf<String?>(null) }
 
     val backgroundColor = getMaterialColor(SURFACE).toArgb()
@@ -165,6 +167,7 @@ fun NoteAdd(
                             )
                         ),
                         onClick = {
+
                             noteVM.addNote(
                                 Note(
                                     title = titleState.value,
