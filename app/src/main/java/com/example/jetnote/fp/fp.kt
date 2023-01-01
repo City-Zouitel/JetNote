@@ -108,8 +108,9 @@ fun MutableState<String?>.filterBadWords(): MutableState<String?> {
         )
             value = value!!.replace(
                 it,
-                "***",
-                true)
+                "${it.first()}${it.map { '*' }.joinToString("").drop(2)}${it.last()}",
+                true
+            )
     }
     return this
 }
@@ -126,8 +127,9 @@ fun MutableState<String>.filterBadWords(): MutableState<String> {
         )
             value = value.replace(
                 it,
-                "***",
-                true)
+                "${it.first()}${it.map { '*' }.joinToString("").drop(2)}${it.last()}",
+                true
+            )
     }
     return this
 }

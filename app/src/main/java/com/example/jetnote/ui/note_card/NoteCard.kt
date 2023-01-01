@@ -20,7 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
@@ -113,12 +115,17 @@ private fun Card(
     var todoListState by remember { mutableStateOf(false) }
     val media = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
 
+    val haptic = LocalHapticFeedback.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
             .combinedClickable(
                 onLongClick = {
+                    // To make vibration.
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+
                     selectionState?.value = true
                     selectedNotes?.add(note)
                 }
