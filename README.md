@@ -17,6 +17,8 @@ JetNote is modern MVVM note android application written by kotlin language and [
   <img src="screenshots/Screenshot_20221206-134300_JetNote.png" width="32%" />
 </p>
 
+### Check it out [Project manager](https://github.com/orgs/City-Zouitel/projects/1/views/1) to see what's going on and what's comming in this project.
+
 ## Libraries
 ### [Kotlinx-coroutines](https://github.com/Kotlin/kotlinx.coroutines) 
 A coroutine is a concurrency design pattern that you can use on Android to simplify code that executes asynchronously.
