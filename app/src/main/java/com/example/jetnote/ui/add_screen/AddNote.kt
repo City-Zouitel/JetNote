@@ -105,7 +105,7 @@ fun NoteAdd(
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
     val titleState = rememberSaveable { mutableStateOf<String?>(null) }.filterBadWords()
-    val descriptionState = rememberSaveable { mutableStateOf<String?>(null) }
+    val descriptionState = rememberSaveable { mutableStateOf<String?>(null) }.filterBadWords()
 
     val backgroundColor = getMaterialColor(SURFACE).toArgb()
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }

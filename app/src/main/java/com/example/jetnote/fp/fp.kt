@@ -3,28 +3,16 @@ package com.example.jetnote.fp
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.provider.UserDictionary
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
 import com.example.jetnote.cons.*
+import com.example.jetnote.cons.bad_words.*
 import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
-import com.example.jetnote.di.utils.Dispatcher
-import com.example.jetnote.di.utils.Dispatchers.*
-import com.example.jetnote.vm.LabelVM
-import com.example.jetnote.vm.NoteAndLabelVM
 import com.example.jetnote.vm.NoteVM
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.forEach
-import kotlinx.coroutines.withContext
-import ww
-import java.io.BufferedReader
 import java.io.File
-import java.util.UUID
+import java.util.*
 
 //
 internal val sharApp: (Context, String) -> Unit = { ctx, txt ->
@@ -105,6 +93,44 @@ fun copyNote(
     cc.invoke()
 }
 
+
+
+//
+@JvmName("filterBadWordsString")
+fun MutableState<String?>.filterBadWords(): MutableState<String?> {
+    value?.split(' ')?.onEach {
+        if (
+            it.lowercase() in badEnglish
+//                .plus(badItian)
+//                .plus(badSpanish)
+//                .plus(badGerman)
+//                .plus(badFrench)
+        )
+            value = value!!.replace(
+                it,
+                "***",
+                true)
+    }
+    return this
+}
+
+@JvmName("filterNonNullableBadWordsString")
+fun MutableState<String>.filterBadWords(): MutableState<String> {
+    value.split(' ').onEach {
+        if (
+            it.lowercase() in badEnglish
+//                .plus(badItian)
+//                .plus(badSpanish)
+//                .plus(badGerman)
+//                .plus(badFrench)
+        )
+            value = value.replace(
+                it,
+                "***",
+                true)
+    }
+    return this
+}
 //
 val getPriorityColor :(String) -> Color = {
     when(it) {
@@ -115,16 +141,6 @@ val getPriorityColor :(String) -> Color = {
         else -> Color.Transparent
     }
 }
-
-//
-fun MutableState<String?>.filterBadWords(): MutableState<String?> {
-    value?.split(' ')?.onEach {
-        if (it in ww.split(','))
-            value = value!!.replace(it, "***", true)
-    }
-    return this
-}
-
 //
 internal val getMaterialColor: @Composable (String) -> Color = {
     mapOf(

@@ -36,6 +36,7 @@ import com.example.jetnote.cons.NULL
 import com.example.jetnote.cons.SURFACE_TINT
 import com.example.jetnote.db.entities.label.Label
 import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
+import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.FULL_LABEL_ICON
@@ -67,7 +68,7 @@ fun Labels(
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
 
     val idState = remember { mutableStateOf(-1L) }
-    val labelState = remember { mutableStateOf("") }
+    val labelState = remember { mutableStateOf("") }.filterBadWords()
     val colorState = remember { mutableStateOf(Color.Transparent.toArgb()) }
 
     val keyboardManager = LocalFocusManager.current

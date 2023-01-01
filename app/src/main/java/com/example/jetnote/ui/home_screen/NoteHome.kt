@@ -23,6 +23,7 @@ import com.example.jetnote.db.entities.Entity
 import com.example.jetnote.db.entities.label.Label
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.ds.DataStore
+import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.PLUS_ICON
 import com.example.jetnote.ui.layouts.VerticalGrid
@@ -50,7 +51,7 @@ fun NoteHome(
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     //
-    val searchTitleState = remember { mutableStateOf("") }
+    val searchTitleState = remember { mutableStateOf("") }.filterBadWords()
     val searchLabelState = remember { mutableStateOf(Label()) }
     //
     val noteDataStore = DataStore(ctx)

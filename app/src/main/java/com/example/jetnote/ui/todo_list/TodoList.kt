@@ -31,6 +31,7 @@ import com.example.jetnote.icons.DELETE_OUTLINE_ICON
 import com.example.jetnote.cons.SURFACE_VARIANT
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
+import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.vm.NoteAndTodoVM
 import com.example.jetnote.vm.TodoVM
@@ -48,7 +49,7 @@ fun TodoList(
     val observeNoteAndTodoList =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
-    var itemState by remember { mutableStateOf("") }
+    var itemState = remember { mutableStateOf("") }.filterBadWords()
     var idState by remember { mutableStateOf(-1L) }
 
     BottomSheetScaffold(
@@ -61,8 +62,8 @@ fun TodoList(
                     .imePadding()
             ) {
                 OutlinedTextField(
-                    value = itemState,
-                    onValueChange = { itemState = it },
+                    value = itemState.value,
+                    onValueChange = { itemState.value = it },
                     modifier = Modifier
                         .fillMaxWidth(),
                     placeholder = {
@@ -83,16 +84,16 @@ fun TodoList(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             if (observeTodoList.value.any { it.id == idState }) {
-                                todoVM.updateTotoItem(Todo(idState, itemState, false))
+                                todoVM.updateTotoItem(Todo(idState, itemState.value, false))
                             } else {
                                 Random.nextLong().let {
                                     todoVM.addTotoItem(
-                                        Todo(it, itemState, false)
+                                        Todo(it, itemState.value, false)
                                     )
                                     noteAndTodoVM.addNoteAndTodoItem(NoteAndTodo(noteUid, it))
                                 }
                             }.invokeOnCompletion {
-                                itemState = ""
+                                itemState.value = ""
                                 idState = -1
                             }
                         }
@@ -144,7 +145,7 @@ fun TodoList(
                                         )
                                     )
                                 ) {
-                                    itemState = todo.item!!
+                                    itemState.value = todo.item!!
                                     idState = todo.id
                                 }
                             }

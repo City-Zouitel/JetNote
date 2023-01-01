@@ -21,6 +21,7 @@ import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.ds.DataStore
 import com.example.jetnote.cons.Screens.TRASH_SCREEN
 import com.example.jetnote.db.entities.label.Label
+import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.ui.layouts.VerticalGrid
 import com.example.jetnote.ui.navigation_drawer.NavigationDrawer
@@ -43,7 +44,7 @@ fun TrashScreen(
     navController: NavController,
 ) {
     val ctx = LocalContext.current
-    val searchTitleState = remember { mutableStateOf("") }
+    val searchTitleState = remember { mutableStateOf("") }.filterBadWords()
     val noteDataStore = DataStore(ctx)
     val currentLayout = noteDataStore.getLayout.collectAsState(true)
     val drawerState = rememberDrawerState(DrawerValue.Closed)

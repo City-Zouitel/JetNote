@@ -48,6 +48,7 @@ import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
+import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.EDIT_ICON
@@ -103,8 +104,8 @@ fun NoteEdit(
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
-    val titleState = rememberSaveable { mutableStateOf(if(title == NULL) null else title) }
-    val descriptionState = rememberSaveable { mutableStateOf(if(description == NULL) null else description) }
+    val titleState = rememberSaveable { mutableStateOf(if(title == NULL) null else title) }.filterBadWords()
+    val descriptionState = rememberSaveable { mutableStateOf(if(description == NULL) null else description) }.filterBadWords()
 
     val backgroundColorState = rememberSaveable { mutableStateOf(color) }
     val textColorState = rememberSaveable { mutableStateOf(textColor) }
