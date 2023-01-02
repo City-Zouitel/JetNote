@@ -1,8 +1,8 @@
 package com.example.jetnote.ui.settings_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.rememberScaffoldState
@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.jetnote.icons.OPACITY_ICON
@@ -93,7 +94,38 @@ fun Settings(
                         )
                     }
                 }
+
+                item {
+                    PreferenceItem(title = "Licenses.") {
+                        navC.navigate("licenses")
+                    }
+                }
             }
+        }
+    }
+}
+
+@Composable
+internal fun PreferenceItem(
+    title: String,
+    description: String? = null,
+    onItemClick: () -> Unit = { },
+) {
+    Column(
+        modifier = Modifier
+            .clickable { onItemClick() }
+            .padding(start = 32.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
+            .fillMaxWidth()
+            .height(48.dp),
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            text = title,
+        )
+        if (description != null) {
+            Text(
+                text = description,
+            )
         }
     }
 }

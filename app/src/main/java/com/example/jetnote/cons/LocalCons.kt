@@ -4,7 +4,7 @@ const val APP_NAME = "JetNote"
 const val TAG = "This"
 const val NULL = "null"
 
-const val APP_VERSION = "1.4.0"
+const val APP_VERSION = "1.6.2"
 
 const val NOTE_TABLE_NAME = "Notes"
 const val DATABASE_NAME = "JetNoteDatabase"

@@ -133,6 +133,15 @@ fun MutableState<String>.filterBadWords(): MutableState<String> {
     }
     return this
 }
+
+fun MutableState<String?>.filterBadEmoji(): MutableState<String?>{
+    badEmoji.entries.forEach {
+        if (this.value?.contains(it.key) == true)
+            this.value = this.value!!.replace(it.key,it.value)
+    }
+    return this
+}
+
 //
 val getPriorityColor :(String) -> Color = {
     when(it) {

@@ -13,6 +13,7 @@ import com.example.jetnote.ui.draw_screen.DrawingNote
 import com.example.jetnote.ui.edit_screen.NoteEdit
 import com.example.jetnote.ui.home_screen.NoteHome
 import com.example.jetnote.ui.labels_screen.Labels
+import com.example.jetnote.ui.settings_screen.Licenses
 import com.example.jetnote.ui.settings_screen.Settings
 import com.example.jetnote.ui.todo_list.TodoList
 import com.example.jetnote.ui.trash_screen.TrashScreen
@@ -148,6 +149,9 @@ fun NoteRoot() {
             }
         )) {
             TodoList(noteUid = it.arguments?.getString(UID) ?: "")
+        }
+        composable("licenses") {
+            Licenses()
         }
     }
 }

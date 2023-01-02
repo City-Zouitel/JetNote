@@ -4,6 +4,7 @@ plugins {
     id ("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
+    id ("com.mikepenz.aboutlibraries.plugin")
 }
 
 android {
@@ -15,7 +16,7 @@ android {
         minSdk = 25
         targetSdk = 33
         versionCode = 1
-        versionName = "1.4.0"
+        versionName = "1.6.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -45,7 +46,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.2.0"
     }
     packagingOptions {
         resources {
@@ -115,9 +116,6 @@ dependencies {
     api (libs.exoplayer.ui)
     api (libs.exoplayer.extension)
 
-    // Material-Dialogs.
-//    implementation ("io.github.vanpra.compose-material-dialogs:core:0.8.1-rc")
-
     // CameraX
     implementation (libs.camerax.core)
     implementation (libs.camerax.lifecycle)
@@ -127,27 +125,19 @@ dependencies {
     //Sketchbook.
     implementation (libs.sketchbook)
 
-    //Timber.
-//    implementation (libs.timber)
-
     //Swipe.
     implementation (libs.swipe)
 
-    //Phoenix.
-//    implementation ("com.jakewharton:process-phoenix:2.1.2")
-
     //Global Exception Handler.
     implementation (libs.globalexception)
-
-    //Coil.
-//    implementation ("io.coil-kt:coil-compose:2.2.2")
-//    implementation("io.coil-kt:coil-svg:2.2.2")
-//    implementation ("io.coil-kt:coil-gif:2.2.2")
 
     //Glide.
     implementation (libs.glide)
     implementation (libs.glide.comp)
     annotationProcessor (libs.glide.compiler)
+
+    //
+    implementation ("com.mikepenz:aboutlibraries-compose:10.5.2")
 
     //Test.
     testImplementation (libs.androidx.junit)

@@ -51,6 +51,7 @@ import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
+import com.example.jetnote.fp.filterBadEmoji
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
@@ -104,8 +105,13 @@ fun NoteAdd(
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
-    val titleState = rememberSaveable { mutableStateOf<String?>(null) }.filterBadWords()
-    val descriptionState = rememberSaveable { mutableStateOf<String?>(null) }.filterBadWords()
+    val titleState = rememberSaveable { mutableStateOf<String?>(null) }
+        .filterBadWords()
+        .filterBadEmoji()
+
+    val descriptionState = rememberSaveable { mutableStateOf<String?>(null) }
+        .filterBadWords()
+//        .filterBadEmoji()
 
     val backgroundColor = getMaterialColor(SURFACE).toArgb()
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
