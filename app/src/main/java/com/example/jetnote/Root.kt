@@ -1,4 +1,4 @@
-package com.example.jetnote.ui.root
+package com.example.jetnote
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType

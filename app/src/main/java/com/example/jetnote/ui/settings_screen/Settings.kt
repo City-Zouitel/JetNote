@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.jetnote.cons.ON_SURFACE
 import com.example.jetnote.icons.OPACITY_ICON
 import com.example.jetnote.cons.SURFACE
 import com.example.jetnote.ds.DataStore
@@ -53,7 +54,7 @@ fun Settings(
                             searchTitle = null
                         )
         },
-        modifier = Modifier.systemBarsPadding()
+        modifier = Modifier.navigationBarsPadding()
     ){
         androidx.compose.material.Scaffold(
             scaffoldState = scaffoldState,
@@ -71,32 +72,46 @@ fun Settings(
                 modifier = Modifier.fillMaxSize(),
                 state = lazyListState
             ) {
+//                item {
+//                    SettingTemplateItem(
+//                        title =  { Text("Dark Mode", fontSize = 20.sp) },
+//                        description = { Text(
+//                            text = "",
+//                            fontSize = 12.sp,
+//                            modifier = Modifier.alpha(.7f)
+//                        ) },
+//                        icon = {
+//                            Icon(painterResource(OPACITY_ICON),null)
+//                        }
+//                    ) {
+//                        Switch(
+//                            modifier = Modifier,
+//                            checked = isDarkTheme.value,
+//                            onCheckedChange = {
+//                                scope.launch {
+//                                    dataStore.saveTheme(!isDarkTheme.value)
+//                                }
+//                            }
+//                        )
+//                    }
+//                }
+
                 item {
-                    SettingTemplateItem(
-                        title =  { Text("Dark Mode", fontSize = 20.sp) },
-                        description = { Text(
-                            text = "",
-                            fontSize = 12.sp,
-                            modifier = Modifier.alpha(.7f)
-                        ) },
-                        icon = {
-                            Icon(painterResource(OPACITY_ICON),null)
-                        }
+                    PreferenceItem(
+                        title = if (isDarkTheme.value) "Light Mode" else "Dark Mode",
+                        description = "This application following the system mode by automatically when the mode set as Light."
                     ) {
-                        Switch(
-                            modifier = Modifier,
-                            checked = isDarkTheme.value,
-                            onCheckedChange = {
-                                scope.launch {
-                                    dataStore.saveTheme(!isDarkTheme.value)
-                                }
-                            }
-                        )
+                        scope.launch {
+                            dataStore.saveTheme(!isDarkTheme.value)
+                        }
                     }
                 }
 
                 item {
-                    PreferenceItem(title = "Licenses.") {
+                    Divider(modifier = Modifier.padding(10.dp))
+                }
+                item {
+                    PreferenceItem(title = "Licenses.", description = "Public repositories on GitHub are often used to share open source software.") {
                         navC.navigate("licenses")
                     }
                 }
@@ -115,16 +130,19 @@ internal fun PreferenceItem(
         modifier = Modifier
             .clickable { onItemClick() }
             .padding(start = 32.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
-            .fillMaxWidth()
-            .height(48.dp),
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
             text = title,
+            fontSize = 20.sp,
+            color = getMaterialColor(ON_SURFACE)
         )
         if (description != null) {
             Text(
                 text = description,
+                Modifier.alpha(.5f),
+                color = getMaterialColor(ON_SURFACE)
             )
         }
     }

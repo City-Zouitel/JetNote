@@ -4,16 +4,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import com.example.jetnote.cons.AUDIO_FILE
 import com.example.jetnote.cons.IMAGE_FILE
-import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.ui.root.AppTheme
-import com.example.jetnote.ui.root.NoteRoot
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.vm.NoteVM
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
-import java.util.*
 
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
@@ -35,6 +42,30 @@ class NoteActivity : ComponentActivity() {
         outState.clear()
     }
 
+    @Composable
+    private fun AppTheme(content: @Composable () -> Unit) {
+        val currentTheme = DataStore(LocalContext.current).isDarkTheme.collectAsState(false).value
+        val systemUiController = rememberSystemUiController()
+        val isDarkUi = isSystemInDarkTheme()
+
+        val theme = when {
+            isSystemInDarkTheme() -> darkColorScheme()
+            currentTheme -> darkColorScheme()
+            else -> lightColorScheme()
+        }
+
+        SideEffect {
+            systemUiController.apply {
+                setStatusBarColor(Color.Transparent, !isDarkUi)
+                setNavigationBarColor(
+                    if (currentTheme || isDarkUi) Color(red = 28, green = 27, blue = 31)
+                    else Color(red = 255, green = 251, blue = 254)
+                )
+            }
+        }
+
+        MaterialTheme(colorScheme = theme, content = content)
+    }
     @Deprecated("Deprecated in Java",
         ReplaceWith("super.onBackPressed()", "androidx.activity.ComponentActivity")
     )

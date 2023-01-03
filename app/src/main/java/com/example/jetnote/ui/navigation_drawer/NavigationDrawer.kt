@@ -163,7 +163,7 @@ fun NavigationDrawer(
                     label = { Text("Share This App") },
                     icon = { Icon(painterResource(SHARE_ICON), null) },
                     selected = false,
-                    onClick = { sharApp(ctx,"[YOUR APP LINK]") }
+                    onClick = { sharApp(ctx,"[YOUR APP STORE LINK]") }
                 )
             }
 
