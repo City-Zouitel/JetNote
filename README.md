@@ -60,11 +60,15 @@ ExoPlayer is an application level media player for Android. It provides an alter
 ### [CameraX](https://developer.android.com/jetpack/androidx/releases/camera)
 CameraX is an addition to Jetpack that makes it easier to add camera capabilities to your app. The library provides a number of compatibility fixes and workarounds to help make the developer experience consistent across many devices.
 
-### [Timber](https://github.com/JakeWharton/timber) 
-This is a logger with a small, extensible API which provides utility on top of Android's normal Log class.
+### [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
+LiveData is an observable data holder class. Unlike a regular observable, LiveData is lifecycle-aware, meaning it respects the lifecycle of other app components, such as activities, fragments, or services. This awareness ensures LiveData only updates app component observers that are in an active lifecycle state.
 
-### [Coil](https://coil-kt.github.io/coil/compose/) 
-An image loading library for Android backed by Kotlin Coroutines.
+### [Glide](https://github.com/bumptech/glide)
+Glide is a fast and efficient open source media management and image loading framework for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface.
+
+### [AboutLibraries](https://github.com/mikepenz/AboutLibraries)
+Collects all dependency details including licenses at compile time, and offers simple APIs to visualize these in the app.
+
 
 
 ## The App Hierarchy

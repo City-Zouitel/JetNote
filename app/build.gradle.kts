@@ -136,8 +136,8 @@ dependencies {
     implementation (libs.glide.comp)
     annotationProcessor (libs.glide.compiler)
 
-    //
-    implementation ("com.mikepenz:aboutlibraries-compose:10.5.2")
+    //License.
+    implementation (libs.aboutlibraries.comp)
 
     //Test.
     testImplementation (libs.androidx.junit)

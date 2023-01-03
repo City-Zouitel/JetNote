@@ -46,14 +46,14 @@ glide_comp = "4.14.0"
 #Sketchbook.
 sketchbook = "1.0.4"
 
-#Timber.
-timber = "5.0.1"
-
 #Swipe.
 swipe = "1.0.0"
 
 #Global Exception Handler.
 global_exception = "1.0.1"
+
+#About Libraries.
+about_libraries = "10.5.2"
 
 #Junit.
 junit = "4.13.2"
@@ -127,14 +127,15 @@ glide_comp = { module = "com.github.bumptech.glide:compose", version.ref = "glid
 #Sketchbook.
 sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
 
-#Timber.
-timber = { module = "com.jakewharton.timber:timbe", version.ref = "timber" }
-
 #Swipe.
 swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
 
 #Global Exception Handler.
 globalexception = { module = "com.github.emirhankolver:GlobalExceptionHandler", version.ref = "global_exception" }
+
+#License.
+aboutlibraries_comp = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "about_libraries" }
+aboutlibraries_plugin = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin", version.ref = "about_libraries" }
 
 #Junit.
 androidx_junit = { module = "junit:junit", version.ref = "junit" }
