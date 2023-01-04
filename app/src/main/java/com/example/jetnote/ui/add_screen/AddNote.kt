@@ -133,14 +133,16 @@ fun NoteAdd(
     val bitImg = BitmapFactory.decodeFile(imagePath)
     val photoState = remember { mutableStateOf<Bitmap?>(bitImg) }
     val imageUriState = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
-//    val img by rememberSaveable { mutableStateOf(photoState) }
+    val img by rememberSaveable { mutableStateOf(photoState) }
 
     val chooseImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
             imageUriState.value = it
-            noteVM::decodeBitmapImage.invoke(photoState.value, it!!, ctx).also { value -> photoState.value = value }
-//            img.value = photoState.value
-            noteVM::saveImageLocally.invoke(photoState.value, "$internalPath/$IMAGE_FILE", "$uid.$JPEG")
+            noteVM::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
+            img.value = photoState.value
+            noteVM::saveImageLocally.invoke(
+                img.value, "$internalPath/$IMAGE_FILE", "$uid.$JPEG"
+            )
         }
 
     val state = rememberBottomSheetScaffoldState()

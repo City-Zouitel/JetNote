@@ -73,7 +73,7 @@ import java.io.File
 @Composable
 fun NoteEdit(
     navController: NavController,
-    viewModule: NoteVM = hiltViewModel(),
+    noteVM: NoteVM = hiltViewModel(),
     exoViewModule: MediaPlayerVM = hiltViewModel(),
     noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
     labelVM: LabelVM = hiltViewModel(),
@@ -132,9 +132,9 @@ fun NoteEdit(
     val chooseImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
             imageUriState.value = it
-//            viewModule::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
+            noteVM::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
             img.value = photoState.value
-            viewModule::saveImageLocally.invoke(
+            noteVM::saveImageLocally.invoke(
                 img.value, "$internalPath/$IMAGE_FILE", "$uid.$JPEG"
             )
         }
@@ -160,7 +160,7 @@ fun NoteEdit(
                         containerColor = getMaterialColor(OUT_LINE_VARIANT),
                         contentColor = contentColorFor(backgroundColor = getMaterialColor(OUT_LINE_VARIANT)),
                         onClick = {
-                            viewModule.updateNote(
+                            noteVM.updateNote(
                                 Note(
                                     title = titleState.value,
                                     description = descriptionState.value,
@@ -221,10 +221,7 @@ fun NoteEdit(
         LazyColumn(Modifier.fillMaxSize()) {
             // display the image.
             item {
-                img.value?.let {
-                    ImageDisplayed(media = imageUriState)
-                }
-
+                ImageDisplayed(media = imageUriState)
             }
             // display the media player.
             item {

@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -202,20 +203,18 @@ class NoteVM @Inject constructor(
         }
     }
     //
-    fun decodeBitmapImage (img: Bitmap?/*, photo: MutableState<Bitmap?>?*/, uri: Uri, c:Context): Bitmap? {
-        var bitImg: Bitmap? = img
+    fun decodeBitmapImage (img: MutableState<Bitmap?>?, photo: MutableState<Bitmap?>?, uri: Uri, c:Context){
         if (Build.VERSION.SDK_INT < 28) {
             runCatching {
-                bitImg = MediaStore.Images.Media.getBitmap(c.contentResolver,uri)
+                img?.value = MediaStore.Images.Media.getBitmap(c.contentResolver,uri)
             }
         } else {
             runCatching {
                 val source = ImageDecoder.createSource(c.contentResolver,uri)
-                bitImg = ImageDecoder.decodeBitmap(source)
+                img?.value = ImageDecoder.decodeBitmap(source)
             }
         }
-//        photo?.value?.let { img?.value = it }
-        return bitImg
+        photo?.value?.let { img?.value = it }
     }
 
     fun imageDecoder(context: Context, uid:String): ImageBitmap? {
