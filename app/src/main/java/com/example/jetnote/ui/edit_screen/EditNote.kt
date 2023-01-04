@@ -52,6 +52,7 @@ import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.EDIT_ICON
+import com.example.jetnote.ui.ImageDisplayed
 import com.example.jetnote.ui.bottom_bar.AddEditBottomBar
 import com.example.jetnote.ui.bottom_bar.RemindingNote
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
@@ -221,7 +222,7 @@ fun NoteEdit(
             // display the image.
             item {
                 img.value?.let {
-//                    ImageDisplayed(image = imageUriState)
+                    ImageDisplayed(media = imageUriState)
                 }
 
             }
