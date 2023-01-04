@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -28,12 +29,12 @@ fun ImageDisplayed(
             shape = AbsoluteRoundedCornerShape(15.dp),
             elevation = CardDefaults.cardElevation()
         ) {
-//            media?.let {
-//                GlideImage(
-//                    model = it.value,
-//                    contentDescription = null
-//                )
-//            }
+            media?.let {
+                GlideImage(
+                    model = it.value,
+                    contentDescription = null
+                )
+            }
         }
     }
 }

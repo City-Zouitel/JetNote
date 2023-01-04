@@ -43,9 +43,6 @@ fun NavigationDrawer(
 
     val scope = rememberCoroutineScope()
 
-    //
-    if (aboutDialogState.value) AppAbout(aboutDialogState)
-
     DismissibleDrawerSheet(
         modifier = Modifier
             .padding(end = 100.dp)
@@ -186,10 +183,7 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(INTERROGATION_ICON), null) },
                     selected = false,
                     onClick = {
-                        scope.launch {
-                            drawerState.close()
-                        }
-                        aboutDialogState.value = true
+                       navController.navigate("about")
                     }
                 )
             }

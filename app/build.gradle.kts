@@ -139,6 +139,9 @@ dependencies {
     //License.
     implementation (libs.aboutlibraries.comp)
 
+    //
+//    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
+
     //Test.
     testImplementation (libs.androidx.junit)
     debugImplementation (libs.compose.manifest)

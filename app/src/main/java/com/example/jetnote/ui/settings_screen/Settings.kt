@@ -14,15 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.jetnote.cons.ON_SURFACE
-import com.example.jetnote.icons.OPACITY_ICON
 import com.example.jetnote.cons.SURFACE
 import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
+import com.example.jetnote.ui.about_screen.CustomTopAppBar
 import com.example.jetnote.ui.navigation_drawer.NavigationDrawer
 import kotlinx.coroutines.launch
 
@@ -60,9 +59,10 @@ fun Settings(
             scaffoldState = scaffoldState,
             backgroundColor = getMaterialColor(SURFACE),
             topBar = {
-                SettingsTopAppBar(
+                CustomTopAppBar(
                     drawerState = drawerState,
-                    scrollBehavior
+                    topAppBarScrollBehavior = scrollBehavior,
+                    title = "Settings"
                 )
             },
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -72,29 +72,6 @@ fun Settings(
                 modifier = Modifier.fillMaxSize(),
                 state = lazyListState
             ) {
-//                item {
-//                    SettingTemplateItem(
-//                        title =  { Text("Dark Mode", fontSize = 20.sp) },
-//                        description = { Text(
-//                            text = "",
-//                            fontSize = 12.sp,
-//                            modifier = Modifier.alpha(.7f)
-//                        ) },
-//                        icon = {
-//                            Icon(painterResource(OPACITY_ICON),null)
-//                        }
-//                    ) {
-//                        Switch(
-//                            modifier = Modifier,
-//                            checked = isDarkTheme.value,
-//                            onCheckedChange = {
-//                                scope.launch {
-//                                    dataStore.saveTheme(!isDarkTheme.value)
-//                                }
-//                            }
-//                        )
-//                    }
-//                }
 
                 item {
                     PreferenceItem(

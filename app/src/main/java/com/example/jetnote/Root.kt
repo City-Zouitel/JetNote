@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.jetnote.cons.*
+import com.example.jetnote.ui.AppAbout
 import com.example.jetnote.ui.add_screen.NoteAdd
 import com.example.jetnote.ui.camera_screen.LaunchCameraX
 import com.example.jetnote.ui.draw_screen.DrawingNote
@@ -152,6 +153,9 @@ fun NoteRoot() {
         }
         composable("licenses") {
             Licenses()
+        }
+        composable("about") {
+            AppAbout(navC = navController)
         }
     }
 }

@@ -111,7 +111,7 @@ fun NoteAdd(
 
     val descriptionState = rememberSaveable { mutableStateOf<String?>(null) }
         .filterBadWords()
-//        .filterBadEmoji()
+        .filterBadEmoji()
 
     val backgroundColor = getMaterialColor(SURFACE).toArgb()
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
