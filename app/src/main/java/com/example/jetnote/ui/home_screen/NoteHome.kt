@@ -53,12 +53,13 @@ fun NoteHome(
     //
     val searchTitleState = remember { mutableStateOf("") }.filterBadWords()
     val searchLabelState = remember { mutableStateOf(Label()) }
+
     //
     val noteDataStore = DataStore(ctx)
-    //
     val orderBy = noteDataStore.getOrder.collectAsState("").value
-    // the true value is 'list' layout by default and false is 'grid'.
-    val currentLayout = noteDataStore.getLayout.collectAsState(true).value
+    // the true value is 'list' layout and false is 'grid'.
+    val currentLayout = noteDataStore.getLayout.collectAsState(false).value
+
     //
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     //

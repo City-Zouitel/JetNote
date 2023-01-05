@@ -39,6 +39,7 @@ import com.example.jetnote.db.entities.Entity
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getPriorityColor
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.ImageDisplayed
@@ -61,21 +62,37 @@ fun NoteCard(
 ) {
     val swipeState = rememberSwipeableActionsState()
 
+    val ctx = LocalContext.current
+
+    val noteDataStore = DataStore(ctx)
+    // the true value is 'list' layout and false is 'grid'.
+    val currentLayout = noteDataStore.getLayout.collectAsState(false).value
+
     val c = SwipeAction(
         onSwipe = {
-                onSwipeNote.invoke(entity)
+            onSwipeNote.invoke(entity)
         },
         icon = {},
         background = Color.Transparent
     )
 
-    SwipeableActionsBox(
-        modifier = Modifier,
-        backgroundUntilSwipeThreshold = Color.Transparent,
-        endActions = listOf(c),
-        swipeThreshold = 100.dp,
-        state = swipeState
-    ) {
+    if (currentLayout) {
+        SwipeableActionsBox(
+            modifier = Modifier,
+            backgroundUntilSwipeThreshold = Color.Transparent,
+            endActions = listOf(c),
+            swipeThreshold = 100.dp,
+            state = swipeState
+        ) {
+            Card(
+                entity = entity,
+                navController = navController,
+                forScreens = forScreen,
+                selectionState = selectionState,
+                selectedNotes = selectedNotes
+            )
+        }
+    } else {
         Card(
             entity = entity,
             navController = navController,
@@ -83,7 +100,6 @@ fun NoteCard(
             selectionState = selectionState,
             selectedNotes = selectedNotes
         )
-
     }
 }
 
@@ -170,7 +186,7 @@ private fun Card(
         // display the image.
         when (forScreens) {
             HOME_SCREEN, TRASH_SCREEN -> {
-                ImageDisplayed(media = media)
+                ImageDisplayed(media = noteVM::imageDecoder.invoke(ctx, note.uid))
             }
             else -> { // Timber.tag(TAG).d("")
             }

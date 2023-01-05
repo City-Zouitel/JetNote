@@ -28,6 +28,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -238,7 +239,7 @@ fun NoteAdd(
 
             // display the image.
             item {
-                ImageDisplayed(media = imageUriState)
+                ImageDisplayed(media = img.value?.asImageBitmap())
             }
 
             // display the media player.

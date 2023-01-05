@@ -221,7 +221,7 @@ fun NoteEdit(
         LazyColumn(Modifier.fillMaxSize()) {
             // display the image.
             item {
-                ImageDisplayed(media = imageUriState)
+                ImageDisplayed(media = img.value?.asImageBitmap())
             }
             // display the media player.
             item {
