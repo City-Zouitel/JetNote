@@ -8,16 +8,10 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import com.example.jetnote.cons.APP_NAME
-import com.example.jetnote.cons.APP_VERSION
 import com.example.jetnote.cons.SURFACE
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.ui.about_screen.AboutContent
 import com.example.jetnote.ui.about_screen.AboutLabel

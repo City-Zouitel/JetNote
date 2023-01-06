@@ -66,7 +66,6 @@ import com.example.jetnote.vm.*
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
 
-@RequiresApi(Build.VERSION_CODES.N)
 @SuppressLint(
     "UnrememberedMutableState",
     "UnusedMaterial3ScaffoldPaddingParameter"
@@ -75,7 +74,6 @@ import java.io.File
     ExperimentalMaterial3Api::class,
     ExperimentalMaterialApi::class,
     ExperimentalComposeUiApi::class,
-    ExperimentalGlideComposeApi::class
 )
 @Composable
 fun NoteAdd(

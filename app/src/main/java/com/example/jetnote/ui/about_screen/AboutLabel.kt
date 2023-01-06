@@ -7,6 +7,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,12 +34,17 @@ fun AboutLabel() {
         GlideImage(
             R.drawable.mat,
             contentDescription = "",
-            modifier = Modifier.fillMaxWidth(),
-        contentScale = ContentScale.FillBounds
+        contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxWidth()
+                .blur(
+                    radius = 3.dp,
+                    edgeTreatment = BlurredEdgeTreatment.Rectangle
+                ),
         )
         Text(
             text = APP_NAME,
-            fontSize = 55.sp,
+            fontSize = 60.sp,
             color = getMaterialColor(ON_SURFACE)
         )
     }
