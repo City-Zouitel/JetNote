@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -146,6 +147,7 @@ fun NoteEdit(
     val audioDurationState = remember { mutableStateOf(0) }
     val gifUri = remember { mutableStateOf<Uri?>(null) }
 
+    val priorityColorState = remember { mutableStateOf(Color.Transparent.toArgb()) }
     BottomSheetScaffold(
         scaffoldState = sheetState,
         sheetPeekHeight = 50.dp,
@@ -192,6 +194,7 @@ fun NoteEdit(
                 note = Note(uid = uid),
                 backgroundColorState = backgroundColorState,
                 textColorState = textColorState,
+                priorityColorState = priorityState,
                 notePriority = priorityState,
                 imageLaunch = chooseImageLauncher,
                 titleFieldState = titleState,

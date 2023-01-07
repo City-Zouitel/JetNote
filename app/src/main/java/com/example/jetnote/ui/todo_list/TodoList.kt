@@ -1,6 +1,7 @@
 package com.example.jetnote.ui.todo_list
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,17 +27,22 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.jetnote.cons.ON_SURFACE
+import com.example.jetnote.cons.SURFACE
 import com.example.jetnote.icons.DELETE_OUTLINE_ICON
-import com.example.jetnote.cons.SURFACE_VARIANT
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.vm.NoteAndTodoVM
 import com.example.jetnote.vm.TodoVM
+import kotlinx.coroutines.Job
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
+import me.saket.swipe.rememberSwipeableActionsState
 import kotlin.random.Random
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TodoList(
@@ -49,23 +54,34 @@ fun TodoList(
     val observeNoteAndTodoList =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
-    var itemState = remember { mutableStateOf("") }.filterBadWords()
-    var idState by remember { mutableStateOf(-1L) }
+    val itemState = remember { mutableStateOf("") }.filterBadWords()
+    val idState = remember { mutableStateOf(-1L) }
 
-    BottomSheetScaffold(
-        modifier = Modifier.systemBarsPadding(),
-        sheetContent = {
-            Surface(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .imePadding()
-            ) {
+    Scaffold(
+        modifier = Modifier.navigationBarsPadding()
+    ) {
+        LazyColumn(
+            modifier = Modifier.padding(top = 25.dp)
+        ) {
+            items(observeTodoList.value) { todo ->
+                if (observeNoteAndTodoList.value.contains(
+                        NoteAndTodo(noteUid, todo.id)
+                    )
+                ) {
+                    TodoItem(todo, todoVM, itemState, idState) {
+                        todoVM.deleteTotoItem(
+                            Todo(id = todo.id)
+                        )
+                    }
+                }
+            }
+            item {
                 OutlinedTextField(
                     value = itemState.value,
                     onValueChange = { itemState.value = it },
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .background(getMaterialColor(SURFACE)),
                     placeholder = {
                         Text("Todo..", color = Color.Gray, fontSize = 19.sp)
                     },
@@ -83,8 +99,8 @@ fun TodoList(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            if (observeTodoList.value.any { it.id == idState }) {
-                                todoVM.updateTotoItem(Todo(idState, itemState.value, false))
+                            if (observeTodoList.value.any { it.id == idState.value }) {
+                                todoVM.updateTotoItem(Todo(idState.value, itemState.value, false))
                             } else {
                                 Random.nextLong().let {
                                     todoVM.addTotoItem(
@@ -94,7 +110,7 @@ fun TodoList(
                                 }
                             }.invokeOnCompletion {
                                 itemState.value = ""
-                                idState = -1
+                                idState.value = -1L
                             }
                         }
                     ),
@@ -105,59 +121,76 @@ fun TodoList(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun TodoItem(
+    todo: Todo,
+    todoVM: TodoVM,
+    itemState: MutableState<String>,
+    idState: MutableState<Long>,
+    onClick: () -> Job
+) {
+    val swipeState = rememberSwipeableActionsState()
+    val action = SwipeAction(
+        onSwipe = {
+            onClick.invoke()
+        },
+        icon = {
+            Icon(painterResource(DELETE_OUTLINE_ICON), null)
+        },
+        background = Color.Red
+    )
+
+    SwipeableActionsBox(
+        modifier = Modifier,
+        backgroundUntilSwipeThreshold = Color.Transparent,
+        endActions = listOf(action),
+        swipeThreshold = 100.dp,
+        state = swipeState
     ) {
-        Surface(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxSize()) {
-            LazyColumn(
-            ) {
-                items(observeTodoList.value) { todo ->
-                    if (observeNoteAndTodoList.value.contains(
-                            NoteAndTodo(noteUid, todo.id)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = todo.isDone,
+                onCheckedChange = {
+                    todoVM.updateTotoItem(
+                        Todo(
+                            id = todo.id,
+                            item = todo.item,
+                            isDone = !todo.isDone
                         )
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Checkbox(
-                                checked = todo.isDone,
-                                onCheckedChange = {
-                                    todoVM.updateTotoItem(
-                                        Todo(
-                                            id = todo.id,
-                                            item = todo.item,
-                                            isDone = !todo.isDone
-                                        )
-                                    )
-                                },
-                                colors = CheckboxDefaults.colors(
-                                    checkedColor = Color.Gray
-                                )
-                            )
-                            Spacer(modifier = Modifier.width(20.dp))
-                            todo.item?.let { item ->
-                                ClickableText(
-                                    text = AnnotatedString(item),
-                                    style = TextStyle(
-                                        fontSize = 18.sp,
-                                        textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
-                                        color = if (todo.isDone) Color.Gray else getMaterialColor(
-                                            SURFACE_VARIANT
-                                        )
-                                    )
-                                ) {
-                                    itemState.value = todo.item!!
-                                    idState = todo.id
-                                }
-                            }
-                            Spacer(modifier = Modifier.width(20.dp))
-                            Icon(painterResource(DELETE_OUTLINE_ICON), null,
-                                modifier = Modifier.clickable {
-                                    todoVM.deleteTotoItem(
-                                        Todo(id = todo.id)
-                                    )
-                                })
-                        }
-                    }
+                    )
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = Color.Gray
+                )
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            todo.item?.let { item ->
+
+                ClickableText(
+                    text = AnnotatedString(item),
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        textDecoration =
+                        if (todo.isDone) {
+                            TextDecoration.LineThrough
+                        } else {
+                            TextDecoration.None
+                        },
+                        color = if (todo.isDone) Color.Gray else getMaterialColor(
+                            ON_SURFACE
+                        )
+                    )
+                ) {
+                    itemState.value = todo.item!!
+                    idState.value = todo.id
                 }
             }
         }

@@ -75,7 +75,7 @@ fun Settings(
 
                 item {
                     PreferenceItem(
-                        title = if (isDarkTheme.value) "Light Mode" else "Dark Mode",
+                        title = if (isDarkTheme.value) "System Default" else "Dark Mode",
                         description = "This application following the system mode by automatically when the mode set as Light."
                     ) {
                         scope.launch {
@@ -88,7 +88,7 @@ fun Settings(
                     Divider(modifier = Modifier.padding(10.dp))
                 }
                 item {
-                    PreferenceItem(title = "Licenses.", description = "Public repositories on GitHub are often used to share open source software.") {
+                    PreferenceItem(title = "Licenses", description = "Public repositories on GitHub are often used to share open source software.") {
                         navC.navigate("licenses")
                     }
                 }

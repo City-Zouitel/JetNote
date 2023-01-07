@@ -3,10 +3,7 @@ package com.example.jetnote.ui.note_card
 import android.net.Uri
 import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -40,7 +38,6 @@ import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.ds.DataStore
-import com.example.jetnote.fp.getPriorityColor
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.ImageDisplayed
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
@@ -68,7 +65,7 @@ fun NoteCard(
     // the true value is 'list' layout and false is 'grid'.
     val currentLayout = noteDataStore.getLayout.collectAsState(false).value
 
-    val c = SwipeAction(
+    val action = SwipeAction(
         onSwipe = {
             onSwipeNote.invoke(entity)
         },
@@ -80,7 +77,7 @@ fun NoteCard(
         SwipeableActionsBox(
             modifier = Modifier,
             backgroundUntilSwipeThreshold = Color.Transparent,
-            endActions = listOf(c),
+            endActions = listOf(action),
             swipeThreshold = 100.dp,
             state = swipeState
         ) {
@@ -167,7 +164,7 @@ private fun Card(
                 selectedNotes?.ifEmpty { selectionState?.value = false }
             }
             .drawBehind {
-                if (note.priority.equals(NON,true)) {
+                if (note.priority.equals(NON, true)) {
                     normalNotePath(note)
                 } else {
                     clipNotePath(note)
@@ -212,10 +209,12 @@ private fun Card(
                     NoteMediaPlayer(localMediaUid = note.uid)
                 }
 
-        //
+        // labels.
         LazyRow {
             items(items = labels) { label ->
                 AssistChip(
+                    modifier = Modifier.alpha(.7f),
+                    border = AssistChipDefaults.assistChipBorder(borderColor = Color.Transparent),
                     onClick = { },
                     label = {
                         label.label?.let { Text(it, fontSize = 11.sp) }
@@ -325,35 +324,57 @@ private fun Card(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Checkbox(
-                                checked = todo.isDone,
-                                onCheckedChange = {
-                                    todoVM.updateTotoItem(
-                                        Todo(
-                                            id = todo.id,
-                                            item = todo.item,
-                                            isDone = !todo.isDone
-                                        )
+                            RadioButton(selected = todo.isDone, onClick = {
+                                todoVM.updateTotoItem(
+                                    Todo(
+                                        id = todo.id,
+                                        item = todo.item,
+                                        isDone = !todo.isDone
                                     )
-                                },
-                                colors = CheckboxDefaults.colors(
-                                    checkedColor = Color.Gray,
-                                    uncheckedColor = Color(note.textColor)
-                                ),
+                                )
+                            },
+                                colors = RadioButtonDefaults.colors(
+                                selectedColor = Color.Gray,
+                                unselectedColor = Color(note.textColor)
+                            ),
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .size(14.dp)
                             )
+//                            Checkbox(
+//                                checked = todo.isDone,
+//                                onCheckedChange = {
+//                                    todoVM.updateTotoItem(
+//                                        Todo(
+//                                            id = todo.id,
+//                                            item = todo.item,
+//                                            isDone = !todo.isDone
+//                                        )
+//                                    )
+//                                },
+//                                colors = CheckboxDefaults.colors(
+//                                    checkedColor = Color.Gray,
+//                                    uncheckedColor = Color(note.textColor)
+//                                ),
+//                                modifier = Modifier
+//                                    .padding(5.dp)
+//                                    .size(14.dp)
+//                            )
                             todo.item?.let { item ->
                                 Text(
                                     text = item,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
-                                    fontSize = 12.sp,
+                                    fontSize = 14.sp,
                                     style = TextStyle(
-                                        textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
+                                        textDecoration = if (todo.isDone) {
+                                            TextDecoration.LineThrough
+                                        } else {
+                                            TextDecoration.None
+                                        },
                                         color = if (todo.isDone) Color.Gray else Color(note.textColor)
-                                    )
+                                    ),
+                                    modifier = Modifier.padding(3.dp)
                                 )
                             }
                         }

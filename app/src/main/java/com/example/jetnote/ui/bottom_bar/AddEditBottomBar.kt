@@ -2,6 +2,7 @@ package com.example.jetnote.ui.bottom_bar
 
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,10 +21,8 @@ import androidx.navigation.NavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.fp.getMaterialColor
-import com.example.jetnote.fp.getPriorityColor
 import com.example.jetnote.icons.ADD_CIRCLE_ICON
 import com.example.jetnote.icons.BELL_ICON
-import com.example.jetnote.icons.CIRCLE_ICON
 import com.example.jetnote.ui.AdaptingRow
 import com.example.jetnote.ui.ColorsRow
 import com.example.jetnote.ui.coloration.listOfBackgroundColors
@@ -39,6 +38,7 @@ fun AddEditBottomBar(
     remindingDialogState: MutableState<Boolean>,
     backgroundColorState: MutableState<Int>,
     textColorState: MutableState<Int>,
+    priorityColorState: MutableState<String>,
     notePriority : MutableState<String>,
     titleFieldState : MutableState<String?>,
     descriptionFieldState : MutableState<String?>,
@@ -70,16 +70,6 @@ fun AddEditBottomBar(
                         }
                 )
 
-                    Icon(
-                        painter = painterResource(id = CIRCLE_ICON),
-                        contentDescription = null,
-                        tint = if (notePriority.value != NON) getPriorityColor(notePriority.value) else contentColorFor(backgroundColor = getMaterialColor(SURFACE_VARIANT)),
-                        modifier = Modifier
-                            .clickable {
-                                showPriorityMenu.value = true
-                            }
-                    )
-
                 Icon(
                     painterResource(BELL_ICON), contentDescription =null,
                     tint = contentColorFor(backgroundColor = getMaterialColor(SURFACE_VARIANT)),
@@ -104,12 +94,7 @@ fun AddEditBottomBar(
             navController = navController,
             imageLaunch = imageLaunch,
             recordDialogState = recordDialogState,
-        )
-
-        //
-        PriorityList(
-            isShow = showPriorityMenu,
-            notePriority = notePriority
+            priorityColorState = priorityColorState
         )
 
         // row of background colors.

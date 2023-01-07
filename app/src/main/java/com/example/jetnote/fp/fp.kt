@@ -142,14 +142,25 @@ fun MutableState<String?>.filterBadEmoji(): MutableState<String?>{
     return this
 }
 
-//
-val getPriorityColor :(String) -> Color = {
+
+internal val getPriorityOfColor: (Color) -> String = {
     when(it) {
+        Color.Red -> URGENT
+        Color.Yellow -> IMPORTANT
+        Color.Green -> NORMAL
+        Color.Cyan -> LOW
+        else -> { NON }
+    }
+}
+internal val getColorOfPriority: (String) -> Color = {
+    when (it) {
         URGENT -> Color.Red
         IMPORTANT -> Color.Yellow
         NORMAL -> Color.Green
         LOW -> Color.Cyan
-        else -> Color.Transparent
+        else -> {
+            Color.Transparent
+        }
     }
 }
 //

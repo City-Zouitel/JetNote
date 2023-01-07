@@ -116,8 +116,11 @@ fun NoteAdd(
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
     val textColor = contentColorFor(getMaterialColor(SURFACE)).toArgb()
     val textColorState = rememberSaveable { mutableStateOf(textColor) }
-
-    val priorityState = remember { mutableStateOf(NON) }
+    val priorityState = remember {
+        mutableStateOf(
+            NON
+        )
+    }
 
     val mediaFile = "$internalPath/$AUDIO_FILE/$uid.$MP3"
 
@@ -207,6 +210,7 @@ fun NoteAdd(
                 note = Note(uid = uid),
                 backgroundColorState = backgroundColorState,
                 textColorState = textColorState,
+                priorityColorState = priorityState,
                 notePriority = priorityState,
                 imageLaunch = chooseImageLauncher,
                 titleFieldState = titleState,
@@ -429,3 +433,9 @@ fun NoteAdd(
 }
 
 
+private val getPriority: (Int) -> String = {
+    when(it) {
+        Color.Cyan.toArgb() -> NORMAL
+        else -> { NON }
+    }
+}

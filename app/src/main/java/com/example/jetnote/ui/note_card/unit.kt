@@ -15,15 +15,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
 import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.fp.getPriorityColor
+import com.example.jetnote.fp.getColorOfPriority
 
 val DrawScope.clipNotePath: (Note) -> Unit get() = {
     clipPath(
         Path().apply {
-            lineTo(size.width - 30.dp.toPx(), 0f)
-            lineTo(size.width, 30.dp.toPx())
-            lineTo(size.width, size.height)
-            lineTo(0f, size.height)
+            lineTo(size.width, 0f)
+            lineTo(size.width,size.height - 25.dp.toPx())
+            lineTo(size.width - 25.dp.toPx(), size.height)
+            lineTo(0f,size.height)
             close()
         }
     ) {
@@ -35,11 +35,11 @@ val DrawScope.clipNotePath: (Note) -> Unit get() = {
         )
         drawRoundRect(
             color = Color(
-                ColorUtils.blendARGB(getPriorityColor(it.priority).toArgb(), 0x000000, .05f)
+                ColorUtils.blendARGB(getColorOfPriority(it.priority).toArgb(), 0x000000, .05f)
             ),
-            topLeft = Offset(size.width - 30.dp.toPx(), -100f),
+            topLeft = Offset(size.width - 25.dp.toPx(), size.height - 25.dp.toPx()),
             size = Size(
-                30.dp.toPx() + 100f, 30.dp.toPx() + 100f
+                25.dp.toPx() + 100f, 25.dp.toPx() + 100f
             ),
             cornerRadius = CornerRadius(10.dp.toPx())
         )
