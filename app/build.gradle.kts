@@ -12,10 +12,10 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.jetnote"
+        applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 1
+        versionCode = 163
         versionName = "1.6.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
