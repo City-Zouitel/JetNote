@@ -24,7 +24,7 @@ JetNote is modern MVVM note android application written by kotlin language and [
 ## Downloads:
 
    <a href="https://apt.izzysoft.de/fdroid/index/apk/com.example.jetnote">
-    <img src="[[images/IzzyOnDroid.png](https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png)](https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png)" alt="Logo" width="200" height="80">
+    <img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Logo" width="200" height="80">
   </a>
 
 ## Libraries
