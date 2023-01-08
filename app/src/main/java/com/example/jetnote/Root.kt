@@ -8,10 +8,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.jetnote.cons.*
 import com.example.jetnote.ui.AppAbout
-import com.example.jetnote.ui.add_screen.NoteAdd
+import com.example.jetnote.ui.add_and_edit.add_screen.NoteAdd
+import com.example.jetnote.ui.add_and_edit.edit_screen.NoteEdit
 import com.example.jetnote.ui.camera_screen.LaunchCameraX
 import com.example.jetnote.ui.draw_screen.DrawingNote
-import com.example.jetnote.ui.edit_screen.NoteEdit
 import com.example.jetnote.ui.home_screen.NoteHome
 import com.example.jetnote.ui.labels_screen.Labels
 import com.example.jetnote.ui.settings_screen.Licenses

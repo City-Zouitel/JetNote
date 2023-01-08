@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
+import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.AdaptingRow
 import com.example.jetnote.vm.NoteVM
@@ -49,35 +50,35 @@ fun DrawingNote(
     audioDuration: Int?,
     reminding: Long?
 ) {
-    val context = LocalContext.current
+    val ctx = LocalContext.current
     val sheetState = rememberBottomSheetScaffoldState()
     val controller = rememberSketchbookController()
     var eraseState by remember { mutableStateOf(false) }
 
     // TODO: move to vm
-    val path = File(context.filesDir.path + "/" + IMAGE_FILE, "$uid.$JPEG")
+    val path = File(ctx.filesDir.path + "/" + IMAGE_FILE, "$uid.$JPEG")
     val bitImg = BitmapFactory.decodeFile(path.absolutePath)
 
     val bitmap = remember { mutableStateOf<Bitmap?>(bitImg) }
-    val imagesPath = context.filesDir.path + "/" + IMAGE_FILE
+    val imagesPath = ctx.filesDir.path + "/" + IMAGE_FILE
 
     val colorPickerDialogState = remember { mutableStateOf(false) }
     var currentBrushSize by remember { mutableStateOf(0f) }
 
-    val scope = rememberCoroutineScope()
-
     BottomSheetScaffold(
         scaffoldState = sheetState,
         sheetPeekHeight = 60.dp,
+        modifier = Modifier
+            .navigationBarsPadding(),
         sheetContent = {
             // icons row.
             Row {
                 AdaptingRow(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .background(getMaterialColor(SURFACE))
                         .height(60.dp)
                 ) {
-
                     //
                     Icon(
                         painterResource(UNDO_ICON),
@@ -86,21 +87,20 @@ fun DrawingNote(
                             .size(20.dp)
                             .clickable {
                                 controller.undo()
-                            }
+                            },
+                        tint = if (controller.canUndo.value) getMaterialColor(ON_SURFACE) else getMaterialColor(OUTLINE),
                     )
-
                     //
                     Icon(
                         painter = painterResource(id = REDO_ICON),
                         contentDescription = null,
-                        tint = if (controller.canRedo.value) Color.DarkGray else Color.LightGray,
+                        tint = if (controller.canRedo.value) getMaterialColor(ON_SURFACE) else getMaterialColor(OUTLINE),
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
                                 controller.redo()
                             }
                     )
-
                     //
                     Canvas(
                         modifier = Modifier
@@ -124,24 +124,23 @@ fun DrawingNote(
                             center = Offset(canvasWidth - space - radius, canvasHeight / 2)
                         )
                     }
-
                     //
                     Icon(
                         painter = painterResource(id = ERASER_BLACK_ICON),
                         contentDescription = null,
-                        tint = if (eraseState) Color.DarkGray else Color.Gray,
+                        tint = if (eraseState) getMaterialColor(ON_SURFACE) else getMaterialColor(OUTLINE),
                         modifier = Modifier.clickable {
                             eraseState = !eraseState
                             controller.setEraseMode(eraseState)
                         }
                     )
-
                     //
                     Icon(
                         painter = painterResource(id = DISK_ICON),
                         contentDescription = null,
-                        tint = Color.DarkGray,
+                        tint = getMaterialColor(ON_SURFACE),
                         modifier = Modifier.clickable {
+
                             bitmap.value = controller.getSketchbookBitmap().asAndroidBitmap()
                             bitmap.value?.let {
                                 viewModule.saveImageLocally(it, imagesPath, "$uid.$JPEG")
@@ -212,11 +211,11 @@ fun DrawingNote(
         },
         sheetBackgroundColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
-        controller.setPaintColor(Color.Black)
+        controller.setPaintColor(Color.Cyan)
         Sketchbook(
             modifier = Modifier.fillMaxSize(),
             controller = controller,
-            backgroundColor = Color.Cyan,
+//            backgroundColor = Color.Cyan,
             imageBitmap = bitmap.value?.asImageBitmap()
         )
         ColorPickerDialog(expanded = colorPickerDialogState, controller = controller)
