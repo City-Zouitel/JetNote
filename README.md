@@ -19,7 +19,6 @@ JetNote is modern MVVM note android application written by kotlin language and [
 </p>
 
 
-### Check it out [Project manager](https://github.com/orgs/City-Zouitel/projects/1/views/1) to see what's going on and what's comming in this project.
 
 ## Downloads:
 
@@ -101,6 +100,8 @@ Collects all dependency details including licenses at compile time, and offers s
           |            Room           |      |        ...........        |
           *****************************      *****************************
 ```
+
+### Check it out [Project manager](https://github.com/orgs/City-Zouitel/projects/1/views/1) to see what's going on and what's comming in this project.
 
 ## License
 ```text
