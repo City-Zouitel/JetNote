@@ -8,6 +8,7 @@ JetNote is modern MVVM note android application written by kotlin language and [
 [![Android Platform](https://img.shields.io/badge/Platform-Android-green.svg?style=flat)](https://www.android.com/)
 [![Android CI](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml/badge.svg)](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/city-zouitel/jetnote/badge)](https://www.codefactor.io/repository/github/city-zouitel/jetnote)
+<center><img src="https://img.shields.io/endpoint?url=https://apt.izzysoft.de/fdroid/api/v1/shield/com.mirfatif.permissionmanagerx&label=IzzyOnDroid&cacheSeconds=86400"></center>
 
 ## Screenshots
 
@@ -19,6 +20,12 @@ JetNote is modern MVVM note android application written by kotlin language and [
 
 
 ### Check it out [Project manager](https://github.com/orgs/City-Zouitel/projects/1/views/1) to see what's going on and what's comming in this project.
+
+## Downloads:
+
+   <a href="">
+    <img src="[images/IzzyOnDroid.png](https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png)" alt="Logo" width="200" height="80">
+  </a>
 
 ## Libraries
 ### [Kotlinx-coroutines](https://github.com/Kotlin/kotlinx.coroutines) 
