@@ -1,10 +1,14 @@
 package com.example.jetnote.ui.add_and_edit.add_screen
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.icu.util.Calendar
+import android.media.AudioManager
+import android.media.RingtoneManager
 import android.net.Uri
+import android.view.SoundEffectConstants
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -149,6 +153,7 @@ fun NoteAdd(
     val remindingValue = remember { mutableStateOf(0L) }
 
     val audioDurationState = remember { mutableStateOf(0) }
+
 
     LaunchedEffect(Unit) {
         kotlin.runCatching {

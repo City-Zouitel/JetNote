@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -41,7 +44,7 @@ import java.util.*
     "UnusedMaterialScaffoldPaddingParameter",
     "UnrememberedMutableState"
 )
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun NoteHome(
     noteVM: NoteVM = hiltViewModel(),
@@ -88,6 +91,7 @@ fun NoteHome(
     val expandedSortMenuState = remember { mutableStateOf(false) }
 
     val refreshState = rememberSwipeRefreshState(noteVM.isProcessing)
+    val pullRefreshState = rememberPullRefreshState(refreshing = true, onRefresh = { /*TODO*/ })
 
     val selectionState = remember { mutableStateOf(false) }
     val selectedNotes = remember { mutableStateListOf<Note>() }
@@ -160,8 +164,15 @@ fun NoteHome(
                 )
             }
         ) {
-            SwipeRefresh(modifier = Modifier.fillMaxSize(),
-                state = refreshState, onRefresh = {}) {
+            SwipeRefresh(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pullRefresh(pullRefreshState),
+                state = refreshState,
+                onRefresh = {
+                    navController.navigate(HOME_ROUTE)
+                }
+            ) {
                 if (currentLayout) {
                     LazyColumn(
                         state = lazyListState,

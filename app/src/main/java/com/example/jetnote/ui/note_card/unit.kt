@@ -31,7 +31,7 @@ val DrawScope.clipNotePath: (Note) -> Unit get() = {
         drawRoundRect(
             color = Color(it.color),
             size = size,
-            cornerRadius = CornerRadius(10.dp.toPx())
+            cornerRadius = CornerRadius(15.dp.toPx())
         )
         drawRoundRect(
             color = Color(
@@ -41,7 +41,7 @@ val DrawScope.clipNotePath: (Note) -> Unit get() = {
             size = Size(
                 25.dp.toPx() + 100f, 25.dp.toPx() + 100f
             ),
-            cornerRadius = CornerRadius(10.dp.toPx())
+            cornerRadius = CornerRadius(15.dp.toPx())
         )
     }
 }
@@ -59,7 +59,7 @@ val DrawScope.normalNotePath: (Note) -> Unit get() = {
         drawRoundRect(
             color = Color(it.color),
             size = size,
-            cornerRadius = CornerRadius(10.dp.toPx())
+            cornerRadius = CornerRadius(15.dp.toPx())
         )
     }
 }

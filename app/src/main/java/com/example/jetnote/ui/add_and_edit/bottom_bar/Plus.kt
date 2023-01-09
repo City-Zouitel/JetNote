@@ -89,7 +89,8 @@ internal fun Plus(
 //                )
 //                isShow.value = false
                 Toast.makeText(ctx, "Coming Soon.", Toast.LENGTH_SHORT).show()
-            }
+            },
+            enabled = false
         )
         DropdownMenuItem(
             text = { Text(text = "Record", fontSize = 18.sp) },

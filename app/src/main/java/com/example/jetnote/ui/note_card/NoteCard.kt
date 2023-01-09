@@ -199,7 +199,7 @@ private fun Card(
             text = note.description ?: "",
             fontSize = 15.sp,
             color = Color(note.textColor),
-            modifier = Modifier.padding(start = 3.dp, end = 3.dp)
+            modifier = Modifier.padding(start = 3.dp, end = 3.dp, bottom = 7.dp)
         )
 
         //media display.

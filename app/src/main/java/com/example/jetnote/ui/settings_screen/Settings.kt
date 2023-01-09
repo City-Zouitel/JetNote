@@ -75,8 +75,8 @@ fun Settings(
 
                 item {
                     PreferenceItem(
-                        title = if (isDarkTheme.value) "System Default" else "Dark Mode",
-                        description = "This application following the system mode by automatically when the mode set as Light."
+                        title = if (isDarkTheme.value) "System Mode" else "Dark Mode",
+                        description = "This application following the system mode by default."
                     ) {
                         scope.launch {
                             dataStore.saveTheme(!isDarkTheme.value)
