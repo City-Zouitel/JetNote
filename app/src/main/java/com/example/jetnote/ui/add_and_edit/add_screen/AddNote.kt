@@ -1,6 +1,7 @@
 package com.example.jetnote.ui.add_and_edit.add_screen
 
 import android.annotation.SuppressLint
+import android.content.ClipDescription
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -85,7 +86,8 @@ fun NoteAdd(
     todoVM: TodoVM = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     navController: NavController,
-    uid: String
+    uid: String,
+    description: String?
 ) {
     val ctx = LocalContext.current
     val internalPath = ctx.filesDir.path
@@ -109,7 +111,7 @@ fun NoteAdd(
         .filterBadWords()
         .filterBadEmoji()
 
-    val descriptionState = rememberSaveable { mutableStateOf<String?>(null) }
+    val descriptionState = rememberSaveable { mutableStateOf<String?>(description) }
         .filterBadWords()
         .filterBadEmoji()
 

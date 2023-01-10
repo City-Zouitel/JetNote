@@ -1,11 +1,13 @@
 package com.example.jetnote
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.example.jetnote.cons.*
 import com.example.jetnote.ui.AppAbout
 import com.example.jetnote.ui.add_and_edit.add_screen.NoteAdd
@@ -18,23 +20,32 @@ import com.example.jetnote.ui.settings_screen.Licenses
 import com.example.jetnote.ui.settings_screen.Settings
 import com.example.jetnote.ui.todo_list.TodoList
 import com.example.jetnote.ui.trash_screen.TrashScreen
+import java.util.UUID
 
 @Composable
-fun NoteRoot() {
-    val navController = rememberNavController()
+fun NoteRoot(
+    navHostController: NavHostController
+) {
 
-    NavHost(navController = navController, startDestination = HOME_ROUTE) {
+    NavHost(navController = navHostController, startDestination = HOME_ROUTE) {
         composable(route = HOME_ROUTE) {
-            NoteHome(navController = navController)
+            NoteHome(navController = navHostController)
         }
-        composable(route = "$ADD_ROUTE/{$UID}", arguments = listOf(
+        composable(
+            route = "$ADD_ROUTE/{$UID}/{$DESCRIPTION}",
+            arguments = listOf(
             navArgument(UID) {
+                type = NavType.StringType
+            },
+            navArgument(DESCRIPTION) {
+                nullable = true
                 type = NavType.StringType
             }
         )) {
             NoteAdd(
-                navController = navController,
-                uid = it.arguments?.getString(UID) ?:""
+                navController = navHostController,
+                uid = it.arguments?.getString(UID) ?:"",
+                description = it.arguments?.getString(DESCRIPTION) ?: ""
             )
         }
         composable(
@@ -69,7 +80,7 @@ fun NoteRoot() {
             )
         ) {
             NoteEdit(
-                navController = navController,
+                navController = navHostController,
                 title = it.arguments?.getString(TITLE),
                 description = it.arguments?.getString(DESCRIPTION),
                 color = it.arguments?.getInt(COLOR) ?: 0,
@@ -108,7 +119,7 @@ fun NoteRoot() {
                 }
             )) {
             DrawingNote(
-                navController = navController,
+                navController = navHostController,
                 title = it.arguments?.getString(TITLE) ?: "",
                 description = it.arguments?.getString(DESCRIPTION) ?: "",
                 color = it.arguments?.getInt(COLOR),
@@ -128,11 +139,11 @@ fun NoteRoot() {
         }
 
         composable(TRASH_ROUTE){
-            TrashScreen(navController = navController)
+            TrashScreen(navController = navHostController)
         }
 
         composable(SETTING_ROUTE){
-            Settings(navController)
+            Settings(navHostController)
         }
         composable("labels/{$UID}", arguments = listOf(
             navArgument(UID) {
@@ -155,7 +166,7 @@ fun NoteRoot() {
             Licenses()
         }
         composable("about") {
-            AppAbout(navC = navController)
+            AppAbout(navC = navHostController)
         }
     }
 }

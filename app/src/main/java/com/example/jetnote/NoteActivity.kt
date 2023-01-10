@@ -1,6 +1,10 @@
 package com.example.jetnote
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -8,31 +12,43 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
-import com.example.jetnote.cons.AUDIO_FILE
-import com.example.jetnote.cons.IMAGE_FILE
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.jetnote.cons.*
 import com.example.jetnote.ds.DataStore
 import com.example.jetnote.vm.NoteVM
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.*
 
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
 
     val vm = viewModels<NoteVM>()
+
+    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         WindowCompat.setDecorFitsSystemWindows(window,false)
+
         setContent {
+            val navHostController = rememberNavController()
+            val scope = rememberCoroutineScope()
+
+            checkIntents(intent, this@NoteActivity, navHostController,scope)
+
             AppTheme {
-                NoteRoot()
-//                Main()
+                NoteRoot(navHostController)
             }
         }
     }
@@ -101,5 +117,23 @@ class NoteActivity : ComponentActivity() {
 //                )
 //            )
 //        }
+    }
+}
+
+private fun checkIntents(
+    intent: Intent,
+    ctx: Context,
+    navHC: NavHostController,
+    scope: CoroutineScope
+) {
+    intent.apply {
+        if (action == Intent.ACTION_SEND && type == "text/plain") {
+            getStringExtra(Intent.EXTRA_TEXT) ?.let {
+                scope.launch() {
+                    navHC.navigate("$ADD_ROUTE/${UUID.randomUUID()}/$it")
+                }
+                Toast.makeText(ctx, it, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
