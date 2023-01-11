@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
-import com.example.jetnote.cons.Screens.HOME_SCREEN
+import com.example.jetnote.ui.navigation_drawer.Screens.HOME_SCREEN
 import com.example.jetnote.db.entities.Entity
 import com.example.jetnote.db.entities.label.Label
 import com.example.jetnote.db.entities.note.Note

@@ -1728,7 +1728,13 @@ val badEnglish = arrayOf(
     "zoophile",
     "zoophilia",
     "zoophilia2 girls 1 cup",
-    "zubb"
+    "zubb",
+    "Behzinga",
+    "gay",
+    "lesbian",
+    "lgb",
+    "lgbt",
+    "lgbtq",
 )
 val badFrench = arrayOf(
     " enculé",

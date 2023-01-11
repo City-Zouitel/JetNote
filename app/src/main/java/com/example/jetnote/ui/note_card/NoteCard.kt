@@ -31,8 +31,8 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
-import com.example.jetnote.cons.Screens.HOME_SCREEN
-import com.example.jetnote.cons.Screens.TRASH_SCREEN
+import com.example.jetnote.ui.navigation_drawer.Screens.HOME_SCREEN
+import com.example.jetnote.ui.navigation_drawer.Screens.TRASH_SCREEN
 import com.example.jetnote.db.entities.Entity
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
@@ -41,6 +41,7 @@ import com.example.jetnote.ds.DataStore
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.ImageDisplayed
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
+import com.example.jetnote.ui.navigation_drawer.Screens
 import com.example.jetnote.vm.*
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox

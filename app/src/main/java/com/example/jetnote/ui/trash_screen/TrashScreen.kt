@@ -19,7 +19,7 @@ import com.example.jetnote.cons.*
 import com.example.jetnote.db.entities.Entity
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.ds.DataStore
-import com.example.jetnote.cons.Screens.TRASH_SCREEN
+import com.example.jetnote.ui.navigation_drawer.Screens.TRASH_SCREEN
 import com.example.jetnote.db.entities.label.Label
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
