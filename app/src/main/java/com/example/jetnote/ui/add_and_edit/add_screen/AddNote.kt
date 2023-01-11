@@ -111,7 +111,7 @@ fun NoteAdd(
         .filterBadWords()
         .filterBadEmoji()
 
-    val descriptionState = rememberSaveable { mutableStateOf<String?>(description) }
+    val descriptionState = rememberSaveable { mutableStateOf(if (description == NULL) "" else description) }
         .filterBadWords()
         .filterBadEmoji()
 
@@ -119,11 +119,7 @@ fun NoteAdd(
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
     val textColor = contentColorFor(getMaterialColor(SURFACE)).toArgb()
     val textColorState = rememberSaveable { mutableStateOf(textColor) }
-    val priorityState = remember {
-        mutableStateOf(
-            NON
-        )
-    }
+    val priorityState = remember { mutableStateOf(NON) }
 
     val mediaFile = "$internalPath/$AUDIO_FILE/$uid.$MP3"
 

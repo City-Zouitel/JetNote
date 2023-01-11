@@ -20,6 +20,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.ds.DataStore
+import com.example.jetnote.fp.checkIntents
 import com.example.jetnote.vm.NoteVM
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,7 +46,7 @@ class NoteActivity : ComponentActivity() {
             val navHostController = rememberNavController()
             val scope = rememberCoroutineScope()
 
-            checkIntents(intent, this@NoteActivity, navHostController,scope)
+            checkIntents(intent, this@NoteActivity, navHostController, scope)
 
             AppTheme {
                 NoteRoot(navHostController)
@@ -118,22 +119,9 @@ class NoteActivity : ComponentActivity() {
 //            )
 //        }
     }
-}
 
-private fun checkIntents(
-    intent: Intent,
-    ctx: Context,
-    navHC: NavHostController,
-    scope: CoroutineScope
-) {
-    intent.apply {
-        if (action == Intent.ACTION_SEND && type == "text/plain") {
-            getStringExtra(Intent.EXTRA_TEXT) ?.let {
-                scope.launch() {
-                    navHC.navigate("$ADD_ROUTE/${UUID.randomUUID()}/$it")
-                }
-                Toast.makeText(ctx, it, Toast.LENGTH_SHORT).show()
-            }
-        }
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
     }
 }
+

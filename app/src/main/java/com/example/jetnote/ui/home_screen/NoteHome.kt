@@ -153,7 +153,7 @@ fun NoteHome(
                         )
                     },
                     onClick = {
-                        navController.navigate("$ADD_ROUTE/$uid/684534643")
+                        navController.navigate("$ADD_ROUTE/$uid/$NULL")
                     },
                     expanded = scrollBehavior.state.collapsedFraction != 1f,
                     containerColor = getMaterialColor(SURFACE_VARIANT),

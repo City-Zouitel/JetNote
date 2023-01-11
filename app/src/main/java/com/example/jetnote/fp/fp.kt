@@ -3,14 +3,18 @@ package com.example.jetnote.fp
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
 import com.example.jetnote.cons.*
 import com.example.jetnote.cons.bad_words.*
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.vm.NoteVM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
@@ -161,6 +165,29 @@ internal val getColorOfPriority: (String) -> Color = {
         else -> {
             Color.Transparent
         }
+    }
+}
+
+internal fun checkIntents(
+    intent: Intent,
+    ctx: Context,
+    navHC: NavHostController,
+    scope: CoroutineScope
+) {
+    intent.apply {
+        if (action == Intent.ACTION_SEND && type == "text/plain") {
+            getStringExtra(Intent.EXTRA_TEXT) ?.let {
+                scope.launch() {
+                    navHC.navigate("$ADD_ROUTE/${UUID.randomUUID()}/$it")
+                }
+                Toast.makeText(ctx, it, Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (action == Intent.ACTION_VIEW) {
+            Toast.makeText(ctx, "action view", Toast.LENGTH_SHORT).show()
+        }
+        removeCategory(Intent.CATEGORY_DEFAULT)
+        action = null
     }
 }
 //
