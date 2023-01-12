@@ -54,6 +54,7 @@ import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.filterBadEmoji
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
@@ -64,6 +65,7 @@ import com.example.jetnote.ui.add_and_edit.bottom_bar.AddEditBottomBar
 import com.example.jetnote.ui.add_and_edit.bottom_bar.RemindingNote
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
 import com.example.jetnote.ui.record_note.RecordingNote
+import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
@@ -95,6 +97,8 @@ fun NoteAdd(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = FocusRequester()
     val focusState = remember { mutableStateOf(false) }
+
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val observeNotesAndLabels =
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
@@ -192,6 +196,7 @@ fun NoteAdd(
                                 )
                             )
                             navController.navigate(HOME_ROUTE)
+                                .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                         }
                     ) {
                         Icon(

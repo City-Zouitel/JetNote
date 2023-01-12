@@ -49,6 +49,8 @@ import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
+import com.example.jetnote.ds.DataStore
+import com.example.jetnote.fp.filterBadEmoji
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
@@ -58,6 +60,7 @@ import com.example.jetnote.ui.add_and_edit.bottom_bar.AddEditBottomBar
 import com.example.jetnote.ui.add_and_edit.bottom_bar.RemindingNote
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
 import com.example.jetnote.ui.record_note.RecordingNote
+import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
@@ -96,6 +99,8 @@ fun NoteEdit(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = FocusRequester()
 
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
@@ -106,8 +111,15 @@ fun NoteEdit(
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
-    val titleState = rememberSaveable { mutableStateOf(if(title == NULL) null else title) }.filterBadWords()
-    val descriptionState = rememberSaveable { mutableStateOf(if(description == NULL) null else description) }.filterBadWords()
+    val titleState = rememberSaveable {
+        mutableStateOf(if(title == NULL) null else title)
+    }.filterBadWords()
+        .filterBadEmoji()
+
+    val descriptionState = rememberSaveable {
+        mutableStateOf(if(description == NULL) null else description)
+    }.filterBadWords()
+        .filterBadEmoji()
 
     val backgroundColorState = rememberSaveable { mutableStateOf(color) }
     val textColorState = rememberSaveable { mutableStateOf(textColor) }
@@ -147,7 +159,6 @@ fun NoteEdit(
     val audioDurationState = remember { mutableStateOf(0) }
     val gifUri = remember { mutableStateOf<Uri?>(null) }
 
-    val priorityColorState = remember { mutableStateOf(Color.Transparent.toArgb()) }
     BottomSheetScaffold(
         scaffoldState = sheetState,
         sheetPeekHeight = 50.dp,
@@ -177,6 +188,7 @@ fun NoteEdit(
                                 )
                             )
                             navController.navigate(HOME_ROUTE)
+                                .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                         }) {
                         Icon(
                             painter = painterResource(id = EDIT_ICON),

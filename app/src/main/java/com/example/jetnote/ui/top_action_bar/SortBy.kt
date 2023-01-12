@@ -11,6 +11,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -18,6 +19,7 @@ import androidx.compose.ui.window.PopupProperties
 import com.example.jetnote.cons.*
 import com.example.jetnote.ds.DataStore
 import com.example.jetnote.icons.*
+import com.example.jetnote.ui.settings_screen.makeSound
 import kotlinx.coroutines.launch
 
 @Composable
@@ -25,6 +27,9 @@ internal fun SortBy(
     isShow: MutableState<Boolean>?,
     dataStore: DataStore?
 ) {
+    val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+
     val scope = rememberCoroutineScope()
     val currentSortIcon = when(dataStore?.getOrder?.collectAsState(null)?.value) {
         ORDER_BY_NAME -> SORT_ALPHA_DOWN_ICON
@@ -40,6 +45,7 @@ internal fun SortBy(
         modifier = Modifier
             .size(24.dp)
             .clickable {
+                Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow?.value = true
             }
     )
@@ -62,6 +68,7 @@ internal fun SortBy(
                     modifier = Modifier.size(24.dp)
                 ) },
                 onClick = {
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_DEFAULT)
@@ -72,6 +79,7 @@ internal fun SortBy(
                 text = { Text(NEWEST_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painter = painterResource(id = SORT_AMOUNT_DOWN_ICON), null ) },
                 onClick = {
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_NEWEST)
@@ -82,6 +90,7 @@ internal fun SortBy(
                 text = { Text(OLDEST_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painter = painterResource(id = SORT_AMOUNT_UP_ICON), null ) },
                 onClick = {
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_OLDEST)
@@ -92,6 +101,7 @@ internal fun SortBy(
                 text = { Text(NAME_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painter = painterResource(id = SORT_ALPHA_DOWN_ICON), null ) },
                 onClick = {
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_NAME)
@@ -102,6 +112,7 @@ internal fun SortBy(
                 text = { Text(REMINDING_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painterResource(SORT_NUMERIC_ICON), null ) },
                 onClick = {
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_REMINDER)
@@ -112,6 +123,7 @@ internal fun SortBy(
                 text = { Text(PRIORITY_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painter = painterResource(id = INTERLINING_ICON), null ) },
                 onClick = {
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_PRIORITY)

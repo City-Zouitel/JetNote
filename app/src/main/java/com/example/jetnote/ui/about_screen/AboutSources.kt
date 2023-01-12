@@ -6,21 +6,28 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.cons.ON_SURFACE
 import com.example.jetnote.cons.SURFACE
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.GITHUB_ICON
+import com.example.jetnote.ui.settings_screen.makeSound
 
 @Composable
 fun AboutSources() {
 
     val uri = LocalUriHandler.current
+    val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     Opensource(
         txt = "Project Source",
@@ -32,6 +39,8 @@ fun AboutSources() {
         }
     ) {
         uri.openUri("https://github.com/City-Zouitel/JetNote")
+            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+
     }
 }
 

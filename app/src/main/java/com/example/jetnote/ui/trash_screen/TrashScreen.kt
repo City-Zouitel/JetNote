@@ -88,9 +88,6 @@ fun TrashScreen(
                     thisHomeScreen = false,
                     confirmationDialogState = confirmationDialogState,
                     expandedSortMenuState = null,
-                    expandedAccountMenuState = null,
-                    signInDialogState = null,
-                    revokeAccessDialogState = null,
                     searchScreen = SEARCH_IN_TRASH,
                     label = remember { mutableStateOf(Label()) }
                 )

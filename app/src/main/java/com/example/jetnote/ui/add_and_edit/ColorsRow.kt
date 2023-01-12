@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,9 +15,14 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.jetnote.cons.FOCUS_NAVIGATION
+import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.cons.SURFACE
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
+import com.example.jetnote.ui.settings_screen.makeSound
 
 @Composable
 fun ColorsRow(
@@ -29,6 +31,9 @@ fun ColorsRow(
     ) {
 
     val currentColor = remember { mutableStateOf(Color.White) }
+    val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,6 +49,7 @@ fun ColorsRow(
                     .clickable {
                         currentColor.value = it
                         colorState.value = it.toArgb()
+                        Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     }
             ){
                 drawArc(color = it,

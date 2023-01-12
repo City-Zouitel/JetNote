@@ -1,5 +1,6 @@
 package com.example.jetnote.ui.navigation_drawer
 
+import android.media.AudioManager
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,10 +20,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.db.entities.label.Label
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.mailTo
 import com.example.jetnote.fp.sharApp
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.AppAbout
+import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.LabelVM
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.coroutines.launch
@@ -39,7 +42,7 @@ fun NavigationDrawer(
     val ctx = LocalContext.current
     val observeLabels = remember(labelVM,labelVM::getAllLabels).collectAsState()
 
-    val aboutDialogState = remember { mutableStateOf(false) }
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val scope = rememberCoroutineScope()
 
@@ -59,12 +62,14 @@ fun NavigationDrawer(
                 Divider()
             }
             item {
-
                 NavigationDrawerItem(
                     label = { Text("Notes") },
                     icon = { Icon(painterResource(HOME_ICON), null) },
                     selected = false,
-                    onClick = { navController.navigate(HOME_ROUTE) }
+                    onClick = {
+                        navController.navigate(HOME_ROUTE)
+                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                    }
                 )
             }
             item {
@@ -90,7 +95,9 @@ fun NavigationDrawer(
                         modifier = Modifier
                             .padding(15.dp)
                             .clickable {
-                                navController.navigate("labels/${null}")
+                                navController
+                                    .navigate("labels/${null}")
+                                    .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                             }
                     )
                 }
@@ -105,7 +112,9 @@ fun NavigationDrawer(
                             selected = true,
                             onClick = {
                                 scope.launch {
-                                    drawerState.close()
+                                    drawerState
+                                        .close()
+                                        .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                                 }
                                 searchTitle?.value = label.label!!
                                 searchLabel?.value = label
@@ -132,35 +141,40 @@ fun NavigationDrawer(
             }
 
             item {
-
-            }
-            item {
                 NavigationDrawerItem(
                     label = { Text("Settings") },
                     icon = { Icon(painterResource(SETTINGS_ICON), null) },
                     selected = false,
                     onClick = {
                         navController.navigate(SETTING_ROUTE)
+                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+
                     }
                 )
             }
 
             item {
-
                 NavigationDrawerItem(
                     label = { Text("Trash") },
                     icon = { Icon(painterResource(TRASH_ICON), null) },
                     selected = false,
-                    onClick = { navController.navigate(TRASH_ROUTE) }
+                    onClick = {
+                        navController.navigate(TRASH_ROUTE)
+                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                    }
                 )
             }
+
             item {
                 Divider()
                 NavigationDrawerItem(
                     label = { Text("Share This App") },
                     icon = { Icon(painterResource(SHARE_ICON), null) },
                     selected = false,
-                    onClick = { sharApp(ctx,"[YOUR APP STORE LINK]") }
+                    onClick = {
+                        sharApp(ctx,"[YOUR APP STORE LINK]")
+                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                    }
                 )
             }
 
@@ -170,8 +184,8 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(COMMENT_EXCLAMATION), null) },
                     selected = false,
                     onClick = {
-                      mailTo(ctx,"mailto:example@gmail.com")
-
+                        mailTo(ctx,"mailto:example@gmail.com")
+                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
 //                        Beetle.startFeedback()
                     }
                 )
@@ -183,7 +197,9 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(INTERROGATION_ICON), null) },
                     selected = false,
                     onClick = {
-                       navController.navigate("about")
+                        navController
+                            .navigate("about")
+                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                     }
                 )
             }

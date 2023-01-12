@@ -11,11 +11,25 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun RowScope.AdaptingRow(
    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+   content: @Composable () -> Unit,
 ) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        content.invoke()
+    }
+}
+
+@Composable
+internal fun Unit.AdaptingRowBetween(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         content.invoke()

@@ -10,16 +10,15 @@ import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.contentColorFor
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.db.entities.note.Note
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.ADD_CIRCLE_ICON
 import com.example.jetnote.icons.BELL_ICON
@@ -27,6 +26,7 @@ import com.example.jetnote.ui.AdaptingRow
 import com.example.jetnote.ui.ColorsRow
 import com.example.jetnote.ui.coloration.listOfBackgroundColors
 import com.example.jetnote.ui.coloration.listOfTextColors
+import com.example.jetnote.ui.settings_screen.makeSound
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -48,7 +48,8 @@ fun AddEditBottomBar(
 ) {
 
     val showOptionsMenu = remember { mutableStateOf(false) }
-    val showPriorityMenu = remember { mutableStateOf(false) }
+    val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     Column {
         Row {
@@ -67,6 +68,7 @@ fun AddEditBottomBar(
                     modifier = Modifier
                         .clickable {
                             showOptionsMenu.value = !showOptionsMenu.value
+                            Unit.makeSound.invoke(ctx, FOCUS_NAVIGATION, thereIsSoundEffect.value)
                         }
                 )
 
@@ -75,6 +77,7 @@ fun AddEditBottomBar(
                     tint = contentColorFor(backgroundColor = getMaterialColor(SURFACE_VARIANT)),
                     modifier = Modifier.clickable {
                         remindingDialogState.value = !remindingDialogState.value
+                        Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     })
 
                 // undo

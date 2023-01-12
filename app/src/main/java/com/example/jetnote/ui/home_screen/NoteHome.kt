@@ -32,6 +32,7 @@ import com.example.jetnote.icons.PLUS_ICON
 import com.example.jetnote.ui.layouts.VerticalGrid
 import com.example.jetnote.ui.navigation_drawer.NavigationDrawer
 import com.example.jetnote.ui.note_card.NoteCard
+import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.ui.snackebars.UndoSnackbar
 import com.example.jetnote.ui.top_action_bar.*
 import com.example.jetnote.vm.*
@@ -58,10 +59,12 @@ fun NoteHome(
     val searchLabelState = remember { mutableStateOf(Label()) }
 
     //
-    val noteDataStore = DataStore(ctx)
-    val orderBy = noteDataStore.getOrder.collectAsState("").value
+    val dataStore = DataStore(ctx)
+    val orderBy = dataStore.getOrder.collectAsState("").value
     // the true value is 'list' layout and false is 'grid'.
-    val currentLayout = noteDataStore.getLayout.collectAsState(false).value
+    val currentLayout = dataStore.getLayout.collectAsState(false).value
+    //
+    val thereIsSoundEffect = dataStore.thereIsSoundEffect.collectAsState(false)
 
     //
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -127,15 +130,12 @@ fun NoteHome(
                 } else {
                     NoteTopAppBar(
                         searchNoteTitle = searchTitleState,
-                        dataStore = noteDataStore,
+                        dataStore = dataStore,
                         scrollBehavior = scrollBehavior,
                         drawerState = drawerState,
                         thisHomeScreen = true,
                         confirmationDialogState = null,
                         expandedSortMenuState = expandedSortMenuState,
-                        expandedAccountMenuState = expandedState,
-                        signInDialogState = signInDialogState,
-                        revokeAccessDialogState = revokeAccessState,
                         searchScreen = SEARCH_IN_LOCAL,
                         label = searchLabelState
                     )
@@ -154,6 +154,7 @@ fun NoteHome(
                     },
                     onClick = {
                         navController.navigate("$ADD_ROUTE/$uid/$NULL")
+                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                     },
                     expanded = scrollBehavior.state.collapsedFraction != 1f,
                     containerColor = getMaterialColor(SURFACE_VARIANT),

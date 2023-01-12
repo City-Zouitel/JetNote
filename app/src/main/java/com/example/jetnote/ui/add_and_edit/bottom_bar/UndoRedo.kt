@@ -4,17 +4,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.contentColorFor
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.icons.REDO_ICON
 import com.example.jetnote.cons.SURFACE_VARIANT
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.UNDO_ICON
+import com.example.jetnote.ui.settings_screen.makeSound
 
 @Composable
 fun UndoRedo(
@@ -26,6 +27,9 @@ fun UndoRedo(
     val titleStack = remember { mutableStateListOf<String>() }
     val descriptionStack = remember { mutableStateListOf<String>() }
 
+    val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+
     Icon(
         painter = painterResource(id = UNDO_ICON),
         contentDescription = null,
@@ -33,6 +37,8 @@ fun UndoRedo(
         modifier = Modifier
             .size(20.dp)
             .clickable {
+                Unit.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+
                 if (isTitleFieldSelected.value) {
                     if (titleFieldState.value?.isNotEmpty() == true) {
                         titleStack += titleFieldState.value!!
@@ -62,6 +68,7 @@ fun UndoRedo(
                             descriptionFieldState.value!!.substringBeforeLast(' ')
                         }
                 }
+
             }
     )
 
@@ -72,6 +79,8 @@ fun UndoRedo(
         modifier = Modifier
             .size(20.dp)
             .clickable {
+                Unit.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+
                 if (isTitleFieldSelected.value) {
                     if (titleStack.isNotEmpty()) {
                         titleFieldState.value += " " + titleStack.last()

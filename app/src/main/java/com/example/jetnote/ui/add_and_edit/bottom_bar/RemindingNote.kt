@@ -1,7 +1,6 @@
 package com.example.jetnote.ui.add_and_edit.bottom_bar
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -9,17 +8,22 @@ import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jetnote.cons.KEY_CLICK
+import com.example.jetnote.cons.KEY_STANDARD
 import com.example.jetnote.cons.SURFACE
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CALENDAR_ICON
 import com.example.jetnote.icons.CLOCK_ICON
 import com.example.jetnote.ui.AdaptingRow
+import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.NotificationVM
 import com.example.jetnote.vm.ReminderVM
 
@@ -35,7 +39,8 @@ fun RemindingNote(
     uid: String?,
     remindingValue: MutableState<Long>?
 ) {
-    val context = LocalContext.current
+    val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val remindingViewModel = viewModel(ReminderVM::class.java)
     val notifyVM = viewModel(NotificationVM::class.java)
@@ -51,28 +56,6 @@ fun RemindingNote(
                 }
             }
         },
-        confirmButton = {
-            OutlinedIconButton(
-                modifier = Modifier
-                    .size(90.dp,35.dp),
-                onClick = {
-                    runCatching {
-                        notifyVM.scheduleNotification(
-                            context = context,
-                            dateTime = remindingViewModel::getTimeReminder.invoke(),
-                            title = title,
-                            message = message,
-                            uid = uid
-                        )
-                    }.onSuccess {
-                        remindingValue?.value = remindingViewModel::getDateTimeReminder.invoke().value.time
-                    }
-
-                    dialogState.value = false
-                }) {
-                Text(text = "Save", fontSize = 17.sp)
-            }
-        },
         text = {
             Column {
                 OutlinedIconButton(
@@ -80,7 +63,8 @@ fun RemindingNote(
                         .fillMaxWidth()
                         .height(50.dp),
                     onClick = {
-                        remindingViewModel.getDatePicker(context)
+                        remindingViewModel.getDatePicker(ctx)
+                            .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
@@ -104,7 +88,8 @@ fun RemindingNote(
                         .fillMaxWidth()
                         .height(50.dp),
                     onClick = {
-                        remindingViewModel.getTimePicker(context)
+                        remindingViewModel.getTimePicker(ctx)
+                            .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
@@ -120,6 +105,28 @@ fun RemindingNote(
                         Text(text = "Pick Time", fontSize = 17.sp)
                     }
                 }
+            }
+        },
+        confirmButton = {
+            OutlinedIconButton(
+                modifier = Modifier
+                    .size(90.dp,35.dp),
+                onClick = {
+                    runCatching {
+                        notifyVM.scheduleNotification(
+                            context = ctx,
+                            dateTime = remindingViewModel::getTimeReminder.invoke(),
+                            title = title,
+                            message = message,
+                            uid = uid
+                        ).makeSound(ctx, KEY_STANDARD, thereIsSoundEffect.value)
+                    }.onSuccess {
+                        remindingValue?.value = remindingViewModel::getDateTimeReminder.invoke().value.time
+                    }
+
+                    dialogState.value = false
+                }) {
+                Text(text = "Save", fontSize = 17.sp)
             }
         },
         containerColor = getMaterialColor(SURFACE)

@@ -76,3 +76,8 @@ const val UNDO = "Undo"
 const val REDO = "Redo"
 
 const val TRASH_MESSAGE = "Moved To Trash."
+
+const val KEY_CLICK = 0
+const val KEY_STANDARD = 5
+const val KEY_INVALID = 9
+const val FOCUS_NAVIGATION = 12

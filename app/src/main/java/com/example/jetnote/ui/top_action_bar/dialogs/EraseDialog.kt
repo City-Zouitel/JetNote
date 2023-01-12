@@ -5,17 +5,25 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.cons.SURFACE_TINT
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
+import com.example.jetnote.ui.settings_screen.makeSound
 
 @Composable
 fun EraseDialog(
     dialogState: MutableState<Boolean>,
     confirmation : () -> Unit,
 ) {
+    val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+
     AlertDialog(
         onDismissRequest = { dialogState.value = false },
         confirmButton = {
@@ -26,6 +34,7 @@ fun EraseDialog(
                     fontSize = 17.sp
                 ),
                 onClick = {
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     confirmation.invoke()
                     dialogState.value = false
                 }
@@ -39,6 +48,7 @@ fun EraseDialog(
                     fontSize = 17.sp
                 ),
                 onClick = {
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     dialogState.value = false
                 }
             )

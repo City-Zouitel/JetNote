@@ -15,10 +15,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -32,10 +29,12 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.db.entities.note.Note
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getColorOfPriority
 import com.example.jetnote.fp.getPriorityOfColor
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.coloration.listOfPriorityColors
+import com.example.jetnote.ui.settings_screen.makeSound
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
@@ -51,6 +50,7 @@ internal fun Plus(
     priorityColorState: MutableState<String>
 ) {
     val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val permissionState = rememberMultiplePermissionsState(
         listOf(
@@ -76,6 +76,7 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(IMAGE_ICON), null) },
             onClick = {
                 imageLaunch.launch("image/*")
+                    .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             }
         )
@@ -97,6 +98,7 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(MIC_ICON), null) },
             onClick = {
                 permissionState.launchMultiplePermissionRequest()
+                    .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 recordDialogState.value = permissionState.allPermissionsGranted
                 isShow.value = false
             }
@@ -121,7 +123,7 @@ internal fun Plus(
                             note.uid + "/" +
                             note.audioDuration + "/" +
                             note.reminding
-                )
+                ).makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             }
         )
@@ -130,6 +132,7 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(TAGS_ICON), null) },
             onClick = {
                 navController.navigate("labels/${note.uid}")
+                    .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             }
         )
@@ -138,6 +141,7 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(LIST_CHECK_ICON), null) },
             onClick = {
                 navController.navigate("todo/${note.uid}")
+                    .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             }
         )
@@ -152,6 +156,7 @@ internal fun Plus(
                                 .clickable {
                                     currentColor.value = it
                                     priorityColorState.value = getPriorityOfColor(it)
+                                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                                 }
                         ) {
                             drawArc(
@@ -172,7 +177,7 @@ internal fun Plus(
                 }
             },
             onClick = {
-
+                Unit.makeSound(ctx, KEY_STANDARD, thereIsSoundEffect.value)
             }
         )
     }

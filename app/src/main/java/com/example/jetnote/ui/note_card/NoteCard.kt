@@ -42,6 +42,7 @@ import com.example.jetnote.icons.*
 import com.example.jetnote.ui.ImageDisplayed
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
 import com.example.jetnote.ui.navigation_drawer.Screens
+import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -114,6 +115,7 @@ private fun Card(
     selectedNotes: SnapshotStateList<Note>?
 ) {
     val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val note = entity.note
     val labels = entity.labels
@@ -144,6 +146,8 @@ private fun Card(
                     selectedNotes?.add(note)
                 }
             ) {
+                Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+
                 if (forScreens == HOME_SCREEN && !selectionState?.value!!) {
                     navController.navigate(
                         route = EDIT_ROUTE + "/" +

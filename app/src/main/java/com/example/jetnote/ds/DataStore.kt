@@ -20,6 +20,9 @@ class DataStore (private val ctx:Context){
 
         private val Context.dark_theme by preferencesDataStore("APP_THEME_PREFERENCES_KEY")
         val DARK_THEME = booleanPreferencesKey("APP_THEME_PREFERENCES_KEY")
+
+        private val Context.soundEffect by preferencesDataStore("SOUND_EFFECT_KEY")
+        val SOUND_EFFECT = booleanPreferencesKey("SOUND_EFFECT_KEY")
     }
 
     val getLayout = ctx.layout.data.map { it[LAYOUT_KEY] ?: false }
@@ -40,6 +43,13 @@ class DataStore (private val ctx:Context){
     suspend fun saveTheme(value: Boolean){
         ctx.dark_theme.edit {
             it[DARK_THEME] = value
+        }
+    }
+
+    val thereIsSoundEffect = ctx.soundEffect.data.map { it[SOUND_EFFECT] ?: false }
+    suspend fun saveSoundEffect(value: Boolean) {
+        ctx.soundEffect.edit {
+            it[SOUND_EFFECT] = value
         }
     }
 }
