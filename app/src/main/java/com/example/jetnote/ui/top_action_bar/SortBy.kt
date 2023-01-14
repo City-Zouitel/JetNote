@@ -28,7 +28,7 @@ internal fun SortBy(
     dataStore: DataStore?
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
 
     val scope = rememberCoroutineScope()
     val currentSortIcon = when(dataStore?.getOrder?.collectAsState(null)?.value) {
@@ -45,7 +45,7 @@ internal fun SortBy(
         modifier = Modifier
             .size(24.dp)
             .clickable {
-                Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                Unit.makeSound.invoke(ctx, FOCUS_NAVIGATION, thereIsSoundEffect)
                 isShow?.value = true
             }
     )
@@ -68,7 +68,7 @@ internal fun SortBy(
                     modifier = Modifier.size(24.dp)
                 ) },
                 onClick = {
-                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_DEFAULT)
@@ -79,7 +79,7 @@ internal fun SortBy(
                 text = { Text(NEWEST_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painter = painterResource(id = SORT_AMOUNT_DOWN_ICON), null ) },
                 onClick = {
-                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_NEWEST)
@@ -90,7 +90,7 @@ internal fun SortBy(
                 text = { Text(OLDEST_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painter = painterResource(id = SORT_AMOUNT_UP_ICON), null ) },
                 onClick = {
-                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_OLDEST)
@@ -101,7 +101,7 @@ internal fun SortBy(
                 text = { Text(NAME_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painter = painterResource(id = SORT_ALPHA_DOWN_ICON), null ) },
                 onClick = {
-                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_NAME)
@@ -112,7 +112,7 @@ internal fun SortBy(
                 text = { Text(REMINDING_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painterResource(SORT_NUMERIC_ICON), null ) },
                 onClick = {
-                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_REMINDER)
@@ -123,7 +123,7 @@ internal fun SortBy(
                 text = { Text(PRIORITY_ORDER, fontSize = 17.sp) },
                 leadingIcon = { Icon(painter = painterResource(id = INTERLINING_ICON), null ) },
                 onClick = {
-                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
                     isShow.value = false
                     scope.launch {
                         dataStore?.saveOrder(ORDER_BY_PRIORITY)

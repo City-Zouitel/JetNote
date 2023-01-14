@@ -56,9 +56,12 @@ import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.EDIT_ICON
 import com.example.jetnote.ui.ImageDisplayed
+import com.example.jetnote.ui.add_and_edit.URLCard
 import com.example.jetnote.ui.add_and_edit.bottom_bar.AddEditBottomBar
 import com.example.jetnote.ui.add_and_edit.bottom_bar.RemindingNote
+import com.example.jetnote.ui.add_and_edit.findUrlLink
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
+import com.example.jetnote.ui.note_card.decodeUrl
 import com.example.jetnote.ui.record_note.RecordingNote
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
@@ -112,12 +115,12 @@ fun NoteEdit(
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
     val titleState = rememberSaveable {
-        mutableStateOf(if(title == NULL) null else title)
+        mutableStateOf(if(title == NULL) null else decodeUrl.invoke(title))
     }.filterBadWords()
         .filterBadEmoji()
 
     val descriptionState = rememberSaveable {
-        mutableStateOf(if(description == NULL) null else description)
+        mutableStateOf(if(description == NULL) null else decodeUrl.invoke(description))
     }.filterBadWords()
         .filterBadEmoji()
 
@@ -323,6 +326,13 @@ fun NoteEdit(
                         unfocusedBorderColor = Color.Transparent
                     )
                 )
+            }
+
+            //
+            item {
+                findUrlLink(descriptionState.value)?.let {
+                    URLCard(desc = it, false)
+                }
             }
 
             // display all added labels.

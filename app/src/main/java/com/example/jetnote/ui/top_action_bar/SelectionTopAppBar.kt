@@ -19,10 +19,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.jetnote.cons.FOCUS_NAVIGATION
+import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.copyNote
 import com.example.jetnote.fp.sharNote
 import com.example.jetnote.icons.COPY_ICON
@@ -30,6 +33,7 @@ import com.example.jetnote.icons.CROSS_ICON
 import com.example.jetnote.icons.SHARE_ICON
 import com.example.jetnote.icons.TRASH_ICON
 import com.example.jetnote.ui.AdaptingRow
+import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
 import java.util.*
 import kotlin.random.Random.Default.nextLong
@@ -46,6 +50,8 @@ fun SelectionTopAppBar(
     selectedNotes: SnapshotStateList<Note>?
 ) {
     val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
+
     val observeNotesAndLabels =
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
     val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
@@ -67,6 +73,7 @@ fun SelectionTopAppBar(
                     modifier = Modifier
                         .padding(7.dp)
                         .clickable {
+                            Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
                         selectedNotes?.forEach {
                             noteVM.updateNote(
                                 Note(
@@ -91,7 +98,9 @@ fun SelectionTopAppBar(
                             modifier = Modifier
                                 .padding(7.dp)
                                 .clickable {
-                                sharNote(
+                                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
+
+                                    sharNote(
                                     ctx,
                                     selectedNotes?.single()?.title!!,
                                     selectedNotes.single().description!!
@@ -106,7 +115,9 @@ fun SelectionTopAppBar(
                             modifier = Modifier
                                 .padding(7.dp)
                                 .clickable {
-                                copyNote(ctx, noteVM, selectedNotes?.single()!!, newUid) {
+                                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
+
+                                    copyNote(ctx, noteVM, selectedNotes?.single()!!, newUid) {
                                     // copy each label.
                                     observeLabels.value.filter {
                                         observeNotesAndLabels.value.contains(

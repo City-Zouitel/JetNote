@@ -40,6 +40,8 @@ import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.ds.DataStore
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.ImageDisplayed
+import com.example.jetnote.ui.add_and_edit.URLCard
+import com.example.jetnote.ui.add_and_edit.findUrlLink
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
 import com.example.jetnote.ui.navigation_drawer.Screens
 import com.example.jetnote.ui.settings_screen.makeSound
@@ -152,8 +154,8 @@ private fun Card(
                     navController.navigate(
                         route = EDIT_ROUTE + "/" +
                                 note.uid + "/" +
-                                note.title + "/" +
-                                note.description + "/" +
+                                codeUrl.invoke(note.title) + "/" +
+                                codeUrl.invoke(note.description) + "/" +
                                 note.color + "/" +
                                 note.textColor + "/" +
                                 note.priority + "/" +
@@ -316,6 +318,9 @@ private fun Card(
             )
         }
 
+        findUrlLink(note.description)?.let{
+            URLCard(desc = it.trimIndent(), true)
+        }
 
         AnimatedVisibility(visible = todoListState, modifier = Modifier.height(100.dp)) {
             LazyColumn {
@@ -389,3 +394,9 @@ private fun Card(
         }
     }
 }
+
+val codeUrl: (String?) -> String?
+    get() = { it?.replace('\u002f','\u2203') }
+
+val decodeUrl: (String?) -> String?
+    get() = { it?.replace('\u2203','\u002f') }

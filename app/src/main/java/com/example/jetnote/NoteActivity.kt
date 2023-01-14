@@ -50,6 +50,7 @@ class NoteActivity : ComponentActivity() {
 
             AppTheme {
                 NoteRoot(navHostController)
+//                LinearBlock()
             }
         }
     }

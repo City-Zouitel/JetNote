@@ -66,3 +66,4 @@ const val CROSS_ICON = R.drawable.cross_18
 const val COPY_ICON = R.drawable.copy_24
 const val COMMENT_EXCLAMATION = R.drawable.comment_exclamation_24
 const val GITHUB_ICON = R.drawable.github_24
+const val GLOBE_ICON = R.drawable.globe_48

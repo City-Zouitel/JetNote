@@ -10,17 +10,22 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
+import com.example.jetnote.cons.FOCUS_NAVIGATION
+import com.example.jetnote.cons.KEY_INVALID
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.CROSS_ICON
 import com.example.jetnote.cons.SURFACE
 import com.example.jetnote.db.entities.label.Label
+import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
+import com.example.jetnote.ui.settings_screen.makeSound
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -29,6 +34,9 @@ internal fun SearchField(
     placeholder: String,
     label: MutableState<Label>?
 ) {
+    val ctx = LocalContext.current
+    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
+
     val keyboardController = LocalSoftwareKeyboardController.current
 
     OutlinedTextField(
@@ -53,6 +61,8 @@ internal fun SearchField(
                     painter = painterResource(id = CROSS_ICON),
                     contentDescription = null,
                     modifier = Modifier.clickable {
+                        Unit.makeSound.invoke(ctx, KEY_INVALID, thereIsSoundEffect)
+
                         title.value = ""
                         label?.value = Label()
                     }

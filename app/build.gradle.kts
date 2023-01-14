@@ -142,6 +142,9 @@ dependencies {
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 
+    //
+    implementation ("tw.com.oneup.www:Baha-UrlPreview:1.0.1")
+
     //Test.
     testImplementation (libs.androidx.junit)
     debugImplementation (libs.compose.manifest)
