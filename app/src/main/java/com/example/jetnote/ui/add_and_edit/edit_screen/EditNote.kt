@@ -27,7 +27,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -50,18 +49,15 @@ import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.ds.DataStore
-import com.example.jetnote.fp.filterBadEmoji
-import com.example.jetnote.fp.filterBadWords
+import com.example.jetnote.fp.*
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.EDIT_ICON
 import com.example.jetnote.ui.ImageDisplayed
-import com.example.jetnote.ui.add_and_edit.URLCard
+import com.example.jetnote.ui.add_and_edit.UrlCard
 import com.example.jetnote.ui.add_and_edit.bottom_bar.AddEditBottomBar
 import com.example.jetnote.ui.add_and_edit.bottom_bar.RemindingNote
-import com.example.jetnote.ui.add_and_edit.findUrlLink
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
-import com.example.jetnote.ui.note_card.decodeUrl
 import com.example.jetnote.ui.record_note.RecordingNote
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
@@ -115,12 +111,16 @@ fun NoteEdit(
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
     val titleState = rememberSaveable {
-        mutableStateOf(if(title == NULL) null else decodeUrl.invoke(title))
+        mutableStateOf(
+            if(title == NULL) null else decodeUrl.invoke(title)
+        )
     }.filterBadWords()
         .filterBadEmoji()
 
     val descriptionState = rememberSaveable {
-        mutableStateOf(if(description == NULL) null else decodeUrl.invoke(description))
+        mutableStateOf(
+            if(description == NULL) null else decodeUrl.invoke(description)
+        )
     }.filterBadWords()
         .filterBadEmoji()
 
@@ -331,7 +331,7 @@ fun NoteEdit(
             //
             item {
                 findUrlLink(descriptionState.value)?.let {
-                    URLCard(desc = it, false)
+                    UrlCard(desc = it, false)
                 }
             }
 

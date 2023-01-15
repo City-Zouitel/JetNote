@@ -1,15 +1,10 @@
 package com.example.jetnote.ui.add_and_edit.add_screen
 
 import android.annotation.SuppressLint
-import android.content.ClipDescription
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.icu.util.Calendar
-import android.media.AudioManager
-import android.media.RingtoneManager
 import android.net.Uri
-import android.view.SoundEffectConstants
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -55,16 +50,14 @@ import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.ds.DataStore
-import com.example.jetnote.fp.filterBadEmoji
-import com.example.jetnote.fp.filterBadWords
+import com.example.jetnote.fp.*
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.DONE_ICON
 import com.example.jetnote.ui.ImageDisplayed
-import com.example.jetnote.ui.add_and_edit.URLCard
+import com.example.jetnote.ui.add_and_edit.UrlCard
 import com.example.jetnote.ui.add_and_edit.bottom_bar.AddEditBottomBar
 import com.example.jetnote.ui.add_and_edit.bottom_bar.RemindingNote
-import com.example.jetnote.ui.add_and_edit.findUrlLink
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
 import com.example.jetnote.ui.record_note.RecordingNote
 import com.example.jetnote.ui.settings_screen.makeSound
@@ -113,12 +106,15 @@ fun NoteAdd(
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
-    val titleState = rememberSaveable { mutableStateOf<String?>(null) }
-        .filterBadWords()
+    val titleState = rememberSaveable {
+        mutableStateOf<String?>(null)
+    }.filterBadWords()
         .filterBadEmoji()
 
-    val descriptionState = rememberSaveable { mutableStateOf(if (description == NULL) null else description) }
-        .filterBadWords()
+    val descriptionState = rememberSaveable { mutableStateOf(
+        if (description == NULL) null else decodeUrl(description)
+    )
+    }.filterBadWords()
         .filterBadEmoji()
 
     val backgroundColor = getMaterialColor(SURFACE).toArgb()
@@ -362,7 +358,7 @@ fun NoteAdd(
             //
             item {
                 findUrlLink(descriptionState.value)?.let {
-                    URLCard(desc = it, false)
+                    UrlCard(desc = it, false)
                 }
             }
 
@@ -443,13 +439,5 @@ fun NoteAdd(
                 )
             }
         }
-    }
-}
-
-
-private val getPriority: (Int) -> String = {
-    when(it) {
-        Color.Cyan.toArgb() -> NORMAL
-        else -> { NON }
     }
 }

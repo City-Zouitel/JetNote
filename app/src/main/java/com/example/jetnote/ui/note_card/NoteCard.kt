@@ -38,10 +38,11 @@ import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
 import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.ds.DataStore
+import com.example.jetnote.fp.codeUrl
+import com.example.jetnote.fp.findUrlLink
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.ImageDisplayed
-import com.example.jetnote.ui.add_and_edit.URLCard
-import com.example.jetnote.ui.add_and_edit.findUrlLink
+import com.example.jetnote.ui.add_and_edit.UrlCard
 import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
 import com.example.jetnote.ui.navigation_drawer.Screens
 import com.example.jetnote.ui.settings_screen.makeSound
@@ -319,7 +320,7 @@ private fun Card(
         }
 
         findUrlLink(note.description)?.let{
-            URLCard(desc = it.trimIndent(), true)
+            UrlCard(desc = it, true)
         }
 
         AnimatedVisibility(visible = todoListState, modifier = Modifier.height(100.dp)) {
@@ -395,8 +396,3 @@ private fun Card(
     }
 }
 
-val codeUrl: (String?) -> String?
-    get() = { it?.replace('\u002f','\u2203') }
-
-val decodeUrl: (String?) -> String?
-    get() = { it?.replace('\u2203','\u002f') }
