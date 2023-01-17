@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
+import com.example.jetnote.combat.listOfBadLanguageWords.listOfBadEnglishWords
 import com.example.jetnote.cons.*
 import com.example.jetnote.cons.bad_words.*
 import com.example.jetnote.db.entities.note.Note
@@ -139,7 +140,7 @@ fun copyNote(
 fun MutableState<String?>.filterBadWords(): MutableState<String?> {
     value?.split(' ')?.onEach {
         if (
-            it.lowercase() in badEnglish
+            it.lowercase() in listOfBadEnglishWords
 //                .plus(badItian)
 //                .plus(badSpanish)
 //                .plus(badGerman)
@@ -158,7 +159,7 @@ fun MutableState<String?>.filterBadWords(): MutableState<String?> {
 fun MutableState<String>.filterBadWords(): MutableState<String> {
     value.split(' ').onEach {
         if (
-            it.lowercase() in badEnglish
+            it.lowercase() in listOfBadEnglishWords
 //                .plus(badItian)
 //                .plus(badSpanish)
 //                .plus(badGerman)
@@ -174,7 +175,7 @@ fun MutableState<String>.filterBadWords(): MutableState<String> {
 }
 
 fun MutableState<String?>.filterBadEmoji(): MutableState<String?>{
-    badEmoji.entries.forEach {
+    listOfBadEmojis.entries.forEach {
         if (this.value?.contains(it.key) == true)
             this.value = this.value!!.replace(it.key,it.value)
     }
