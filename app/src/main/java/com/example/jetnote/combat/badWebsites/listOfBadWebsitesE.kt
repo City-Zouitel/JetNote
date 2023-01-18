@@ -1,4 +1,4 @@
-package com.example.jetnote.combat.listOfBadWebsites
+package com.example.jetnote.combat.badWebsites
 
 val listOfBadWebsitesE = arrayOf(
     "e1i1t0updui0iqf.cc",

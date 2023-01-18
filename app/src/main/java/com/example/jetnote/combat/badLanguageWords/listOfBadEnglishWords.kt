@@ -1,4 +1,4 @@
-package com.example.jetnote.combat.listOfBadLanguageWords
+package com.example.jetnote.combat.badLanguageWords
 
 val listOfBadEnglishWords = arrayOf(
     "2 girls 1 cup",

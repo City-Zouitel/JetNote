@@ -33,7 +33,7 @@ class TodoVM @Inject constructor(
         }
     }
 
-    fun addTotoItem(item: Todo) =  viewModelScope.launch(ioDispatcher) {
+    fun addTotoItem(item: Todo) = viewModelScope.launch(ioDispatcher) {
         repo.addTodoItem(item)
     }
 

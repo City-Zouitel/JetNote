@@ -9,14 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
-import com.example.jetnote.combat.listOfBadLanguageWords.listOfBadEnglishWords
+import com.example.jetnote.combat.badLanguageWords.listOfBadEnglishWords
+import com.example.jetnote.combat.listOfBadWebsites
 import com.example.jetnote.cons.*
-import com.example.jetnote.cons.bad_words.*
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.vm.NoteVM
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.net.URL
 import java.util.*
 
 //
@@ -182,7 +184,6 @@ fun MutableState<String?>.filterBadEmoji(): MutableState<String?>{
     return this
 }
 
-
 internal val getPriorityOfColor: (Color) -> String = {
     when(it) {
         Color.Red -> URGENT
@@ -231,6 +232,20 @@ internal fun checkIntents(
 val findUrlLink: (String?) -> String? = {
     it?.split(' ')?.find { str -> str.matches("https?://.+".toRegex()) }
 }
+
+//
+fun MutableState<String?>.filterBadWebsites():MutableState<String?> {
+    findUrlLink(this.value)?.let {
+        if (URL(this@filterBadWebsites.value).host in listOfBadWebsites ) {
+            this@filterBadWebsites.value = "invalid subject!"
+            this
+        } else {
+            this
+        }
+    }
+    return this
+}
+
 
 //
 val codeUrl: (String?) -> String?

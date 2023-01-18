@@ -93,6 +93,7 @@ fun NoteAdd(
     val focusRequester = FocusRequester()
     val focusState = remember { mutableStateOf(false) }
 
+    val scope = rememberCoroutineScope()
     val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val observeNotesAndLabels =
@@ -110,12 +111,14 @@ fun NoteAdd(
         mutableStateOf<String?>(null)
     }.filterBadWords()
         .filterBadEmoji()
+        .filterBadWebsites()
 
     val descriptionState = rememberSaveable { mutableStateOf(
         if (description == NULL) null else decodeUrl(description)
     )
     }.filterBadWords()
         .filterBadEmoji()
+        .filterBadWebsites()
 
     val backgroundColor = getMaterialColor(SURFACE).toArgb()
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
