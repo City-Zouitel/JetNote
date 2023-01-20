@@ -28,6 +28,7 @@ import com.example.jetnote.ui.AppAbout
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.LabelVM
 import com.google.accompanist.flowlayout.FlowRow
+import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -184,9 +185,12 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(COMMENT_EXCLAMATION), null) },
                     selected = false,
                     onClick = {
-                        mailTo(ctx,"mailto:example@gmail.com")
-                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
-//                        Beetle.startFeedback()
+                        Unit.makeSound.invoke(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        scope.launch {
+                            drawerState.close()
+                        }
+//                        mailTo(ctx,"mailto:example@gmail.com")
+                        Beetle.startFeedback()
                     }
                 )
             }

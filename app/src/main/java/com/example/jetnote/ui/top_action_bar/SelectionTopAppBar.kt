@@ -3,7 +3,6 @@ package com.example.jetnote.ui.top_action_bar
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,13 +12,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.jetnote.cons.FOCUS_NAVIGATION
 import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
@@ -47,7 +44,8 @@ fun SelectionTopAppBar(
     todoVM: TodoVM = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     selectionState: MutableState<Boolean>?,
-    selectedNotes: SnapshotStateList<Note>?
+    selectedNotes: SnapshotStateList<Note>?,
+    undo: (Note) -> Unit
 ) {
     val ctx = LocalContext.current
     val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
@@ -63,9 +61,7 @@ fun SelectionTopAppBar(
     val newUid = UUID.randomUUID()
 
     TopAppBar(
-        navigationIcon = {
-
-        },
+        navigationIcon = { /**/ },
         title = {
             Row {
                 // delete
@@ -74,22 +70,23 @@ fun SelectionTopAppBar(
                         .padding(7.dp)
                         .clickable {
                             Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
-                        selectedNotes?.forEach {
-                            noteVM.updateNote(
-                                Note(
-                                    title = it.title,
-                                    description = it.description,
-                                    priority = it.priority,
-                                    uid = it.uid,
-                                    color = it.color,
-                                    textColor = it.textColor,
-                                    trashed = 1
+                            selectedNotes?.forEach {
+                                noteVM.updateNote(
+                                    Note(
+                                        title = it.title,
+                                        description = it.description,
+                                        priority = it.priority,
+                                        uid = it.uid,
+                                        color = it.color,
+                                        textColor = it.textColor,
+                                        trashed = 1
+                                    )
                                 )
-                            )
-                        }
-                        selectedNotes?.clear()
-                        selectionState?.value = false
-                    })
+                                undo.invoke(it)
+                            }
+                            selectedNotes?.clear()
+                            selectionState?.value = false
+                        })
 
                 // share
                 AnimatedVisibility(visible = selectedNotes?.count() == 1) {

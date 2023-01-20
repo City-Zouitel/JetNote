@@ -99,7 +99,7 @@ fun NoteHome(
     val selectionState = remember { mutableStateOf(false) }
     val selectedNotes = remember { mutableStateListOf<Note>() }
 
-    //undo snackbar.
+    //undo snack-bar.
     val undo = UndoSnackbar(
         viewModule = noteVM,
         scaffoldState = scaffoldState,
@@ -126,7 +126,11 @@ fun NoteHome(
             backgroundColor = getMaterialColor(SURFACE),
             topBar = {
                 if (selectionState.value) {
-                    SelectionTopAppBar(selectionState = selectionState, selectedNotes = selectedNotes)
+                    SelectionTopAppBar(
+                        selectionState = selectionState,
+                        selectedNotes = selectedNotes,
+                        undo = undo
+                    )
                 } else {
                     NoteTopAppBar(
                         searchNoteTitle = searchTitleState,

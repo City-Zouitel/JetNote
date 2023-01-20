@@ -358,7 +358,7 @@ fun NoteAdd(
                 )
             }
 
-            //
+            // TODO: fix a bag!
             item {
                 findUrlLink(descriptionState.value)?.let {
                     UrlCard(desc = it, false)

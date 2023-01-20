@@ -1,5 +1,6 @@
 package com.example.jetnote.ui.add_and_edit
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,12 +23,14 @@ import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.jetnote.fp.findUrlLink
 import com.example.jetnote.fp.urlPreview
 import com.example.jetnote.icons.GLOBE_ICON
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.URL
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(
     ExperimentalMaterial3Api::class,
     ExperimentalGlideComposeApi::class
@@ -46,12 +49,12 @@ fun UrlCard(desc: String, itsCard: Boolean) {
     val url = remember { mutableStateOf("") }
     val img = remember { mutableStateOf("") }
 
-    var res = ""
+    var res = findUrlLink(desc)
 
     desc.let {
-        for (link in it.split(' ')) {
-            if (link.matches("https?://.+".toRegex())) res = link
-        }
+//        for (link in it.split(" ","\n", ignoreCase = true)) {
+//            if (link.matches("https?://.+".toRegex())) res = link
+//        }
     }
 
     urlPreview(
