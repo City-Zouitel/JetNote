@@ -176,6 +176,8 @@ fun NoteEdit(
                         containerColor = getMaterialColor(OUT_LINE_VARIANT),
                         contentColor = contentColorFor(backgroundColor = getMaterialColor(OUT_LINE_VARIANT)),
                         onClick = {
+                            Unit.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
+
                             noteVM.updateNote(
                                 Note(
                                     title = titleState.value,
@@ -191,7 +193,6 @@ fun NoteEdit(
                                 )
                             )
                             navController.navigate(HOME_ROUTE)
-                                .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                         }) {
                         Icon(
                             painter = painterResource(id = EDIT_ICON),

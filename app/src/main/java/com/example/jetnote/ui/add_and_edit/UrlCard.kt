@@ -22,9 +22,11 @@ import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.jetnote.fp.urlPreview
 import com.example.jetnote.icons.GLOBE_ICON
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.net.URL
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -39,7 +41,8 @@ fun UrlCard(desc: String, itsCard: Boolean) {
     val scope = rememberCoroutineScope()
 
     val title = remember { mutableStateOf("") }
-    val description = remember { mutableStateOf("") }
+//    val description = remember { mutableStateOf("") }
+    val host = remember { mutableStateOf("") }
     val url = remember { mutableStateOf("") }
     val img = remember { mutableStateOf("") }
 
@@ -51,26 +54,9 @@ fun UrlCard(desc: String, itsCard: Boolean) {
         }
     }
 
-    // TODO: Move this code to vm.
-    val urlPreview = BahaUrlPreview(res, object : IUrlPreviewCallback {
-        override fun onComplete(urlInfo: UrlInfoItem) {
-            scope.launch(Dispatchers.IO) {
-                urlInfo.apply {
-                    title.value = this.title
-                    description.value = this.description
-                    url.value = this.url
-                    img.value = this.image
-                }
-            }
-        }
-
-        override fun onFailed(throwable: Throwable) {
-            Toast.makeText(ctx, "Can't load link", Toast.LENGTH_SHORT).show()
-        }
-
-    })
-
-    urlPreview.fetchUrlPreview()
+    urlPreview(
+        ctx, scope, res, url, title, host, img
+    )?.fetchUrlPreview()
 
     Card(
         modifier = Modifier
@@ -100,7 +86,7 @@ fun UrlCard(desc: String, itsCard: Boolean) {
                     modifier = Modifier.padding(start = 5.dp)
                 )
                 Text(
-                    text = description.value,
+                    text = host.value,
                     fontSize = 11.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -110,7 +96,5 @@ fun UrlCard(desc: String, itsCard: Boolean) {
         }
     }
 }
-
-
 
 private val roundedForCard = RoundedCornerShape(0.dp, 0.dp, 15.dp, 15.dp)

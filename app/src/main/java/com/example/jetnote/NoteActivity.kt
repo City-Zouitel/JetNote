@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.checkIntents
+import com.example.jetnote.fp.urlPreview
 import com.example.jetnote.vm.NoteVM
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,6 +94,7 @@ class NoteActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        urlPreview(this,null,null,null,null,null,null)?.cleanUp()
     }
 
     override fun onStart() {

@@ -182,6 +182,7 @@ fun NoteAdd(
                             )
                         ),
                         onClick = {
+                            Unit.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
 
                             noteVM.addNote(
                                 Note(
@@ -197,7 +198,6 @@ fun NoteAdd(
                                 )
                             )
                             navController.navigate(HOME_ROUTE)
-                                .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                         }
                     ) {
                         Icon(

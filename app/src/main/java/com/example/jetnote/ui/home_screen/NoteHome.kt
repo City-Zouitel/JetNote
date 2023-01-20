@@ -153,8 +153,9 @@ fun NoteHome(
                         )
                     },
                     onClick = {
+                        Unit.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
+
                         navController.navigate("$ADD_ROUTE/$uid/$NULL")
-                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                     },
                     expanded = scrollBehavior.state.collapsedFraction != 1f,
                     containerColor = getMaterialColor(SURFACE_VARIANT),
