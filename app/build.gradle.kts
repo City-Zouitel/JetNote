@@ -17,8 +17,8 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 181
-        versionName = "1.8.1"
+        versionCode = 182
+        versionName = "1.8.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -97,9 +97,9 @@ dependencies {
 
     //Dagger-Hilt
     implementation (libs.dagger)
-    annotationProcessor (libs.dagger.compiler)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
+    kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
 
@@ -135,7 +135,7 @@ dependencies {
     //Glide.
     implementation (libs.glide)
     implementation (libs.glide.comp)
-    annotationProcessor (libs.glide.compiler)
+    kapt (libs.glide.compiler)
 
     //License.
     implementation (libs.aboutlibraries.comp)
