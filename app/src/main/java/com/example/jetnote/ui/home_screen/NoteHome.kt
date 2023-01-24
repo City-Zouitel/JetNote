@@ -1,6 +1,7 @@
 package com.example.jetnote.ui.home_screen
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
@@ -53,7 +55,6 @@ fun NoteHome(
     navController: NavController,
 ) {
     val ctx = LocalContext.current
-    val scope = rememberCoroutineScope()
     //
     val searchTitleState = remember { mutableStateOf("") }.filterBadWords()
     val searchLabelState = remember { mutableStateOf(Label()) }
@@ -87,14 +88,16 @@ fun NoteHome(
     val coroutineScope = rememberCoroutineScope()
 
     val trashedNotesState = remember(entityVM) { entityVM.allTrashedNotes }.collectAsState()
+//    val isProcessing = remember(noteVM) { noteVM.isProcessing }
 
-    val signInDialogState = remember { mutableStateOf(false) }
-    val revokeAccessState = remember { mutableStateOf(false) }
-    val expandedState = remember { mutableStateOf(false) }
     val expandedSortMenuState = remember { mutableStateOf(false) }
 
-    val refreshState = rememberSwipeRefreshState(noteVM.isProcessing)
-    val pullRefreshState = rememberPullRefreshState(refreshing = true, onRefresh = { /*TODO*/ })
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = noteVM.isProcessing,
+        onRefresh = {
+            navController.navigate(HOME_ROUTE)
+        }
+    )
 
     val selectionState = remember { mutableStateOf(false) }
     val selectedNotes = remember { mutableStateListOf<Note>() }
@@ -170,15 +173,16 @@ fun NoteHome(
                 )
             }
         ) {
-            SwipeRefresh(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .pullRefresh(pullRefreshState),
-                state = refreshState,
-                onRefresh = {
-                    navController.navigate(HOME_ROUTE)
-                }
+                    .pullRefresh(pullRefreshState)
             ) {
+                PullRefreshIndicator(
+                    refreshing = noteVM.isProcessing,
+                    state = pullRefreshState
+                )
+
                 if (currentLayout) {
                     LazyColumn(
                         state = lazyListState,
