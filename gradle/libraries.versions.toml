@@ -62,7 +62,7 @@ about_libraries = "10.5.2"
 #serialization = "0.8.0"
 
 #Okhttp
-okhttp = "5.0.0-alpha.1"
+okhttp = "5.0.0-alpha.11"
 
 #Junit.
 junit = "4.13.2"
