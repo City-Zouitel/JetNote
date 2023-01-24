@@ -5,7 +5,7 @@ plugins {
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
     id ("com.mikepenz.aboutlibraries.plugin")
-    kotlin("plugin.serialization") version "1.7.0"
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -149,6 +149,9 @@ dependencies {
     implementation(libs.okhttp.bom.interceptor)
 
     //
+    implementation(libs.kotlinx.serialization)
+
+    //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 
     //
@@ -156,9 +159,6 @@ dependencies {
 
     //
     implementation("com.karacca:beetle:2.0.1")
-
-    //
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 
     //Test.
     testImplementation (libs.androidx.junit)

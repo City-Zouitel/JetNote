@@ -1,4 +1,14 @@
 [versions]
+# Project
+android_gradle_plugin = "7.3.1"
+kotlin = "1.7.0"
+
+# Plugins
+ksp = "1.7.22-1.0.8"
+dependencyanalysis = "1.18.0"
+
+# KotlinX
+kotlinx_serialization = "1.4.1"
 
 #AndroidX.
 core = "1.9.0"
@@ -68,6 +78,14 @@ okhttp = "5.0.0-alpha.1"
 junit = "4.13.2"
 
 [libraries]
+
+# Project
+android_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "android_gradle_plugin" }
+kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+dagger_hilt_gradle_plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger_hilt" }
+
+# KotlinX
+kotlinx_serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx_serialization" }
 
 #AndroidX.
 androidx_core = { module = "androidx.core:core", version.ref = "core" }
@@ -165,3 +183,6 @@ compose = ["compose.ui", "compose.toolingpreview", "compose.material3"]
 composetest = ["compose.uitest", "compose.junit4", "compose.manifest"]
 
 [plugins]
+kotlin_serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+dependencyanalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyanalysis" }
