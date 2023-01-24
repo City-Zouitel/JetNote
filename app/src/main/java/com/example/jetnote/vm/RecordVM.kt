@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -22,7 +23,7 @@ class RecordVM : ViewModel() {
 
     fun start() {
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
-            time = time.plus(Duration.seconds(1))
+            time = time.plus(1.seconds)
             updateTimeStates()
         }
         isPlaying = true

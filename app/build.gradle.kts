@@ -5,6 +5,7 @@ plugins {
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
     id ("com.mikepenz.aboutlibraries.plugin")
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -47,7 +48,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0"
+        kotlinCompilerExtensionVersion = "1.4.0"
     }
     packagingOptions {
         resources {
@@ -64,7 +65,7 @@ kapt {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
 }
-//
+
 dependencies {
     //AndroidX.
     implementation(libs.androidx.core)
@@ -84,10 +85,9 @@ dependencies {
     implementation(libs.compose.constraintlayout)
 
     //Room.
-    implementation (libs.roomkts)
-    implementation (libs.room.runtime)
-    annotationProcessor (libs.room.compiler)
-    kapt (libs.room.compiler)
+    implementation(libs.roomkts)
+    api(libs.room.runtime)
+    ksp(libs.room.compiler)
 
     //DataStore.
     implementation (libs.datastore)
@@ -148,17 +148,17 @@ dependencies {
     implementation(libs.okhttp.bom.core)
     implementation(libs.okhttp.bom.interceptor)
 
-    //
+    //Serialization.
     implementation(libs.kotlinx.serialization)
+
+    //Baha-UrlPreview.
+    implementation(libs.url.preview)
+
+    //Beetle.
+    implementation(libs.beetle)
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
-
-    //
-    implementation("tw.com.oneup.www:Baha-UrlPreview:1.0.1")
-
-    //
-    implementation("com.karacca:beetle:2.0.1")
 
     //Test.
     testImplementation (libs.androidx.junit)
@@ -170,7 +170,6 @@ dependencies {
 
     androidTestImplementation(libs.bundles.composetest) {
         exclude(group = "androidx.core", module = "core-ktx")
-        exclude(group = "androidx.customview", module = "customview")
         exclude(group = "androidx.activity", module = "activity")
         exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-ktx")
     }

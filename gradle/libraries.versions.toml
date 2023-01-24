@@ -1,10 +1,10 @@
 [versions]
 # Project
 android_gradle_plugin = "7.3.1"
-kotlin = "1.7.0"
+kotlin = "1.8.0"
 
 # Plugins
-ksp = "1.7.22-1.0.8"
+ksp = "1.8.0-1.0.8"
 dependencyanalysis = "1.18.0"
 
 # KotlinX
@@ -53,23 +53,11 @@ camerax = "1.2.0"
 glide = "4.14.2"
 glide_comp = "4.14.0"
 
-#Sketchbook.
-sketchbook = "1.0.4"
-
-#Swipe.
-swipe = "1.0.0"
-
-#Global Exception Handler.
-global_exception = "1.0.1"
-
 #License.
 about_libraries = "10.5.2"
 
-#Retrofit
-#retrofit = "2.9.0"
-
-#Serialization
-#serialization = "0.8.0"
+#Retrofit.
+retrofit = "2.9.0"
 
 #Okhttp
 okhttp = "5.0.0-alpha.1"
@@ -77,8 +65,14 @@ okhttp = "5.0.0-alpha.1"
 #Junit.
 junit = "4.13.2"
 
-[libraries]
+#Others.
+sketchbook = "1.0.4"
+swipe = "1.0.0"
+global_exception = "1.0.1"
+url_preview = "1.0.1"
+beetle = "2.0.1"
 
+[libraries]
 # Project
 android_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "android_gradle_plugin" }
 kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -151,24 +145,13 @@ glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide_compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 glide_comp = { module = "com.github.bumptech.glide:compose", version.ref = "glide_comp" }
 
-#Sketchbook.
-sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
-
-#Swipe.
-swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
-
-#Global Exception Handler.
-globalexception = { module = "com.github.emirhankolver:GlobalExceptionHandler", version.ref = "global_exception" }
-
 #License.
 aboutlibraries_comp = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "about_libraries" }
 aboutlibraries_plugin = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin", version.ref = "about_libraries" }
 
 #Retrofit.
-retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-#retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-#
-#serialization = { module = "", version.ref = "serialization" }
+#retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 #Okhttp.
 okhttp_bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp" }
@@ -177,6 +160,13 @@ okhttp_bom_interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
 
 #Junit.
 androidx_junit = { module = "junit:junit", version.ref = "junit" }
+
+#Others.
+url_preview = { module = "tw.com.oneup.www:Baha-UrlPreview", version.ref = "url_preview" }
+beetle = { module = "com.karacca:beetle", version.ref = "beetle" }
+swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
+globalexception = { module = "com.github.emirhankolver:GlobalExceptionHandler", version.ref = "global_exception" }
+sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
 
 [bundles]
 compose = ["compose.ui", "compose.toolingpreview", "compose.material3"]
