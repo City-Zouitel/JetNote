@@ -37,8 +37,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -55,9 +55,19 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    lint {
+        warningsAsErrors = false
+        abortOnError = true
+        htmlReport = true
+        checkDependencies = true
 
+        baseline = file("lint-baseline.xml")
+
+        lintConfig = file("${rootDir}/config/filters/lint.xml")
+        htmlOutput = file("${buildDir}/reports/lint.html")
+    }
 }
-//
+
 kapt {
     correctErrorTypes = true
 
@@ -73,7 +83,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.runtimektx)
     implementation(libs.androidx.constraintlayout)
-
 
     //Compose.
     implementation (libs.compose.ui)
