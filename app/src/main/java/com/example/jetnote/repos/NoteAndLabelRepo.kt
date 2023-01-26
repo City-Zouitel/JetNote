@@ -1,6 +1,6 @@
 package com.example.jetnote.repos
 
-import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
+import com.example.local.db.entities.note_and_label.NoteAndLabel
 import kotlinx.coroutines.flow.Flow
 
 interface NoteAndLabelRepo {

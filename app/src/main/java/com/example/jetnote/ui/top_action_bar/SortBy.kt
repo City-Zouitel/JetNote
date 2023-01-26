@@ -16,8 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import com.example.datastore.Cons.ORDER_BY_DEFAULT
 import com.example.jetnote.cons.*
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.settings_screen.makeSound
 import kotlinx.coroutines.launch
@@ -25,10 +25,10 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun SortBy(
     isShow: MutableState<Boolean>?,
-    dataStore: DataStore?
+    dataStore: com.example.datastore.DataStore?
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
 
     val scope = rememberCoroutineScope()
     val currentSortIcon = when(dataStore?.getOrder?.collectAsState(null)?.value) {

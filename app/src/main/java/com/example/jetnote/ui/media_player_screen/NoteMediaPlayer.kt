@@ -15,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetnote.cons.*
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.icons.PAUSE_CIRCLE_FILLED_ICON
 import com.example.jetnote.icons.PLAY_CIRCLE_FILLED_ICON
 import com.example.jetnote.icons.TRASH_ICON
@@ -40,7 +39,7 @@ fun NoteMediaPlayer(
     val mediaFile = context.filesDir.path + "/$AUDIO_FILE/" + localMediaUid + "." + MP3
 
     //
-    val noteDataStore = DataStore(LocalContext.current)
+    val noteDataStore = com.example.datastore.DataStore(LocalContext.current)
 
     // the true value is 'list' layout by default and false is 'grid'.
     val currentLayout = noteDataStore.getLayout.collectAsState(true)

@@ -1,6 +1,5 @@
 package com.example.jetnote.ui.navigation_drawer
 
-import android.media.AudioManager
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,14 +18,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
-import com.example.jetnote.db.entities.label.Label
-import com.example.jetnote.ds.DataStore
-import com.example.jetnote.fp.mailTo
 import com.example.jetnote.fp.sharApp
 import com.example.jetnote.icons.*
-import com.example.jetnote.ui.AppAbout
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.LabelVM
+import com.example.local.db.entities.label.Label
 import com.google.accompanist.flowlayout.FlowRow
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
@@ -43,7 +39,7 @@ fun NavigationDrawer(
     val ctx = LocalContext.current
     val observeLabels = remember(labelVM,labelVM::getAllLabels).collectAsState()
 
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val scope = rememberCoroutineScope()
 

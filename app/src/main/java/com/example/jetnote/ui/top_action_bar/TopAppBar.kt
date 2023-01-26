@@ -17,18 +17,17 @@ import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.icons.BROOM_ICON
 import com.example.jetnote.icons.MENU_BURGER_ICON
 import com.example.jetnote.cons.SURFACE
-import com.example.jetnote.db.entities.label.Label
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.ui.AdaptingRow
 import com.example.jetnote.ui.settings_screen.makeSound
+import com.example.local.db.entities.label.Label
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteTopAppBar(
     searchNoteTitle: MutableState<String>,
-    dataStore: DataStore?,
+    dataStore: com.example.datastore.DataStore?,
     scrollBehavior: TopAppBarScrollBehavior,
     drawerState: DrawerState,
     thisHomeScreen: Boolean,
@@ -39,7 +38,7 @@ fun NoteTopAppBar(
 ) {
     val scope = rememberCoroutineScope()
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     TopAppBar(
         navigationIcon = {

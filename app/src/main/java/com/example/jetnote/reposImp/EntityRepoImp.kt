@@ -1,8 +1,8 @@
 package com.example.jetnote.reposImp
 
-import com.example.jetnote.db.daos.EntityDao
-import com.example.jetnote.db.entities.Entity
+import com.example.local.db.entities.Entity
 import com.example.jetnote.repos.EntityRepo
+import com.example.local.db.daos.EntityDao
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

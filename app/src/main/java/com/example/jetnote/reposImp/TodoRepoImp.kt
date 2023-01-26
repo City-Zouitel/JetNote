@@ -1,10 +1,10 @@
 package com.example.jetnote.reposImp
 
-import com.example.jetnote.db.daos.TodoDao
-import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.di.utils.Dispatcher
 import com.example.jetnote.di.utils.Dispatchers
 import com.example.jetnote.repos.TodoRepo
+import com.example.local.db.daos.TodoDao
+import com.example.local.db.entities.todo.Todo
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class TodoRepoImp @Inject constructor(
     @Dispatcher(Dispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
-    private val dao:TodoDao
+    private val dao: TodoDao
 ): TodoRepo {
     override val getAllTodoItems: Flow<List<Todo>>
         get() = dao.getAllTodoItems()

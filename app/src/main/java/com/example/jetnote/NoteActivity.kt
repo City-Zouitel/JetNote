@@ -1,10 +1,8 @@
 package com.example.jetnote
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -16,19 +14,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.jetnote.cons.*
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.checkIntents
 import com.example.jetnote.fp.urlPreview
 import com.example.jetnote.vm.NoteVM
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.*
 
@@ -63,7 +55,7 @@ class NoteActivity : ComponentActivity() {
 
     @Composable
     private fun AppTheme(content: @Composable () -> Unit) {
-        val currentTheme = DataStore(LocalContext.current).isDarkTheme.collectAsState(false).value
+        val currentTheme = com.example.datastore.DataStore(LocalContext.current).isDarkTheme.collectAsState(false).value
         val systemUiController = rememberSystemUiController()
         val isDarkUi = isSystemInDarkTheme()
 

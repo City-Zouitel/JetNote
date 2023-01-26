@@ -1,8 +1,8 @@
 package com.example.jetnote.reposImp
 
-import com.example.jetnote.db.daos.LabelDao
-import com.example.jetnote.db.entities.label.Label
 import com.example.jetnote.repos.LabelRepo
+import com.example.local.db.daos.LabelDao
+import com.example.local.db.entities.label.Label
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow

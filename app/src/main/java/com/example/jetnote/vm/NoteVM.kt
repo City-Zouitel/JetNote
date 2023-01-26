@@ -17,13 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.core.net.toFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
-import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SizeReadyCallback
@@ -31,16 +28,14 @@ import com.bumptech.glide.request.target.Target.*
 import com.bumptech.glide.request.transition.Transition
 import com.example.jetnote.cons.IMAGE_FILE
 import com.example.jetnote.cons.JPEG
-import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.reposImp.NoteRepoImp
+import com.example.local.db.entities.note.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
-import java.net.URI
 import java.net.URL
 import java.nio.channels.FileChannel
-import java.util.*
 import javax.inject.Inject
 
 

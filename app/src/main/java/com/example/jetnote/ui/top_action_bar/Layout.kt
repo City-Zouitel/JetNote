@@ -11,18 +11,17 @@ import androidx.compose.ui.res.painterResource
 import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.icons.DASHBOARD_ICON
 import com.example.jetnote.icons.LIST_VIEW_ICON_1
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.ui.settings_screen.makeSound
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun Layout(
-    dataStore: DataStore?
+    dataStore: com.example.datastore.DataStore?
 ) {
     val collectAsState = dataStore?.getLayout?.collectAsState(true)?.value
     val scope = rememberCoroutineScope()
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     Icon(
         painter = if (collectAsState == true) painterResource(id = DASHBOARD_ICON) else painterResource(id = LIST_VIEW_ICON_1),

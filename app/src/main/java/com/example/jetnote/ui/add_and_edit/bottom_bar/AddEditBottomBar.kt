@@ -2,7 +2,6 @@ package com.example.jetnote.ui.add_and_edit.bottom_bar
 
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,8 +16,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
-import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.ADD_CIRCLE_ICON
 import com.example.jetnote.icons.BELL_ICON
@@ -27,6 +24,7 @@ import com.example.jetnote.ui.ColorsRow
 import com.example.jetnote.ui.coloration.listOfBackgroundColors
 import com.example.jetnote.ui.coloration.listOfTextColors
 import com.example.jetnote.ui.settings_screen.makeSound
+import com.example.local.db.entities.note.Note
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -49,7 +47,7 @@ fun AddEditBottomBar(
 
     val showOptionsMenu = remember { mutableStateOf(false) }
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     Column {
         Row {

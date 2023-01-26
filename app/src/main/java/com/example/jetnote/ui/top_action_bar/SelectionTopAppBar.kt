@@ -18,11 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetnote.cons.KEY_CLICK
-import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
-import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
-import com.example.jetnote.db.entities.todo.Todo
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.copyNote
 import com.example.jetnote.fp.sharNote
 import com.example.jetnote.icons.COPY_ICON
@@ -32,6 +27,10 @@ import com.example.jetnote.icons.TRASH_ICON
 import com.example.jetnote.ui.AdaptingRow
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
+import com.example.local.db.entities.note.Note
+import com.example.local.db.entities.note_and_label.NoteAndLabel
+import com.example.local.db.entities.note_and_todo.NoteAndTodo
+import com.example.local.db.entities.todo.Todo
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 
@@ -48,7 +47,7 @@ fun SelectionTopAppBar(
     undo: (Note) -> Unit
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
 
     val observeNotesAndLabels =
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()

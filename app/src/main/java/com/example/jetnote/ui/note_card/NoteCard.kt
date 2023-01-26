@@ -33,11 +33,7 @@ import androidx.navigation.NavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.ui.navigation_drawer.Screens.HOME_SCREEN
 import com.example.jetnote.ui.navigation_drawer.Screens.TRASH_SCREEN
-import com.example.jetnote.db.entities.Entity
-import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
-import com.example.jetnote.db.entities.todo.Todo
-import com.example.jetnote.ds.DataStore
+import com.example.local.db.entities.Entity
 import com.example.jetnote.fp.codeUrl
 import com.example.jetnote.fp.findUrlLink
 import com.example.jetnote.icons.*
@@ -47,6 +43,9 @@ import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
 import com.example.jetnote.ui.navigation_drawer.Screens
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
+import com.example.local.db.entities.note.Note
+import com.example.local.db.entities.note_and_todo.NoteAndTodo
+import com.example.local.db.entities.todo.Todo
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -66,7 +65,7 @@ fun NoteCard(
 
     val ctx = LocalContext.current
 
-    val noteDataStore = DataStore(ctx)
+    val noteDataStore = com.example.datastore.DataStore(ctx)
     // the true value is 'list' layout and false is 'grid'.
     val currentLayout = noteDataStore.getLayout.collectAsState(false).value
 
@@ -118,7 +117,7 @@ private fun Card(
     selectedNotes: SnapshotStateList<Note>?
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val note = entity.note
     val labels = entity.labels

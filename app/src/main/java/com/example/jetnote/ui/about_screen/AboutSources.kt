@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.sp
 import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.cons.ON_SURFACE
 import com.example.jetnote.cons.SURFACE
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.GITHUB_ICON
 import com.example.jetnote.ui.settings_screen.makeSound
@@ -27,7 +26,7 @@ fun AboutSources() {
 
     val uri = LocalUriHandler.current
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     Opensource(
         txt = "Project Source",

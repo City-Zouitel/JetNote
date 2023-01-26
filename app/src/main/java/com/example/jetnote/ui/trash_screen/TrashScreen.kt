@@ -16,11 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
-import com.example.jetnote.db.entities.Entity
-import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.ds.DataStore
+import com.example.local.db.entities.Entity
 import com.example.jetnote.ui.navigation_drawer.Screens.TRASH_SCREEN
-import com.example.jetnote.db.entities.label.Label
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.ui.layouts.VerticalGrid
@@ -30,6 +27,8 @@ import com.example.jetnote.ui.top_action_bar.NoteTopAppBar
 import com.example.jetnote.ui.top_action_bar.dialogs.EraseDialog
 import com.example.jetnote.vm.EntityVM
 import com.example.jetnote.vm.NoteVM
+import com.example.local.db.entities.label.Label
+import com.example.local.db.entities.note.Note
 import java.io.File
 
 @SuppressLint(
@@ -45,7 +44,7 @@ fun TrashScreen(
 ) {
     val ctx = LocalContext.current
     val searchTitleState = remember { mutableStateOf("") }.filterBadWords()
-    val noteDataStore = DataStore(ctx)
+    val noteDataStore = com.example.datastore.DataStore(ctx)
     val currentLayout = noteDataStore.getLayout.collectAsState(true)
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scaffoldState = rememberScaffoldState()

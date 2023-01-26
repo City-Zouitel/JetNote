@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.icons.REDO_ICON
 import com.example.jetnote.cons.SURFACE_VARIANT
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.UNDO_ICON
 import com.example.jetnote.ui.settings_screen.makeSound
@@ -28,7 +27,7 @@ fun UndoRedo(
     val descriptionStack = remember { mutableStateListOf<String>() }
 
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     Icon(
         painter = painterResource(id = UNDO_ICON),

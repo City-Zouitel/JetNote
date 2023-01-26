@@ -11,13 +11,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -26,10 +23,7 @@ import androidx.navigation.NavController
 import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.cons.ON_SURFACE
 import com.example.jetnote.cons.SURFACE
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
-import com.example.jetnote.fp.getPriorityOfColor
-import com.example.jetnote.ui.AdaptingRow
 import com.example.jetnote.ui.AdaptingRowBetween
 import com.example.jetnote.ui.about_screen.CustomTopAppBar
 import com.example.jetnote.ui.navigation_drawer.NavigationDrawer
@@ -45,7 +39,7 @@ fun Settings(
     navC: NavController
 ) {
     val ctx = LocalContext.current
-    val dataStore = DataStore(ctx)
+    val dataStore = com.example.datastore.DataStore(ctx)
     val isDarkTheme = dataStore.isDarkTheme.collectAsState(false)
     val thereIsSoundEffect = dataStore.thereIsSoundEffect.collectAsState(false)
 

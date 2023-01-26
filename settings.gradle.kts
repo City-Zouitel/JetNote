@@ -20,4 +20,9 @@ dependencyResolutionManagement {
 
 }
 rootProject.name = "JetNote"
+
 include(":app")
+include(
+    ":data:local",
+    ":data:datastore"
+)

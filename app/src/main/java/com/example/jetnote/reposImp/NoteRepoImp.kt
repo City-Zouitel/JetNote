@@ -1,8 +1,8 @@
 package com.example.jetnote.reposImp
 
-import com.example.jetnote.db.daos.NotesDao
-import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.repos.NoteRepo
+import com.example.local.db.daos.NotesDao
+import com.example.local.db.entities.note.Note
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch

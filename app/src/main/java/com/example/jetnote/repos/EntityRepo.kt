@@ -1,6 +1,6 @@
 package com.example.jetnote.repos
 
-import com.example.jetnote.db.entities.Entity
+import com.example.local.db.entities.Entity
 import kotlinx.coroutines.flow.Flow
 
 

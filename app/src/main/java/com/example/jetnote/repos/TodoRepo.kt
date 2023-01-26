@@ -1,6 +1,6 @@
 package com.example.jetnote.repos
 
-import com.example.jetnote.db.entities.todo.Todo
+import com.example.local.db.entities.todo.Todo
 import kotlinx.coroutines.flow.Flow
 
 interface TodoRepo {

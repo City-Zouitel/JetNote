@@ -12,7 +12,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.cons.SURFACE_TINT
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.ui.settings_screen.makeSound
 
@@ -22,7 +21,7 @@ fun EraseDialog(
     confirmation : () -> Unit,
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     AlertDialog(
         onDismissRequest = { dialogState.value = false },

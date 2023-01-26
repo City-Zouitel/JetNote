@@ -44,11 +44,6 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
-import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.db.entities.note_and_label.NoteAndLabel
-import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
-import com.example.jetnote.db.entities.todo.Todo
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.*
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
@@ -61,6 +56,10 @@ import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
 import com.example.jetnote.ui.record_note.RecordingNote
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
+import com.example.local.db.entities.note.Note
+import com.example.local.db.entities.note_and_label.NoteAndLabel
+import com.example.local.db.entities.note_and_todo.NoteAndTodo
+import com.example.local.db.entities.todo.Todo
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
 
@@ -98,7 +97,7 @@ fun NoteEdit(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = FocusRequester()
 
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }

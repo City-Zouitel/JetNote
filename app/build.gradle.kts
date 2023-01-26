@@ -5,7 +5,7 @@ plugins {
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
     id ("com.mikepenz.aboutlibraries.plugin")
-    alias(libs.plugins.ksp)
+//    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -35,7 +35,7 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
+    } // local
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -55,17 +55,15 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    lint {
-        warningsAsErrors = false
-        abortOnError = true
-        htmlReport = true
-        checkDependencies = true
-
-        baseline = file("lint-baseline.xml")
-
-        lintConfig = file("${rootDir}/config/filters/lint.xml")
-        htmlOutput = file("${buildDir}/reports/lint.html")
-    }
+//    lint {
+//        warningsAsErrors = false
+//        abortOnError = true
+//        htmlReport = true
+//        checkDependencies = true
+//
+//        baseline = file("lint-baseline.xml")
+//
+//    }
 }
 
 kapt {
@@ -77,6 +75,10 @@ kapt {
 }
 
 dependencies {
+
+    implementation(project(":data:local"))
+    implementation(project(":data:datastore"))
+
     //AndroidX.
     implementation(libs.androidx.core)
     implementation(libs.androidx.corektx)
@@ -85,24 +87,24 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     //Compose.
-    implementation (libs.compose.ui)
-    implementation (libs.compose.material3)
-    implementation (libs.compose.activity)
-    implementation (libs.compose.navigation)
-    implementation (libs.compose.toolingpreview)
-    implementation (libs.compose.viewmodel)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.toolingpreview)
+    implementation(libs.compose.viewmodel)
     implementation(libs.compose.constraintlayout)
 
-    //Room.
-    implementation(libs.roomkts)
-    api(libs.room.runtime)
-    ksp(libs.room.compiler)
+//    //Room.
+//    implementation(libs.roomkts)
+//    api(libs.room.runtime)
+//    ksp(libs.room.compiler)
 
-    //DataStore.
-    implementation (libs.datastore)
+//    //DataStore.
+//    implementation (libs.datastore)
 
     //LiveData.
-    implementation (libs.livedatakts)
+    implementation(libs.livedatakts)
 
     //Dagger-Hilt
     implementation (libs.dagger)
@@ -113,18 +115,18 @@ dependencies {
     kapt (libs.dagger.hiltcompiler)
 
     //Accompanist.
-    implementation (libs.accompanist.permissions)
-    implementation (libs.accompanist.pager)
-    implementation (libs.accompanist.pager.indicators)
-    implementation (libs.accompanist.systemuicontroller)
-    implementation (libs.accompanist.navigation.animation)
-    implementation (libs.accompanist.swiperefresh)
-    implementation (libs.accompanist.flowlayout)
+    implementation(libs.accompanist.permissions)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.navigation.animation)
+    implementation(libs.accompanist.swiperefresh)
+    implementation(libs.accompanist.flowlayout)
 
     // ExoPlayer
-    api (libs.exoplayer.core)
-    api (libs.exoplayer.ui)
-    api (libs.exoplayer.extension)
+    api(libs.exoplayer.core)
+    api(libs.exoplayer.ui)
+    api(libs.exoplayer.extension)
 
     // CameraX
     implementation (libs.camerax.core)

@@ -1,6 +1,7 @@
 package com.example.jetnote.repos
 
-import com.example.jetnote.db.entities.note.Note
+import com.example.local.db.entities.note.Note
+
 
 interface NoteRepo {
 

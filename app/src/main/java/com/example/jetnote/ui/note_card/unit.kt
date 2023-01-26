@@ -14,8 +14,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
-import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.fp.getColorOfPriority
+import com.example.local.db.entities.note.Note
 
 val DrawScope.clipNotePath: (Note) -> Unit get() = {
     clipPath(

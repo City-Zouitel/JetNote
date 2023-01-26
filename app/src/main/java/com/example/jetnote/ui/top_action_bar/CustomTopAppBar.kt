@@ -12,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetnote.cons.KEY_CLICK
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.icons.MENU_BURGER_ICON
 import com.example.jetnote.ui.settings_screen.makeSound
 import kotlinx.coroutines.launch
@@ -26,7 +25,7 @@ fun CustomTopAppBar(
 ) {
     val scope = rememberCoroutineScope()
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     TopAppBar(
         title = { Text(title, fontSize = 22.sp,modifier = Modifier.padding(start = 15.dp)) },

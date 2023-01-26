@@ -28,13 +28,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
-import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getColorOfPriority
 import com.example.jetnote.fp.getPriorityOfColor
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.coloration.listOfPriorityColors
 import com.example.jetnote.ui.settings_screen.makeSound
+import com.example.local.db.entities.note.Note
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
@@ -50,7 +49,7 @@ internal fun Plus(
     priorityColorState: MutableState<String>
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val permissionState = rememberMultiplePermissionsState(
         listOf(

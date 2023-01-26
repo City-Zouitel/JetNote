@@ -24,10 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.ui.navigation_drawer.Screens.HOME_SCREEN
-import com.example.jetnote.db.entities.Entity
-import com.example.jetnote.db.entities.label.Label
-import com.example.jetnote.db.entities.note.Note
-import com.example.jetnote.ds.DataStore
+import com.example.local.db.entities.Entity
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.PLUS_ICON
@@ -35,11 +32,10 @@ import com.example.jetnote.ui.layouts.VerticalGrid
 import com.example.jetnote.ui.navigation_drawer.NavigationDrawer
 import com.example.jetnote.ui.note_card.NoteCard
 import com.example.jetnote.ui.settings_screen.makeSound
-import com.example.jetnote.ui.snackebars.UndoSnackbar
 import com.example.jetnote.ui.top_action_bar.*
 import com.example.jetnote.vm.*
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.example.local.db.entities.label.Label
+import com.example.local.db.entities.note.Note
 import java.util.*
 
 @SuppressLint(
@@ -60,7 +56,7 @@ fun NoteHome(
     val searchLabelState = remember { mutableStateOf(Label()) }
 
     //
-    val dataStore = DataStore(ctx)
+    val dataStore = com.example.datastore.DataStore(ctx)
     val orderBy = dataStore.getOrder.collectAsState("").value
     // the true value is 'list' layout and false is 'grid'.
     val currentLayout = dataStore.getLayout.collectAsState(false).value

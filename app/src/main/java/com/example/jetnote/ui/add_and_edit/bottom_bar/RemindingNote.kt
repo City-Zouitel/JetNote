@@ -18,7 +18,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.jetnote.cons.KEY_CLICK
 import com.example.jetnote.cons.KEY_STANDARD
 import com.example.jetnote.cons.SURFACE
-import com.example.jetnote.ds.DataStore
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CALENDAR_ICON
 import com.example.jetnote.icons.CLOCK_ICON
@@ -40,7 +39,7 @@ fun RemindingNote(
     remindingValue: MutableState<Long>?
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = com.example.datastore.DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
     val remindingViewModel = viewModel(ReminderVM::class.java)
     val notifyVM = viewModel(NotificationVM::class.java)

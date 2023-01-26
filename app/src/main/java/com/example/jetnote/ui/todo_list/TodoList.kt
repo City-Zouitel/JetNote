@@ -2,14 +2,12 @@ package com.example.jetnote.ui.todo_list
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,13 +27,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetnote.cons.ON_SURFACE
 import com.example.jetnote.cons.SURFACE
-import com.example.jetnote.icons.DELETE_OUTLINE_ICON
-import com.example.jetnote.db.entities.note_and_todo.NoteAndTodo
-import com.example.jetnote.db.entities.todo.Todo
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
+import com.example.jetnote.icons.DELETE_OUTLINE_ICON
 import com.example.jetnote.vm.NoteAndTodoVM
 import com.example.jetnote.vm.TodoVM
+import com.example.local.db.entities.note_and_todo.NoteAndTodo
+import com.example.local.db.entities.todo.Todo
 import kotlinx.coroutines.Job
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox

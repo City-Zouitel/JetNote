@@ -4,8 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.CROSS_CIRCLE_ICON
-import com.example.jetnote.db.entities.label.Label
 import com.example.jetnote.vm.LabelVM
+import com.example.local.db.entities.label.Label
 import com.google.accompanist.flowlayout.FlowRow
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -60,12 +58,12 @@ fun HashTagLayout(
                             color = Color.Transparent,
                             modifier = Modifier.combinedClickable(
                                 onLongClick = {
-                                    labelState.value = label.label
+                                    labelState.value = label.label!!
                                     idState.value = label.id
                                     labelDialogState.value = true
                                 },
                             ){
-                                labelState.value = label.label
+                                labelState.value = label.label!!
                                 idState.value = label.id
                             }
                         ) {

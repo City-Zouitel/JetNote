@@ -1,13 +1,13 @@
-package com.example.jetnote.ui.snackebars
+package com.example.jetnote.ui.home_screen
 
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.State
 import com.example.jetnote.cons.TRASH_MESSAGE
 import com.example.jetnote.cons.UNDO
-import com.example.jetnote.db.entities.Entity
-import com.example.jetnote.db.entities.note.Note
+import com.example.local.db.entities.Entity
 import com.example.jetnote.vm.NoteVM
+import com.example.local.db.entities.note.Note
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

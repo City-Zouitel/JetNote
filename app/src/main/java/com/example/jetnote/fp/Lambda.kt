@@ -15,8 +15,8 @@ import com.baha.url.preview.UrlInfoItem
 import com.example.jetnote.combat.badLanguageWords.listOfBadEnglishWords
 import com.example.jetnote.combat.listOfBadWebsites
 import com.example.jetnote.cons.*
-import com.example.jetnote.db.entities.note.Note
 import com.example.jetnote.vm.NoteVM
+import com.example.local.db.entities.note.Note
 import kotlinx.coroutines.*
 import java.io.File
 import java.net.URL
@@ -113,7 +113,7 @@ internal val callNumber: (Context,String) -> Unit = { ctx, number ->
 fun copyNote(
     ctx: Context,
     noteVM:NoteVM,
-    note:Note,
+    note: Note,
     uid:UUID,
     cc : () -> Unit
 ) {
