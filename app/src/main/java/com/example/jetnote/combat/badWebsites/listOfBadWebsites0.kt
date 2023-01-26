@@ -1,3 +1,5 @@
+package com.example.jetnote.combat.badWebsites
+
 val listOfBadWebsites0 = arrayOf(
     "0azx1.com",
     "0c47f8422d3f.com",
