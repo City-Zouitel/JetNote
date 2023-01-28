@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetnote.ui.coloration.listOfBackgroundColors
 import com.example.jetnote.vm.LabelVM
-import com.example.local.db.entities.label.Label
+import com.example.local.model.Label
 
 @Composable
 fun LabelDialogColors(

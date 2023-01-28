@@ -28,8 +28,8 @@ import com.bumptech.glide.request.target.Target.*
 import com.bumptech.glide.request.transition.Transition
 import com.example.jetnote.cons.IMAGE_FILE
 import com.example.jetnote.cons.JPEG
-import com.example.jetnote.reposImp.NoteRepoImp
-import com.example.local.db.entities.note.Note
+import com.example.domain.reposImpl.NoteRepoImp
+import com.example.local.model.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

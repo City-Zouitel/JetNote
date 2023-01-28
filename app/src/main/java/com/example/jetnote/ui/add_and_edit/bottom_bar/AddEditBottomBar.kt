@@ -24,7 +24,7 @@ import com.example.jetnote.ui.ColorsRow
 import com.example.jetnote.ui.coloration.listOfBackgroundColors
 import com.example.jetnote.ui.coloration.listOfTextColors
 import com.example.jetnote.ui.settings_screen.makeSound
-import com.example.local.db.entities.note.Note
+import com.example.local.model.Note
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

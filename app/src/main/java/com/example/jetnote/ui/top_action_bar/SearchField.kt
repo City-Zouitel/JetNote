@@ -25,7 +25,7 @@ import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.CROSS_ICON
 import com.example.jetnote.ui.settings_screen.makeSound
-import com.example.local.db.entities.label.Label
+import com.example.local.model.Label
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable

@@ -12,11 +12,9 @@ import androidx.navigation.NavHostController
 import com.baha.url.preview.BahaUrlPreview
 import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
-import com.example.jetnote.combat.badLanguageWords.listOfBadEnglishWords
-import com.example.jetnote.combat.listOfBadWebsites
 import com.example.jetnote.cons.*
 import com.example.jetnote.vm.NoteVM
-import com.example.local.db.entities.note.Note
+import com.example.local.model.Note
 import kotlinx.coroutines.*
 import java.io.File
 import java.net.URL
@@ -145,13 +143,13 @@ val findUrlLink: (String?) -> String? = {
 @JvmName("filterBadWordsString")
 fun MutableState<String?>.filterBadWords(): MutableState<String?> {
     value?.split(' ')?.onEach {
-        if (
-            it.lowercase() in listOfBadEnglishWords
+//        if (
+//            it.lowercase() in listOfBadEnglishWords
 //                .plus(badItian)
 //                .plus(badSpanish)
 //                .plus(badGerman)
 //                .plus(badFrench)
-        )
+//        )
             value = value!!.replace(
                 it,
                 "${it.first()}${it.map { '*' }.joinToString("").drop(2)}${it.last()}",
@@ -164,13 +162,13 @@ fun MutableState<String?>.filterBadWords(): MutableState<String?> {
 @JvmName("filterNonNullableBadWordsString")
 fun MutableState<String>.filterBadWords(): MutableState<String> {
     value.split(' ').onEach {
-        if (
-            it.lowercase() in listOfBadEnglishWords
+//        if (
+//            it.lowercase() in listOfBadEnglishWords
 //                .plus(badItian)
 //                .plus(badSpanish)
 //                .plus(badGerman)
 //                .plus(badFrench)
-        )
+//        )
             value = value.replace(
                 it,
                 "${it.first()}${it.map { '*' }.joinToString("").drop(2)}${it.last()}",
@@ -180,23 +178,23 @@ fun MutableState<String>.filterBadWords(): MutableState<String> {
     return this
 }
 
-fun MutableState<String?>.filterBadEmoji(): MutableState<String?>{
-    listOfBadEmojis.entries.forEach {
-        if (this.value?.contains(it.key) == true)
-            this.value = this.value!!.replace(it.key,it.value)
-    }
+fun MutableState<String?>.filterBadEmoji(): MutableState<String?> {
+//    listOfBadEmojis.entries.forEach {
+//        if (this.value?.contains(it.key) == true)
+//            this.value = this.value!!.replace(it.key,it.value)
+//    }
     return this
 }
 
 //
 fun MutableState<String?>.filterBadWebsites():MutableState<String?> {
     findUrlLink(this.value)?.let {
-        if (URL(this@filterBadWebsites.value).host in listOfBadWebsites ) {
-            this@filterBadWebsites.value = "invalid subject!"
-            this
-        } else {
-            this
-        }
+//        if (URL(this@filterBadWebsites.value).host in listOfBadWebsites ) {
+//            this@filterBadWebsites.value = "invalid subject!"
+//            this
+//        } else {
+//            this
+//        }
     }
     return this
 }

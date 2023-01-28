@@ -27,10 +27,10 @@ import com.example.jetnote.icons.TRASH_ICON
 import com.example.jetnote.ui.AdaptingRow
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
-import com.example.local.db.entities.note.Note
-import com.example.local.db.entities.note_and_label.NoteAndLabel
-import com.example.local.db.entities.note_and_todo.NoteAndTodo
-import com.example.local.db.entities.todo.Todo
+import com.example.local.model.Note
+import com.example.local.model.NoteAndLabel
+import com.example.local.model.NoteAndTodo
+import com.example.local.model.Todo
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 

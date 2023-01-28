@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetnote.icons.CIRCLE_ICON_18
 import com.example.jetnote.icons.CROSS_CIRCLE_ICON
 import com.example.jetnote.vm.LabelVM
-import com.example.local.db.entities.label.Label
+import com.example.local.model.Label
 import com.google.accompanist.flowlayout.FlowRow
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

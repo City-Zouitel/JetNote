@@ -36,8 +36,8 @@ import com.example.jetnote.icons.OUTLINE_LABEL_ICON
 import com.example.jetnote.ui.layouts.HashTagLayout
 import com.example.jetnote.vm.LabelVM
 import com.example.jetnote.vm.NoteAndLabelVM
-import com.example.local.db.entities.label.Label
-import com.example.local.db.entities.note_and_label.NoteAndLabel
+import com.example.local.model.Label
+import com.example.local.model.NoteAndLabel
 import com.google.accompanist.flowlayout.FlowRow
 
 @SuppressLint(

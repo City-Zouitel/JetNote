@@ -78,6 +78,7 @@ dependencies {
 
     implementation(project(":data:local"))
     implementation(project(":data:datastore"))
+    implementation(project(":domain"))
 
     //AndroidX.
     implementation(libs.androidx.core)
@@ -123,10 +124,10 @@ dependencies {
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.accompanist.flowlayout)
 
-    // ExoPlayer
-    api(libs.exoplayer.core)
-    api(libs.exoplayer.ui)
-    api(libs.exoplayer.extension)
+//    // ExoPlayer
+//    api(libs.exoplayer.core)
+//    api(libs.exoplayer.ui)
+//    api(libs.exoplayer.extension)
 
     // CameraX
     implementation (libs.camerax.core)

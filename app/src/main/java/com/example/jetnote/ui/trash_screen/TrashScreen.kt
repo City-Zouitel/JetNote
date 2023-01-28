@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
-import com.example.local.db.entities.Entity
+import com.example.local.model.Entity
 import com.example.jetnote.ui.navigation_drawer.Screens.TRASH_SCREEN
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
@@ -27,8 +27,8 @@ import com.example.jetnote.ui.top_action_bar.NoteTopAppBar
 import com.example.jetnote.ui.top_action_bar.dialogs.EraseDialog
 import com.example.jetnote.vm.EntityVM
 import com.example.jetnote.vm.NoteVM
-import com.example.local.db.entities.label.Label
-import com.example.local.db.entities.note.Note
+import com.example.local.model.Label
+import com.example.local.model.Note
 import java.io.File
 
 @SuppressLint(

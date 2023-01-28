@@ -33,7 +33,7 @@ import androidx.navigation.NavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.ui.navigation_drawer.Screens.HOME_SCREEN
 import com.example.jetnote.ui.navigation_drawer.Screens.TRASH_SCREEN
-import com.example.local.db.entities.Entity
+import com.example.local.model.Entity
 import com.example.jetnote.fp.codeUrl
 import com.example.jetnote.fp.findUrlLink
 import com.example.jetnote.icons.*
@@ -43,9 +43,9 @@ import com.example.jetnote.ui.media_player_screen.NoteMediaPlayer
 import com.example.jetnote.ui.navigation_drawer.Screens
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.*
-import com.example.local.db.entities.note.Note
-import com.example.local.db.entities.note_and_todo.NoteAndTodo
-import com.example.local.db.entities.todo.Todo
+import com.example.local.model.Note
+import com.example.local.model.NoteAndTodo
+import com.example.local.model.Todo
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState

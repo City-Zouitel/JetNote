@@ -2,8 +2,8 @@ package com.example.jetnote.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jetnote.reposImp.NoteAndLabelRepoImp
-import com.example.local.db.entities.note_and_label.NoteAndLabel
+import com.example.domain.reposImpl.NoteAndLabelRepoImp
+import com.example.local.model.NoteAndLabel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

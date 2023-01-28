@@ -33,7 +33,7 @@ import com.example.jetnote.fp.getPriorityOfColor
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.coloration.listOfPriorityColors
 import com.example.jetnote.ui.settings_screen.makeSound
-import com.example.local.db.entities.note.Note
+import com.example.local.model.Note
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 

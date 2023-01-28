@@ -20,7 +20,7 @@ import com.example.jetnote.cons.SURFACE
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.ui.AdaptingRow
 import com.example.jetnote.ui.settings_screen.makeSound
-import com.example.local.db.entities.label.Label
+import com.example.local.model.Label
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

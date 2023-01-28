@@ -2,12 +2,12 @@ package com.example.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.local.db.daos.*
-import com.example.local.db.entities.label.Label
-import com.example.local.db.entities.note.Note
-import com.example.local.db.entities.note_and_label.NoteAndLabel
-import com.example.local.db.entities.note_and_todo.NoteAndTodo
-import com.example.local.db.entities.todo.Todo
+import com.example.local.daos.*
+import com.example.local.model.Label
+import com.example.local.model.Note
+import com.example.local.model.NoteAndLabel
+import com.example.local.model.NoteAndTodo
+import com.example.local.model.Todo
 
 @Database(
     version = 1,

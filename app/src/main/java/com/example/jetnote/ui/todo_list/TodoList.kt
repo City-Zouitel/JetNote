@@ -32,8 +32,8 @@ import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.DELETE_OUTLINE_ICON
 import com.example.jetnote.vm.NoteAndTodoVM
 import com.example.jetnote.vm.TodoVM
-import com.example.local.db.entities.note_and_todo.NoteAndTodo
-import com.example.local.db.entities.todo.Todo
+import com.example.local.model.NoteAndTodo
+import com.example.local.model.Todo
 import kotlinx.coroutines.Job
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox

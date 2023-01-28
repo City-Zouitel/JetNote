@@ -22,7 +22,7 @@ import com.example.jetnote.fp.sharApp
 import com.example.jetnote.icons.*
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.vm.LabelVM
-import com.example.local.db.entities.label.Label
+import com.example.local.model.Label
 import com.google.accompanist.flowlayout.FlowRow
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch

@@ -26,3 +26,5 @@ include(
     ":data:local",
     ":data:datastore"
 )
+include(":domain")
+include(":ui")

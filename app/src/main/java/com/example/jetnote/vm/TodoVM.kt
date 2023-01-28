@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jetnote.di.utils.Dispatcher
 import com.example.jetnote.di.utils.Dispatchers.*
-import com.example.jetnote.reposImp.TodoRepoImp
-import com.example.local.db.entities.todo.Todo
+import com.example.domain.reposImpl.TodoRepoImp
+import com.example.local.model.Todo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow

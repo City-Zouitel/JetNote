@@ -18,16 +18,16 @@ class Notification : HiltBroadcastReceiver() {
     @Inject lateinit var notifyBuilder : NotificationCompat.Builder
     @Inject lateinit var notifyManager : NotificationManagerCompat
 
-    override fun onReceive(ctx: Context, intent: Intent) {
-        super.onReceive(ctx, intent)
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
 
-        val path = ctx.filesDir.path
+        val path = context.filesDir.path
         val uid = intent.getStringExtra(UID)
         val imagePath = uid?.let { File("$path/$IMAGE_FILE", "$it.$JPEG") }
         val bitImg = BitmapFactory.decodeFile(imagePath?.absolutePath)
 
         if (ActivityCompat.checkSelfPermission(
-                ctx,
+                context,
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {

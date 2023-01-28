@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetnote.cons.*
 import com.example.jetnote.ui.navigation_drawer.Screens.HOME_SCREEN
-import com.example.local.db.entities.Entity
+import com.example.local.model.Entity
 import com.example.jetnote.fp.filterBadWords
 import com.example.jetnote.fp.getMaterialColor
 import com.example.jetnote.icons.PLUS_ICON
@@ -34,8 +34,8 @@ import com.example.jetnote.ui.note_card.NoteCard
 import com.example.jetnote.ui.settings_screen.makeSound
 import com.example.jetnote.ui.top_action_bar.*
 import com.example.jetnote.vm.*
-import com.example.local.db.entities.label.Label
-import com.example.local.db.entities.note.Note
+import com.example.local.model.Label
+import com.example.local.model.Note
 import java.util.*
 
 @SuppressLint(
