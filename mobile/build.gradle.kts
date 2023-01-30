@@ -16,8 +16,8 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 183
-        versionName = "1.8.3"
+        versionCode = 184
+        versionName = "1.8.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -137,13 +137,13 @@ dependencies {
     //License.
     implementation (libs.aboutlibraries.comp)
 
-    //Retrofit.
-    implementation(libs.retrofit)
-
-    //Okhttp.
-    implementation(libs.okhttp.bom)
-    implementation(libs.okhttp.bom.core)
-    implementation(libs.okhttp.bom.interceptor)
+//    //Retrofit.
+//    implementation(libs.retrofit)
+//
+//    //Okhttp.
+//    implementation(libs.okhttp.bom)
+//    implementation(libs.okhttp.bom.core)
+//    implementation(libs.okhttp.bom.interceptor)
 
     //Serialization.
     implementation(libs.kotlinx.serialization)
