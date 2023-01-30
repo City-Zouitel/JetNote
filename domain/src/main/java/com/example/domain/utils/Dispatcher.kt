@@ -1,4 +1,4 @@
-package com.example.jetnote.di.utils
+package com.example.domain.utils
 
 import javax.inject.Qualifier
 

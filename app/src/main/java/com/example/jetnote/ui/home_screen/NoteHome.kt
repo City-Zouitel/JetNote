@@ -52,7 +52,7 @@ fun NoteHome(
 ) {
     val ctx = LocalContext.current
     //
-    val searchTitleState = remember { mutableStateOf("") }.filterBadWords()
+    val searchTitleState = remember { mutableStateOf("") }
     val searchLabelState = remember { mutableStateOf(Label()) }
 
     //

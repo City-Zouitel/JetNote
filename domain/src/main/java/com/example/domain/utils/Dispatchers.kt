@@ -1,4 +1,4 @@
-package com.example.jetnote.di.utils
+package com.example.domain.utils
 
 enum class Dispatchers {
     DEFAULT,

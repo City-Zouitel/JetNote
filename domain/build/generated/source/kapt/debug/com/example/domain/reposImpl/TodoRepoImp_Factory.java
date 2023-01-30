@@ -7,37 +7,31 @@ import dagger.internal.Factory;
 import dagger.internal.QualifierMetadata;
 import dagger.internal.ScopeMetadata;
 import javax.inject.Provider;
-import kotlinx.coroutines.CoroutineDispatcher;
 
 @ScopeMetadata("dagger.hilt.android.scopes.ViewModelScoped")
-@QualifierMetadata("com.example.jetnote.di.utils.Dispatcher")
+@QualifierMetadata
 @DaggerGenerated
 @SuppressWarnings({
     "unchecked",
     "rawtypes"
 })
 public final class TodoRepoImp_Factory implements Factory<TodoRepoImp> {
-  private final Provider<CoroutineDispatcher> ioDispatcherProvider;
-
   private final Provider<TodoDao> daoProvider;
 
-  public TodoRepoImp_Factory(Provider<CoroutineDispatcher> ioDispatcherProvider,
-      Provider<TodoDao> daoProvider) {
-    this.ioDispatcherProvider = ioDispatcherProvider;
+  public TodoRepoImp_Factory(Provider<TodoDao> daoProvider) {
     this.daoProvider = daoProvider;
   }
 
   @Override
   public TodoRepoImp get() {
-    return newInstance(ioDispatcherProvider.get(), daoProvider.get());
+    return newInstance(daoProvider.get());
   }
 
-  public static TodoRepoImp_Factory create(Provider<CoroutineDispatcher> ioDispatcherProvider,
-      Provider<TodoDao> daoProvider) {
-    return new TodoRepoImp_Factory(ioDispatcherProvider, daoProvider);
+  public static TodoRepoImp_Factory create(Provider<TodoDao> daoProvider) {
+    return new TodoRepoImp_Factory(daoProvider);
   }
 
-  public static TodoRepoImp newInstance(CoroutineDispatcher ioDispatcher, TodoDao dao) {
-    return new TodoRepoImp(ioDispatcher, dao);
+  public static TodoRepoImp newInstance(TodoDao dao) {
+    return new TodoRepoImp(dao);
   }
 }
