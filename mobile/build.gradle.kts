@@ -60,10 +60,15 @@ hilt {
 
 dependencies {
 
-    //Projetes.
-    implementation(project(":data:local"))
-    implementation(project(":data:datastore"))
-    implementation(project(":domain"))
+    //Projects.
+    //
+    implementation(projects.ui.tags)
+    implementation(projects.ui.camera)
+    //
+    implementation(projects.domain)
+    //
+    implementation(projects.data.local)
+    implementation(projects.data.datastore)
 
     //AndroidX.
     implementation(libs.androidx.core)
@@ -96,6 +101,7 @@ dependencies {
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
+    implementation("androidx.core:core-ktx:+")
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)

@@ -39,8 +39,8 @@ import kotlin.random.Random.Default.nextLong
 @Composable
 fun SelectionTopAppBar(
     noteVM: NoteVM = hiltViewModel(),
-    noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
-    labelVM: LabelVM = hiltViewModel(),
+    noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
+    labelVM: com.example.tags.LabelVM = hiltViewModel(),
     todoVM: TodoVM = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     selectionState: MutableState<Boolean>?,

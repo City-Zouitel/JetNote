@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -28,3 +30,6 @@ include(
 include(":domain")
 include(":ui")
 include(":mobile")
+include(":ui:camera")
+include(":common-ui")
+include(":ui:tags")

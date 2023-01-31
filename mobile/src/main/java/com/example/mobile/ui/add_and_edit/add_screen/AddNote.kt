@@ -78,8 +78,8 @@ import java.io.File
 fun NoteAdd(
     noteVM: NoteVM = hiltViewModel(),
     exoVM: MediaPlayerVM = hiltViewModel(),
-    noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
-    labelVM: LabelVM = hiltViewModel(),
+    noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
+    labelVM: com.example.tags.LabelVM = hiltViewModel(),
     todoVM: TodoVM = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     navController: NavController,

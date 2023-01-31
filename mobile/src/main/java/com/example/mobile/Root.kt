@@ -10,14 +10,13 @@ import com.example.mobile.cons.*
 import com.example.mobile.ui.about_screen.AppAbout
 import com.example.mobile.ui.add_and_edit.add_screen.NoteAdd
 import com.example.mobile.ui.add_and_edit.edit_screen.NoteEdit
-import com.example.mobile.ui.camera_screen.LaunchCameraX
 import com.example.mobile.ui.draw_screen.DrawingNote
 import com.example.mobile.ui.home_screen.NoteHome
-import com.example.mobile.ui.labels_screen.Labels
 import com.example.mobile.ui.settings_screen.Licenses
 import com.example.mobile.ui.settings_screen.Settings
 import com.example.mobile.ui.todo_list.TodoList
 import com.example.mobile.ui.trash_screen.TrashScreen
+import com.example.tags.Labels
 
 @Composable
 fun NoteRoot(
@@ -132,7 +131,7 @@ fun NoteRoot(
                 type = NavType.StringType
             }
         )){
-            LaunchCameraX(uid = it.arguments?.getString(UID))
+//            LaunchCameraX(uid = it.arguments?.getString(UID))
         }
 
         composable(TRASH_ROUTE){

@@ -44,6 +44,7 @@ dependencies {
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
+    implementation("androidx.core:core-ktx:+")
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)

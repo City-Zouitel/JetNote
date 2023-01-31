@@ -32,7 +32,7 @@
         <activity
             android:name=".NoteActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="JetNote"
             android:theme="@style/Theme.JetNote">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

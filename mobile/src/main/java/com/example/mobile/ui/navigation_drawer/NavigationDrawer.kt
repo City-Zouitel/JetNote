@@ -23,7 +23,7 @@ import com.example.mobile.cons.*
 import com.example.mobile.fp.sharApp
 import com.example.mobile.icons.*
 import com.example.mobile.ui.settings_screen.makeSound
-import com.example.mobile.vm.LabelVM
+import com.example.tags.LabelVM
 import com.google.accompanist.flowlayout.FlowRow
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawer(
-    labelVM: LabelVM = hiltViewModel(),
+    labelVM: com.example.tags.LabelVM = hiltViewModel(),
     drawerState: DrawerState,
     navController: NavController,
     searchTitle: MutableState<String>?,
