@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common_ui.Icons.CIRCLE_ICON_18
+import com.example.common_ui.Icons.CROSS_CIRCLE_ICON
 import com.example.local.model.Label
-import com.example.tags.Cons.CIRCLE_ICON_18
-import com.example.tags.Cons.CROSS_CIRCLE_ICON
 import com.google.accompanist.flowlayout.FlowRow
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

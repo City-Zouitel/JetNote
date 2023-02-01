@@ -64,6 +64,7 @@ dependencies {
     //
     implementation(projects.ui.tags)
     implementation(projects.ui.camera)
+    implementation(projects.ui.record)
     //
     implementation(projects.domain)
     //

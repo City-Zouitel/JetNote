@@ -69,8 +69,9 @@ dependencies {
     kapt (libs.dagger.hiltcompiler)
     //Accompanist.
     implementation(libs.accompanist.flowlayout)
-    implementation(project(":common-ui"))
-    implementation(project(mapOf("path" to ":data:local")))
-    implementation(project(mapOf("path" to ":domain")))
-
+    //
+    implementation(projects.commonUi)
+    implementation(projects.domain)
+    implementation(projects.data.local)
+    implementation(projects.data.datastore)
 }

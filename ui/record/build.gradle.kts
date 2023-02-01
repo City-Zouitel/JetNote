@@ -1,10 +1,12 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id ("kotlin-kapt")
+    id ("dagger.hilt.android.plugin")
 }
 
 android {
-    namespace = "com.example.camera"
+    namespace = "com.example.record"
     compileSdk = 33
 
     defaultConfig {
@@ -38,9 +40,20 @@ android {
         jvmTarget = "1.8"
     }
 }
+kapt {
+    correctErrorTypes = true
 
+    arguments {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
+}
 dependencies {
+    //
     implementation(projects.commonUi)
+    implementation(projects.domain)
+    implementation(projects.data.local)
+    implementation(projects.data.datastore)
+
     //AndroidX.
     implementation(libs.androidx.core)
     implementation(libs.androidx.corektx)
@@ -56,11 +69,12 @@ dependencies {
     implementation(libs.compose.toolingpreview)
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.constraintlayout)
-    // CameraX
-    implementation (libs.camerax.core)
-    implementation (libs.camerax.lifecycle)
-    implementation (libs.camerax.view)
-    implementation (libs.camerax.extensions)
+    //Dagger-Hilt
+    implementation (libs.dagger)
+    implementation (libs.dagger.hilt)
+    implementation (libs.hilt.navcomp)
     implementation("androidx.core:core-ktx:+")
-
+    kapt (libs.dagger.compiler)
+    kapt (libs.hilt.compiler)
+    kapt (libs.dagger.hiltcompiler)
 }

@@ -17,8 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
-import com.example.camera.Cons.IMAGE_FILE
-import com.example.camera.Cons.JPEG
+import com.example.common_ui.Cons.IMAGE_FILE
+import com.example.common_ui.Cons.JPEG
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async

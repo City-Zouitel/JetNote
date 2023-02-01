@@ -1,4 +1,4 @@
-package com.example.mobile.ui.record_note
+package com.example.record
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.AlertDialog
@@ -9,10 +9,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mobile.cons.AUDIO_FILE
-import com.example.mobile.cons.MP3
-import com.example.mobile.vm.MediaRecordVM
-import com.example.mobile.vm.RecordVM
+import com.example.common_ui.Cons.AUDIO_FILE
+import com.example.common_ui.Cons.MP3
 import java.io.File
 import kotlin.time.ExperimentalTime
 

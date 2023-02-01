@@ -1,4 +1,4 @@
-package com.example.mobile.di
+package com.example.domain.di
 
 import android.content.Context
 import com.google.android.exoplayer2.ExoPlayer

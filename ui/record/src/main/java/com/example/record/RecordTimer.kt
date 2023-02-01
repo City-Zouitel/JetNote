@@ -1,4 +1,4 @@
-package com.example.mobile.ui.record_note
+package com.example.record
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Row

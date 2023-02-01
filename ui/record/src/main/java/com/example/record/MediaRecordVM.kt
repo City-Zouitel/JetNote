@@ -1,4 +1,4 @@
-package com.example.mobile.vm
+package com.example.record
 
 import android.media.MediaRecorder
 import androidx.lifecycle.ViewModel

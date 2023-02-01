@@ -11,9 +11,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.camera.Cons.CAMERA_ICON
-import com.example.camera.Cons.CAMERA_ROUTE
-import com.example.camera.Cons.IMAGE_ICON
+import com.example.common_ui.Cons.CAMERA_ROUTE
+import com.example.common_ui.Icons.CAMERA_ICON
+import com.example.common_ui.Icons.IMAGE_ICON
 
 @Composable
 internal fun AddImageDialog(

@@ -24,15 +24,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common_ui.Cons.NUL
+import com.example.common_ui.Icons.CIRCLE_ICON_18
+import com.example.common_ui.Icons.FULL_LABEL_ICON
+import com.example.common_ui.Icons.OUTLINE_LABEL_ICON
 import com.example.common_ui.MatColors
 import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.common_ui.MatColors.Companion.SURFACE_TINT
 import com.example.local.model.Label
 import com.example.local.model.NoteAndLabel
-import com.example.tags.Cons.CIRCLE_ICON_18
-import com.example.tags.Cons.FULL_LABEL_ICON
-import com.example.tags.Cons.NUL
-import com.example.tags.Cons.OUTLINE_LABEL_ICON
 import com.google.accompanist.flowlayout.FlowRow
 
 @SuppressLint(

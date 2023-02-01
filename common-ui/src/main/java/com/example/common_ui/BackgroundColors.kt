@@ -2,7 +2,7 @@ package com.example.tags
 
 import androidx.compose.ui.graphics.Color
 
-internal val listOfBackgroundColors = arrayOf(
+val listOfBackgroundColors = arrayOf(
     Color(0xFFf8130d),
     Color(0xFFb8070d),
     Color(0xFF7a000b),

@@ -58,7 +58,7 @@ import com.example.mobile.ui.add_and_edit.UrlCard
 import com.example.mobile.ui.add_and_edit.bottom_bar.AddEditBottomBar
 import com.example.mobile.ui.add_and_edit.bottom_bar.RemindingNote
 import com.example.mobile.ui.media_player_screen.NoteMediaPlayer
-import com.example.mobile.ui.record_note.RecordingNote
+import com.example.record.RecordingNote
 import com.example.mobile.ui.settings_screen.makeSound
 import com.example.mobile.vm.*
 import com.google.accompanist.flowlayout.FlowRow

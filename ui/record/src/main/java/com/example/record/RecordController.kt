@@ -1,4 +1,4 @@
-package com.example.mobile.ui.record_note
+package com.example.record
 
 import android.annotation.SuppressLint
 import android.media.MediaRecorder
@@ -15,15 +15,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import com.example.mobile.cons.*
-import com.example.mobile.icons.MIC_ICON_36
-import com.example.mobile.icons.PAUSE_CIRCLE_FILLED_ICON_36
-import com.example.mobile.icons.PLAY_CIRCLE_FILLED_ICON_36
-import com.example.mobile.icons.STOP_CIRCLE_ICON_36
-import com.example.mobile.ui.AdaptingRow
+import com.example.common_ui.AdaptingRow
+import com.example.common_ui.Icons.MIC_ICON_36
+import com.example.common_ui.Icons.PAUSE_CIRCLE_FILLED_ICON_36
+import com.example.common_ui.Icons.PLAY_CIRCLE_FILLED_ICON_36
+import com.example.common_ui.Icons.STOP_CIRCLE_ICON_36
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun RecordController(
     isRecording: MutableState<Boolean>,
