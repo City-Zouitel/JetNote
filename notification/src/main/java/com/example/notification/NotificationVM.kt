@@ -1,4 +1,4 @@
-package com.example.mobile.vm
+package com.example.notification
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,10 +6,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
-import com.example.mobile.Notification
-import com.example.mobile.cons.DESCRIPTION
-import com.example.mobile.cons.TITLE
-import com.example.mobile.cons.UID
+import com.example.common_ui.Cons.DESCRIPTION
+import com.example.common_ui.Cons.TITLE
+import com.example.common_ui.Cons.UID
 
 class NotificationVM: ViewModel() {
 

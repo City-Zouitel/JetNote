@@ -25,27 +25,26 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common_ui.Icons.DELETE_OUTLINE_ICON
+import com.example.common_ui.MatColors
+import com.example.common_ui.MatColors.Companion.ON_SURFACE
+import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.local.model.NoteAndTodo
 import com.example.local.model.Todo
-import com.example.mobile.cons.ON_SURFACE
-import com.example.mobile.cons.SURFACE
-import com.example.mobile.fp.filterBadWords
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.icons.DELETE_OUTLINE_ICON
-import com.example.mobile.vm.NoteAndTodoVM
-import com.example.mobile.vm.TodoVM
 import kotlinx.coroutines.Job
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
 import kotlin.random.Random
 
+val getMaterialColor = MatColors().getMaterialColor
+
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TodoList(
-    todoVM: TodoVM = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
+    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
     noteUid:String
 ) {
     val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
@@ -125,7 +124,7 @@ fun TodoList(
 @Composable
 fun TodoItem(
     todo: Todo,
-    todoVM: TodoVM,
+    todoVM: com.example.tasks.TodoVM,
     itemState: MutableState<String>,
     idState: MutableState<Long>,
     onClick: () -> Job

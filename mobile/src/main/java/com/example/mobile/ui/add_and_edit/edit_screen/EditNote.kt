@@ -56,8 +56,6 @@ import com.example.mobile.icons.EDIT_ICON
 import com.example.mobile.ui.ImageDisplayed
 import com.example.mobile.ui.add_and_edit.UrlCard
 import com.example.mobile.ui.add_and_edit.bottom_bar.AddEditBottomBar
-import com.example.mobile.ui.add_and_edit.bottom_bar.RemindingNote
-import com.example.mobile.ui.media_player_screen.NoteMediaPlayer
 import com.example.record.RecordingNote
 import com.example.mobile.ui.settings_screen.makeSound
 import com.example.mobile.vm.*
@@ -77,11 +75,11 @@ import java.io.File
 fun NoteEdit(
     navController: NavController,
     noteVM: NoteVM = hiltViewModel(),
-    exoViewModule: MediaPlayerVM = hiltViewModel(),
+    exoViewModule: com.example.media_player.MediaPlayerVM = hiltViewModel(),
     noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
     labelVM: com.example.tags.LabelVM = hiltViewModel(),
-    todoVM: TodoVM = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
+    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
     title:String?,
     description:String?,
     color: Int,
@@ -230,7 +228,7 @@ fun NoteEdit(
 
         // reminding dialog visibility.
         if (remindingDialogState.value) {
-            RemindingNote(
+            com.example.reminder.RemindingNote(
                 dialogState = remindingDialogState,
                 remindingValue = remindingValue,
                 title = titleState.value,
@@ -250,7 +248,7 @@ fun NoteEdit(
                 if (
                     File(mediaFile).exists() && !recordDialogState.value
                 ) {
-                    NoteMediaPlayer(localMediaUid = uid)
+                    com.example.media_player.NoteMediaPlayer(localMediaUid = uid)
                     audioDurationState.value =
                         exoViewModule.getMediaDuration(ctx,mediaFile).toInt()
                 }

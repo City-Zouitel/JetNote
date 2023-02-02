@@ -1,4 +1,4 @@
-package com.example.mobile.ui.media_player_screen
+package com.example.media_player
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -14,13 +14,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common_ui.AdaptingRow
+import com.example.common_ui.Cons.AUDIO_FILE
+import com.example.common_ui.Cons.MP3
+import com.example.common_ui.Icons.PAUSE_CIRCLE_FILLED_ICON
+import com.example.common_ui.Icons.PLAY_CIRCLE_FILLED_ICON
+import com.example.common_ui.Icons.TRASH_ICON
 import com.example.datastore.DataStore
-import com.example.mobile.cons.*
-import com.example.mobile.icons.PAUSE_CIRCLE_FILLED_ICON
-import com.example.mobile.icons.PLAY_CIRCLE_FILLED_ICON
-import com.example.mobile.icons.TRASH_ICON
-import com.example.mobile.ui.AdaptingRow
-import com.example.mobile.vm.MediaPlayerVM
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File

@@ -43,7 +43,7 @@ import com.example.mobile.fp.findUrlLink
 import com.example.mobile.icons.*
 import com.example.mobile.ui.ImageDisplayed
 import com.example.mobile.ui.add_and_edit.UrlCard
-import com.example.mobile.ui.media_player_screen.NoteMediaPlayer
+import com.example.media_player.NoteMediaPlayer
 import com.example.mobile.ui.navigation_drawer.Screens
 import com.example.mobile.ui.settings_screen.makeSound
 import com.example.mobile.vm.*
@@ -108,8 +108,8 @@ fun NoteCard(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun Card(
-    todoVM: TodoVM = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
+    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
     noteVM: NoteVM = hiltViewModel(),
     entity: Entity,
     navController: NavController,
@@ -214,7 +214,7 @@ private fun Card(
                 if (
                     File(mediaPath).exists()
                 ) {
-                    NoteMediaPlayer(localMediaUid = note.uid)
+                    com.example.media_player.NoteMediaPlayer(localMediaUid = note.uid)
                 }
 
         // labels.

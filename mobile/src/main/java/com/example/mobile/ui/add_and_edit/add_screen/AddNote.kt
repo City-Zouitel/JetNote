@@ -57,11 +57,10 @@ import com.example.mobile.icons.DONE_ICON
 import com.example.mobile.ui.ImageDisplayed
 import com.example.mobile.ui.add_and_edit.UrlCard
 import com.example.mobile.ui.add_and_edit.bottom_bar.AddEditBottomBar
-import com.example.mobile.ui.add_and_edit.bottom_bar.RemindingNote
-import com.example.mobile.ui.media_player_screen.NoteMediaPlayer
 import com.example.mobile.ui.settings_screen.makeSound
 import com.example.mobile.vm.*
 import com.example.record.RecordingNote
+import com.example.reminder.RemindingNote
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
 
@@ -77,11 +76,11 @@ import java.io.File
 @Composable
 fun NoteAdd(
     noteVM: NoteVM = hiltViewModel(),
-    exoVM: MediaPlayerVM = hiltViewModel(),
+    exoVM: com.example.media_player.MediaPlayerVM = hiltViewModel(),
     noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
     labelVM: com.example.tags.LabelVM = hiltViewModel(),
-    todoVM: TodoVM = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
+    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
     navController: NavController,
     uid: String,
     description: String?
@@ -258,7 +257,7 @@ fun NoteAdd(
                 if (
                     File(mediaFile).exists() && !recordDialogState.value
                 ) {
-                    NoteMediaPlayer(localMediaUid = uid)
+                    com.example.media_player.NoteMediaPlayer(localMediaUid = uid)
                     audioDurationState.value =
                         exoVM.getMediaDuration(ctx, mediaFile).toInt()
 

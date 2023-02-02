@@ -25,7 +25,7 @@
         android:requestLegacyExternalStorage="true">
 
         <receiver
-            android:name=".Notification"
+            android:name="com.example.notification.Notification"
             android:enabled="true"
             android:exported="true" />
 

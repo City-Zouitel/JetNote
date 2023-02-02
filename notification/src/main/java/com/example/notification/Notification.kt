@@ -1,4 +1,4 @@
-package com.example.mobile
+package com.example.notification
 
 import android.Manifest
 import android.content.Context
@@ -8,7 +8,12 @@ import android.graphics.BitmapFactory
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.mobile.cons.*
+import com.example.common_ui.Cons.DESCRIPTION
+import com.example.common_ui.Cons.IMAGE_FILE
+import com.example.common_ui.Cons.JPEG
+import com.example.common_ui.Cons.NOTIFICATION_ID
+import com.example.common_ui.Cons.TITLE
+import com.example.common_ui.Cons.UID
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import javax.inject.Inject

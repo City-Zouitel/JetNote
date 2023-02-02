@@ -41,8 +41,8 @@ fun SelectionTopAppBar(
     noteVM: NoteVM = hiltViewModel(),
     noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
     labelVM: com.example.tags.LabelVM = hiltViewModel(),
-    todoVM: TodoVM = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
+    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
     selectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Note>?,
     undo: (Note) -> Unit

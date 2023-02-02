@@ -1,4 +1,4 @@
-package com.example.mobile.ui.add_and_edit.bottom_bar
+package com.example.reminder
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -15,17 +15,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.common_ui.AdaptingRow
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.Cons.KEY_STANDARD
+import com.example.common_ui.Icons.CALENDAR_ICON
+import com.example.common_ui.Icons.CLOCK_ICON
+import com.example.common_ui.MatColors
+import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.SoundEffect
 import com.example.datastore.DataStore
-import com.example.mobile.cons.KEY_CLICK
-import com.example.mobile.cons.KEY_STANDARD
-import com.example.mobile.cons.SURFACE
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.icons.CALENDAR_ICON
-import com.example.mobile.icons.CLOCK_ICON
-import com.example.mobile.ui.AdaptingRow
-import com.example.mobile.ui.settings_screen.makeSound
-import com.example.mobile.vm.NotificationVM
-import com.example.mobile.vm.ReminderVM
+import com.example.notification.NotificationVM
 
 @SuppressLint(
     "UnspecifiedImmutableFlag",
@@ -42,6 +41,8 @@ fun RemindingNote(
     val ctx = LocalContext.current
     val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
+    val sound = SoundEffect()
+    val getMatColor = MatColors().getMaterialColor
     val remindingViewModel = viewModel(ReminderVM::class.java)
     val notifyVM = viewModel(NotificationVM::class.java)
 
@@ -64,7 +65,7 @@ fun RemindingNote(
                         .height(50.dp),
                     onClick = {
                         remindingViewModel.getDatePicker(ctx)
-                            .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
@@ -89,7 +90,7 @@ fun RemindingNote(
                         .height(50.dp),
                     onClick = {
                         remindingViewModel.getTimePicker(ctx)
-                            .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
@@ -119,7 +120,8 @@ fun RemindingNote(
                             title = title,
                             message = message,
                             uid = uid
-                        ).makeSound(ctx, KEY_STANDARD, thereIsSoundEffect.value)
+                        )
+                        sound.makeSound(ctx, KEY_STANDARD, thereIsSoundEffect.value)
                     }.onSuccess {
                         remindingValue?.value = remindingViewModel::getDateTimeReminder.invoke().value.time
                     }
@@ -129,7 +131,7 @@ fun RemindingNote(
                 Text(text = "Save", fontSize = 17.sp)
             }
         },
-        containerColor = getMaterialColor(SURFACE)
+        containerColor = getMatColor(SURFACE)
     )
 }
 

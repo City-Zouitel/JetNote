@@ -1,4 +1,4 @@
-package com.example.mobile.vm
+package com.example.reminder
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog

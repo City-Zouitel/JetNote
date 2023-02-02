@@ -1,4 +1,4 @@
-package com.example.mobile.di
+package com.example.notification
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -8,8 +8,8 @@ import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.mobile.cons.CHANNEL_ID
-import com.example.mobile.cons.CHANNEL_NAME
+import com.example.common_ui.Cons.CHANNEL_ID
+import com.example.common_ui.Cons.CHANNEL_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

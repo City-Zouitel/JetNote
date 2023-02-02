@@ -1,4 +1,4 @@
-package com.example.mobile.vm
+package com.example.media_player
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf

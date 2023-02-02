@@ -24,13 +24,26 @@ dependencyResolutionManagement {
 rootProject.name = "JetNote"
 
 include(
+    ":mobile"
+)
+include(
+    ":common-ui"
+)
+include(
+    "notification"
+)
+include(
+    ":ui:tags",
+    ":ui:record",
+    ":ui:camera",
+    ":ui:tasks",
+    ":ui:media-player",
+    ":ui:reminder"
+)
+include(
+    ":domain"
+)
+include(
     ":data:local",
     ":data:datastore"
 )
-include(":domain")
-include(":ui")
-include(":mobile")
-include(":ui:camera")
-include(":common-ui")
-include(":ui:tags")
-include(":ui:record")

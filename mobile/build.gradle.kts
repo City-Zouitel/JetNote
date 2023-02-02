@@ -65,9 +65,14 @@ dependencies {
     implementation(projects.ui.tags)
     implementation(projects.ui.camera)
     implementation(projects.ui.record)
+    implementation(projects.ui.tasks)
+    implementation(projects.ui.mediaPlayer)
+    implementation(projects.ui.reminder)
+    //
+    implementation(projects.notification)
     //
     implementation(projects.domain)
-    //
+    //Data Access.
     implementation(projects.data.local)
     implementation(projects.data.datastore)
 

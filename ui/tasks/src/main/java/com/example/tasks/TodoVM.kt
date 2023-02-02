@@ -1,4 +1,4 @@
-package com.example.mobile.vm
+package com.example.tasks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
