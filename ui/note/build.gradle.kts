@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.common_ui"
+    namespace = "com.example.note"
     compileSdk = 33
 
     defaultConfig {
@@ -30,22 +30,35 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.0"
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+}
+kapt {
+    correctErrorTypes = true
+
+    arguments {
+        arg("room.schemaLocation", "$projectDir/schemas")
     }
 }
-
-hilt {
-    enableAggregatingTask = true
-}
-
 dependencies {
+    implementation(projects.commonUi)
+    implementation(projects.domain)
+    implementation(projects.data.datastore)
+    implementation(projects.data.local)
+    implementation(projects.ui.reminder)
+    implementation(projects.ui.record)
+    implementation(projects.ui.tasks)
+    implementation(projects.ui.mediaPlayer)
+    implementation(projects.ui.tags)
+    implementation(projects.ui.camera)
+
     //AndroidX.
     implementation(libs.androidx.core)
     implementation(libs.androidx.corektx)
@@ -61,6 +74,15 @@ dependencies {
     implementation(libs.compose.toolingpreview)
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.constraintlayout)
+    //Dagger-Hilt
+    implementation (libs.dagger)
+    implementation (libs.dagger.hilt)
+    implementation (libs.hilt.navcomp)
+    implementation("androidx.core:core-ktx:+")
+    kapt (libs.dagger.compiler)
+    kapt (libs.hilt.compiler)
+    kapt (libs.dagger.hiltcompiler)
+
 
     //Accompanist.
     implementation(libs.accompanist.permissions)
@@ -70,28 +92,15 @@ dependencies {
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.accompanist.flowlayout)
+    //Sketchbook.
+    implementation (libs.sketchbook)
 
-    //Dagger-Hilt
-    implementation (libs.dagger)
-    implementation (libs.dagger.hilt)
-    implementation (libs.hilt.navcomp)
-    implementation("androidx.core:core-ktx:+")
-    kapt (libs.dagger.compiler)
-    kapt (libs.hilt.compiler)
-    kapt (libs.dagger.hiltcompiler)
+    //Swipe.
+    implementation (libs.swipe)
+    //Glide.
+    implementation (libs.glide)
+    implementation (libs.glide.comp)
+    kapt (libs.glide.compiler)
     //Baha-UrlPreview.
     implementation(libs.url.preview)
-    //Test.
-    testImplementation (libs.androidx.junit)
-    debugImplementation (libs.compose.manifest)
-    debugImplementation (libs.compose.uitest)
-
-    androidTestImplementation (libs.androidx.extjunit)
-    androidTestImplementation (libs.compose.junit4)
-
-    androidTestImplementation(libs.bundles.composetest) {
-        exclude(group = "androidx.core", module = "core-ktx")
-        exclude(group = "androidx.activity", module = "activity")
-        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-ktx")
-    }
 }

@@ -1,4 +1,4 @@
-package com.example.mobile.ui.add_and_edit.bottom_bar
+package com.example.note.bottom_bar
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.Icons.REDO_ICON
+import com.example.common_ui.Icons.UNDO_ICON
+import com.example.common_ui.MatColors
+import com.example.common_ui.MatColors.Companion.SURFACE_VARIANT
+import com.example.common_ui.SoundEffect
 import com.example.datastore.DataStore
-import com.example.mobile.cons.KEY_CLICK
-import com.example.mobile.icons.REDO_ICON
-import com.example.mobile.cons.SURFACE_VARIANT
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.icons.UNDO_ICON
-import com.example.mobile.ui.settings_screen.makeSound
 
 @Composable
 fun UndoRedo(
@@ -30,14 +30,17 @@ fun UndoRedo(
     val ctx = LocalContext.current
     val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
+    val getMatColor = MatColors().getMaterialColor
+    val sound = SoundEffect()
+
     Icon(
         painter = painterResource(id = UNDO_ICON),
         contentDescription = null,
-        tint = contentColorFor(backgroundColor = getMaterialColor(SURFACE_VARIANT)),
+        tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
         modifier = Modifier
             .size(20.dp)
             .clickable {
-                Unit.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
 
                 if (isTitleFieldSelected.value) {
                     if (titleFieldState.value?.isNotEmpty() == true) {
@@ -75,11 +78,11 @@ fun UndoRedo(
     Icon(
         painter = painterResource(id = REDO_ICON),
         contentDescription = null,
-        tint = contentColorFor(backgroundColor = getMaterialColor(SURFACE_VARIANT)),
+        tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
         modifier = Modifier
             .size(20.dp)
             .clickable {
-                Unit.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
 
                 if (isTitleFieldSelected.value) {
                     if (titleStack.isNotEmpty()) {

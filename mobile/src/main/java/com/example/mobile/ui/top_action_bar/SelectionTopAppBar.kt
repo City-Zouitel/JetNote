@@ -31,14 +31,13 @@ import com.example.mobile.icons.SHARE_ICON
 import com.example.mobile.icons.TRASH_ICON
 import com.example.mobile.ui.AdaptingRow
 import com.example.mobile.ui.settings_screen.makeSound
-import com.example.mobile.vm.*
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectionTopAppBar(
-    noteVM: NoteVM = hiltViewModel(),
+    noteVM: com.example.note.NoteVM = hiltViewModel(),
     noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
     labelVM: com.example.tags.LabelVM = hiltViewModel(),
     todoVM: com.example.tasks.TodoVM = hiltViewModel(),

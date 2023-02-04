@@ -28,7 +28,6 @@ import com.example.local.model.Label
 import com.example.local.model.Note
 import com.example.mobile.cons.*
 import com.example.mobile.ui.navigation_drawer.Screens.HOME_SCREEN
-import com.example.mobile.fp.filterBadWords
 import com.example.mobile.fp.getMaterialColor
 import com.example.mobile.icons.PLUS_ICON
 import com.example.mobile.ui.layouts.VerticalGrid
@@ -36,7 +35,6 @@ import com.example.mobile.ui.navigation_drawer.NavigationDrawer
 import com.example.mobile.ui.note_card.NoteCard
 import com.example.mobile.ui.settings_screen.makeSound
 import com.example.mobile.ui.top_action_bar.*
-import com.example.mobile.vm.*
 import java.util.*
 
 @SuppressLint(
@@ -47,8 +45,8 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun NoteHome(
-    noteVM: NoteVM = hiltViewModel(),
-    entityVM: EntityVM = hiltViewModel(),
+    noteVM: com.example.note.NoteVM = hiltViewModel(),
+    entityVM: com.example.note.EntityVM = hiltViewModel(),
     navController: NavController,
 ) {
     val ctx = LocalContext.current

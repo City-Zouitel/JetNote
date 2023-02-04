@@ -1,4 +1,4 @@
-package com.example.mobile.ui.todo_list
+package com.example.tasks
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -37,14 +37,14 @@ import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
 import kotlin.random.Random
 
-val getMaterialColor = MatColors().getMaterialColor
+private val getMatColor = MatColors().getMaterialColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TodoList(
-    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
-    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
+    todoVM: TodoVM = hiltViewModel(),
+    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     noteUid:String
 ) {
     val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
@@ -78,7 +78,7 @@ fun TodoList(
                     onValueChange = { itemState.value = it },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(getMaterialColor(SURFACE)),
+                        .background(getMatColor(SURFACE)),
                     placeholder = {
                         Text("Todo..", color = Color.Gray, fontSize = 19.sp)
                     },
@@ -124,7 +124,7 @@ fun TodoList(
 @Composable
 fun TodoItem(
     todo: Todo,
-    todoVM: com.example.tasks.TodoVM,
+    todoVM: TodoVM,
     itemState: MutableState<String>,
     idState: MutableState<Long>,
     onClick: () -> Job
@@ -181,7 +181,7 @@ fun TodoItem(
                         } else {
                             TextDecoration.None
                         },
-                        color = if (todo.isDone) Color.Gray else getMaterialColor(
+                        color = if (todo.isDone) Color.Gray else getMatColor(
                             ON_SURFACE
                         )
                     )

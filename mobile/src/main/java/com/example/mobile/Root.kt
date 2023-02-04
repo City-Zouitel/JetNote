@@ -8,13 +8,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.mobile.cons.*
 import com.example.mobile.ui.about_screen.AppAbout
-import com.example.mobile.ui.add_and_edit.add_screen.NoteAdd
-import com.example.mobile.ui.add_and_edit.edit_screen.NoteEdit
+import com.example.note.add_screen.NoteAdd
+import com.example.note.edit_screen.NoteEdit
 import com.example.mobile.ui.draw_screen.DrawingNote
 import com.example.mobile.ui.home_screen.NoteHome
 import com.example.mobile.ui.settings_screen.Licenses
 import com.example.mobile.ui.settings_screen.Settings
-import com.example.mobile.ui.todo_list.TodoList
+import com.example.tasks.TodoList
 import com.example.mobile.ui.trash_screen.TrashScreen
 import com.example.tags.Labels
 
@@ -38,9 +38,9 @@ fun NoteRoot(
                 type = NavType.StringType
             }
         )) {
-            NoteAdd(
+            com.example.note.add_screen.NoteAdd(
                 navController = navHostController,
-                uid = it.arguments?.getString(UID) ?:"",
+                uid = it.arguments?.getString(UID) ?: "",
                 description = it.arguments?.getString(DESCRIPTION) ?: ""
             )
         }
@@ -75,7 +75,7 @@ fun NoteRoot(
                 }
             )
         ) {
-            NoteEdit(
+            com.example.note.edit_screen.NoteEdit(
                 navController = navHostController,
                 title = it.arguments?.getString(TITLE),
                 description = it.arguments?.getString(DESCRIPTION),

@@ -1,4 +1,4 @@
-package com.example.tags
+package com.example.common_ui
 
 import androidx.compose.ui.graphics.Color
 

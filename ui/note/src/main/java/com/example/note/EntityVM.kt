@@ -1,4 +1,4 @@
-package com.example.mobile.vm
+package com.example.note
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

@@ -1,4 +1,4 @@
-package com.example.mobile.ui.add_and_edit.edit_screen
+package com.example.note.add_screen
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -43,22 +44,34 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.common_ui.*
+import com.example.common_ui.Cons.AUDIO_FILE
+import com.example.common_ui.Cons.HOME_ROUTE
+import com.example.common_ui.Cons.IMAGE_FILE
+import com.example.common_ui.Cons.JPEG
+import com.example.common_ui.Cons.KEY_STANDARD
+import com.example.common_ui.Cons.MP3
+import com.example.common_ui.Cons.NON
+import com.example.common_ui.Cons.NUL
+import com.example.common_ui.Icons.CIRCLE_ICON_18
+import com.example.common_ui.Icons.DONE_ICON
+import com.example.common_ui.MatColors.Companion.OUT_LINE_VARIANT
+import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.datastore.DataStore
 import com.example.local.model.Note
 import com.example.local.model.NoteAndLabel
 import com.example.local.model.NoteAndTodo
 import com.example.local.model.Todo
-import com.example.mobile.cons.*
-import com.example.mobile.fp.*
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.icons.CIRCLE_ICON_18
-import com.example.mobile.icons.EDIT_ICON
-import com.example.mobile.ui.ImageDisplayed
-import com.example.mobile.ui.add_and_edit.UrlCard
-import com.example.mobile.ui.add_and_edit.bottom_bar.AddEditBottomBar
+import com.example.media_player.MediaPlayerVM
+import com.example.note.UrlCard
+import com.example.note.bottom_bar.AddEditBottomBar
+import com.example.note.NoteVM
 import com.example.record.RecordingNote
-import com.example.mobile.ui.settings_screen.makeSound
-import com.example.mobile.vm.*
+import com.example.reminder.RemindingNote
+import com.example.tags.LabelVM
+import com.example.tags.NoteAndLabelVM
+import com.example.tasks.NoteAndTodoVM
+import com.example.tasks.TodoVM
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
 
@@ -69,65 +82,62 @@ import java.io.File
 @OptIn(
     ExperimentalMaterial3Api::class,
     ExperimentalMaterialApi::class,
-    ExperimentalComposeUiApi::class
+    ExperimentalComposeUiApi::class,
 )
 @Composable
-fun NoteEdit(
-    navController: NavController,
+fun NoteAdd(
     noteVM: NoteVM = hiltViewModel(),
-    exoViewModule: com.example.media_player.MediaPlayerVM = hiltViewModel(),
-    noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
-    labelVM: com.example.tags.LabelVM = hiltViewModel(),
-    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
-    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
-    title:String?,
-    description:String?,
-    color: Int,
-    textColor: Int,
-    priority: String,
-    uid:String,
-    audioDuration:Int,
-    reminding: Long
+    exoVM: MediaPlayerVM = hiltViewModel(),
+    noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
+    labelVM: LabelVM = hiltViewModel(),
+    todoVM: TodoVM = hiltViewModel(),
+    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    navController: NavController,
+    uid: String,
+    description: String?
 ) {
-
     val ctx = LocalContext.current
     val internalPath = ctx.filesDir.path
     val keyboardManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = FocusRequester()
+    val focusState = remember { mutableStateOf(false) }
 
+    val getMatColor = MatColors().getMaterialColor
+    val sound = SoundEffect()
     val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
-    val isTitleFieldFocused = remember { mutableStateOf(false) }
-    val isDescriptionFieldFocused = remember { mutableStateOf(false) }
-
-    val observeNotesAndLabels = remember(noteAndLabelVM,noteAndLabelVM::getAllNotesAndLabels).collectAsState()
+    val observeNotesAndLabels =
+        remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
     val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
 
     val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
+    val isTitleFieldFocused = remember { mutableStateOf(false) }
+    val isDescriptionFieldFocused = remember { mutableStateOf(false) }
+
     val titleState = rememberSaveable {
-        mutableStateOf(
-            if(title == NULL) null else decodeUrl.invoke(title)
-        )
+        mutableStateOf<String?>(null)
     }
 //        .filterBadWords()
 //        .filterBadEmoji()
+//        .filterBadWebsites()
 
-    val descriptionState = rememberSaveable {
-        mutableStateOf(
-            if(description == NULL) null else decodeUrl.invoke(description)
-        )
+    val descriptionState = rememberSaveable { mutableStateOf(
+        if (description == NUL) null else decodeUrl(description)
+    )
     }
 //        .filterBadWords()
 //        .filterBadEmoji()
+//        .filterBadWebsites()
 
-    val backgroundColorState = rememberSaveable { mutableStateOf(color) }
+    val backgroundColor = getMatColor(SURFACE).toArgb()
+    val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
+    val textColor = contentColorFor(getMatColor(SURFACE)).toArgb()
     val textColorState = rememberSaveable { mutableStateOf(textColor) }
-
-    val priorityState = remember { mutableStateOf(priority) }
+    val priorityState = remember { mutableStateOf(NON) }
 
     val mediaFile = "$internalPath/$AUDIO_FILE/$uid.$MP3"
 
@@ -140,7 +150,6 @@ fun NoteEdit(
 
     val imagePath = "$internalPath/$IMAGE_FILE/$uid.$JPEG"
     val bitImg = BitmapFactory.decodeFile(imagePath)
-
     val photoState = remember { mutableStateOf<Bitmap?>(bitImg) }
     val imageUriState = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
     val img by rememberSaveable { mutableStateOf(photoState) }
@@ -155,15 +164,21 @@ fun NoteEdit(
             )
         }
 
-    val sheetState = rememberBottomSheetScaffoldState()
+    val state = rememberBottomSheetScaffoldState()
 
-    val remindingValue = remember { mutableStateOf(reminding) }
+    val remindingValue = remember { mutableStateOf(0L) }
 
     val audioDurationState = remember { mutableStateOf(0) }
-    val gifUri = remember { mutableStateOf<Uri?>(null) }
+
+
+    LaunchedEffect(Unit) {
+        kotlin.runCatching {
+            focusRequester.requestFocus()
+        }
+    }
 
     BottomSheetScaffold(
-        scaffoldState = sheetState,
+        scaffoldState = state,
         sheetPeekHeight = 50.dp,
         backgroundColor = Color(backgroundColorState.value),
         modifier = Modifier
@@ -171,31 +186,35 @@ fun NoteEdit(
             .imePadding(),
         floatingActionButton = {
             Column {
-                AnimatedVisibility(visible = sheetState.bottomSheetState.isCollapsed) {
+                AnimatedVisibility(visible = state.bottomSheetState.isCollapsed) {
                     FloatingActionButton(
-                        containerColor = getMaterialColor(OUT_LINE_VARIANT),
-                        contentColor = contentColorFor(backgroundColor = getMaterialColor(OUT_LINE_VARIANT)),
+                        containerColor = getMatColor(OUT_LINE_VARIANT),
+                        contentColor = contentColorFor(
+                            backgroundColor = getMatColor(
+                                OUT_LINE_VARIANT
+                            )
+                        ),
                         onClick = {
-                            Unit.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
+                            sound.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
 
-                            noteVM.updateNote(
+                            noteVM.addNote(
                                 Note(
                                     title = titleState.value,
                                     description = descriptionState.value,
                                     priority = priorityState.value,
                                     uid = uid,
-                                    audioDuration = audioDuration,
                                     reminding = remindingValue.value,
                                     date = dateState.value.toString(),
-                                    trashed = 0,
+                                    audioDuration = audioDurationState.value,
                                     color = backgroundColorState.value,
                                     textColor = textColorState.value,
                                 )
                             )
                             navController.navigate(HOME_ROUTE)
-                        }) {
+                        }
+                    ) {
                         Icon(
-                            painter = painterResource(id = EDIT_ICON),
+                            painter = painterResource(id = DONE_ICON),
                             null
                         )
                     }
@@ -217,7 +236,7 @@ fun NoteEdit(
                 descriptionFieldState = descriptionState,
                 isTitleFieldSelected = isTitleFieldFocused,
                 isDescriptionFieldSelected = isDescriptionFieldFocused,
-                isCollapsed = sheetState
+                isCollapsed = state
             )
         }) {
 
@@ -228,7 +247,7 @@ fun NoteEdit(
 
         // reminding dialog visibility.
         if (remindingDialogState.value) {
-            com.example.reminder.RemindingNote(
+            RemindingNote(
                 dialogState = remindingDialogState,
                 remindingValue = remindingValue,
                 title = titleState.value,
@@ -238,10 +257,12 @@ fun NoteEdit(
         }
 
         LazyColumn(Modifier.fillMaxSize()) {
+
             // display the image.
             item {
                 ImageDisplayed(media = img.value?.asImageBitmap())
             }
+
             // display the media player.
             item {
                 Spacer(modifier = Modifier.height(18.dp))
@@ -250,12 +271,22 @@ fun NoteEdit(
                 ) {
                     com.example.media_player.NoteMediaPlayer(localMediaUid = uid)
                     audioDurationState.value =
-                        exoViewModule.getMediaDuration(ctx,mediaFile).toInt()
+                        exoVM.getMediaDuration(ctx, mediaFile).toInt()
+
                 }
             }
 
             // The Title.
             item {
+
+//                NoteTextField(
+//                    uid = uid,
+//                    gifUri = imageUriState,
+//                    txtHint = "Title",
+//                    txtSize = 26f,
+//                    forSingleLine = true
+//                )
+
                 OutlinedTextField(
                     value = titleState.value ?: "",
                     onValueChange = { titleState.value = it },
@@ -296,11 +327,22 @@ fun NoteEdit(
 
             //The Description.
             item {
+//                NoteTextField(
+//                    uid = uid,
+//                    gifUri = imageUriState,
+//                    txtHint = "Note",
+//                    txtSize = 18f
+//                )
+
                 OutlinedTextField(
                     value = descriptionState.value ?: "",
                     onValueChange = { descriptionState.value = it },
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .onFocusEvent {
+                            isDescriptionFieldFocused.value = it.isFocused
+                            focusState.value = it.isFocused
+                        },
                     placeholder = {
                         Text("Note", color = Color.Gray, fontSize = 19.sp)
                     },
@@ -329,7 +371,7 @@ fun NoteEdit(
                 )
             }
 
-            //
+            // TODO: fix a bag!
             item {
                 findUrlLink(descriptionState.value)?.let {
                     UrlCard(desc = it, false)
@@ -393,8 +435,8 @@ fun NoteEdit(
                         todo.item?.let { item ->
                             Text(
                                 text = item,
-                                fontSize = 14.sp,
                                 style = TextStyle(
+                                    fontSize = 14.sp,
                                     textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
                                     color = if (todo.isDone) Color.Gray else Color(textColorState.value)
                                 )
@@ -406,9 +448,11 @@ fun NoteEdit(
 
 //            // void space.
             item {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                )
             }
         }
     }

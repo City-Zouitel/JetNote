@@ -47,3 +47,4 @@ include(
     ":data:local",
     ":data:datastore"
 )
+include(":ui:note")

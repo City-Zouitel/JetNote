@@ -21,15 +21,14 @@ import com.example.local.model.Label
 import com.example.local.model.Note
 import com.example.mobile.cons.*
 import com.example.mobile.ui.navigation_drawer.Screens.TRASH_SCREEN
-import com.example.mobile.fp.filterBadWords
 import com.example.mobile.fp.getMaterialColor
 import com.example.mobile.ui.layouts.VerticalGrid
 import com.example.mobile.ui.navigation_drawer.NavigationDrawer
 import com.example.mobile.ui.note_card.NoteCard
 import com.example.mobile.ui.top_action_bar.NoteTopAppBar
 import com.example.mobile.ui.top_action_bar.dialogs.EraseDialog
-import com.example.mobile.vm.EntityVM
-import com.example.mobile.vm.NoteVM
+import com.example.note.EntityVM
+import com.example.note.NoteVM
 import java.io.File
 
 @SuppressLint(
@@ -39,8 +38,8 @@ import java.io.File
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrashScreen(
-    viewModule: NoteVM = hiltViewModel(),
-    entityVM: EntityVM = hiltViewModel(),
+    viewModule: com.example.note.NoteVM = hiltViewModel(),
+    entityVM: com.example.note.EntityVM = hiltViewModel(),
     navController: NavController,
 ) {
     val ctx = LocalContext.current

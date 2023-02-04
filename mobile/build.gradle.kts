@@ -68,6 +68,7 @@ dependencies {
     implementation(projects.ui.tasks)
     implementation(projects.ui.mediaPlayer)
     implementation(projects.ui.reminder)
+    implementation(projects.ui.note)
     //
     implementation(projects.notification)
     //

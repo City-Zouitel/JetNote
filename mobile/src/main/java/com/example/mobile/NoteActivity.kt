@@ -19,7 +19,7 @@ import com.example.datastore.DataStore
 import com.example.mobile.cons.*
 import com.example.mobile.fp.checkIntents
 import com.example.mobile.fp.urlPreview
-import com.example.mobile.vm.NoteVM
+import com.example.note.NoteVM
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -28,7 +28,7 @@ import java.util.*
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
 
-    val vm = viewModels<NoteVM>()
+    val vm = viewModels<com.example.note.NoteVM>()
 
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {

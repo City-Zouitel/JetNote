@@ -1,4 +1,4 @@
-package com.example.mobile.ui.add_and_edit.bottom_bar
+package com.example.note.bottom_bar
 
 import android.Manifest.permission
 import android.annotation.SuppressLint
@@ -27,14 +27,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
+import com.example.common_ui.Cons.DRAW_ROUTE
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.Cons.KEY_STANDARD
+import com.example.common_ui.Icons.CAMERA_ICON
+import com.example.common_ui.Icons.GESTURE_ICON
+import com.example.common_ui.Icons.IMAGE_ICON
+import com.example.common_ui.Icons.LIST_CHECK_ICON
+import com.example.common_ui.Icons.MIC_ICON
+import com.example.common_ui.Icons.TAGS_ICON
+import com.example.common_ui.SoundEffect
+import com.example.common_ui.getColorOfPriority
+import com.example.common_ui.getPriorityOfColor
+import com.example.common_ui.listOfPriorityColors
 import com.example.datastore.DataStore
 import com.example.local.model.Note
-import com.example.mobile.cons.*
-import com.example.mobile.fp.getColorOfPriority
-import com.example.mobile.fp.getPriorityOfColor
-import com.example.mobile.icons.*
-import com.example.mobile.ui.coloration.listOfPriorityColors
-import com.example.mobile.ui.settings_screen.makeSound
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
@@ -51,6 +58,8 @@ internal fun Plus(
 ) {
     val ctx = LocalContext.current
     val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+
+    val sound = SoundEffect()
 
     val permissionState = rememberMultiplePermissionsState(
         listOf(
@@ -76,7 +85,7 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(IMAGE_ICON), null) },
             onClick = {
                 imageLaunch.launch("image/*")
-                    .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             }
         )
@@ -98,7 +107,7 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(MIC_ICON), null) },
             onClick = {
                 permissionState.launchMultiplePermissionRequest()
-                    .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 recordDialogState.value = permissionState.allPermissionsGranted
                 isShow.value = false
             }
@@ -123,7 +132,8 @@ internal fun Plus(
                             note.uid + "/" +
                             note.audioDuration + "/" +
                             note.reminding
-                ).makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                )
+                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             }
         )
@@ -132,7 +142,7 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(TAGS_ICON), null) },
             onClick = {
                 navController.navigate("labels/${note.uid}")
-                    .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             }
         )
@@ -141,7 +151,7 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(LIST_CHECK_ICON), null) },
             onClick = {
                 navController.navigate("todo/${note.uid}")
-                    .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             }
         )
@@ -156,7 +166,7 @@ internal fun Plus(
                                 .clickable {
                                     currentColor.value = it
                                     priorityColorState.value = getPriorityOfColor(it)
-                                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                                 }
                         ) {
                             drawArc(
@@ -177,7 +187,7 @@ internal fun Plus(
                 }
             },
             onClick = {
-                Unit.makeSound(ctx, KEY_STANDARD, thereIsSoundEffect.value)
+                sound.makeSound(ctx, KEY_STANDARD, thereIsSoundEffect.value)
             }
         )
     }

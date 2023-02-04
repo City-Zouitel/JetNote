@@ -1,4 +1,4 @@
-package com.example.mobile.fp
+package com.example.common_ui
 
 import android.content.Context
 import android.content.Intent
@@ -12,48 +12,16 @@ import androidx.navigation.NavHostController
 import com.baha.url.preview.BahaUrlPreview
 import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
-import com.example.local.model.Note
-import com.example.mobile.cons.*
-import com.example.note.NoteVM
+import com.example.common_ui.Cons.ADD_ROUTE
+import com.example.common_ui.Cons.IMPORTANT
+import com.example.common_ui.Cons.LOW
+import com.example.common_ui.Cons.NON
+import com.example.common_ui.Cons.NORMAL
+import com.example.common_ui.Cons.URGENT
 import kotlinx.coroutines.*
 import java.io.File
 import java.net.URL
 import java.util.*
-
-//
-internal val getMaterialColor: @Composable (String) -> Color = {
-    mapOf(
-        SURFACE to MaterialTheme.colorScheme.surface,
-        INVERSE_SURFACE to MaterialTheme.colorScheme.inverseSurface,
-        ON_SURFACE to MaterialTheme.colorScheme.onSurface,
-        INVERSE_ON_SURFACE to MaterialTheme.colorScheme.inverseOnSurface,
-        SURFACE_VARIANT to MaterialTheme.colorScheme.surfaceVariant,
-        ON_SURFACE_VARIANT to MaterialTheme.colorScheme.onSurfaceVariant,
-        SURFACE_TINT to MaterialTheme.colorScheme.surfaceTint,
-        ERROR to MaterialTheme.colorScheme.error,
-        ON_ERROR to MaterialTheme.colorScheme.onError,
-        ERROR_CONTAINER to MaterialTheme.colorScheme.errorContainer,
-        ON_ERROR_CONTAINER to MaterialTheme.colorScheme.onErrorContainer,
-        BACKGROUND to MaterialTheme.colorScheme.background,
-        ON_BACKGROUND to MaterialTheme.colorScheme.onBackground,
-        PRIMARY to MaterialTheme.colorScheme.primary,
-        ON_PRIMARY to MaterialTheme.colorScheme.onPrimary,
-        INVERSE_PRIMARY to MaterialTheme.colorScheme.inversePrimary,
-        PRIMARY_CONTAINER to MaterialTheme.colorScheme.primaryContainer,
-        ON_PRIMARY_CONTAINER to MaterialTheme.colorScheme.onPrimaryContainer,
-        SECONDARY to MaterialTheme.colorScheme.secondary,
-        ON_SECONDARY to MaterialTheme.colorScheme.onSecondary,
-        SECONDARY_CONTAINER to MaterialTheme.colorScheme.secondaryContainer,
-        ON_SECONDARY_CONTAINER to MaterialTheme.colorScheme.onSecondaryContainer,
-        TERTIARY to MaterialTheme.colorScheme.tertiary,
-        ON_TERTIARY to MaterialTheme.colorScheme.onTertiary,
-        TERTIARY_CONTAINER to MaterialTheme.colorScheme.tertiaryContainer,
-        ON_TERTIARY_CONTAINER to MaterialTheme.colorScheme.onTertiaryContainer,
-        OUTLINE to MaterialTheme.colorScheme.outline,
-        OUT_LINE_VARIANT to MaterialTheme.colorScheme.outlineVariant,
-        SCRIM to MaterialTheme.colorScheme.scrim,
-    ).getValue(it)
-}
 
 //
 internal val sharApp: (Context, String) -> Unit = { ctx, txt ->
@@ -105,33 +73,6 @@ internal val callNumber: (Context,String) -> Unit = { ctx, number ->
             null
         )
     )
-}
-
-//
-fun copyNote(
-    ctx: Context,
-    noteVM: com.example.note.NoteVM,
-    note: Note,
-    uid:UUID,
-    cc : () -> Unit
-) {
-    noteVM.addNote(
-        note.copy(uid = uid.toString())
-    )
-    //
-    "${ctx.filesDir.path}/$IMAGE_FILE/".apply {
-        File("$this${note.uid}.$JPEG").let {
-            if (it.exists()) it.copyTo(File("${this}${uid}.$JPEG"))
-        }
-    }
-    //
-    "${ctx.filesDir.path}/$AUDIO_FILE/".apply {
-        File("$this${note.uid}.$MP3").let {
-            if (it.exists()) it.copyTo(File("$this${uid}.$MP3"))
-        }
-    }
-    //
-    cc.invoke()
 }
 
 //
@@ -200,7 +141,7 @@ fun MutableState<String?>.filterBadWebsites():MutableState<String?> {
 }
 
 //
-internal val getPriorityOfColor: (Color) -> String = {
+val getPriorityOfColor: (Color) -> String = {
     when (it) {
         Color.Red -> URGENT
         Color.Yellow -> IMPORTANT
@@ -213,7 +154,7 @@ internal val getPriorityOfColor: (Color) -> String = {
 }
 
     //
-internal val getColorOfPriority: (String) -> Color = {
+val getColorOfPriority: (String) -> Color = {
     when (it) {
         URGENT -> Color.Red
         IMPORTANT -> Color.Yellow

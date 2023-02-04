@@ -1,4 +1,4 @@
-package com.example.mobile.ui.add_and_edit
+package com.example.note
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -19,9 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.mobile.fp.findUrlLink
-import com.example.mobile.fp.urlPreview
-import com.example.mobile.icons.GLOBE_ICON
+import com.example.common_ui.Icons.GLOBE_ICON
+import com.example.common_ui.findUrlLink
+import com.example.common_ui.urlPreview
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(

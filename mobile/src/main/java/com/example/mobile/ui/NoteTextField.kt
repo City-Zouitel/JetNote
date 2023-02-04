@@ -13,12 +13,12 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.core.view.inputmethod.InputConnectionCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.mobile.vm.NoteVM
+import com.example.note.NoteVM
 
 
 @Composable
 fun NoteTextField(
-    noteVM: NoteVM = hiltViewModel(),
+    noteVM: com.example.note.NoteVM = hiltViewModel(),
     uid: String,
     txtHint: String = "",
     txtSize: Float = 20f,

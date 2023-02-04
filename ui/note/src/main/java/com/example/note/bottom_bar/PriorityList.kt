@@ -1,4 +1,4 @@
-package com.example.mobile.ui.add_and_edit.bottom_bar
+package com.example.note.bottom_bar
 
 import androidx.compose.foundation.background
 import androidx.compose.material3.DropdownMenu
@@ -12,8 +12,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
-import com.example.mobile.icons.CIRCLE_ICON
-import com.example.mobile.cons.*
+import com.example.common_ui.Cons.IMPORTANT
+import com.example.common_ui.Cons.LOW
+import com.example.common_ui.Cons.NON
+import com.example.common_ui.Cons.NORMAL
+import com.example.common_ui.Cons.URGENT
+import com.example.common_ui.Icons.CIRCLE_ICON
 
 @Composable
 internal fun PriorityList(

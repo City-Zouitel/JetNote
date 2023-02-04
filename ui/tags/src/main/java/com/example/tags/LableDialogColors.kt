@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common_ui.listOfBackgroundColors
 import com.example.local.model.Label
 
 @Composable

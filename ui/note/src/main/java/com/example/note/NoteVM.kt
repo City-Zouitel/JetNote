@@ -1,4 +1,4 @@
-package com.example.mobile.vm
+package com.example.note
 
 import android.content.ContentValues
 import android.content.Context
@@ -26,10 +26,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.target.Target.*
 import com.bumptech.glide.request.transition.Transition
+import com.example.common_ui.Cons.IMAGE_FILE
+import com.example.common_ui.Cons.JPEG
 import com.example.domain.reposImpl.NoteRepoImp
 import com.example.local.model.Note
-import com.example.mobile.cons.IMAGE_FILE
-import com.example.mobile.cons.JPEG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -28,7 +28,7 @@ import com.example.mobile.cons.*
 import com.example.mobile.fp.getMaterialColor
 import com.example.mobile.icons.*
 import com.example.mobile.ui.AdaptingRow
-import com.example.mobile.vm.NoteVM
+import com.example.note.NoteVM
 import io.getstream.sketchbook.ColorPickerDialog
 import io.getstream.sketchbook.PaintColorPalette
 import io.getstream.sketchbook.Sketchbook
@@ -39,7 +39,7 @@ import java.io.File
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DrawingNote(
-    viewModule: NoteVM = hiltViewModel(),
+    viewModule: com.example.note.NoteVM = hiltViewModel(),
     navController: NavController,
     title: String,
     description: String,

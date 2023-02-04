@@ -42,11 +42,9 @@ import com.example.mobile.fp.codeUrl
 import com.example.mobile.fp.findUrlLink
 import com.example.mobile.icons.*
 import com.example.mobile.ui.ImageDisplayed
-import com.example.mobile.ui.add_and_edit.UrlCard
-import com.example.media_player.NoteMediaPlayer
+import com.example.note.UrlCard
 import com.example.mobile.ui.navigation_drawer.Screens
 import com.example.mobile.ui.settings_screen.makeSound
-import com.example.mobile.vm.*
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -110,7 +108,7 @@ fun NoteCard(
 private fun Card(
     todoVM: com.example.tasks.TodoVM = hiltViewModel(),
     noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
-    noteVM: NoteVM = hiltViewModel(),
+    noteVM: com.example.note.NoteVM = hiltViewModel(),
     entity: Entity,
     navController: NavController,
     forScreens: Screens,
@@ -320,7 +318,7 @@ private fun Card(
         }
 
         findUrlLink(note.description)?.let{
-            UrlCard(desc = it, true)
+            com.example.note.UrlCard(desc = it, true)
         }
 
         AnimatedVisibility(visible = todoListState, modifier = Modifier.height(100.dp)) {

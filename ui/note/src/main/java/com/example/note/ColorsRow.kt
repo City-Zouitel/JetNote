@@ -1,4 +1,4 @@
-package com.example.mobile.ui.add_and_edit
+package com.example.note
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -16,11 +16,11 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.MatColors
+import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.SoundEffect
 import com.example.datastore.DataStore
-import com.example.mobile.cons.KEY_CLICK
-import com.example.mobile.cons.SURFACE
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.ui.settings_screen.makeSound
 
 @Composable
 fun ColorsRow(
@@ -32,11 +32,14 @@ fun ColorsRow(
     val ctx = LocalContext.current
     val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
 
+    val getMatColor = MatColors().getMaterialColor
+    val sound = SoundEffect()
+
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
             .height(55.dp)
-            .background(getMaterialColor(SURFACE)),
+            .background(getMatColor(SURFACE)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -47,7 +50,7 @@ fun ColorsRow(
                     .clickable {
                         currentColor.value = it
                         colorState.value = it.toArgb()
-                        Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     }
             ){
                 drawArc(color = it,
