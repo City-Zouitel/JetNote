@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.datastore.DataStore
+import com.example.graph.Graph
 import com.example.mobile.cons.*
 import com.example.mobile.fp.checkIntents
 import com.example.mobile.fp.urlPreview
@@ -28,7 +29,7 @@ import java.util.*
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
 
-    val vm = viewModels<com.example.note.NoteVM>()
+    val vm = viewModels<NoteVM>()
 
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +44,7 @@ class NoteActivity : ComponentActivity() {
             checkIntents(intent, this@NoteActivity, navHostController, scope)
 
             AppTheme {
-                NoteRoot(navHostController)
+                Graph(navHostController)
 //                LinearBlock()
             }
         }

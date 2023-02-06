@@ -52,6 +52,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+//    dynamicFeatures += setOf(":ui:graph")
 }
 
 hilt {
@@ -60,22 +61,10 @@ hilt {
 
 dependencies {
 
-    //Projects.
-    //
-    implementation(projects.ui.tags)
-    implementation(projects.ui.camera)
-    implementation(projects.ui.record)
-    implementation(projects.ui.tasks)
-    implementation(projects.ui.mediaPlayer)
-    implementation(projects.ui.reminder)
     implementation(projects.ui.note)
-    //
-    implementation(projects.notification)
-    //
-    implementation(projects.domain)
-    //Data Access.
-    implementation(projects.data.local)
     implementation(projects.data.datastore)
+    implementation(projects.notification)
+    implementation(projects.ui.graph)
 
     //AndroidX.
     implementation(libs.androidx.core)
@@ -113,42 +102,42 @@ dependencies {
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
 
-    //Accompanist.
-    implementation(libs.accompanist.permissions)
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
-    implementation(libs.accompanist.systemuicontroller)
-    implementation(libs.accompanist.navigation.animation)
-    implementation(libs.accompanist.swiperefresh)
-    implementation(libs.accompanist.flowlayout)
+//    //Accompanist.
+//    implementation(libs.accompanist.permissions)
+//    implementation(libs.accompanist.pager)
+//    implementation(libs.accompanist.pager.indicators)
+//    implementation(libs.accompanist.systemuicontroller)
+//    implementation(libs.accompanist.navigation.animation)
+//    implementation(libs.accompanist.swiperefresh)
+//    implementation(libs.accompanist.flowlayout)
 
-    // ExoPlayer
-    api(libs.exoplayer.core)
-    api(libs.exoplayer.ui)
-    api(libs.exoplayer.extension)
-
-    // CameraX
-    implementation (libs.camerax.core)
-    implementation (libs.camerax.lifecycle)
-    implementation (libs.camerax.view)
-    implementation (libs.camerax.extensions)
-
-    //Sketchbook.
-    implementation (libs.sketchbook)
-
-    //Swipe.
-    implementation (libs.swipe)
+//    // ExoPlayer
+//    api(libs.exoplayer.core)
+//    api(libs.exoplayer.ui)
+//    api(libs.exoplayer.extension)
+//
+//    // CameraX
+//    implementation (libs.camerax.core)
+//    implementation (libs.camerax.lifecycle)
+//    implementation (libs.camerax.view)
+//    implementation (libs.camerax.extensions)
+//
+//    //Sketchbook.
+//    implementation (libs.sketchbook)
+//
+//    //Swipe.
+//    implementation (libs.swipe)
 
     //Global Exception Handler.
     implementation (libs.globalexception)
 
-    //Glide.
-    implementation (libs.glide)
-    implementation (libs.glide.comp)
-    kapt (libs.glide.compiler)
+//    //Glide.
+//    implementation (libs.glide)
+//    implementation (libs.glide.comp)
+//    kapt (libs.glide.compiler)
 
-    //License.
-    implementation (libs.aboutlibraries.comp)
+//    //License.
+//    implementation (libs.aboutlibraries.comp)
 
 //    //Retrofit.
 //    implementation(libs.retrofit)
@@ -159,13 +148,13 @@ dependencies {
 //    implementation(libs.okhttp.bom.interceptor)
 
     //Serialization.
-    implementation(libs.kotlinx.serialization)
+//    implementation(libs.kotlinx.serialization)
 
     //Baha-UrlPreview.
-    implementation(libs.url.preview)
+//    implementation(libs.url.preview)
 
     //Beetle.
-    implementation(libs.beetle)
+//    implementation(libs.beetle)
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")

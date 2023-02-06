@@ -24,7 +24,7 @@ import java.net.URL
 import java.util.*
 
 //
-internal val sharApp: (Context, String) -> Unit = { ctx, txt ->
+val sharApp: (Context, String) -> Unit = { ctx, txt ->
     ctx.startActivity(
         Intent.createChooser(
             Intent().apply {
@@ -38,7 +38,7 @@ internal val sharApp: (Context, String) -> Unit = { ctx, txt ->
 }
 
 //
-internal val sharNote: (Context, String, String, then: () -> Unit) -> Unit = { ctx, title, description ,then ->
+val sharNote: (Context, String, String, then: () -> Unit) -> Unit = { ctx, title, description ,then ->
     ctx.startActivity(
         Intent.createChooser(
             Intent().apply {
@@ -64,7 +64,7 @@ val mailTo: (Context, String) -> Unit = { ctx, to ->
 }
 
 //
-internal val callNumber: (Context,String) -> Unit = { ctx, number ->
+val callNumber: (Context,String) -> Unit = { ctx, number ->
     ctx.startActivity(
         Intent.createChooser(
             Intent(Intent.ACTION_DIAL).apply {
@@ -166,7 +166,7 @@ val getColorOfPriority: (String) -> Color = {
     }
 }
 
-internal fun checkIntents(
+fun checkIntents(
     intent: Intent,
     ctx: Context,
     navHC: NavHostController,

@@ -48,3 +48,4 @@ include(
     ":data:datastore"
 )
 include(":ui:note")
+include(":ui:graph")

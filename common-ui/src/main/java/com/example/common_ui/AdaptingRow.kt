@@ -23,7 +23,7 @@ fun RowScope.AdaptingRow(
 }
 
 @Composable
-internal fun Unit.AdaptingRowBetween(
+fun AdaptingRowBetween(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
