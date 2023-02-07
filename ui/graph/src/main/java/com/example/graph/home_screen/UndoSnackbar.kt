@@ -1,13 +1,13 @@
-package com.example.mobile.ui.home_screen
+package com.example.graph.home_screen
 
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.State
+import com.example.common_ui.Cons.TRASH_MESSAGE
+import com.example.common_ui.Cons.UNDO
 import com.example.local.model.Entity
 import com.example.local.model.Note
-import com.example.mobile.cons.TRASH_MESSAGE
-import com.example.mobile.cons.UNDO
-import com.example.mobile.vm.NoteVM
+import com.example.note.NoteVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

@@ -1,4 +1,4 @@
-package com.example.mobile.ui.note_card
+package com.example.graph.note_card
 
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -14,8 +14,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
+import com.example.common_ui.getColorOfPriority
 import com.example.local.model.Note
-import com.example.mobile.fp.getColorOfPriority
 
 val DrawScope.clipNotePath: (Note) -> Unit get() = {
     clipPath(

@@ -16,7 +16,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.common_ui.Cons.APP_NAME
 import com.example.common_ui.MatColors.Companion.ON_SURFACE
-import com.example.graph.R
+import com.example.graph.getMaterialColor
 
 
 @OptIn(ExperimentalGlideComposeApi::class)

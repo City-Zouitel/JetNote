@@ -1,4 +1,4 @@
-package com.example.mobile.ui.home_screen
+package com.example.graph.home_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
@@ -22,21 +22,33 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.common_ui.Cons.ADD_ROUTE
+import com.example.common_ui.Cons.HOME_ROUTE
+import com.example.common_ui.Cons.KEY_STANDARD
+import com.example.common_ui.Cons.NUL
+import com.example.common_ui.Cons.ORDER_BY_NAME
+import com.example.common_ui.Cons.ORDER_BY_NEWEST
+import com.example.common_ui.Cons.ORDER_BY_OLDEST
+import com.example.common_ui.Cons.ORDER_BY_PRIORITY
+import com.example.common_ui.Cons.ORDER_BY_REMINDER
+import com.example.common_ui.Cons.SEARCH_IN_LOCAL
+import com.example.common_ui.Icons.PLUS_ICON
+import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MatColors.Companion.SURFACE_VARIANT
+import com.example.common_ui.VerticalGrid
 import com.example.datastore.DataStore
+import com.example.graph.getMaterialColor
+import com.example.graph.navigation_drawer.NavigationDrawer
+import com.example.graph.navigation_drawer.Screens.HOME_SCREEN
+import com.example.graph.note_card.NoteCard
+import com.example.graph.sound
+import com.example.graph.top_action_bar.NoteTopAppBar
+import com.example.graph.top_action_bar.SelectionTopAppBar
 import com.example.local.model.Entity
 import com.example.local.model.Label
 import com.example.local.model.Note
-import com.example.mobile.cons.*
-import com.example.mobile.ui.navigation_drawer.Screens.HOME_SCREEN
-import com.example.mobile.fp.filterBadWords
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.icons.PLUS_ICON
-import com.example.mobile.ui.layouts.VerticalGrid
-import com.example.mobile.ui.navigation_drawer.NavigationDrawer
-import com.example.mobile.ui.note_card.NoteCard
-import com.example.mobile.ui.settings_screen.makeSound
-import com.example.mobile.ui.top_action_bar.*
-import com.example.mobile.vm.*
+import com.example.note.EntityVM
+import com.example.note.NoteVM
 import java.util.*
 
 @SuppressLint(
@@ -157,9 +169,9 @@ fun NoteHome(
                         )
                     },
                     onClick = {
-                        Unit.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
+                        sound.makeSound.invoke(ctx, KEY_STANDARD, thereIsSoundEffect.value)
 
-                        navController.navigate("$ADD_ROUTE/$uid/$NULL")
+                        navController.navigate("$ADD_ROUTE/$uid/$NUL")
                     },
                     expanded = scrollBehavior.state.collapsedFraction != 1f,
                     containerColor = getMaterialColor(SURFACE_VARIANT),

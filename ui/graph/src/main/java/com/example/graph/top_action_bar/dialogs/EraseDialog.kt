@@ -1,4 +1,4 @@
-package com.example.mobile.ui.top_action_bar.dialogs
+package com.example.graph.top_action_bar.dialogs
 
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.AlertDialog
@@ -10,11 +10,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.MatColors.Companion.SURFACE_TINT
 import com.example.datastore.DataStore
-import com.example.mobile.cons.KEY_CLICK
-import com.example.mobile.cons.SURFACE_TINT
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.ui.settings_screen.makeSound
+import com.example.graph.getMaterialColor
+import com.example.graph.sound
 
 @Composable
 fun EraseDialog(
@@ -34,7 +34,7 @@ fun EraseDialog(
                     fontSize = 17.sp
                 ),
                 onClick = {
-                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     confirmation.invoke()
                     dialogState.value = false
                 }
@@ -48,7 +48,7 @@ fun EraseDialog(
                     fontSize = 17.sp
                 ),
                 onClick = {
-                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     dialogState.value = false
                 }
             )

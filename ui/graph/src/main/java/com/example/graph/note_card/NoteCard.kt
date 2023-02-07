@@ -1,9 +1,12 @@
-package com.example.mobile.ui.note_card
+package com.example.graph.note_card
 
 import android.net.Uri
 import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -30,23 +33,34 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.common_ui.Cons.AUDIOS
+import com.example.common_ui.Cons.EDIT_ROUTE
+import com.example.common_ui.Cons.IMAGES
+import com.example.common_ui.Cons.JPEG
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.Cons.MP3
+import com.example.common_ui.Cons.NON
+import com.example.common_ui.Icons.ANGLE_DOWN_ICON
+import com.example.common_ui.Icons.ANGLE_UP_ICON
+import com.example.common_ui.Icons.CIRCLE_ICON_18
+import com.example.common_ui.Icons.CLOCK_ICON
+import com.example.common_ui.Icons.RESET_ICON
+import com.example.common_ui.codeUrl
+import com.example.common_ui.findUrlLink
 import com.example.datastore.DataStore
+import com.example.graph.ImageDisplayed
+import com.example.graph.navigation_drawer.Screens
+import com.example.graph.navigation_drawer.Screens.HOME_SCREEN
+import com.example.graph.navigation_drawer.Screens.TRASH_SCREEN
+import com.example.graph.sound
 import com.example.local.model.Entity
 import com.example.local.model.Note
 import com.example.local.model.NoteAndTodo
 import com.example.local.model.Todo
-import com.example.mobile.cons.*
-import com.example.mobile.ui.navigation_drawer.Screens.HOME_SCREEN
-import com.example.mobile.ui.navigation_drawer.Screens.TRASH_SCREEN
-import com.example.mobile.fp.codeUrl
-import com.example.mobile.fp.findUrlLink
-import com.example.mobile.icons.*
-import com.example.mobile.ui.ImageDisplayed
-import com.example.mobile.ui.add_and_edit.UrlCard
-import com.example.media_player.NoteMediaPlayer
-import com.example.mobile.ui.navigation_drawer.Screens
-import com.example.mobile.ui.settings_screen.makeSound
-import com.example.mobile.vm.*
+import com.example.note.NoteVM
+import com.example.note.UrlCard
+import com.example.tasks.NoteAndTodoVM
+import com.example.tasks.TodoVM
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -108,8 +122,8 @@ fun NoteCard(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun Card(
-    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
-    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
+    todoVM: TodoVM = hiltViewModel(),
+    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     noteVM: NoteVM = hiltViewModel(),
     entity: Entity,
     navController: NavController,
@@ -128,8 +142,8 @@ private fun Card(
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
-    val mediaPath = ctx.filesDir.path + "/$AUDIO_FILE/" + note.uid + "." + MP3
-    val imagePath = "$internalPath/$IMAGE_FILE/${note.uid}.$JPEG"
+    val mediaPath = ctx.filesDir.path + "/$AUDIOS/" + note.uid + "." + MP3
+    val imagePath = "$internalPath/$IMAGES/${note.uid}.$JPEG"
 
     var todoListState by remember { mutableStateOf(false) }
     val media = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
@@ -149,7 +163,7 @@ private fun Card(
                     selectedNotes?.add(note)
                 }
             ) {
-                Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
 
                 if (forScreens == HOME_SCREEN && !selectionState?.value!!) {
                     navController.navigate(

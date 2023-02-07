@@ -1,4 +1,4 @@
-package com.example.mobile.ui.settings_screen
+package com.example.graph.settings_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize

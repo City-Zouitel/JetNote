@@ -1,4 +1,4 @@
-package com.example.mobile.ui.about_screen
+package com.example.graph.about_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -11,12 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
-import com.example.graph.about_screen.AboutContent
-import com.example.graph.about_screen.AboutLabel
-import com.example.mobile.cons.SURFACE
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.ui.navigation_drawer.NavigationDrawer
-import com.example.mobile.ui.top_action_bar.CustomTopAppBar
+import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.graph.getMaterialColor
+import com.example.graph.navigation_drawer.NavigationDrawer
+import com.example.graph.top_action_bar.CustomTopAppBar
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

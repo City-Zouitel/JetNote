@@ -1,4 +1,4 @@
-package com.example.mobile.ui.top_action_bar
+package com.example.graph.top_action_bar
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -13,15 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.common_ui.AdaptingRow
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.Icons.BROOM_ICON
+import com.example.common_ui.Icons.MENU_BURGER_ICON
+import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.datastore.DataStore
+import com.example.graph.getMaterialColor
+import com.example.graph.sound
 import com.example.local.model.Label
-import com.example.mobile.cons.KEY_CLICK
-import com.example.mobile.icons.BROOM_ICON
-import com.example.mobile.icons.MENU_BURGER_ICON
-import com.example.mobile.cons.SURFACE
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.ui.AdaptingRow
-import com.example.mobile.ui.settings_screen.makeSound
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,7 +53,7 @@ fun NoteTopAppBar(
                             null,
                             modifier = Modifier.clickable {
                                 scope.launch {
-                                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                                     drawerState.open()
                                 }
                             }

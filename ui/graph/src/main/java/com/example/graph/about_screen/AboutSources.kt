@@ -1,4 +1,4 @@
-package com.example.mobile.ui.about_screen
+package com.example.graph.about_screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -14,13 +14,13 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.Icons.GITHUB_ICON
+import com.example.common_ui.MatColors.Companion.ON_SURFACE
+import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.datastore.DataStore
-import com.example.mobile.cons.KEY_CLICK
-import com.example.mobile.cons.ON_SURFACE
-import com.example.mobile.cons.SURFACE
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.icons.GITHUB_ICON
-import com.example.mobile.ui.settings_screen.makeSound
+import com.example.graph.getMaterialColor
+import com.example.graph.sound
 
 @Composable
 fun AboutSources() {
@@ -39,7 +39,7 @@ fun AboutSources() {
         }
     ) {
         uri.openUri("https://github.com/City-Zouitel/JetNote")
-            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+        sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
 
     }
 }
@@ -77,3 +77,5 @@ fun Opensource(
         }
     }
 }
+
+

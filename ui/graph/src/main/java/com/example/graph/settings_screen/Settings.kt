@@ -1,4 +1,4 @@
-package com.example.mobile.ui.settings_screen
+package com.example.graph.settings_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
@@ -20,14 +20,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.common_ui.AdaptingRowBetween
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.MatColors.Companion.ON_SURFACE
+import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.datastore.DataStore
-import com.example.mobile.cons.KEY_CLICK
-import com.example.mobile.cons.ON_SURFACE
-import com.example.mobile.cons.SURFACE
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.ui.AdaptingRowBetween
-import com.example.mobile.ui.navigation_drawer.NavigationDrawer
-import com.example.mobile.ui.top_action_bar.CustomTopAppBar
+import com.example.graph.getMaterialColor
+import com.example.graph.navigation_drawer.NavigationDrawer
+import com.example.graph.sound
+import com.example.graph.top_action_bar.CustomTopAppBar
 import kotlinx.coroutines.launch
 
 @SuppressLint(
@@ -87,7 +88,7 @@ fun Settings(
                         description = "This application following the system mode by default.",
                         active = isDarkTheme.value
                     ) {
-                        Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                         scope.launch {
                             dataStore.saveTheme(!isDarkTheme.value)
                         }
@@ -105,7 +106,7 @@ fun Settings(
                         active = thereIsSoundEffect.value
                     ) {
                         scope.launch {
-                            Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                             dataStore.saveSoundEffect(!thereIsSoundEffect.value)
                         }
                     }
@@ -117,7 +118,7 @@ fun Settings(
 
                 item {
                     PreferenceItem(title = "Licenses", description = "Public repositories on GitHub are often used to share open source software.") {
-                        Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                         navC.navigate("licenses")
                     }
                 }
@@ -141,7 +142,7 @@ private fun PreferenceItem(
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
     ) {
-        Unit.AdaptingRowBetween(
+        AdaptingRowBetween(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(

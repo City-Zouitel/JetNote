@@ -1,4 +1,4 @@
-package com.example.mobile.ui.top_action_bar
+package com.example.graph.top_action_bar
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,14 +19,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
+import com.example.common_ui.Cons.KEY_INVALID
+import com.example.common_ui.Icons.CIRCLE_ICON_18
+import com.example.common_ui.Icons.CROSS_ICON
+import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.datastore.DataStore
+import com.example.graph.getMaterialColor
+import com.example.graph.sound
 import com.example.local.model.Label
-import com.example.mobile.cons.KEY_INVALID
-import com.example.mobile.cons.SURFACE
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.icons.CIRCLE_ICON_18
-import com.example.mobile.icons.CROSS_ICON
-import com.example.mobile.ui.settings_screen.makeSound
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -62,8 +62,7 @@ internal fun SearchField(
                     painter = painterResource(id = CROSS_ICON),
                     contentDescription = null,
                     modifier = Modifier.clickable {
-                        Unit.makeSound.invoke(ctx, KEY_INVALID, thereIsSoundEffect)
-
+                        sound.makeSound.invoke(ctx, KEY_INVALID, thereIsSoundEffect)
                         title.value = ""
                         label?.value = Label()
                     }

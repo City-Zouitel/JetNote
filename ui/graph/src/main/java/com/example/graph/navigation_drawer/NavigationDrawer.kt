@@ -1,4 +1,4 @@
-package com.example.mobile.ui.navigation_drawer
+package com.example.graph.navigation_drawer
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,13 +17,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.common_ui.Cons.APP_NAME
+import com.example.common_ui.Cons.HOME_ROUTE
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.Cons.SETTING_ROUTE
+import com.example.common_ui.Cons.TRASH_ROUTE
+import com.example.common_ui.Icons.CIRCLE_ICON_18
+import com.example.common_ui.Icons.COMMENT_EXCLAMATION
+import com.example.common_ui.Icons.HOME_ICON
+import com.example.common_ui.Icons.INTERROGATION_ICON
+import com.example.common_ui.Icons.SETTINGS_ICON
+import com.example.common_ui.Icons.SHARE_ICON
+import com.example.common_ui.Icons.TRASH_ICON
+import com.example.common_ui.sharApp
 import com.example.datastore.DataStore
 import com.example.local.model.Label
-import com.example.mobile.cons.*
-import com.example.mobile.fp.sharApp
-import com.example.mobile.icons.*
-import com.example.mobile.ui.settings_screen.makeSound
-import com.example.tags.LabelVM
+import com.example.graph.sound
 import com.google.accompanist.flowlayout.FlowRow
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
@@ -66,7 +75,7 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         navController.navigate(HOME_ROUTE)
-                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sound .makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     }
                 )
             }
@@ -93,9 +102,8 @@ fun NavigationDrawer(
                         modifier = Modifier
                             .padding(15.dp)
                             .clickable {
-                                navController
-                                    .navigate("labels/${null}")
-                                    .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                                navController.navigate("labels/${null}")
+                                sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                             }
                     )
                 }
@@ -110,9 +118,8 @@ fun NavigationDrawer(
                             selected = true,
                             onClick = {
                                 scope.launch {
-                                    drawerState
-                                        .close()
-                                        .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                                    drawerState.close()
+                                    sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                                 }
                                 searchTitle?.value = label.label!!
                                 searchLabel?.value = label
@@ -145,7 +152,7 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         navController.navigate(SETTING_ROUTE)
-                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
 
                     }
                 )
@@ -158,7 +165,7 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         navController.navigate(TRASH_ROUTE)
-                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                     }
                 )
             }
@@ -171,7 +178,7 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         sharApp(ctx,"[YOUR APP STORE LINK]")
-                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                     }
                 )
             }
@@ -182,7 +189,7 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(COMMENT_EXCLAMATION), null) },
                     selected = false,
                     onClick = {
-                        Unit.makeSound.invoke(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sound.makeSound.invoke(ctx, KEY_CLICK,thereIsSoundEffect.value)
                         scope.launch {
                             drawerState.close()
                         }
@@ -198,9 +205,8 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(INTERROGATION_ICON), null) },
                     selected = false,
                     onClick = {
-                        navController
-                            .navigate("about")
-                            .makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        navController.navigate("about")
+                        sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                     }
                 )
             }

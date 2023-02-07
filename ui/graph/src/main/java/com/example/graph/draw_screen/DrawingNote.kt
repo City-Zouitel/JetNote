@@ -1,4 +1,4 @@
-package com.example.mobile.ui.draw_screen
+package com.example.graph.draw_screen
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
@@ -24,11 +24,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.mobile.cons.*
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.icons.*
-import com.example.mobile.ui.AdaptingRow
-import com.example.mobile.vm.NoteVM
+import com.example.common_ui.AdaptingRow
+import com.example.common_ui.Cons.ADD_ROUTE
+import com.example.common_ui.Cons.EDIT_ROUTE
+import com.example.common_ui.Cons.IMAGES
+import com.example.common_ui.Cons.JPEG
+import com.example.common_ui.Icons.CIRCLE_ICON
+import com.example.common_ui.Icons.DISK_ICON
+import com.example.common_ui.Icons.ERASER_BLACK_ICON
+import com.example.common_ui.Icons.REDO_ICON
+import com.example.common_ui.Icons.UNDO_ICON
+import com.example.common_ui.MatColors.Companion.ON_SURFACE
+import com.example.common_ui.MatColors.Companion.OUTLINE
+import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.graph.getMaterialColor
+import com.example.note.NoteVM
 import io.getstream.sketchbook.ColorPickerDialog
 import io.getstream.sketchbook.PaintColorPalette
 import io.getstream.sketchbook.Sketchbook
@@ -56,11 +66,11 @@ fun DrawingNote(
     var eraseState by remember { mutableStateOf(false) }
 
     // TODO: move to vm
-    val path = File(ctx.filesDir.path + "/" + IMAGE_FILE, "$uid.$JPEG")
+    val path = File(ctx.filesDir.path + "/" + IMAGES, "$uid.$JPEG")
     val bitImg = BitmapFactory.decodeFile(path.absolutePath)
 
     val bitmap = remember { mutableStateOf<Bitmap?>(bitImg) }
-    val imagesPath = ctx.filesDir.path + "/" + IMAGE_FILE
+    val imagesPath = ctx.filesDir.path + "/" + IMAGES
 
     val colorPickerDialogState = remember { mutableStateOf(false) }
     var currentBrushSize by remember { mutableStateOf(0f) }

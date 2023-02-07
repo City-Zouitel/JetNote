@@ -1,4 +1,4 @@
-package com.example.mobile.ui.top_action_bar
+package com.example.graph.top_action_bar
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -11,10 +11,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.Icons.MENU_BURGER_ICON
 import com.example.datastore.DataStore
-import com.example.mobile.cons.KEY_CLICK
-import com.example.mobile.icons.MENU_BURGER_ICON
-import com.example.mobile.ui.settings_screen.makeSound
+import com.example.graph.sound
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +37,7 @@ fun CustomTopAppBar(
                 null,
                 modifier = Modifier.clickable {
                     scope.launch {
-                        Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                         drawerState.open()
                     }
                 }

@@ -12,24 +12,17 @@ android {
 
     defaultConfig {
         minSdk = 25
-        targetSdk = 33
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.0"
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -41,17 +34,17 @@ dependencies {
 
 //Projects.
     //
-    implementation(projects.commonUi)
+    implementation(projects.common.commonUi)
 
-    implementation(projects.ui.tags)
-    implementation(projects.ui.camera)
-    implementation(projects.ui.record)
-    implementation(projects.ui.tasks)
-    implementation(projects.ui.mediaPlayer)
-    implementation(projects.ui.reminder)
-    implementation(projects.ui.note)
+    implementation(projects.ui.features.tags)
+    implementation(projects.ui.features.camera)
+    implementation(projects.ui.features.record)
+    implementation(projects.ui.features.tasks)
+    implementation(projects.ui.features.mediaPlayer)
+    implementation(projects.ui.features.reminder)
+    implementation(projects.ui.features.note)
     //
-    implementation(projects.notification)
+    implementation(projects.common.notification)
     //
     implementation(projects.domain)
     //Data Access.

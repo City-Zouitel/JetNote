@@ -1,4 +1,4 @@
-package com.example.mobile.ui.trash_screen
+package com.example.graph.trash_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,21 +15,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.common_ui.Cons.AUDIOS
+import com.example.common_ui.Cons.IMAGES
+import com.example.common_ui.Cons.JPEG
+import com.example.common_ui.Cons.MP3
+import com.example.common_ui.Cons.SEARCH_IN_TRASH
+import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.VerticalGrid
 import com.example.datastore.DataStore
+import com.example.graph.getMaterialColor
 import com.example.local.model.Entity
 import com.example.local.model.Label
 import com.example.local.model.Note
-import com.example.mobile.cons.*
-import com.example.mobile.ui.navigation_drawer.Screens.TRASH_SCREEN
-import com.example.mobile.fp.filterBadWords
-import com.example.mobile.fp.getMaterialColor
-import com.example.mobile.ui.layouts.VerticalGrid
-import com.example.mobile.ui.navigation_drawer.NavigationDrawer
-import com.example.mobile.ui.note_card.NoteCard
-import com.example.mobile.ui.top_action_bar.NoteTopAppBar
-import com.example.mobile.ui.top_action_bar.dialogs.EraseDialog
-import com.example.mobile.vm.EntityVM
-import com.example.mobile.vm.NoteVM
+import com.example.graph.navigation_drawer.Screens.TRASH_SCREEN
+import com.example.graph.navigation_drawer.NavigationDrawer
+import com.example.graph.note_card.NoteCard
+import com.example.graph.top_action_bar.NoteTopAppBar
+import com.example.graph.top_action_bar.dialogs.EraseDialog
+import com.example.note.EntityVM
+import com.example.note.NoteVM
 import java.io.File
 
 @SuppressLint(
@@ -111,8 +115,8 @@ fun TrashScreen(
                         ) {
                             viewModule.deleteNote(Note(uid = entity.note.uid))
                             entity.note.uid.let {
-                                File(ctx.filesDir.path + "/" + IMAGE_FILE, "$it.$JPEG").delete()
-                                File(ctx.filesDir.path + "/" + AUDIO_FILE, "$it.$MP3").delete()
+                                File(ctx.filesDir.path + "/" + IMAGES, "$it.$JPEG").delete()
+                                File(ctx.filesDir.path + "/" + AUDIOS, "$it.$MP3").delete()
                             }
                         }
                     }
@@ -133,8 +137,8 @@ fun TrashScreen(
                                 ){
                                     viewModule.deleteNote(Note(uid = it.note.uid))
                                     it.note.uid.let {
-                                        File(ctx.filesDir.path + "/" + IMAGE_FILE, "$it.$JPEG").delete()
-                                        File(ctx.filesDir.path + "/" + AUDIO_FILE, "$it.$MP3").delete()
+                                        File(ctx.filesDir.path + "/" + IMAGES, "$it.$JPEG").delete()
+                                        File(ctx.filesDir.path + "/" + AUDIOS, "$it.$MP3").delete()
                                     }
                                 }
                             }

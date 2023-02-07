@@ -1,4 +1,4 @@
-package com.example.mobile.ui.navigation_drawer
+package com.example.graph.navigation_drawer
 
 enum class Screens {
     HOME_SCREEN,

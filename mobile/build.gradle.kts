@@ -16,8 +16,8 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 184
-        versionName = "1.8.4"
+        versionCode = 185
+        versionName = "1.8.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -61,9 +61,9 @@ hilt {
 
 dependencies {
 
-    implementation(projects.ui.note)
+    implementation(projects.ui.features.note)
     implementation(projects.data.datastore)
-    implementation(projects.notification)
+    implementation(projects.common.notification)
     implementation(projects.ui.graph)
 
     //AndroidX.
@@ -97,7 +97,6 @@ dependencies {
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
-    implementation("androidx.core:core-ktx:+")
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
@@ -106,7 +105,7 @@ dependencies {
 //    implementation(libs.accompanist.permissions)
 //    implementation(libs.accompanist.pager)
 //    implementation(libs.accompanist.pager.indicators)
-//    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.systemuicontroller)
 //    implementation(libs.accompanist.navigation.animation)
 //    implementation(libs.accompanist.swiperefresh)
 //    implementation(libs.accompanist.flowlayout)
@@ -151,10 +150,10 @@ dependencies {
 //    implementation(libs.kotlinx.serialization)
 
     //Baha-UrlPreview.
-//    implementation(libs.url.preview)
+    implementation(libs.url.preview)
 
     //Beetle.
-//    implementation(libs.beetle)
+    implementation(libs.beetle)
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")

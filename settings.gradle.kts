@@ -27,18 +27,19 @@ include(
     ":mobile"
 )
 include(
-    ":common-ui"
+    ":common:common-ui",
+    ":common:notification"
 )
+
 include(
-    "notification"
-)
-include(
-    ":ui:tags",
-    ":ui:record",
-    ":ui:camera",
-    ":ui:tasks",
-    ":ui:media-player",
-    ":ui:reminder"
+    ":ui:features:camera",
+    ":ui:features:tags",
+    ":ui:features:record",
+    ":ui:features:tasks",
+    ":ui:features:media-player",
+    ":ui:features:reminder",
+    ":ui:features:note",
+    ":ui:graph"
 )
 include(
     ":domain"
@@ -47,5 +48,3 @@ include(
     ":data:local",
     ":data:datastore"
 )
-include(":ui:note")
-include(":ui:graph")

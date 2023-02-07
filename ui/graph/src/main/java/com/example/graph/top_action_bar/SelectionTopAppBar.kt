@@ -1,4 +1,4 @@
-package com.example.mobile.ui.top_action_bar
+package com.example.graph.top_action_bar
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -17,21 +17,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common_ui.AdaptingRow
+import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.Icons.COPY_ICON
+import com.example.common_ui.Icons.CROSS_ICON
+import com.example.common_ui.Icons.SHARE_ICON
+import com.example.common_ui.Icons.TRASH_ICON
+import com.example.common_ui.sharNote
 import com.example.datastore.DataStore
+import com.example.graph.home_screen.copyNote
+import com.example.graph.sound
 import com.example.local.model.Note
 import com.example.local.model.NoteAndLabel
 import com.example.local.model.NoteAndTodo
 import com.example.local.model.Todo
-import com.example.mobile.cons.KEY_CLICK
-import com.example.mobile.fp.copyNote
-import com.example.mobile.fp.sharNote
-import com.example.mobile.icons.COPY_ICON
-import com.example.mobile.icons.CROSS_ICON
-import com.example.mobile.icons.SHARE_ICON
-import com.example.mobile.icons.TRASH_ICON
-import com.example.mobile.ui.AdaptingRow
-import com.example.mobile.ui.settings_screen.makeSound
-import com.example.mobile.vm.*
+import com.example.note.NoteVM
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 
@@ -69,7 +69,7 @@ fun SelectionTopAppBar(
                     modifier = Modifier
                         .padding(7.dp)
                         .clickable {
-                            Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
+                            sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
                             selectedNotes?.forEach {
                                 noteVM.updateNote(
                                     Note(
@@ -95,7 +95,7 @@ fun SelectionTopAppBar(
                             modifier = Modifier
                                 .padding(7.dp)
                                 .clickable {
-                                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
+                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
 
                                     sharNote(
                                     ctx,
@@ -106,13 +106,13 @@ fun SelectionTopAppBar(
                                     selectionState?.value = false
                                 }
                             })
-                        // copy
 
+                        // copy the note.
                         Icon(painter = painterResource(id = COPY_ICON), contentDescription = null,
                             modifier = Modifier
                                 .padding(7.dp)
                                 .clickable {
-                                    Unit.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
+                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
 
                                     copyNote(ctx, noteVM, selectedNotes?.single()!!, newUid) {
                                     // copy each label.

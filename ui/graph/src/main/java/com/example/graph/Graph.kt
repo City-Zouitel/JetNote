@@ -6,8 +6,32 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.common_ui.Cons.ADD_ROUTE
+import com.example.common_ui.Cons.AUDIO_DURATION
+import com.example.common_ui.Cons.CAMERA_ROUTE
+import com.example.common_ui.Cons.COLOR
+import com.example.common_ui.Cons.DESCRIPTION
+import com.example.common_ui.Cons.DRAW_ROUTE
+import com.example.common_ui.Cons.EDIT_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
+import com.example.common_ui.Cons.NON
+import com.example.common_ui.Cons.PRIORITY
+import com.example.common_ui.Cons.REMINDING
+import com.example.common_ui.Cons.SETTING_ROUTE
+import com.example.common_ui.Cons.TEXT_COLOR
+import com.example.common_ui.Cons.TITLE
+import com.example.common_ui.Cons.TRASH_ROUTE
+import com.example.common_ui.Cons.UID
+import com.example.graph.home_screen.NoteHome
+import com.example.graph.settings_screen.Settings
+import com.example.graph.about_screen.AppAbout
+import com.example.graph.draw_screen.DrawingNote
+import com.example.graph.settings_screen.Licenses
+import com.example.graph.trash_screen.TrashScreen
+import com.example.note.add_screen.NoteAdd
+import com.example.note.edit_screen.NoteEdit
 import com.example.tags.Labels
+import com.example.tasks.TodoList
 
 @Composable
 fun Graph(

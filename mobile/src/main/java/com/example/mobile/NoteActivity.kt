@@ -17,9 +17,8 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.datastore.DataStore
 import com.example.graph.Graph
-import com.example.mobile.cons.*
-import com.example.mobile.fp.checkIntents
-import com.example.mobile.fp.urlPreview
+import com.example.mobile.CONS.AUDIOS
+import com.example.mobile.CONS.IMAGES
 import com.example.note.NoteVM
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,7 +44,6 @@ class NoteActivity : ComponentActivity() {
 
             AppTheme {
                 Graph(navHostController)
-//                LinearBlock()
             }
         }
     }
@@ -94,8 +92,10 @@ class NoteActivity : ComponentActivity() {
     override fun onStart() {
         super.onStart()
         // TODO: move it to init module as work manager.
-        File(this.filesDir.path + "/" + IMAGE_FILE).mkdirs()
-        File(this.filesDir.path + "/" + AUDIO_FILE).mkdirs()
+//        File(this.filesDir.path + "/" + IMAGES).mkdirs()
+        File(this.cacheDir.path + File.pathSeparator + IMAGES).mkdirs()
+//        File(this.filesDir.path + "/" + AUDIOS).mkdirs()
+        File(this.cacheDir.path + File.pathSeparator + AUDIOS).mkdirs()
 //        Toast.makeText(this, "files created!", Toast.LENGTH_SHORT).show()
 
 //        mapOf(

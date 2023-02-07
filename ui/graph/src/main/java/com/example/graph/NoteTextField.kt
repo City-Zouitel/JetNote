@@ -1,4 +1,4 @@
-package com.example.mobile.ui
+package com.example.graph
 
 import android.net.Uri
 import android.view.OnReceiveContentListener
@@ -13,7 +13,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.core.view.inputmethod.InputConnectionCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.mobile.vm.NoteVM
+import com.example.note.NoteVM
 
 
 @Composable
@@ -60,7 +60,7 @@ fun NoteTextField(
 //                            val img = noteVM.decodeBitmapImage(bitImg,uri,ctx)
 
                             // png
-//                            noteVM.saveImageLocally(img,"$internalPath/$IMAGE_FILE", "$uid.$JPEG")
+//                            noteVM.saveImageLocally(img,"$internalPath/$IMAGES", "$uid.$JPEG")
 
                             true
                         }
