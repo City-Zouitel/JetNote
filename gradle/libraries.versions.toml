@@ -24,7 +24,7 @@ comp_nav = "2.5.3"
 comp_viewmodel = "2.5.1"
 comp_activity = "1.6.1"
 comp_material3 = "1.0.1"
-comp_constraintlayout = "1.1.0-alpha05"
+comp_constraintlayout = "1.1.0-alpha07"
 
 #Exo.
 exoplayer = "2.18.2"
