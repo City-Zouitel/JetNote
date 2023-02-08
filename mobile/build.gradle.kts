@@ -52,7 +52,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-//    dynamicFeatures += setOf(":ui:graph")
 }
 
 hilt {
@@ -65,6 +64,7 @@ dependencies {
     implementation(projects.data.datastore)
     implementation(projects.common.notification)
     implementation(projects.ui.graph)
+    implementation(projects.ui.features.glance)
 
     //AndroidX.
     implementation(libs.androidx.core)
