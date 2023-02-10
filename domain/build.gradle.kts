@@ -54,7 +54,7 @@ dependencies {
     api(libs.exoplayer.ui)
     api(libs.exoplayer.extension)
 
-    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
     testImplementation("junit:junit:4.13.2")
