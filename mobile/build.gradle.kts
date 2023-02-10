@@ -158,6 +158,7 @@ dependencies {
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 
+    implementation("androidx.glance:glance-appwidget:1.0.0-alpha05")
     //Test.
     testImplementation (libs.androidx.junit)
     debugImplementation (libs.compose.manifest)

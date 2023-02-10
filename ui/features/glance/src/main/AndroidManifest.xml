@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
     <application>
         <receiver
-            android:name=".NewAppWidget"
+            android:name=".AppWidgetReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -13,17 +12,5 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
-        <receiver
-            android:name=".GlanceReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/task_list_widget_info" />
-        </receiver>
     </application>
-
 </manifest>

@@ -39,6 +39,7 @@ include(
     ":ui:features:media-player",
     ":ui:features:reminder",
     ":ui:features:note",
+    ":ui:features:glance",
     ":ui:graph"
 )
 include(
@@ -48,4 +49,3 @@ include(
     ":data:local",
     ":data:datastore"
 )
-include(":ui:features:glance")

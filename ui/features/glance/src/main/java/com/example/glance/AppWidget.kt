@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.text.Text
 
-class Glance: GlanceAppWidget() {
+class AppWidget: GlanceAppWidget() {
     @Composable
     override fun Content() {
-        Text("JetNote Widget!")
+        Text(text = "In Process!")
     }
 }
