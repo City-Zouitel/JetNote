@@ -39,7 +39,7 @@ datastore = "1.0.0"
 livedatakts = "2.5.1"
 
 #Dagger-Hilt.
-dagger_hilt = "2.44.2"
+dagger_hilt = "2.45"
 hilt_nav_comp = "1.0.0"
 hilt_compiler = "1.0.0"
 
@@ -67,7 +67,7 @@ junit = "4.13.2"
 
 #Others.
 sketchbook = "1.0.4"
-swipe = "1.0.0"
+swipe = "1.1.1"
 global_exception = "1.0.1"
 url_preview = "1.0.1"
 beetle = "2.0.1"
