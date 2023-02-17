@@ -16,8 +16,8 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 185
-        versionName = "1.8.5"
+        versionCode = 190
+        versionName = "1.9.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
