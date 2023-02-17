@@ -4,7 +4,7 @@ plugins {
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
     id ("com.mikepenz.aboutlibraries.plugin")
-//    alias(libs.plugins.ksp)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -60,11 +60,23 @@ hilt {
 
 dependencies {
 
-    implementation(projects.ui.features.note)
+
     implementation(projects.data.datastore)
+    implementation(projects.data.local)
+
+    implementation(projects.domain)
+
     implementation(projects.common.notification)
+    implementation(projects.common.commonUi)
     implementation(projects.ui.graph)
     implementation(projects.ui.features.glance)
+    implementation(projects.ui.features.tags)
+    implementation(projects.ui.features.camera)
+    implementation(projects.ui.features.record)
+    implementation(projects.ui.features.tasks)
+    implementation(projects.ui.features.mediaPlayer)
+    implementation(projects.ui.features.reminder)
+    implementation(projects.ui.features.note)
 
     //AndroidX.
     implementation(libs.androidx.core)
@@ -97,18 +109,19 @@ dependencies {
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
+    implementation("androidx.core:core-ktx:+")
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
 
 //    //Accompanist.
-//    implementation(libs.accompanist.permissions)
-//    implementation(libs.accompanist.pager)
-//    implementation(libs.accompanist.pager.indicators)
+    implementation(libs.accompanist.permissions)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.systemuicontroller)
-//    implementation(libs.accompanist.navigation.animation)
-//    implementation(libs.accompanist.swiperefresh)
-//    implementation(libs.accompanist.flowlayout)
+    implementation(libs.accompanist.navigation.animation)
+    implementation(libs.accompanist.swiperefresh)
+    implementation(libs.accompanist.flowlayout)
 
 //    // ExoPlayer
 //    api(libs.exoplayer.core)
@@ -122,21 +135,21 @@ dependencies {
 //    implementation (libs.camerax.extensions)
 //
 //    //Sketchbook.
-//    implementation (libs.sketchbook)
+    implementation (libs.sketchbook)
 //
 //    //Swipe.
-//    implementation (libs.swipe)
+    implementation (libs.swipe)
 
     //Global Exception Handler.
     implementation (libs.globalexception)
 
 //    //Glide.
-//    implementation (libs.glide)
-//    implementation (libs.glide.comp)
-//    kapt (libs.glide.compiler)
+    implementation (libs.glide)
+    implementation (libs.glide.comp)
+    kapt (libs.glide.compiler)
 
 //    //License.
-//    implementation (libs.aboutlibraries.comp)
+    implementation (libs.aboutlibraries.comp)
 
 //    //Retrofit.
 //    implementation(libs.retrofit)

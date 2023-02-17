@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.roomkts)
     api(libs.room.runtime)
     implementation("androidx.core:core-ktx:+")
+    implementation("androidx.core:core-ktx:+")
     ksp(libs.room.compiler)
 
     //Dagger-Hilt

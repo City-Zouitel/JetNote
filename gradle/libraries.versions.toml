@@ -1,7 +1,7 @@
 [versions]
 # Project
-android_gradle_plugin = "7.4.0"
-kotlin = "1.8.0"
+gradle = "7.4.0"
+kotlin-gradle-plugin = "1.8.0"
 
 # Plugins
 ksp = "1.8.10-1.0.9"
@@ -74,8 +74,8 @@ beetle = "2.0.1"
 
 [libraries]
 # Project
-android_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "android_gradle_plugin" }
-kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+android_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin" }
 dagger_hilt_gradle_plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "dagger_hilt" }
 
 # KotlinX
@@ -173,6 +173,6 @@ compose = ["compose.ui", "compose.toolingpreview", "compose.material3"]
 composetest = ["compose.uitest", "compose.junit4", "compose.manifest"]
 
 [plugins]
-kotlin_serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin_serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-gradle-plugin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dependencyanalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyanalysis" }

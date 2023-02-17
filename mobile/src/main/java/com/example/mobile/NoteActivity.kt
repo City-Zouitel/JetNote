@@ -40,12 +40,13 @@ class NoteActivity : ComponentActivity() {
             val navHostController = rememberNavController()
             val scope = rememberCoroutineScope()
 
-            checkIntents(intent, this@NoteActivity, navHostController, scope)
+            handleIntents(intent, this@NoteActivity, navHostController, scope)
 
             AppTheme {
                 Graph(navHostController)
             }
         }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -119,6 +120,11 @@ class NoteActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkShortcut(this)
     }
 }
 

@@ -35,7 +35,6 @@ dependencies {
 //Projects.
     //
     implementation(projects.common.commonUi)
-
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.camera)
     implementation(projects.ui.features.record)
@@ -69,6 +68,7 @@ dependencies {
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
+    implementation("androidx.core:core-ktx:+")
     implementation("androidx.core:core-ktx:+")
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)

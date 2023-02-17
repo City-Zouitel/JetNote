@@ -10,7 +10,7 @@ import javax.inject.Inject
 @ViewModelScoped
 class EntityRepoImp @Inject constructor(
     private val dao: EntityDao
-): com.example.domain.repos.EntityRepo {
+): EntityRepo {
     override val getAllNotesById: Flow<List<Entity>>
         get() = dao.allEntitiesOrderedById()
 
