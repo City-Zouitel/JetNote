@@ -68,7 +68,7 @@ dependencies {
 
     implementation(projects.common.notification)
     implementation(projects.common.commonUi)
-    implementation(projects.ui.graph)
+//    implementation(projects.ui.graph)
     implementation(projects.ui.features.glance)
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.camera)

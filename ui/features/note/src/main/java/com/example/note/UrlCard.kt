@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.common_ui.Icons.GLOBE_ICON
 import com.example.common_ui.findUrlLink
 import com.example.common_ui.urlPreview
