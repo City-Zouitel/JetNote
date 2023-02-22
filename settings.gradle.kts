@@ -24,7 +24,7 @@ dependencyResolutionManagement {
 rootProject.name = "JetNote"
 
 include(
-    ":mobile"
+    ":app"
 )
 include(
     ":common:common-ui",

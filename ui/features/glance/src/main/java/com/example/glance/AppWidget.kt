@@ -15,14 +15,6 @@ class AppWidget: GlanceAppWidget() {
 
     @Composable
     override fun Content() {
-        val notes = currentState<List<Entity>>().toImmutableList()
-
-        LazyColumn(
-            modifier = GlanceModifier.appWidgetBackground()
-        ) {
-            items(notes) {
-                it.note.title?.let { it1 -> Text(text = it1) }
-            }
-        }
+      Text(text = "In Process.")
     }
 }
