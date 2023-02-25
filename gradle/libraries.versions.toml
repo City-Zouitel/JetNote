@@ -50,7 +50,7 @@ accompanist = "0.28.0"
 camerax = "1.2.1"
 
 #Glide.
-glide = "4.14.2"
+glide = "4.15.0"
 glide_comp = "4.14.0"
 
 #License.
