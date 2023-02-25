@@ -40,7 +40,7 @@ class NoteActivity : ComponentActivity() {
             val navHostController = rememberNavController()
             val scope = rememberCoroutineScope()
 
-            handleIntents(intent, this@NoteActivity, navHostController, scope)
+            intentHandler(intent, this@NoteActivity, navHostController, scope)
 
             AppTheme {
                 Graph(navHostController)
@@ -126,5 +126,6 @@ class NoteActivity : ComponentActivity() {
         super.onResume()
         checkShortcut(this)
     }
+
 }
 
