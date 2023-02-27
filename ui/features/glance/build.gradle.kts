@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.runtimektx)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.glance)
 
     //Compose.
     implementation(libs.compose.ui)
@@ -61,14 +62,12 @@ dependencies {
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
-    implementation("androidx.core:core-ktx:+")
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
     implementation(libs.kotlinx.serialization)
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
-    implementation("androidx.glance:glance-appwidget:1.0.0-alpha05")
-    implementation ("com.google.android.glance.tools:appwidget-host:0.2.2")
-    implementation ("com.google.android.glance.tools:appwidget-configuration:0.2.2")
+//    implementation ("com.google.android.glance.tools:appwidget-host:0.2.2")
+//    implementation ("com.google.android.glance.tools:appwidget-configuration:0.2.2")
 }

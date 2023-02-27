@@ -20,6 +20,7 @@ import com.example.graph.Graph
 import com.example.mobile.CONS.AUDIOS
 import com.example.mobile.CONS.IMAGES
 import com.example.note.NoteVM
+import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -37,6 +38,7 @@ class NoteActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window,false)
 
         setContent {
+
             val navHostController = rememberNavController()
             val scope = rememberCoroutineScope()
 

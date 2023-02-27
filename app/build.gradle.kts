@@ -60,7 +60,6 @@ hilt {
 
 dependencies {
 
-
     implementation(projects.data.datastore)
     implementation(projects.data.local)
 
@@ -109,7 +108,6 @@ dependencies {
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
-    implementation("androidx.core:core-ktx:+")
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
@@ -122,6 +120,7 @@ dependencies {
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.accompanist.flowlayout)
+    implementation(libs.accompanist.insets)
 
 //    // ExoPlayer
 //    api(libs.exoplayer.core)
@@ -170,8 +169,10 @@ dependencies {
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
+//    debugImplementation ("com.guolindev.glance:glance:1.1.0")
 
-    implementation("androidx.glance:glance-appwidget:1.0.0-alpha05")
+    //
+
     //Test.
     testImplementation (libs.androidx.junit)
     debugImplementation (libs.compose.manifest)
