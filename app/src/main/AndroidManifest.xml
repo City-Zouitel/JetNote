@@ -33,7 +33,8 @@
             android:name=".NoteActivity"
             android:exported="true"
             android:label="JetNote"
-            android:theme="@style/Theme.JetNote">
+            android:theme="@style/Theme.JetNote"
+            android:screenOrientation="unspecified">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

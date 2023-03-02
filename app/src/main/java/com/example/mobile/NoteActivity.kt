@@ -1,6 +1,7 @@
 package com.example.mobile
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,6 +14,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.datastore.DataStore
@@ -23,8 +25,14 @@ import com.example.note.NoteVM
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import java.io.File
 import java.util.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.os.bundleOf
+import com.google.firebase.analytics.FirebaseAnalytics
 
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
@@ -46,6 +54,7 @@ class NoteActivity : ComponentActivity() {
 
             AppTheme {
                 Graph(navHostController)
+//                    Dialo()
             }
         }
 
@@ -120,14 +129,15 @@ class NoteActivity : ComponentActivity() {
 //        }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-    }
+//    override fun onNewIntent(intent: Intent?) {
+//        super.onNewIntent(intent)
+//    }
 
     override fun onResume() {
         super.onResume()
         checkShortcut(this)
     }
+
 
 }
 

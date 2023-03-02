@@ -170,6 +170,8 @@ dependencies {
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 //    debugImplementation ("com.guolindev.glance:glance:1.1.0")
+    implementation ("com.google.firebase:firebase-analytics-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:29.0.1"))
 
     //
 
