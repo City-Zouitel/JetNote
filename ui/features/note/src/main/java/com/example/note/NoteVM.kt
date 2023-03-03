@@ -47,7 +47,7 @@ class NoteVM @Inject constructor(
     var isProcessing by mutableStateOf(false)
         private set
 
-    // for putting the note changes on Notes EntityState (the instance of Node Note class).
+    // for putting the note changes on Notes EntityState (the instance of Note class).
     private var noteState by mutableStateOf(listOf<Any>())
 
     // for add a note from NoteEntityState as it to NoteEntity class.

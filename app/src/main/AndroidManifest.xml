@@ -51,10 +51,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-
+        </activity>
+        <activity
+            android:name="com.example.quick_note.QuickActivity"
+            android:theme="@style/Theme.JetNote.NoActionBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.QUICK_VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <service
-            android:name=".QuickNote"
+            android:name="com.example.quick_note.QuickNote"
             android:label="Quick Note"
             android:icon="@drawable/plus_24"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"

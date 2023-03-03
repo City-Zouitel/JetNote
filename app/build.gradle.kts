@@ -76,6 +76,7 @@ dependencies {
     implementation(projects.ui.features.mediaPlayer)
     implementation(projects.ui.features.reminder)
     implementation(projects.ui.features.note)
+    implementation(projects.ui.features.quickNote)
 
     //AndroidX.
     implementation(libs.androidx.core)

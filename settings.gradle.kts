@@ -39,7 +39,8 @@ include(
     ":ui:features:media-player",
     ":ui:features:reminder",
     ":ui:features:note",
-    ":ui:features:glance"
+    ":ui:features:glance",
+    ":ui:features:quick-note"
 )
 include(
     ":domain"
