@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class QuickActivity: ComponentActivity() {
-    val vm = viewModels<QuickNoteVM>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

@@ -16,7 +16,7 @@ import java.util.UUID
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Quick(
-    noteVM: NoteVM = hiltViewModel(),
+    noteVM: QuickNoteVM = hiltViewModel(),
     fin:() -> (Unit)
     ) {
     val descriptionState = remember { mutableStateOf("") }
@@ -25,7 +25,7 @@ fun Quick(
     ) {
         TextField(value = descriptionState.value, onValueChange = {descriptionState.value = it})
         Button(onClick = {
-            noteVM.addNote(
+            noteVM.addQuickNote(
                 Note(
                     description = descriptionState.value,
                     uid = UUID.randomUUID().toString(),
@@ -33,7 +33,7 @@ fun Quick(
                     textColor = 854313,
                 )
             )
-//            fin.invoke()
+            fin.invoke()
         }) {
             Text(text = "Done")
         }
