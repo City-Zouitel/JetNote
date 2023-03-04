@@ -37,8 +37,6 @@ dependencies {
     //Room.
     implementation(libs.roomkts)
     api(libs.room.runtime)
-    implementation("androidx.core:core-ktx:+")
-    implementation("androidx.core:core-ktx:+")
     ksp(libs.room.compiler)
 
     //Dagger-Hilt
@@ -49,6 +47,10 @@ dependencies {
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    // security
+    implementation (libs.androidx.security)
+
+    // sqlcipher
+    implementation (libs.sqlcipher)
+
 }

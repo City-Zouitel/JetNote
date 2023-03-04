@@ -32,8 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
-
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
 

@@ -13,8 +13,7 @@ import javax.inject.Inject
 class QuickNoteVM @Inject constructor(
     private val repo: NoteRepoImp
 ) : ViewModel() {
-    fun addQuickNote(note: Note) =
-        viewModelScope.launch(Dispatchers.IO) {
+    fun addQuickNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
             repo.addNote(note)
         }
 }

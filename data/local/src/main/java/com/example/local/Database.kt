@@ -1,5 +1,6 @@
 package com.example.local
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.local.daos.*
