@@ -73,7 +73,7 @@ swipe = "1.1.1"
 global_exception = "1.0.1"
 url_preview = "1.0.1"
 beetle = "2.0.1"
-sqlcipher = "4.5.0"
+sqlcipher = "4.5.3"
 
 [libraries]
 # Project
