@@ -35,8 +35,6 @@ import androidx.core.os.bundleOf
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
 
-    val vm = viewModels<NoteVM>()
-
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,15 +50,8 @@ class NoteActivity : ComponentActivity() {
 
             AppTheme {
                 Graph(navHostController)
-//                    Dialo()
             }
         }
-
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.clear()
     }
 
     @Composable
@@ -87,11 +78,10 @@ class NoteActivity : ComponentActivity() {
 
         MaterialTheme(colorScheme = theme, content = content)
     }
-    @Deprecated("Deprecated in Java",
-        ReplaceWith("super.onBackPressed()", "androidx.activity.ComponentActivity")
-    )
-    override fun onBackPressed() {
-        super.onBackPressed()
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.clear()
     }
 
     override fun onDestroy() {
@@ -102,11 +92,8 @@ class NoteActivity : ComponentActivity() {
     override fun onStart() {
         super.onStart()
         // TODO: move it to init module as work manager.
-//        File(this.filesDir.path + "/" + IMAGES).mkdirs()
         File(this.cacheDir.path + File.pathSeparator + IMAGES).mkdirs()
-//        File(this.filesDir.path + "/" + AUDIOS).mkdirs()
         File(this.cacheDir.path + File.pathSeparator + AUDIOS).mkdirs()
-//        Toast.makeText(this, "files created!", Toast.LENGTH_SHORT).show()
 
 //        mapOf(
 //            "Coffee" to "Prepare hot coffee for my self.",
@@ -127,9 +114,9 @@ class NoteActivity : ComponentActivity() {
 //        }
     }
 
-//    override fun onNewIntent(intent: Intent?) {
-//        super.onNewIntent(intent)
-//    }
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+    }
 
     override fun onResume() {
         super.onResume()
