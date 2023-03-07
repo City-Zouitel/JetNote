@@ -62,7 +62,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name="com.example.quick_note.QuickNote"
+            android:name="com.example.quick_note.QuickTileService"
             android:label="Quick Note"
             android:icon="@drawable/plus_24"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"

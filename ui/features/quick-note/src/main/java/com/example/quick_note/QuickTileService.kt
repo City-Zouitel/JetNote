@@ -3,7 +3,7 @@ package com.example.quick_note
 import android.content.Intent
 import android.service.quicksettings.TileService
 
-class QuickNote: TileService() {
+class QuickTileService: TileService() {
 
     override fun onClick() {
         super.onClick()

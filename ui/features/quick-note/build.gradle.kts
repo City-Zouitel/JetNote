@@ -43,6 +43,7 @@ android {
 dependencies {
     implementation(projects.domain)
     implementation(projects.data.local)
+    implementation(projects.data.datastore)
     implementation(projects.ui.features.note)
     implementation(projects.common.commonUi)
 
@@ -70,4 +71,7 @@ dependencies {
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
+
+    implementation(libs.accompanist.systemuicontroller)
+
 }
