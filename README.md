@@ -74,6 +74,12 @@ LiveData is an observable data holder class. Unlike a regular observable, LiveDa
 ### [Glide](https://github.com/bumptech/glide)
 Glide is a fast and efficient open source media management and image loading framework for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface.
 
+### [Security](https://developer.android.com/jetpack/androidx/releases/security)
+Safely manage keys and encrypt files and sharedpreferences.
+
+### [SQLCipher](https://github.com/sqlcipher/sqlcipher)
+SQLCipher is a standalone fork of the SQLite database library that adds 256 bit AES encryption of database files and other security features.
+
 ### [AboutLibraries](https://github.com/mikepenz/AboutLibraries)
 Collects all dependency details including licenses at compile time, and offers simple APIs to visualize these in the app.
 
