@@ -16,13 +16,14 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 200
-        versionName = "2.0.0"
+        versionCode = 201
+        versionName = "2.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+        compileSdkPreview ="UpsideDownCake"
     }
 
     buildTypes {
@@ -82,6 +83,7 @@ dependencies {
     //AndroidX.
     implementation(libs.androidx.core)
     implementation(libs.androidx.corektx)
+    implementation ("androidx.core:core-ktx:+")
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.runtimektx)
     implementation(libs.androidx.constraintlayout)
