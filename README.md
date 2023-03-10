@@ -79,8 +79,8 @@ Glide is a fast and efficient open source media management and image loading fra
 ### [AboutLibraries](https://github.com/mikepenz/AboutLibraries)
 Collects all dependency details including licenses at compile time, and offers simple APIs to visualize these in the app.
 
-### Security.
-### [Security](https://developer.android.com/jetpack/androidx/releases/security)
+### Security
+### [Jetpack Security](https://developer.android.com/jetpack/androidx/releases/security)
 Safely manage keys and encrypt files and sharedpreferences.
 
  [<img src="https://1.bp.blogspot.com/-GBGJnjPsAPU/XlCPTMZWc7I/AAAAAAAAOsc/swQjcH-BA2AYJ73SnpFSI97U3xZFWT9zgCLcBGAsYHQ/s1600/0_WefQBkBtLer3zIo6.png" alt="..." height="">](https://android-developers.googleblog.com/2020/02/data-encryption-on-android-with-jetpack.html)
