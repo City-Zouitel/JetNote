@@ -115,7 +115,10 @@ dependencies {
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
-
+    //Koin.
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 //    //Accompanist.
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.pager)

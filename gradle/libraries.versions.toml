@@ -19,6 +19,7 @@ constraintlayout = "2.1.4"
 extjunit = "1.1.5"
 glance = "1.0.0-alpha05"
 security = "1.0.0"
+workmanager = "2.7.1"
 
 #Compose.
 comp = "1.3.3"
@@ -27,6 +28,11 @@ comp_viewmodel = "2.5.1"
 comp_activity = "1.6.1"
 comp_material3 = "1.0.1"
 comp_constraintlayout = "1.1.0-alpha07"
+
+# Koin
+koin_core = "3.3.0"
+koin_compose = "3.4.0"
+koin_android = "3.3.1"
 
 #Exo.
 exoplayer = "2.18.2"
@@ -93,6 +99,7 @@ androidx_constraintlayout = { module = "androidx.constraintlayout:constraintlayo
 androidx_extjunit = { module = "androidx.test.ext:junit", version.ref = "extjunit" }
 androidx_glance = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
 androidx_security = { module = "androidx.security:security-crypto", version.ref = "security" }
+androidx_workmanager = { module = "androidx.work:work-runtime-ktx", version.ref = "workmanager" }
 
 #Compose.
 compose_ui = { module = "androidx.compose.ui:ui", version.ref = "comp" }
@@ -105,6 +112,12 @@ compose_constraintlayout = { module = "androidx.constraintlayout:constraintlayou
 compose_uitest = { module = "androidx.compose.ui:ui-test", version.ref = "comp" }
 compose_junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "comp" }
 compose_manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "comp" }
+
+#Koin
+koin_core = { module = "io.insert-koin:koin-core", version.ref = "koin_core" }
+koin_android = { module = "io.insert-koin:koin-android", version.ref = "koin_android" }
+koin_compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin_compose" }
+koin_test = { module = "io.insert-koin:koin-test", version.ref = "koin_core" }
 
 # Exo.
 exoplayer_core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }

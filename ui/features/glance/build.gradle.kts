@@ -68,6 +68,14 @@ dependencies {
     implementation(libs.kotlinx.serialization)
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
+    //Koin.
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+
+    //
+    implementation(libs.androidx.workmanager)
+
 //    implementation ("com.google.android.glance.tools:appwidget-host:0.2.2")
 //    implementation ("com.google.android.glance.tools:appwidget-configuration:0.2.2")
 }
