@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.test.core.app.launchActivity
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.KEY_STANDARD
@@ -48,6 +49,11 @@ import com.example.local.model.Label
 import com.example.local.model.Note
 import com.example.note.EntityVM
 import com.example.note.NoteVM
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.io.File
 import java.util.*
 
 @SuppressLint(

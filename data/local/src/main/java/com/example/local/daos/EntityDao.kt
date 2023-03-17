@@ -43,4 +43,7 @@ interface EntityDao {
     @Query("select * from NOTES where Trashed = 0 order by Reminding desc")
     fun allRemindingNotes(): Flow<List<Entity>>
 
+    @Transaction
+    @Query("select * from NOTES where Trashed = 0 order by Date asc")
+    fun getAllNotesForWidget():List<Entity>
 }

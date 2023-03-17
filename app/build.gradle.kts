@@ -165,14 +165,14 @@ dependencies {
 //    implementation(libs.okhttp.bom.core)
 //    implementation(libs.okhttp.bom.interceptor)
 
-    //Serialization.
-//    implementation(libs.kotlinx.serialization)
-
     //Baha-UrlPreview.
     implementation(libs.url.preview)
 
     //Beetle.
     implementation(libs.beetle)
+
+    //Serialization.
+    implementation(libs.kotlinx.serialization)
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")

@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -27,7 +30,6 @@ import com.example.note.NoteVM
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import java.io.File
 import java.util.*
 import androidx.compose.runtime.Composable
@@ -35,14 +37,31 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import com.example.note.EntityVM
+import com.example.tags.LabelVM
+import kotlinx.coroutines.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlin.math.log
+
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
+    private val vm = viewModels<LabelVM>()
 
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window,false)
+            WindowCompat.setDecorFitsSystemWindows(window,false)
+
+//        WindowInsetsControllerCompat(window, View(this)).let { c ->
+//            c.hide(WindowInsetsCompat.Type.statusBars())
+//            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE.also {
+//                c.systemBarsBehavior = it
+//            }
+//        }
 
         setContent {
 
@@ -97,6 +116,9 @@ class NoteActivity : ComponentActivity() {
         // TODO: move it to init module as work manager.
         File(this.cacheDir.path + File.pathSeparator + IMAGES).mkdirs()
         File(this.cacheDir.path + File.pathSeparator + AUDIOS).mkdirs()
+
+
+
 
 //        mapOf(
 //            "Coffee" to "Prepare hot coffee for my self.",
