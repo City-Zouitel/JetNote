@@ -114,8 +114,8 @@ class NoteActivity : ComponentActivity() {
     override fun onStart() {
         super.onStart()
         // TODO: move it to init module as work manager.
-        File(this.cacheDir.path + File.pathSeparator + IMAGES).mkdirs()
-        File(this.cacheDir.path + File.pathSeparator + AUDIOS).mkdirs()
+        File(this.filesDir.path + "/" + IMAGES).mkdirs()
+        File(this.filesDir.path + "/" + AUDIOS).mkdirs()
 
 
 
