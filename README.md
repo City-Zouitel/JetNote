@@ -1,4 +1,4 @@
-# JetNote
+# JetNote [ 🏗 In progress 🏗 ]
 JetNote is modern MVVM note android application written by kotlin language and [jetpack-compose](https://github.com/JetBrains/compose-jb) toolkit. The app dealing with Room for Database, Dagger-Hilt dependency injection, Coroutine the non-blocking programming, Navigation-Compose, DataStore, ExoPlayer to play the recorded media in the app, CameraX to take and save picture, And more to make it good app that inspired by google app **keep Notes**.
 
 [![API](https://img.shields.io/badge/API-25%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=25)
@@ -23,10 +23,12 @@ JetNote is modern MVVM note android application written by kotlin language and [
 
 
 ## Download
-
    <a href="https://apt.izzysoft.de/fdroid/index/apk/city.zouitel.jetnote">
     <img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Logo" width="200" height="80">
   </a>
+  
+ [<img src="https://user-images.githubusercontent.com/663460/26973090-f8fdc986-4d14-11e7-995a-e7c5e79ed925.png" alt="Download APK from GitHub" height="80">](https://github.com/City-Zouitel/JetNote/releases/latest)
+
 
 ## Libraries
 ### [Kotlinx-coroutines](https://github.com/Kotlin/kotlinx.coroutines) 
@@ -74,16 +76,17 @@ LiveData is an observable data holder class. Unlike a regular observable, LiveDa
 ### [Glide](https://github.com/bumptech/glide)
 Glide is a fast and efficient open source media management and image loading framework for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface.
 
-### [Security](https://developer.android.com/jetpack/androidx/releases/security)
-Safely manage keys and encrypt files and sharedpreferences.
-
-### [SQLCipher](https://github.com/sqlcipher/sqlcipher)
-SQLCipher is a standalone fork of the SQLite database library that adds 256 bit AES encryption of database files and other security features.
-
 ### [AboutLibraries](https://github.com/mikepenz/AboutLibraries)
 Collects all dependency details including licenses at compile time, and offers simple APIs to visualize these in the app.
 
+### Security
+### [Jetpack Security](https://developer.android.com/jetpack/androidx/releases/security)
+Safely manage keys and encrypt files and sharedpreferences.
 
+ [<img src="https://1.bp.blogspot.com/-GBGJnjPsAPU/XlCPTMZWc7I/AAAAAAAAOsc/swQjcH-BA2AYJ73SnpFSI97U3xZFWT9zgCLcBGAsYHQ/s1600/0_WefQBkBtLer3zIo6.png" alt="..." height="">](https://android-developers.googleblog.com/2020/02/data-encryption-on-android-with-jetpack.html)
+
+### [SQLCipher](https://github.com/sqlcipher/sqlcipher)
+SQLCipher is a standalone fork of the SQLite database library that adds 256 bit AES encryption of database files and other security features.
 
 ## The App Hierarchy
 

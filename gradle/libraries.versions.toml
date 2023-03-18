@@ -62,7 +62,7 @@ glide = "4.15.0"
 glide_comp = "4.14.0"
 
 #License.
-about_libraries = "10.5.2"
+about_libraries = "10.6.1"
 
 #Retrofit.
 retrofit = "2.9.0"
