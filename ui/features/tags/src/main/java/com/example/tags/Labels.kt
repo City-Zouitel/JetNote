@@ -1,7 +1,10 @@
 package com.example.tags
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
@@ -42,7 +45,7 @@ import com.google.accompanist.flowlayout.FlowRow
     "UnusedMaterialScaffoldPaddingParameter"
 )
 @OptIn(
-    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
 )
 @Composable
 fun Labels(
@@ -63,12 +66,12 @@ fun Labels(
 
     val getMatColor = MatColors().getMaterialColor
     if (labelDialogState.value) {
-        LabelDialogColors(
-            dialogState = labelDialogState,
-            idState = idState,
-            labelState = labelState,
-            colorState = colorState
-        )
+            LabelDialogColors(
+                dialogState = labelDialogState,
+                idState = idState,
+                labelState = labelState,
+                colorState = colorState
+            )
     }
     Scaffold(
         modifier = Modifier
@@ -96,6 +99,7 @@ fun Labels(
                         observeLabels.value.forEach { label ->
                             ElevatedFilterChip(
                                 selected = true,
+                                modifier = Modifier,
                                 onClick = {
                                     if (observeNotesAndLabels.value.contains(
                                             NoteAndLabel(noteUid!!, label.id)
@@ -194,7 +198,7 @@ fun Labels(
                             }.invokeOnCompletion {
                                 labelState.value = ""
                                 idState.value = -1
-                                colorState.value = Color.Transparent.toArgb()
+                                colorState.value = 0x0000
                             }
                         }
                     ),

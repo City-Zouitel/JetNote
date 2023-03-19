@@ -1,9 +1,7 @@
 package com.example.mobile.home_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -14,6 +12,7 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -188,15 +187,11 @@ fun NoteHome(
             }
         ) {
             Box(
+                contentAlignment = Alignment.TopCenter,
                 modifier = Modifier
                     .fillMaxSize()
                     .pullRefresh(pullRefreshState)
             ) {
-                PullRefreshIndicator(
-                    refreshing = noteVM.isProcessing,
-                    state = pullRefreshState
-                )
-
                 if (currentLayout) {
                     LazyColumn(
                         state = lazyListState,
@@ -269,6 +264,12 @@ fun NoteHome(
                         }
                     }
                 }
+
+                PullRefreshIndicator(
+                    refreshing = noteVM.isProcessing,
+                    state = pullRefreshState,
+                )
+
             }
         }
     }

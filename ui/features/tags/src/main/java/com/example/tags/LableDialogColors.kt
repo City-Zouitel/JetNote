@@ -28,6 +28,7 @@ fun LabelDialogColors(
     AlertDialog(
         onDismissRequest = { dialogState.value = false },
         confirmButton = {},
+        modifier = Modifier.padding(30.dp),
         text = {
             LazyVerticalGrid(columns = GridCells.Fixed(7), content = {
                 items(listOfBackgroundColors) {
@@ -36,11 +37,15 @@ fun LabelDialogColors(
                             .size(37.dp)
                             .padding(2.dp)
                             .clickable {
-                                colorState.value = it.toArgb()
+//                                colorState.value = it.toArgb()
                                 labelVM.updateLabel(
                                     Label(id = idState.value, label = labelState.value, color = it.toArgb())
-                                )
-                                dialogState.value = false
+                                ).invokeOnCompletion {
+                                    dialogState.value = false
+                                    colorState.value = 0x0000
+                                    labelState.value = ""
+                                    idState.value = -1L
+                                }
                             }
                     ) {
                         drawArc(

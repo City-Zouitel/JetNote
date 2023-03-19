@@ -5,7 +5,7 @@ object Cons {
     const val TAG = "This"
     const val NUL = "null"
 
-    const val APP_VERSION = "2.0.1"
+    const val APP_VERSION = "2.0.3"
 
     const val NOTE_TABLE_NAME = "Notes"
     const val DATABASE_NAME = "JetNoteDatabase"

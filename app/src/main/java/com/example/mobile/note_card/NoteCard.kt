@@ -366,25 +366,6 @@ private fun Card(
                                     .padding(5.dp)
                                     .size(14.dp)
                             )
-//                            Checkbox(
-//                                checked = todo.isDone,
-//                                onCheckedChange = {
-//                                    todoVM.updateTotoItem(
-//                                        Todo(
-//                                            id = todo.id,
-//                                            item = todo.item,
-//                                            isDone = !todo.isDone
-//                                        )
-//                                    )
-//                                },
-//                                colors = CheckboxDefaults.colors(
-//                                    checkedColor = Color.Gray,
-//                                    uncheckedColor = Color(note.textColor)
-//                                ),
-//                                modifier = Modifier
-//                                    .padding(5.dp)
-//                                    .size(14.dp)
-//                            )
                             todo.item?.let { item ->
                                 Text(
                                     text = item,

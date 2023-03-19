@@ -17,8 +17,8 @@ fun appShortcut(
     intent.action = Intent.ACTION_VIEW
     intent.putExtra("new_shortcut", true)
     return ShortcutInfo.Builder(ctx, "shortcut")
-        .setShortLabel("New note")
-        .setLongLabel("Add new note")
+        .setShortLabel("Compose")
+        .setLongLabel("Compose")
         .setIcon(IconCompat.createWithResource(ctx, R.drawable.plus_24).toIcon(ctx))
         .setIntent(intent)
         .build()
