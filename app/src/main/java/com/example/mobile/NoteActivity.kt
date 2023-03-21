@@ -1,50 +1,32 @@
 package com.example.mobile
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.view.WindowInsetsController
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.example.datastore.DataStore
 import com.example.graph.Graph
 import com.example.mobile.CONS.AUDIOS
 import com.example.mobile.CONS.IMAGES
-import com.example.note.NoteVM
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.os.bundleOf
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import com.example.note.EntityVM
+import com.example.glance.WidgetReceiver
 import com.example.tags.LabelVM
 import kotlinx.coroutines.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlin.math.log
 
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
@@ -117,9 +99,6 @@ class NoteActivity : ComponentActivity() {
         File(this.filesDir.path + "/" + IMAGES).mkdirs()
         File(this.filesDir.path + "/" + AUDIOS).mkdirs()
 
-
-
-
 //        mapOf(
 //            "Coffee" to "Prepare hot coffee for my self.",
 //            "Certification" to "Call instructor for complete details.",
@@ -146,6 +125,11 @@ class NoteActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         checkShortcut(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        WidgetReceiver.updateBroadcast(this)
     }
 
 }

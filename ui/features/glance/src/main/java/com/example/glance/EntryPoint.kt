@@ -9,5 +9,5 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 interface EntryPoint {
 
-    fun vm(): VM
+    fun vm(): WidgetVM
 }

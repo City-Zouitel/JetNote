@@ -41,6 +41,7 @@ kapt {
 dependencies {
     implementation(projects.domain)
     implementation(projects.data.local)
+    implementation(projects.common.commonUi)
 
     //AndroidX.
     implementation(libs.androidx.core)
