@@ -27,7 +27,7 @@ comp_nav = "2.5.3"
 comp_viewmodel = "2.5.1"
 comp_activity = "1.6.1"
 comp_material3 = "1.0.1"
-comp_constraintlayout = "1.1.0-alpha07"
+comp_constraintlayout = "1.1.0-alpha09"
 
 # Koin
 koin_core = "3.3.0"
