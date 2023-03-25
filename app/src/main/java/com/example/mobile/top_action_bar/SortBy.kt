@@ -35,7 +35,7 @@ import com.example.common_ui.Icons.SORT_AMOUNT_DOWN_ICON
 import com.example.common_ui.Icons.SORT_AMOUNT_UP_ICON
 import com.example.common_ui.Icons.SORT_ICON
 import com.example.common_ui.Icons.SORT_NUMERIC_ICON
-import com.example.datastore.Cons.ORDER_BY_DEFAULT
+import com.example.datastore.Cons
 import com.example.datastore.DataStore
 import com.example.graph.sound
 import kotlinx.coroutines.launch
@@ -89,7 +89,7 @@ internal fun SortBy(
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
                     isShow.value = false
                     scope.launch {
-                        dataStore?.saveOrder(ORDER_BY_DEFAULT)
+                        dataStore?.saveOrder(Cons.ORDINATION)
                     }
                 }
             )

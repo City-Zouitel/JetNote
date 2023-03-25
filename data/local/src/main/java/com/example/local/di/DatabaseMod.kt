@@ -62,6 +62,10 @@ object DatabaseMod {
 
     @Singleton
     @Provides
+    fun provideWidgetEntityDao(database: Database) = database.getWidgetEntityDao()
+
+    @Singleton
+    @Provides
     fun provideTodoDao(database: Database) = database.getTodoDao()
 
     @Singleton

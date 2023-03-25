@@ -333,6 +333,7 @@ private fun Card(
             )
         }
 
+        // display link card.
         findUrlLink(note.description)?.let{
             UrlCard(desc = it, true)
         }

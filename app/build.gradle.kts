@@ -70,7 +70,7 @@ dependencies {
     implementation(projects.common.notification)
     implementation(projects.common.commonUi)
 //    implementation(projects.ui.graph)
-    implementation(projects.ui.features.glance)
+    implementation(projects.ui.features.widget)
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.camera)
     implementation(projects.ui.features.record)
@@ -115,10 +115,12 @@ dependencies {
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
+
     //Koin.
-    implementation(libs.koin.core)
-    implementation(libs.koin.android)
-    implementation(libs.koin.compose)
+//    implementation(libs.koin.core)
+//    implementation(libs.koin.android)
+//    implementation(libs.koin.compose)
+
 //    //Accompanist.
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.pager)

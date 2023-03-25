@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
-    alias(libs.plugins.kotlin.serialization)
+//    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.compose.toolingpreview)
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.constraintlayout)
+
     //Dagger-Hilt
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
@@ -66,8 +67,8 @@ dependencies {
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
-    implementation(libs.kotlinx.serialization)
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+//    implementation(libs.kotlinx.serialization)
+//    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
     //Koin.
     implementation(libs.koin.core)
@@ -75,7 +76,7 @@ dependencies {
     implementation(libs.koin.compose)
 
     //
-    implementation(libs.androidx.workmanager)
+//    implementation(libs.androidx.workmanager)
 
 //    implementation ("com.google.android.glance.tools:appwidget-host:0.2.2")
 //    implementation ("com.google.android.glance.tools:appwidget-configuration:0.2.2")

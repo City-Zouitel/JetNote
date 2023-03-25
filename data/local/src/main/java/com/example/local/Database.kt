@@ -29,6 +29,7 @@ abstract class Database:RoomDatabase() {
     abstract fun getLabelDao(): LabelDao
     abstract fun getNoteAndLabelDao(): NoteAndLabelDao
     abstract fun getEntityDao(): EntityDao
+    abstract fun getWidgetEntityDao(): WidgetEntityDao
     abstract fun getTodoDao(): TodoDao
     abstract fun getNoteAndTodoDao(): NoteAndTodoDao
 }

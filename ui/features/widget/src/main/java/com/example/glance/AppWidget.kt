@@ -2,12 +2,12 @@ package com.example.glance
 
 import android.content.Context
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.*
 import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.appWidgetBackground
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
@@ -18,12 +18,11 @@ import dagger.hilt.EntryPoints
 
 class AppWidget:GlanceAppWidget() {
 
-
     @Composable
     override fun Content() {
 
-
         val ctx = LocalContext.current.applicationContext
+
         val viewModel = EntryPoints.get(
             ctx,
             EntryPoint::class.java
@@ -37,7 +36,7 @@ class AppWidget:GlanceAppWidget() {
         ctx: Context,
         widgetVm: WidgetVM
     ) {
-        val notes = widgetVm.getAllNotes()
+        val notes = widgetVm.getAllEntities()
 
         LazyColumn(
             modifier = GlanceModifier
@@ -46,7 +45,7 @@ class AppWidget:GlanceAppWidget() {
                 items = notes
             ) { entity ->
                 Column {
-                    androidx.glance.layout.Row(
+                    Row(
                         modifier = GlanceModifier
                             .background(ColorProvider(Color(entity.note.color)))
                             .fillMaxWidth()
@@ -62,7 +61,7 @@ class AppWidget:GlanceAppWidget() {
                                     .cornerRadius(15.dp)
                             )
                         }
-                        androidx.glance.layout.Spacer(GlanceModifier.width(15.dp))
+                        Spacer(GlanceModifier.width(15.dp))
                         Column {
                             Text(
                                 text = entity.note.title ?: "",
@@ -94,5 +93,4 @@ class AppWidget:GlanceAppWidget() {
 
         }
     }
-
 }

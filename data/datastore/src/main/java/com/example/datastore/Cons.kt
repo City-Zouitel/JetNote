@@ -1,9 +1,13 @@
 package com.example.datastore
 
 object Cons {
-    const val LAYOUT_PREFERENCES_KEY = "LAYOUT"
-    const val ORDER_PREFERENCES_KEY = "ORDER"
-    const val APP_THEME_PREFERENCES_KEY = "THEME"
-    const val ORDER_BY_DEFAULT = "ORDER_BY_DEFAULT"
+    const val LAYOUT = "LAYOUT_PREFERENCES_KEY"
+    const val THEME = "APP_THEME_PREFERENCES_KEY"
+    const val ORDINATION = "ORDINATION_PREFERENCES_KEY"
+    const val SOUND_AFFECTION = "SOUND_EFFECT_PREFERENCES_KEY"
 
+    const val DS_FILE = "JET_NOTE_FILE_STORE"
+
+    const val GRID = "GRID_LAYOUT"
+    const val LIST = "LIST_LAYOUT"
 }

@@ -46,6 +46,7 @@ import com.example.mobile.top_action_bar.SelectionTopAppBar
 import com.example.local.model.Entity
 import com.example.local.model.Label
 import com.example.local.model.Note
+import com.example.mobile.DataStoreVM
 import com.example.note.EntityVM
 import com.example.note.NoteVM
 import kotlinx.coroutines.Dispatchers
@@ -65,6 +66,7 @@ import java.util.*
 fun NoteHome(
     noteVM: NoteVM = hiltViewModel(),
     entityVM: EntityVM = hiltViewModel(),
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
@@ -76,7 +78,8 @@ fun NoteHome(
     val dataStore = DataStore(ctx)
     val orderBy = dataStore.getOrder.collectAsState("").value
     // the true value is 'list' layout and false is 'grid'.
-    val currentLayout = dataStore.getLayout.collectAsState(false).value
+//    val currentLayout = dataStore.getLayout.collectAsState(false).value
+    val currentLayout = dataStoreVM.getLayout.collectAsState().value
     //
     val thereIsSoundEffect = dataStore.thereIsSoundEffect.collectAsState(false)
 
@@ -192,7 +195,7 @@ fun NoteHome(
                     .fillMaxSize()
                     .pullRefresh(pullRefreshState)
             ) {
-                if (currentLayout) {
+                if (currentLayout == "LIST") {
                     LazyColumn(
                         state = lazyListState,
                         modifier = Modifier

@@ -39,6 +39,7 @@ android {
 dependencies {
 
     implementation(projects.data.local)
+    implementation(projects.data.datastore)
 
     //Dagger-Hilt
     implementation (libs.dagger)
