@@ -6,23 +6,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.MatColors.Companion.SURFACE_TINT
-import com.example.datastore.DataStore
 import com.example.mobile.getMaterialColor
 import com.example.graph.sound
 
 @Composable
 fun EraseDialog(
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     dialogState: MutableState<Boolean>,
     confirmation : () -> Unit,
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     AlertDialog(
         onDismissRequest = { dialogState.value = false },
@@ -39,7 +42,7 @@ fun EraseDialog(
                     dialogState.value = false
                 }
             )
-                        },
+        },
         dismissButton = {
             ClickableText(
                 text = AnnotatedString("Cansel"),
@@ -54,7 +57,7 @@ fun EraseDialog(
             )
         },
         title = {
-                Text(text = "Empty Trash?")
+            Text(text = "Empty Trash?")
         },
         text = {
             Text(text = "All notes is trash will be permanently deleted.")

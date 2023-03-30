@@ -9,21 +9,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common_ui.AdaptingRow
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.Cons.KEY_STANDARD
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.CALENDAR_ICON
 import com.example.common_ui.Icons.CLOCK_ICON
 import com.example.common_ui.MatColors
 import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.common_ui.SoundEffect
-import com.example.datastore.DataStore
 import com.example.notification.NotificationVM
 
 @SuppressLint(
@@ -32,6 +34,7 @@ import com.example.notification.NotificationVM
 )
 @Composable
 fun RemindingNote(
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     dialogState: MutableState<Boolean>,
     title: String?,
     message: String?,
@@ -39,7 +42,8 @@ fun RemindingNote(
     remindingValue: MutableState<Long>?
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+//    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val soundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val sound = SoundEffect()
     val getMatColor = MatColors().getMaterialColor
@@ -65,7 +69,7 @@ fun RemindingNote(
                         .height(50.dp),
                     onClick = {
                         remindingViewModel.getDatePicker(ctx)
-                            sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
@@ -90,7 +94,7 @@ fun RemindingNote(
                         .height(50.dp),
                     onClick = {
                         remindingViewModel.getTimePicker(ctx)
-                            sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
@@ -121,7 +125,7 @@ fun RemindingNote(
                             message = message,
                             uid = uid
                         )
-                        sound.makeSound(ctx, KEY_STANDARD, thereIsSoundEffect.value)
+                        sound.makeSound(ctx, KEY_STANDARD, soundEffect.value)
                     }.onSuccess {
                         remindingValue?.value = remindingViewModel::getDateTimeReminder.invoke().value.time
                     }

@@ -3,6 +3,8 @@ package com.example.mobile
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.autofill.AutofillValue
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -15,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.example.datastore.DataStore
 import com.example.graph.Graph
 import com.example.mobile.CONS.AUDIOS
 import com.example.mobile.CONS.IMAGES
@@ -24,6 +25,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.util.*
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common_ui.DataStoreVM
 import com.example.glance.WidgetReceiver
 import com.example.tags.LabelVM
 import kotlinx.coroutines.*
@@ -36,14 +39,7 @@ class NoteActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-            WindowCompat.setDecorFitsSystemWindows(window,false)
-
-//        WindowInsetsControllerCompat(window, View(this)).let { c ->
-//            c.hide(WindowInsetsCompat.Type.statusBars())
-//            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE.also {
-//                c.systemBarsBehavior = it
-//            }
-//        }
+        WindowCompat.setDecorFitsSystemWindows(window,false)
 
         setContent {
 
@@ -59,14 +55,17 @@ class NoteActivity : ComponentActivity() {
     }
 
     @Composable
-    private fun AppTheme(content: @Composable () -> Unit) {
-        val currentTheme = DataStore(LocalContext.current).isDarkTheme.collectAsState(false).value
+    private fun AppTheme(
+        dataStoreVM: DataStoreVM = hiltViewModel(),
+        content: @Composable () -> Unit
+    ) {
+        val currentTheme = remember(dataStoreVM, dataStoreVM::getTheme).collectAsState()
         val systemUiController = rememberSystemUiController()
         val isDarkUi = isSystemInDarkTheme()
 
         val theme = when {
             isSystemInDarkTheme() -> darkColorScheme()
-            currentTheme -> darkColorScheme()
+            currentTheme.value == "DARK" -> darkColorScheme()
             else -> lightColorScheme()
         }
 
@@ -74,7 +73,7 @@ class NoteActivity : ComponentActivity() {
             systemUiController.apply {
                 setStatusBarColor(Color.Transparent, !isDarkUi)
                 setNavigationBarColor(
-                    if (currentTheme || isDarkUi) Color(red = 28, green = 27, blue = 31)
+                    if (currentTheme.value == "DARK" || isDarkUi) Color(red = 28, green = 27, blue = 31)
                     else Color(red = 255, green = 251, blue = 254)
                 )
             }

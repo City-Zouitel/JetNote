@@ -11,9 +11,11 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.example.datastore.DataStore
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common_ui.DataStoreVM
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,14 +33,17 @@ class QuickActivity: ComponentActivity() {
     }
 
     @Composable
-    private fun AppTheme(content: @Composable () -> Unit) {
-        val currentTheme = DataStore(LocalContext.current).isDarkTheme.collectAsState(false).value
+    private fun AppTheme(
+        dataStoreVM: DataStoreVM = hiltViewModel(),
+        content: @Composable () -> Unit
+    ) {
+        val currentTheme = remember(dataStoreVM, dataStoreVM::getTheme).collectAsState()
         val systemUiController = rememberSystemUiController()
         val isDarkUi = isSystemInDarkTheme()
 
         val theme = when {
             isSystemInDarkTheme() -> darkColorScheme()
-            currentTheme -> darkColorScheme()
+            currentTheme.value == "GRID" -> darkColorScheme()
             else -> lightColorScheme()
         }
 
@@ -46,7 +51,7 @@ class QuickActivity: ComponentActivity() {
             systemUiController.apply {
                 setStatusBarColor(Color.Transparent, !isDarkUi)
                 setNavigationBarColor(
-                    if (currentTheme || isDarkUi) Color(red = 28, green = 27, blue = 31)
+                    if (currentTheme.value == "GRID"|| isDarkUi) Color(red = 28, green = 27, blue = 31)
                     else Color(red = 255, green = 251, blue = 254)
                 )
             }

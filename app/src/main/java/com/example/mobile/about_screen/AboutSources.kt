@@ -7,6 +7,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
@@ -14,20 +15,23 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.GITHUB_ICON
 import com.example.common_ui.MatColors.Companion.ON_SURFACE
 import com.example.common_ui.MatColors.Companion.SURFACE
-import com.example.datastore.DataStore
 import com.example.mobile.getMaterialColor
 import com.example.graph.sound
 
 @Composable
-fun AboutSources() {
+fun AboutSources(
+    dataStoreVM: DataStoreVM = hiltViewModel()
+) {
 
     val uri = LocalUriHandler.current
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     Opensource(
         txt = "Project Source",

@@ -54,7 +54,6 @@ import com.example.common_ui.Cons.NUL
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.EDIT_ICON
 import com.example.common_ui.MatColors.Companion.OUT_LINE_VARIANT
-import com.example.datastore.DataStore
 import com.example.local.model.Note
 import com.example.local.model.NoteAndLabel
 import com.example.local.model.NoteAndTodo
@@ -84,6 +83,7 @@ fun NoteEdit(
     labelVM: com.example.tags.LabelVM = hiltViewModel(),
     todoVM: com.example.tasks.TodoVM = hiltViewModel(),
     noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     title:String?,
     description:String?,
     color: Int,
@@ -100,7 +100,7 @@ fun NoteEdit(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = FocusRequester()
 
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }

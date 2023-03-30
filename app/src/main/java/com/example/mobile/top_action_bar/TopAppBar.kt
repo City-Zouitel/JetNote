@@ -5,20 +5,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.AdaptingRow
 import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.BROOM_ICON
 import com.example.common_ui.Icons.MENU_BURGER_ICON
 import com.example.common_ui.MatColors.Companion.SURFACE
-import com.example.datastore.DataStore
 import com.example.mobile.getMaterialColor
 import com.example.graph.sound
 import com.example.local.model.Label
@@ -27,8 +25,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteTopAppBar(
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     searchNoteTitle: MutableState<String>,
-    dataStore: DataStore?,
     scrollBehavior: TopAppBarScrollBehavior,
     drawerState: DrawerState,
     thisHomeScreen: Boolean,
@@ -39,7 +37,7 @@ fun NoteTopAppBar(
 ) {
     val scope = rememberCoroutineScope()
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     TopAppBar(
         navigationIcon = {
@@ -78,7 +76,6 @@ fun NoteTopAppBar(
                         if (it) {
                             SortBy(
                                 isShow = expandedSortMenuState,
-                                dataStore = dataStore
                             )
                         } else {
                             Icon(
@@ -89,9 +86,7 @@ fun NoteTopAppBar(
                                 })
                         }
                     }
-                    Layout(
-                        dataStore = dataStore
-                    )
+                    Layout()
                 }
             }
         },

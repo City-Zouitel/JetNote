@@ -16,21 +16,23 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.MatColors
 import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.common_ui.SoundEffect
-import com.example.datastore.DataStore
 
 @Composable
 fun ColorsRow(
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     colorState: MutableState<Int>,
     colors: Array<Color>
     ) {
 
     val currentColor = remember { mutableStateOf(Color.White) }
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val getMatColor = MatColors().getMaterialColor
     val sound = SoundEffect()

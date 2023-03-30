@@ -46,6 +46,7 @@ hilt {
 }
 
 dependencies {
+    implementation(projects.data.datastore)
     //AndroidX.
     implementation(libs.androidx.core)
     implementation(libs.androidx.corektx)

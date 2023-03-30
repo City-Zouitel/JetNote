@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,11 +20,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Cons.KEY_INVALID
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.CROSS_ICON
 import com.example.common_ui.MatColors.Companion.SURFACE
-import com.example.datastore.DataStore
 import com.example.mobile.getMaterialColor
 import com.example.graph.sound
 import com.example.local.model.Label
@@ -31,12 +33,13 @@ import com.example.local.model.Label
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun SearchField(
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     title: MutableState<String>,
     placeholder: String,
     label: MutableState<Label>?
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -62,7 +65,7 @@ internal fun SearchField(
                     painter = painterResource(id = CROSS_ICON),
                     contentDescription = null,
                     modifier = Modifier.clickable {
-                        sound.makeSound.invoke(ctx, KEY_INVALID, thereIsSoundEffect)
+                        sound.makeSound.invoke(ctx, KEY_INVALID, thereIsSoundEffect.value)
                         title.value = ""
                         label?.value = Label()
                     }

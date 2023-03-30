@@ -26,7 +26,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.common_ui.*
 import com.example.common_ui.Cons.DRAW_ROUTE
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.Cons.KEY_STANDARD
@@ -36,11 +38,6 @@ import com.example.common_ui.Icons.IMAGE_ICON
 import com.example.common_ui.Icons.LIST_CHECK_ICON
 import com.example.common_ui.Icons.MIC_ICON
 import com.example.common_ui.Icons.TAGS_ICON
-import com.example.common_ui.SoundEffect
-import com.example.common_ui.getColorOfPriority
-import com.example.common_ui.getPriorityOfColor
-import com.example.common_ui.listOfPriorityColors
-import com.example.datastore.DataStore
 import com.example.local.model.Note
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -49,6 +46,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 @SuppressLint("SuspiciousIndentation")
 @Composable
 internal fun Plus(
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     isShow: MutableState<Boolean>,
     note: Note,
     navController: NavController,
@@ -57,7 +55,7 @@ internal fun Plus(
     priorityColorState: MutableState<String>
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val sound = SoundEffect()
 

@@ -17,10 +17,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.AdaptingRow
 import com.example.common_ui.Cons.AUDIOS
 import com.example.common_ui.Cons.MP3
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.PAUSE_CIRCLE_FILLED_ICON
 import com.example.common_ui.Icons.PLAY_CIRCLE_FILLED_ICON
 import com.example.common_ui.Icons.TRASH_ICON
-import com.example.datastore.DataStore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
@@ -30,6 +30,7 @@ import java.io.File
 @Composable
 fun NoteMediaPlayer(
     exoViewModule: MediaPlayerVM = hiltViewModel(),
+    datastoreVM: DataStoreVM = hiltViewModel(),
     localMediaUid: String?
 ) {
     val context = LocalContext.current
@@ -39,11 +40,7 @@ fun NoteMediaPlayer(
     val isPlaying = remember { mutableStateOf(false) }
     val mediaFile = context.filesDir.path + "/$AUDIOS/" + localMediaUid + "." + MP3
 
-    //
-    val noteDataStore = DataStore(LocalContext.current)
-
-    // the true value is 'list' layout by default and false is 'grid'.
-    val currentLayout = noteDataStore.getLayout.collectAsState(true)
+    val currentLayout = datastoreVM.getLayout.collectAsState()
 
 
 //    val exoMedia = exoViewModule.prepareMediaPlayer(mediaFile)
@@ -72,7 +69,7 @@ fun NoteMediaPlayer(
             AdaptingRow(modifier = Modifier
                 .padding(start = 5.dp, end = 5.dp)) {
                 //
-                if (currentLayout.value){
+                if (currentLayout.value == "GRID"){
                         Icon(
                             painter = painterResource(
                                 id = if (isPlaying.value) PAUSE_CIRCLE_FILLED_ICON else PLAY_CIRCLE_FILLED_ICON

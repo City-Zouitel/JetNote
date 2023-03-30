@@ -5,7 +5,7 @@ object Cons {
     const val TAG = "This"
     const val NUL = "null"
 
-    const val APP_VERSION = "2.0.3"
+    const val APP_VERSION = "2.0.4"
 
     const val NOTE_TABLE_NAME = "Notes"
     const val DATABASE_NAME = "JetNoteDatabase"
@@ -49,11 +49,12 @@ object Cons {
     const val NEWEST_ORDER = "Newest"
     const val PRIORITY_ORDER = "Priority"
     const val REMINDING_ORDER = "Reminding"
-    const val ORDER_BY_NAME = "ORDER_BY_NAME"
+    const val BY_NAME = "ORDER_BY_NAME"
     const val ORDER_BY_OLDEST = "ORDER_BY_OLDEST"
     const val ORDER_BY_NEWEST = "ORDER_BY_NEWEST"
     const val ORDER_BY_PRIORITY = "ORDER_BY_PRIORITY"
     const val ORDER_BY_REMINDER = "ORDER_BY_REMINDER"
+    const val BY_ID = "ORDER_BY_ID"
 
     const val NOTIFICATION_ID = 1
     const val CHANNEL_ID = "NOTE_CHANNEL"
@@ -78,4 +79,8 @@ object Cons {
     const val KEY_STANDARD = 5
     const val KEY_INVALID = 9
     const val FOCUS_NAVIGATION = 12
+
+    const val GRID = "GRID_LAYOUT"
+    const val LIST = "LIST_LAYOUT"
+
 }

@@ -19,9 +19,9 @@ import com.example.common_ui.Cons.IMAGES
 import com.example.common_ui.Cons.JPEG
 import com.example.common_ui.Cons.MP3
 import com.example.common_ui.Cons.SEARCH_IN_TRASH
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.common_ui.VerticalGrid
-import com.example.datastore.DataStore
 import com.example.mobile.getMaterialColor
 import com.example.local.model.Entity
 import com.example.local.model.Label
@@ -44,12 +44,14 @@ import java.io.File
 fun TrashScreen(
     viewModule: NoteVM = hiltViewModel(),
     entityVM: EntityVM = hiltViewModel(),
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
     val searchTitleState = remember { mutableStateOf("") }//.filterBadWords()
-    val noteDataStore = DataStore(ctx)
-    val currentLayout = noteDataStore.getLayout.collectAsState(true)
+
+    val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
+
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scaffoldState = rememberScaffoldState()
     val observerTrashedNotes: State<List<Entity>> =
@@ -85,7 +87,6 @@ fun TrashScreen(
             topBar = {
                 NoteTopAppBar(
                     searchNoteTitle = searchTitleState,
-                    dataStore = noteDataStore,
                     scrollBehavior = scrollBehavior,
                     drawerState = drawerState,
                     thisHomeScreen = false,
@@ -96,7 +97,7 @@ fun TrashScreen(
                 )
             }
         ) {
-            if (currentLayout.value) {
+            if (currentLayout.value == "LIST") {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                 ) {

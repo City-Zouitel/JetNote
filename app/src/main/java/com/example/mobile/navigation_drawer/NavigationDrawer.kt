@@ -22,6 +22,7 @@ import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.Cons.SETTING_ROUTE
 import com.example.common_ui.Cons.TRASH_ROUTE
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.COMMENT_EXCLAMATION
 import com.example.common_ui.Icons.HOME_ICON
@@ -30,16 +31,17 @@ import com.example.common_ui.Icons.SETTINGS_ICON
 import com.example.common_ui.Icons.SHARE_ICON
 import com.example.common_ui.Icons.TRASH_ICON
 import com.example.common_ui.sharApp
-import com.example.datastore.DataStore
 import com.example.local.model.Label
 import com.example.graph.sound
+import com.example.tags.LabelVM
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawer(
-    labelVM: com.example.tags.LabelVM = hiltViewModel(),
+    labelVM: LabelVM = hiltViewModel(),
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     drawerState: DrawerState,
     navController: NavController,
     searchTitle: MutableState<String>?,
@@ -48,7 +50,7 @@ fun NavigationDrawer(
     val ctx = LocalContext.current
     val observeLabels = remember(labelVM,labelVM::getAllLabels).collectAsState()
 
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val scope = rememberCoroutineScope()
 

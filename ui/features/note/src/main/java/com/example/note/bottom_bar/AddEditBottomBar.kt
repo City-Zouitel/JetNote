@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.common_ui.*
 import com.example.common_ui.Cons.FOCUS_NAVIGATION
@@ -22,13 +23,13 @@ import com.example.common_ui.Icons.ADD_CIRCLE_ICON
 import com.example.common_ui.Icons.BELL_ICON
 import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.common_ui.MatColors.Companion.SURFACE_VARIANT
-import com.example.datastore.DataStore
 import com.example.local.model.Note
 import com.example.note.ColorsRow
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AddEditBottomBar(
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     note: Note,
     navController: NavController,
     imageLaunch : ManagedActivityResultLauncher<String, Uri?>,
@@ -47,7 +48,7 @@ fun AddEditBottomBar(
 
     val showOptionsMenu = remember { mutableStateOf(false) }
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val getMatColor = MatColors().getMaterialColor
     val sound = SoundEffect()
@@ -102,10 +103,16 @@ fun AddEditBottomBar(
         )
 
         // row of background colors.
-        ColorsRow(backgroundColorState, listOfBackgroundColors)
+        ColorsRow(
+            colorState = backgroundColorState,
+            colors = listOfBackgroundColors
+        )
 
         // row of text colors.
-        ColorsRow(textColorState, listOfTextColors)
+        ColorsRow(
+            colorState = textColorState,
+            colors = listOfTextColors
+        )
 
     }
 

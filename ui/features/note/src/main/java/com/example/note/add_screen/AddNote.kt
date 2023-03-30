@@ -57,7 +57,6 @@ import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.DONE_ICON
 import com.example.common_ui.MatColors.Companion.OUT_LINE_VARIANT
 import com.example.common_ui.MatColors.Companion.SURFACE
-import com.example.datastore.DataStore
 import com.example.local.model.Note
 import com.example.local.model.NoteAndLabel
 import com.example.local.model.NoteAndTodo
@@ -92,6 +91,7 @@ fun NoteAdd(
     labelVM: LabelVM = hiltViewModel(),
     todoVM: TodoVM = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     navController: NavController,
     uid: String,
     description: String?
@@ -104,8 +104,9 @@ fun NoteAdd(
     val focusState = remember { mutableStateOf(false) }
 
     val getMatColor = MatColors().getMaterialColor
+
     val sound = SoundEffect()
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val observeNotesAndLabels =
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()

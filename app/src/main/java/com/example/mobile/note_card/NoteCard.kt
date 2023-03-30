@@ -40,6 +40,7 @@ import com.example.common_ui.Cons.JPEG
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.Cons.MP3
 import com.example.common_ui.Cons.NON
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.ANGLE_DOWN_ICON
 import com.example.common_ui.Icons.ANGLE_UP_ICON
 import com.example.common_ui.Icons.CIRCLE_ICON_18
@@ -47,7 +48,6 @@ import com.example.common_ui.Icons.CLOCK_ICON
 import com.example.common_ui.Icons.RESET_ICON
 import com.example.common_ui.codeUrl
 import com.example.common_ui.findUrlLink
-import com.example.datastore.DataStore
 import com.example.graph.ImageDisplayed
 import com.example.mobile.navigation_drawer.Screens
 import com.example.mobile.navigation_drawer.Screens.HOME_SCREEN
@@ -69,6 +69,7 @@ import java.util.*
 
 @Composable
 fun NoteCard(
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     forScreen: Screens,
     entity: Entity,
     navController: NavController,
@@ -80,9 +81,7 @@ fun NoteCard(
 
     val ctx = LocalContext.current
 
-    val noteDataStore = DataStore(ctx)
-    // the true value is 'list' layout and false is 'grid'.
-    val currentLayout = noteDataStore.getLayout.collectAsState(false).value
+    val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
 
     val action = SwipeAction(
         onSwipe = {
@@ -92,7 +91,7 @@ fun NoteCard(
         background = Color.Transparent
     )
 
-    if (currentLayout) {
+    if (currentLayout.value == "LIST") {
         SwipeableActionsBox(
             modifier = Modifier,
             backgroundUntilSwipeThreshold = Color.Transparent,
@@ -125,6 +124,7 @@ private fun Card(
     todoVM: TodoVM = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     noteVM: NoteVM = hiltViewModel(),
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     entity: Entity,
     navController: NavController,
     forScreens: Screens,
@@ -132,7 +132,7 @@ private fun Card(
     selectedNotes: SnapshotStateList<Note>?
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val note = entity.note
     val labels = entity.labels

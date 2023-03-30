@@ -154,7 +154,7 @@ fun Graph(
         }
 
         composable(SETTING_ROUTE){
-            Settings(navHostController)
+            Settings(navC = navHostController)
         }
         composable("labels/{$UID}", arguments = listOf(
             navArgument(UID) {

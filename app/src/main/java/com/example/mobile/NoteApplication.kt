@@ -12,7 +12,7 @@ class NoteApplication: Application() {
         super.onCreate()
 
         //
-        GlobalExceptionHandler.initialize(this,NoteActivity::class.java)
+//        GlobalExceptionHandler.initialize(this,NoteActivity::class.java)
 
         //
         Beetle.configure {

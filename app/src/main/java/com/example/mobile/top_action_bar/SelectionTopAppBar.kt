@@ -19,12 +19,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.AdaptingRow
 import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.COPY_ICON
 import com.example.common_ui.Icons.CROSS_ICON
 import com.example.common_ui.Icons.SHARE_ICON
 import com.example.common_ui.Icons.TRASH_ICON
 import com.example.common_ui.sharNote
-import com.example.datastore.DataStore
 import com.example.mobile.home_screen.copyNote
 import com.example.graph.sound
 import com.example.local.model.Note
@@ -32,6 +32,10 @@ import com.example.local.model.NoteAndLabel
 import com.example.local.model.NoteAndTodo
 import com.example.local.model.Todo
 import com.example.note.NoteVM
+import com.example.tags.LabelVM
+import com.example.tags.NoteAndLabelVM
+import com.example.tasks.NoteAndTodoVM
+import com.example.tasks.TodoVM
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 
@@ -39,16 +43,17 @@ import kotlin.random.Random.Default.nextLong
 @Composable
 fun SelectionTopAppBar(
     noteVM: NoteVM = hiltViewModel(),
-    noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
-    labelVM: com.example.tags.LabelVM = hiltViewModel(),
-    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
-    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
+    noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
+    labelVM: LabelVM = hiltViewModel(),
+    todoVM: TodoVM = hiltViewModel(),
+    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     selectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Note>?,
     undo: (Note) -> Unit
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false).value
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val observeNotesAndLabels =
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
@@ -69,7 +74,7 @@ fun SelectionTopAppBar(
                     modifier = Modifier
                         .padding(7.dp)
                         .clickable {
-                            sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
+                            sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                             selectedNotes?.forEach {
                                 noteVM.updateNote(
                                     Note(
@@ -95,60 +100,70 @@ fun SelectionTopAppBar(
                             modifier = Modifier
                                 .padding(7.dp)
                                 .clickable {
-                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
+                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
 
                                     sharNote(
-                                    ctx,
-                                    selectedNotes?.single()?.title!!,
-                                    selectedNotes.single().description!!
-                                ) {
-                                    selectedNotes.clear()
-                                    selectionState?.value = false
-                                }
-                            })
+                                        ctx,
+                                        selectedNotes?.single()?.title!!,
+                                        selectedNotes.single().description!!
+                                    ) {
+                                        selectedNotes.clear()
+                                        selectionState?.value = false
+                                    }
+                                })
 
                         // copy the note.
                         Icon(painter = painterResource(id = COPY_ICON), contentDescription = null,
                             modifier = Modifier
                                 .padding(7.dp)
                                 .clickable {
-                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect)
+                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
 
                                     copyNote(ctx, noteVM, selectedNotes?.single()!!, newUid) {
-                                    // copy each label.
-                                    observeLabels.value.filter {
-                                        observeNotesAndLabels.value.contains(
-                                            NoteAndLabel(selectedNotes.single().uid, it.id)
-                                        )
-                                    }.forEach {
-                                        noteAndLabelVM.addNoteAndLabel(
-                                            NoteAndLabel(
-                                                noteUid = newUid.toString(),
-                                                labelId = it.id
-                                            )
-                                        )
-                                    }
-
-                                    // copy each todo item.
-                                    observeTodoList.value.filter {
-                                        observeNoteAndTodo.value.contains(
-                                            NoteAndTodo(selectedNotes.single().uid, it.id)
-                                        )
-                                    }.forEach { todo ->
-                                        nextLong().let {
-                                            todoVM.addTotoItem(Todo(it, todo.item, todo.isDone))
-                                            noteAndTodoVM.addNoteAndTodoItem(
-                                                NoteAndTodo(
-                                                    newUid.toString(),
-                                                    it
+                                        // copy each label.
+                                        observeLabels.value
+                                            .filter {
+                                                observeNotesAndLabels.value.contains(
+                                                    NoteAndLabel(selectedNotes.single().uid, it.id)
                                                 )
-                                            )
-                                        }
+                                            }
+                                            .forEach {
+                                                noteAndLabelVM.addNoteAndLabel(
+                                                    NoteAndLabel(
+                                                        noteUid = newUid.toString(),
+                                                        labelId = it.id
+                                                    )
+                                                )
+                                            }
+
+                                        // copy each todo item.
+                                        observeTodoList.value
+                                            .filter {
+                                                observeNoteAndTodo.value.contains(
+                                                    NoteAndTodo(selectedNotes.single().uid, it.id)
+                                                )
+                                            }
+                                            .forEach { todo ->
+                                                nextLong().let {
+                                                    todoVM.addTotoItem(
+                                                        Todo(
+                                                            it,
+                                                            todo.item,
+                                                            todo.isDone
+                                                        )
+                                                    )
+                                                    noteAndTodoVM.addNoteAndTodoItem(
+                                                        NoteAndTodo(
+                                                            newUid.toString(),
+                                                            it
+                                                        )
+                                                    )
+                                                }
+                                            }
                                     }
+                                    selectedNotes.clear()
+                                    selectionState?.value = false
                                 }
-                                selectedNotes.clear()
-                                selectionState?.value = false
-                            }
                         )
                     }
                 }

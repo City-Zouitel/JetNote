@@ -20,12 +20,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.test.core.app.launchActivity
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.KEY_STANDARD
 import com.example.common_ui.Cons.NUL
-import com.example.common_ui.Cons.ORDER_BY_NAME
+import com.example.common_ui.Cons.BY_NAME
 import com.example.common_ui.Cons.ORDER_BY_NEWEST
 import com.example.common_ui.Cons.ORDER_BY_OLDEST
 import com.example.common_ui.Cons.ORDER_BY_PRIORITY
@@ -35,7 +34,6 @@ import com.example.common_ui.Icons.PLUS_ICON
 import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.common_ui.MatColors.Companion.SURFACE_VARIANT
 import com.example.common_ui.VerticalGrid
-import com.example.datastore.DataStore
 import com.example.mobile.getMaterialColor
 import com.example.mobile.navigation_drawer.NavigationDrawer
 import com.example.mobile.navigation_drawer.Screens.HOME_SCREEN
@@ -46,14 +44,9 @@ import com.example.mobile.top_action_bar.SelectionTopAppBar
 import com.example.local.model.Entity
 import com.example.local.model.Label
 import com.example.local.model.Note
-import com.example.mobile.DataStoreVM
+import com.example.common_ui.DataStoreVM
 import com.example.note.EntityVM
 import com.example.note.NoteVM
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import java.io.File
 import java.util.*
 
 @SuppressLint(
@@ -75,21 +68,19 @@ fun NoteHome(
     val searchLabelState = remember { mutableStateOf(Label()) }
 
     //
-    val dataStore = DataStore(ctx)
-    val orderBy = dataStore.getOrder.collectAsState("").value
-    // the true value is 'list' layout and false is 'grid'.
-//    val currentLayout = dataStore.getLayout.collectAsState(false).value
-    val currentLayout = dataStoreVM.getLayout.collectAsState().value
+    val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
     //
-    val thereIsSoundEffect = dataStore.thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     //
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     //
     val scaffoldState = rememberScaffoldState()
 //     to observer notes while changing immediately.
-    val observerLocalNotes: State<List<Entity>> = when (orderBy) {
-        ORDER_BY_NAME -> remember(entityVM, entityVM::allNotesByName).collectAsState()
+    val observerLocalNotes: State<List<Entity>> = when (
+        remember(dataStoreVM, dataStoreVM::getOrdination).collectAsState().value
+    ) {
+        BY_NAME -> remember(entityVM, entityVM::allNotesByName).collectAsState()
         ORDER_BY_OLDEST -> remember(entityVM, entityVM::allNotesByOldest).collectAsState()
         ORDER_BY_NEWEST -> remember(entityVM, entityVM::allNotesByNewest).collectAsState()
         ORDER_BY_PRIORITY -> remember(entityVM, entityVM::allNotesByPriority).collectAsState()
@@ -104,7 +95,7 @@ fun NoteHome(
     val coroutineScope = rememberCoroutineScope()
 
     val trashedNotesState = remember(entityVM) { entityVM.allTrashedNotes }.collectAsState()
-//    val isProcessing = remember(noteVM) { noteVM.isProcessing }
+    val isProcessing = remember(noteVM) { noteVM.isProcessing }
 
     val expandedSortMenuState = remember { mutableStateOf(false) }
 
@@ -153,7 +144,6 @@ fun NoteHome(
                 } else {
                     NoteTopAppBar(
                         searchNoteTitle = searchTitleState,
-                        dataStore = dataStore,
                         scrollBehavior = scrollBehavior,
                         drawerState = drawerState,
                         thisHomeScreen = true,
@@ -193,9 +183,9 @@ fun NoteHome(
                 contentAlignment = Alignment.TopCenter,
                 modifier = Modifier
                     .fillMaxSize()
-                    .pullRefresh(pullRefreshState)
+                    .pullRefresh(state = pullRefreshState)
             ) {
-                if (currentLayout == "LIST") {
+                if (currentLayout.value == "LIST") {
                     LazyColumn(
                         state = lazyListState,
                         modifier = Modifier

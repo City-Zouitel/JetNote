@@ -9,16 +9,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Cons.KEY_CLICK
+import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.REDO_ICON
 import com.example.common_ui.Icons.UNDO_ICON
 import com.example.common_ui.MatColors
 import com.example.common_ui.MatColors.Companion.SURFACE_VARIANT
 import com.example.common_ui.SoundEffect
-import com.example.datastore.DataStore
 
 @Composable
 fun UndoRedo(
+    dataStoreVM: DataStoreVM = hiltViewModel(),
     titleFieldState: MutableState<String?>,
     descriptionFieldState: MutableState<String?>,
     isTitleFieldSelected : MutableState<Boolean>,
@@ -28,7 +30,7 @@ fun UndoRedo(
     val descriptionStack = remember { mutableStateListOf<String>() }
 
     val ctx = LocalContext.current
-    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val getMatColor = MatColors().getMaterialColor
     val sound = SoundEffect()
