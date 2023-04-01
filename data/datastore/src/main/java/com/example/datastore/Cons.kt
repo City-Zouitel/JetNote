@@ -18,6 +18,6 @@ object Cons {
 
     const val SOUND = "SOUND_EFFECT_PREFERENCES_KEY"
 
-    const val DS_FILE = "JET_NOTE_FILE_STORE"
+    const val DS_FILE = "JETNOTE_DATA_STORE.preferences_pb"
 
 }

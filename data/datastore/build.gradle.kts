@@ -46,4 +46,7 @@ dependencies {
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
+
+    implementation("io.github.osipxd:security-crypto-datastore-preferences:1.0.0-alpha04")
+
 }
