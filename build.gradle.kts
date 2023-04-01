@@ -13,6 +13,7 @@ buildscript {
         classpath(libs.kotlin.gradle.plugin)
         classpath(libs.android.gradle.plugin)
         classpath(libs.aboutlibraries.plugin)
+        classpath("gradle.plugin.chrisney:enigma:1.0.0.8")
     }
 
     repositories {
