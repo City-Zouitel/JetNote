@@ -17,14 +17,14 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 205
-        versionName = "2.0.5"
+        versionCode = 210
+        versionName = "2.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-        compileSdkPreview ="UpsideDownCake"
+//        compileSdkPreview ="UpsideDownCake"
     }
 
     buildTypes {
@@ -63,7 +63,6 @@ hilt {
 
 enigma.enabled = true
 enigma.injectFakeKeys = true
-enigma.ignoredClasses
 
 dependencies {
 
@@ -88,7 +87,6 @@ dependencies {
     //AndroidX.
     implementation(libs.androidx.core)
     implementation(libs.androidx.corektx)
-    implementation ("androidx.core:core-ktx:+")
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.runtimektx)
     implementation(libs.androidx.constraintlayout)

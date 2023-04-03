@@ -61,7 +61,5 @@ dependencies {
     implementation (libs.camerax.lifecycle)
     implementation (libs.camerax.view)
     implementation (libs.camerax.extensions)
-    implementation("androidx.core:core-ktx:+")
-    implementation("androidx.core:core-ktx:+")
 
 }
