@@ -43,7 +43,7 @@ fun UrlCard(desc: String, itsCard: Boolean) {
     val url = remember { mutableStateOf("") }
     val img = remember { mutableStateOf("") }
 
-    var res = findUrlLink(desc)
+    val res = findUrlLink(desc)
 
     desc.let {
 //        for (link in it.split(" ","\n", ignoreCase = true)) {
@@ -70,7 +70,7 @@ fun UrlCard(desc: String, itsCard: Boolean) {
                 contentDescription = null,
                 modifier = Modifier.size(60.dp),
                 contentScale = ContentScale.Crop
-            ){
+            ) {
                 it.placeholder(GLOBE_ICON)
             }
 

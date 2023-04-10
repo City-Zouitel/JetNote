@@ -72,4 +72,12 @@ object DatabaseMod {
     @Provides
     fun provideNoteAndTodoDao(database: Database) = database.getNoteAndTodoDao()
 
+    @Singleton
+    @Provides
+    fun provideLinkDao(database: Database) = database.getLinkDao()
+
+    @Singleton
+    @Provides
+    fun provideNoteAndLink(database: Database) = database.getNoteAndLink()
+
 }

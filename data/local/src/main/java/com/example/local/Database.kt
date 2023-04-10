@@ -4,11 +4,7 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.local.daos.*
-import com.example.local.model.Label
-import com.example.local.model.Note
-import com.example.local.model.NoteAndLabel
-import com.example.local.model.NoteAndTodo
-import com.example.local.model.Todo
+import com.example.local.model.*
 
 @Database(
     version = 1,
@@ -16,11 +12,13 @@ import com.example.local.model.Todo
 //        AutoMigration(from = 1, to = 2)
                      ],
     entities = [
-        NoteAndLabel::class,
-        NoteAndTodo::class,
         Note::class,
         Label::class,
-        Todo::class
+        NoteAndLabel::class,
+        Todo::class,
+        NoteAndTodo::class,
+        Link::class,
+        NoteAndLink::class
                ],
     exportSchema = true
 )
@@ -32,4 +30,6 @@ abstract class Database:RoomDatabase() {
     abstract fun getWidgetEntityDao(): WidgetEntityDao
     abstract fun getTodoDao(): TodoDao
     abstract fun getNoteAndTodoDao(): NoteAndTodoDao
+    abstract fun getLinkDao(): LinkDao
+    abstract fun getNoteAndLink(): NoteAndLinkDao
 }

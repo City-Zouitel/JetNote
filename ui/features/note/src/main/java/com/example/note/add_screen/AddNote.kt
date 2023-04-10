@@ -280,14 +280,6 @@ fun NoteAdd(
             // The Title.
             item {
 
-//                NoteTextField(
-//                    uid = uid,
-//                    gifUri = imageUriState,
-//                    txtHint = "Title",
-//                    txtSize = 26f,
-//                    forSingleLine = true
-//                )
-
                 OutlinedTextField(
                     value = titleState.value ?: "",
                     onValueChange = { titleState.value = it },
@@ -328,12 +320,6 @@ fun NoteAdd(
 
             //The Description.
             item {
-//                NoteTextField(
-//                    uid = uid,
-//                    gifUri = imageUriState,
-//                    txtHint = "Note",
-//                    txtSize = 18f
-//                )
 
                 OutlinedTextField(
                     value = descriptionState.value ?: "",
@@ -372,7 +358,6 @@ fun NoteAdd(
                 )
             }
 
-            // TODO: fix a bag!
             item {
                 findUrlLink(descriptionState.value)?.let {
                     UrlCard(desc = it, false)

@@ -29,5 +29,16 @@ data class Entity(
             entityColumn = "todoId"
         )
     )
-    val todoItems:List<Todo>
+    val todoItems:List<Todo>,
+    @Relation(
+        parentColumn = UID,
+        entityColumn = ID,
+        entity = Link::class,
+        associateBy = Junction(
+            NoteAndLink::class,
+            parentColumn = "noteUid",
+            entityColumn = "linkId"
+        )
+    )
+    val links: List<Link>
 )
