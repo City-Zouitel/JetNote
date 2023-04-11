@@ -1,9 +1,10 @@
-package com.example.tags
+package com.example.links
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.reposImpl.NoteAndLabelRepoImp
-import com.example.local.model.NoteAndLabel
+import com.example.domain.reposImpl.NoteAndLinkRepoImpl
+import com.example.local.model.NoteAndLink
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,13 +15,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NoteAndLabelVM @Inject constructor(
-    private val repo: NoteAndLabelRepoImp
+class NoteAndLinkVM @Inject constructor(
+    private val repo: NoteAndLinkRepoImpl
 ): ViewModel() {
 
-    private val _getAllNotesAndLabels = MutableStateFlow<List<NoteAndLabel>>(emptyList())
-    val getAllNotesAndLabels: StateFlow<List<NoteAndLabel>>
-        get() = _getAllNotesAndLabels
+    private val _getAllNotesAndLinks = MutableStateFlow<List<NoteAndLink>>(emptyList())
+    val getAllNotesAndLinks: StateFlow<List<NoteAndLink>>
+        get() = _getAllNotesAndLinks
             .stateIn(
                 viewModelScope,
                 SharingStarted.WhileSubscribed(),
@@ -29,19 +30,21 @@ class NoteAndLabelVM @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getAllNotesAndLabels.collect {
-                _getAllNotesAndLabels.value = it
+            repo.getAllNotesAndLinks.collect {
+                _getAllNotesAndLinks.value = it
             }
         }
     }
-    fun addNoteAndLabel(noteAndLabel: NoteAndLabel) {
+
+    fun addNoteAndLink(noteAndLink: NoteAndLink) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.addNoteAndLabel(noteAndLabel)
+            repo.addNoteAndLink(noteAndLink)
         }
     }
-    fun deleteNoteAndLabel(noteAndLabel: NoteAndLabel) {
+
+    fun deleteNoteAndLink(noteAndLink: NoteAndLink) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.deleteNoteAndLabel(noteAndLabel)
+            repo.deleteNoteAndLink(noteAndLink)
         }
     }
 }

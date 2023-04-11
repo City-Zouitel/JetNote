@@ -83,6 +83,7 @@ dependencies {
     implementation(projects.ui.features.reminder)
     implementation(projects.ui.features.note)
     implementation(projects.ui.features.quickNote)
+    implementation(projects.ui.features.links)
 
     //AndroidX.
     implementation(libs.androidx.core)

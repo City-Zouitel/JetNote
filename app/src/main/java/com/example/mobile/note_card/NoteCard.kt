@@ -78,9 +78,6 @@ fun NoteCard(
     onSwipeNote: (Entity) -> Unit
 ) {
     val swipeState = rememberSwipeableActionsState()
-
-    val ctx = LocalContext.current
-
     val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
 
     val action = SwipeAction(

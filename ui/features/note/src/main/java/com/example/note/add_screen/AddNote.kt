@@ -360,7 +360,7 @@ fun NoteAdd(
 
             item {
                 findUrlLink(descriptionState.value)?.let {
-                    UrlCard(desc = it, false)
+//                    UrlCard(desc = it, false)
                 }
             }
 

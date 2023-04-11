@@ -22,7 +22,6 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.common_ui.Icons.GLOBE_ICON
 import com.example.common_ui.findUrlLink
-import com.example.common_ui.urlPreview
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(
@@ -51,9 +50,9 @@ fun UrlCard(desc: String, itsCard: Boolean) {
 //        }
     }
 
-    urlPreview(
-        ctx, scope, res, url, title, host, img
-    )?.fetchUrlPreview()
+//    urlPreview(
+//        ctx, scope, res, url, title, host, img
+//    )?.fetchUrlPreview()
 
     Card(
         modifier = Modifier

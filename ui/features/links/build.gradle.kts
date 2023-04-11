@@ -6,12 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tags"
+    namespace = "com.example.links"
     compileSdk = 33
 
     defaultConfig {
         minSdk = 25
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -30,23 +29,23 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0"
-    }
     kotlinOptions {
         jvmTarget = "1.8"
+        buildFeatures {
+            compose = true
+        }
+        composeOptions {
+            kotlinCompilerExtensionVersion = "1.4.0"
+        }
     }
 }
 
 dependencies {
-    //
+
     implementation(projects.common.commonUi)
     implementation(projects.domain)
     implementation(projects.data.local)
-    implementation(projects.data.datastore)
+
     //AndroidX.
     implementation(libs.androidx.core)
     implementation(libs.androidx.corektx)
@@ -62,16 +61,23 @@ dependencies {
     implementation(libs.compose.toolingpreview)
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.constraintlayout)
-    //LiveData.
-    implementation(libs.livedatakts)
-    //Dagger-Hilt
-    implementation (libs.dagger)
-    implementation (libs.dagger.hilt)
-    implementation (libs.hilt.navcomp)
-    kapt (libs.dagger.compiler)
-    kapt (libs.hilt.compiler)
-    kapt (libs.dagger.hiltcompiler)
-    //Accompanist.
-    implementation(libs.accompanist.flowlayout)
 
+    //Dagger-Hilt
+    implementation(libs.dagger)
+    implementation(libs.dagger.hilt)
+    implementation(libs.hilt.navcomp)
+    kapt(libs.dagger.compiler)
+    kapt(libs.hilt.compiler)
+    kapt(libs.dagger.hiltcompiler)
+
+    //Swipe.
+    implementation(libs.swipe)
+
+    //Glide.
+    implementation(libs.glide)
+    implementation(libs.glide.comp)
+    kapt(libs.glide.compiler)
+
+    //Baha-UrlPreview.
+    implementation(libs.url.preview)
 }

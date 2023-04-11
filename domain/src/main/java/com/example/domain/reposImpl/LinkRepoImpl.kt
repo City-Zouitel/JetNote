@@ -5,16 +5,23 @@ import com.example.local.daos.LinkDao
 import com.example.local.model.Link
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ViewModelScoped
 class LinkRepoImpl @Inject constructor(
     private val dao: LinkDao
 ): LinkRepo {
-    override suspend fun addLink(link: Link) {
+    override val getAllLinks: Flow<List<Link>>
+        get() = dao.getAllLinks()
 
+    override suspend fun addLink(link: Link) {
+        coroutineScope { launch { dao.addLink(link) } }
     }
 
     override suspend fun deleteLink(link: Link) {
+        coroutineScope { launch { dao.deleteLink(link) } }
     }
 }

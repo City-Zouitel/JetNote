@@ -97,6 +97,7 @@ class NoteActivity : ComponentActivity() {
         // TODO: move it to init module as work manager.
         File(this.filesDir.path + "/" + IMAGES).mkdirs()
         File(this.filesDir.path + "/" + AUDIOS).mkdirs()
+        File(this.filesDir.path + "/" + "links_img").mkdirs()
 
 //        mapOf(
 //            "Coffee" to "Prepare hot coffee for my self.",

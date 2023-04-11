@@ -40,7 +40,8 @@ include(
     ":ui:features:reminder",
     ":ui:features:note",
     ":ui:features:widget",
-    ":ui:features:quick-note"
+    ":ui:features:quick-note",
+    ":ui:features:links"
 )
 include(
     ":domain"

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface NoteAndLinkRepo {
 
-    val getAllNotesAndLinks: Flow<List<Link>>
+    val getAllNotesAndLinks: Flow<List<NoteAndLink>>
 
     suspend fun addNoteAndLink(noteAndLink: NoteAndLink)
 

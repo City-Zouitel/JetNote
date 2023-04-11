@@ -58,6 +58,7 @@ dependencies {
     implementation(projects.ui.features.mediaPlayer)
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.camera)
+    implementation(projects.ui.features.links)
 
     //AndroidX.
     implementation(libs.androidx.core)

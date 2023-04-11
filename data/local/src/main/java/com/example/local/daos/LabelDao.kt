@@ -10,7 +10,7 @@ interface LabelDao {
     @Query("select * from label")
     fun getAllLabels(): Flow<List<Label>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addLabel(label: Label)
 
     @Update
