@@ -29,21 +29,14 @@ import me.saket.swipe.rememberSwipeableActionsState
 import kotlin.random.Random
 import kotlin.random.nextULong
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun LinkPart(
-    linkVM: LinkVM = hiltViewModel(),
-    noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
-    noteUid: String,
-    link: String?,
     swipeable: Boolean,
+    link: Link,
     onSwipe: () -> Unit
 ) {
-    val ctx = LocalContext.current
     val uriHand = LocalUriHandler.current
     val swipeState = rememberSwipeableActionsState()
-
-    val observeLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
 
     val action = SwipeAction(
         onSwipe = {
@@ -52,34 +45,6 @@ fun LinkPart(
         icon = {},
         background = Color.Transparent
     )
-
-    val title = remember { mutableStateOf("") }
-//    val description = remember { mutableStateOf("") }
-    val host = remember { mutableStateOf("") }
-    val url = remember { mutableStateOf("") }
-    val img = remember { mutableStateOf("") }
-    val link_id = remember { mutableStateOf(Random.nextLong()) }
-
-    //
-    linkVM.urlPreview(
-        ctx, link, url, title, host, img
-    )
-    if (observeLinks.value.none { it.link == link }) {
-        linkVM.addLink(
-            Link(
-                id = link_id.value,
-                link = url.value,
-                title = title.value,
-                host = host.value
-            )
-        )
-        noteAndLinkVM.addNoteAndLink(
-            NoteAndLink(
-                noteUid = noteUid,
-                linkId = link_id.value
-            )
-        )
-    }
 
     if (swipeable) {
         SwipeableActionsBox(
@@ -91,21 +56,21 @@ fun LinkPart(
         ) {
             LinkCard(
                 swipeable = swipeable,
-                title = title.value,
-                host = host.value,
-                image = img.value
+                title = link.title ?: "",
+                host = link.host,
+                image = link.url
             ) {
-                uriHand.openUri(url.value)
+                uriHand.openUri(link.url)
             }
         }
     } else {
         LinkCard(
             swipeable = swipeable,
-            title = title.value,
-            host = host.value,
-            image = img.value
+            title = link.title ?: "",
+            host = link.host,
+            image = link.url
         ) {
-            uriHand.openUri(url.value)
+            uriHand.openUri(link.url)
         }
     }
 }

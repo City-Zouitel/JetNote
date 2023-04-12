@@ -57,7 +57,6 @@ class LinkVM @Inject constructor(
         ctx: Context,
 //        scope: CoroutineScope?,
         res: String?,
-        url: MutableState<String>?,
         title: MutableState<String>?,
         host: MutableState<String>?,
         img: MutableState<String>?
@@ -70,7 +69,7 @@ class LinkVM @Inject constructor(
                             title?.value = this.title
 //                    description.value = this.description
                             host?.value = URL(this.url).host
-                            url?.value = this.url
+//                            url?.value = this.url
                             img?.value = this.image
                         }
 //                    }

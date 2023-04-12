@@ -2,12 +2,6 @@ package com.example.local
 
 internal object Cons {
 
-    const val APP_NAME = "JetNote"
-    const val TAG = "This"
-    const val NULL = "null"
-
-    const val APP_VERSION = "1.8.0"
-
     const val NOTE_TABLE_NAME = "Notes"
     const val DATABASE_NAME = "JetNoteDatabase"
 
@@ -20,7 +14,7 @@ internal object Cons {
     const val DATE = "Date"
     const val UID = "Uid"
     const val TRASHED = "Trashed"
-    const val LINK = "Link"
+    const val URL = "Url"
     const val HOST = "Host"
     const val IMAGE_UIL = "ImageUrl"
     const val AUDIO_URL = "AudioUrl"

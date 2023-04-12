@@ -344,20 +344,22 @@ fun NoteEdit(
             item {
                 findUrlLink(descriptionState.value)?.let {
 //                    UrlCard(desc = it, false)
-                    observerLinks.value.filter {
-                        observerNoteAndLink.value.contains(
-                            NoteAndLink(uid, it.id)
-                        )
-                    }.forEach {
+                }
 
-                        Column {
-                            Text(text = it.link)
-                            Text(text = it.id.toString())
-                            Text(text = it.host)
-                            it.title?.let { it1 -> Text(text = it1) }
-                        }
+                observerLinks.value.filter {
+                    observerNoteAndLink.value.contains(
+                        NoteAndLink(uid, it.id)
+                    )
+                }.forEach {
+
+                    Column {
+                        Text(text = it.url)
+                        Text(text = it.id.toString())
+                        Text(text = it.host)
+                        it.title?.let { it1 -> Text(text = it1) }
                     }
                 }
+
             }
 
             // display all added labels.
