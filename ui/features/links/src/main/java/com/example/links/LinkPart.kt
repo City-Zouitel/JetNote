@@ -6,9 +6,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -26,12 +26,15 @@ import com.example.local.model.NoteAndLink
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
+import kotlin.random.Random
+import kotlin.random.nextULong
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun LinkPart(
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
+    noteUid: String,
     link: String?,
     swipeable: Boolean,
     onSwipe: () -> Unit
@@ -39,6 +42,8 @@ fun LinkPart(
     val ctx = LocalContext.current
     val uriHand = LocalUriHandler.current
     val swipeState = rememberSwipeableActionsState()
+
+    val observeLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
 
     val action = SwipeAction(
         onSwipe = {
@@ -53,24 +58,27 @@ fun LinkPart(
     val host = remember { mutableStateOf("") }
     val url = remember { mutableStateOf("") }
     val img = remember { mutableStateOf("") }
+    val link_id = remember { mutableStateOf(Random.nextLong()) }
 
+    //
     linkVM.urlPreview(
         ctx, link, url, title, host, img
-    ).invokeOnCompletion {
+    )
+    if (observeLinks.value.none { it.link == link }) {
         linkVM.addLink(
             Link(
+                id = link_id.value,
                 link = url.value,
                 title = title.value,
                 host = host.value
             )
-        ).invokeOnCompletion {
-            noteAndLinkVM.addNoteAndLink(
-                NoteAndLink(
-                    noteUid = "",
-                    linkId = 0L
-                )
+        )
+        noteAndLinkVM.addNoteAndLink(
+            NoteAndLink(
+                noteUid = noteUid,
+                linkId = link_id.value
             )
-        }
+        )
     }
 
     if (swipeable) {
@@ -154,3 +162,4 @@ private fun LinkCard(
 }
 
 private val roundedForCard = RoundedCornerShape(0.dp, 0.dp, 15.dp, 15.dp)
+

@@ -11,7 +11,7 @@ import com.example.local.Cons.TITLE
 
 @Entity("links_table")
 data class Link(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(ID) var id: Long = 0L,
     @ColumnInfo(LINK) var link: String = "",
     @ColumnInfo(HOST) var host: String = "",

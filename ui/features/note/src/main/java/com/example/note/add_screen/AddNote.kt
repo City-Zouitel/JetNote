@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.icu.util.Calendar
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -57,10 +58,10 @@ import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.DONE_ICON
 import com.example.common_ui.MatColors.Companion.OUT_LINE_VARIANT
 import com.example.common_ui.MatColors.Companion.SURFACE
-import com.example.local.model.Note
-import com.example.local.model.NoteAndLabel
-import com.example.local.model.NoteAndTodo
-import com.example.local.model.Todo
+import com.example.links.LinkPart
+import com.example.links.LinkVM
+import com.example.links.NoteAndLinkVM
+import com.example.local.model.*
 import com.example.media_player.MediaPlayerVM
 import com.example.note.UrlCard
 import com.example.note.bottom_bar.AddEditBottomBar
@@ -72,6 +73,7 @@ import com.example.tags.NoteAndLabelVM
 import com.example.tasks.NoteAndTodoVM
 import com.example.tasks.TodoVM
 import com.google.accompanist.flowlayout.FlowRow
+import me.saket.swipe.SwipeableActionsBox
 import java.io.File
 
 @SuppressLint(
@@ -92,6 +94,8 @@ fun NoteAdd(
     todoVM: TodoVM = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
+    linkVM: LinkVM = hiltViewModel(),
+    noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
     navController: NavController,
     uid: String,
     description: String?
@@ -115,6 +119,9 @@ fun NoteAdd(
     val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
+
+    val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
+    val observerNoteAndLink = remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
@@ -361,6 +368,27 @@ fun NoteAdd(
             item {
                 findUrlLink(descriptionState.value)?.let {
 //                    UrlCard(desc = it, false)
+                    LinkPart(
+                        noteUid = uid,
+                        link = it,
+                        swipeable = true
+                    ) {
+                        Toast.makeText(ctx, "suppose delete..", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                observerLinks.value.filter {
+                    observerNoteAndLink.value.contains(
+                        NoteAndLink(uid, it.id)
+                    )
+                }.forEach {
+
+                    Column {
+                        Text(text = it.link)
+                        Text(text = it.id.toString())
+                        Text(text = it.host)
+                        it.title?.let { it1 -> Text(text = it1) }
+                    }
                 }
             }
 

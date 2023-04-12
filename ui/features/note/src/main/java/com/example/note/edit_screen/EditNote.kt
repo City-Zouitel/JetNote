@@ -54,10 +54,9 @@ import com.example.common_ui.Cons.NUL
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.EDIT_ICON
 import com.example.common_ui.MatColors.Companion.OUT_LINE_VARIANT
-import com.example.local.model.Note
-import com.example.local.model.NoteAndLabel
-import com.example.local.model.NoteAndTodo
-import com.example.local.model.Todo
+import com.example.links.LinkVM
+import com.example.links.NoteAndLinkVM
+import com.example.local.model.*
 import com.example.note.UrlCard
 import com.example.note.bottom_bar.AddEditBottomBar
 import com.example.record.RecordingNote
@@ -84,12 +83,14 @@ fun NoteEdit(
     todoVM: com.example.tasks.TodoVM = hiltViewModel(),
     noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
+    linkVM: LinkVM = hiltViewModel(),
+    noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
+    uid:String,
     title:String?,
     description:String?,
     color: Int,
     textColor: Int,
     priority: String,
-    uid:String,
     audioDuration:Int,
     reminding: Long
 ) {
@@ -107,6 +108,9 @@ fun NoteEdit(
 
     val observeNotesAndLabels = remember(noteAndLabelVM,noteAndLabelVM::getAllNotesAndLabels).collectAsState()
     val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
+
+    val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
+    val observerNoteAndLink = remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
     val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
     val observeNoteAndTodo =
@@ -339,7 +343,20 @@ fun NoteEdit(
             //
             item {
                 findUrlLink(descriptionState.value)?.let {
-                    UrlCard(desc = it, false)
+//                    UrlCard(desc = it, false)
+                    observerLinks.value.filter {
+                        observerNoteAndLink.value.contains(
+                            NoteAndLink(uid, it.id)
+                        )
+                    }.forEach {
+
+                        Column {
+                            Text(text = it.link)
+                            Text(text = it.id.toString())
+                            Text(text = it.host)
+                            it.title?.let { it1 -> Text(text = it1) }
+                        }
+                    }
                 }
             }
 
