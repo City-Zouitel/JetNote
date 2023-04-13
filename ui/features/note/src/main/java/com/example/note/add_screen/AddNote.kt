@@ -45,6 +45,7 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.common_ui.*
+import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.AUDIOS
 import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.IMAGES
@@ -365,7 +366,6 @@ fun NoteAdd(
 
             item {
                 findUrlLink(descriptionState.value)?.let { url ->
-//                    UrlCard(desc = it, false)
                     CacheLinks(
                         linkVM = linkVM,
                         noteAndLinkVM = noteAndLinkVM,
@@ -374,6 +374,8 @@ fun NoteAdd(
                     )
 
                 }
+                // for refresh this screen.
+
                     observerLinks.value.filter {
                         observerNoteAndLink.value.contains(
                             NoteAndLink(uid, it.id)
@@ -386,7 +388,6 @@ fun NoteAdd(
 
                         }
                     }
-
             }
 
             // display all added labels.

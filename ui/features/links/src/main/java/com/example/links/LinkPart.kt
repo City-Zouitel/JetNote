@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -87,38 +88,38 @@ private fun LinkCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(if (swipeable) 20.dp else 0.dp),
-        shape = if (swipeable) roundedForCard else RoundedCornerShape(15.dp),
+        shape = if (swipeable) RoundedCornerShape(15.dp) else roundedForCard,
         onClick = {
             onClick.invoke()
         }
     ) {
-        linkVM::imageDecoder.invoke(ctx, id)?.let {
-            Image(
-                modifier = Modifier.size(100.dp),
-                bitmap = it,
-                contentDescription = null)
-        }
+        Row {
+            linkVM::imageDecoder.invoke(ctx, id)?.let {
+                Image(
+                    modifier = Modifier.size(80.dp),
+                    contentScale = ContentScale.Crop,
+                    bitmap = it,
+                    contentDescription = null
+                )
+            }
+            Column {
+                Text(
+                    text = title,
+                    fontSize = 13.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(start = 5.dp)
+                )
+                Text(
+                    text = host,
+                    fontSize = 11.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(start = 5.dp)
+                )
 
-//        Row {
-//
-//            Column {
-//                Text(
-//                    text = title,
-//                    fontSize = 13.sp,
-//                    maxLines = 1,
-//                    overflow = TextOverflow.Ellipsis,
-//                    modifier = Modifier.padding(start = 5.dp)
-//                )
-//                Text(
-//                    text = host,
-//                    fontSize = 11.sp,
-//                    maxLines = 2,
-//                    overflow = TextOverflow.Ellipsis,
-//                    modifier = Modifier.padding(start = 5.dp)
-//                )
-//
-//            }
-//        }
+            }
+        }
     }
 }
 

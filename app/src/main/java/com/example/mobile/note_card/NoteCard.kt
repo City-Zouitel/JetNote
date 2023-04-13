@@ -53,10 +53,11 @@ import com.example.mobile.navigation_drawer.Screens
 import com.example.mobile.navigation_drawer.Screens.HOME_SCREEN
 import com.example.mobile.navigation_drawer.Screens.TRASH_SCREEN
 import com.example.graph.sound
-import com.example.local.model.Entity
-import com.example.local.model.Note
-import com.example.local.model.NoteAndTodo
-import com.example.local.model.Todo
+import com.example.links.CacheLinks
+import com.example.links.LinkPart
+import com.example.links.LinkVM
+import com.example.links.NoteAndLinkVM
+import com.example.local.model.*
 import com.example.note.NoteVM
 import com.example.note.UrlCard
 import com.example.tasks.NoteAndTodoVM
@@ -122,6 +123,8 @@ private fun Card(
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     noteVM: NoteVM = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
+    linkVM: LinkVM = hiltViewModel(),
+    noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
     entity: Entity,
     navController: NavController,
     forScreens: Screens,
@@ -138,6 +141,10 @@ private fun Card(
     val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
+
+    val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
+    val observerNoteAndLink =
+        remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
     val mediaPath = ctx.filesDir.path + "/$AUDIOS/" + note.uid + "." + MP3
     val imagePath = "$internalPath/$IMAGES/${note.uid}.$JPEG"
@@ -331,9 +338,19 @@ private fun Card(
         }
 
         // display link card.
-        findUrlLink(note.description)?.let{
-            UrlCard(desc = it, true)
+            observerLinks.value.filter {
+                observerNoteAndLink.value.contains(
+                    NoteAndLink(note.uid, it.id)
+                )
+            }.forEach { _link ->
+                LinkPart(
+                    swipeable = false,
+                    link = _link
+                ) {
+
+                }
         }
+
 
         AnimatedVisibility(visible = todoListState, modifier = Modifier.height(100.dp)) {
             LazyColumn {

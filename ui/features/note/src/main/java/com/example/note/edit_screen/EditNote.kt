@@ -54,6 +54,8 @@ import com.example.common_ui.Cons.NUL
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.EDIT_ICON
 import com.example.common_ui.MatColors.Companion.OUT_LINE_VARIANT
+import com.example.links.CacheLinks
+import com.example.links.LinkPart
 import com.example.links.LinkVM
 import com.example.links.NoteAndLinkVM
 import com.example.local.model.*
@@ -110,7 +112,8 @@ fun NoteEdit(
     val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
 
     val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
-    val observerNoteAndLink = remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
+    val observerNoteAndLink =
+        remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
     val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
     val observeNoteAndTodo =
@@ -342,24 +345,29 @@ fun NoteEdit(
 
             //
             item {
-                findUrlLink(descriptionState.value)?.let {
-//                    UrlCard(desc = it, false)
+                findUrlLink(descriptionState.value)?.let { url ->
+                    CacheLinks(
+                        linkVM = linkVM,
+                        noteAndLinkVM = noteAndLinkVM,
+                        noteUid = uid,
+                        url = url
+                    )
+
                 }
+                // for refresh this screen.
 
                 observerLinks.value.filter {
                     observerNoteAndLink.value.contains(
                         NoteAndLink(uid, it.id)
                     )
-                }.forEach {
+                }.forEach { _link ->
+                    LinkPart(
+                        swipeable = true,
+                        link = _link
+                    ) {
 
-                    Column {
-                        Text(text = it.url)
-                        Text(text = it.id.toString())
-                        Text(text = it.host)
-                        it.title?.let { it1 -> Text(text = it1) }
                     }
                 }
-
             }
 
             // display all added labels.
