@@ -73,10 +73,9 @@ dependencies {
     //Swipe.
     implementation(libs.swipe)
 
-    //Glide.
-    implementation(libs.glide)
-    implementation(libs.glide.comp)
-    kapt(libs.glide.compiler)
+    //Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)

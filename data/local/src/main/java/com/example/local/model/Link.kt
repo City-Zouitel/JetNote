@@ -11,10 +11,11 @@ import com.example.local.Cons.URL
 
 @Entity("links_table")
 data class Link(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(ID) var id: Long = 0L,
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(ID) var id: String = "",
     @ColumnInfo(URL) var url: String = "",
     @ColumnInfo(HOST) var host: String = "",
+    @ColumnInfo("link_image") var image: String? = "",
     @ColumnInfo(TITLE) val title: String? = "",
     @ColumnInfo(DESCRIPTION) var description: String? = ""
 )

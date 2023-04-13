@@ -115,7 +115,7 @@ class NoteVM @Inject constructor(
                             resource: File,
                             transition: Transition<in File?>?
                         ) {
-                            storeImage(ctx, resource,uid)
+                            storeImage(ctx, resource, uid)
                         }
 
                         override fun onStart() {

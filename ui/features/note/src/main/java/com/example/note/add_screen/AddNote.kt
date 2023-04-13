@@ -154,10 +154,10 @@ fun NoteAdd(
 
     val recordDialogState = remember { mutableStateOf(false) }
 
-    val imagePath = "$internalPath/$IMAGES/$uid.$JPEG"
-    val bitImg = BitmapFactory.decodeFile(imagePath)
+    val imageFile = "$internalPath/$IMAGES/$uid.$JPEG"
+    val bitImg = BitmapFactory.decodeFile(imageFile)
     val photoState = remember { mutableStateOf<Bitmap?>(bitImg) }
-    val imageUriState = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
+    val imageUriState = remember { mutableStateOf<Uri?>(File(imageFile).toUri()) }
     val img by rememberSaveable { mutableStateOf(photoState) }
 
     val chooseImageLauncher =

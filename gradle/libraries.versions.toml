@@ -61,6 +61,11 @@ camerax = "1.2.1"
 glide = "4.15.0"
 glide_comp = "4.14.0"
 
+#Coil
+coil_compose = "2.2.1"
+coil_svg = "2.2.2"
+
+
 #License.
 about_libraries = "10.6.1"
 
@@ -163,6 +168,10 @@ camerax_extensions = { module = "androidx.camera:camera-extensions", version.ref
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide_compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 glide_comp = { module = "com.github.bumptech.glide:compose", version.ref = "glide_comp" }
+
+#
+coil_compose = { module = "io.coil-kt:coil-compose", version.ref = "coil_compose" }
+coil_svg = { module = "io.coil-kt:coil-svg", version.ref = "coil_svg" }
 
 #License.
 aboutlibraries_comp = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "about_libraries" }

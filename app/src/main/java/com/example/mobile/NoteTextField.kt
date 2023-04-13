@@ -54,7 +54,7 @@ fun NoteTextField(
                             gifUri.value = uri
 
                             // gif
-                                noteVM.saveGifLocally(ctx,uri,uid)
+//                                noteVM.saveGifLocally(ctx,uri,uid)
 
 //                            val bitImg = BitmapFactory.decodeFile(uri.path)
 //                            val img = noteVM.decodeBitmapImage(bitImg,uri,ctx)

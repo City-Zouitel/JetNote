@@ -8,5 +8,5 @@ import androidx.room.Entity
 )
 data class NoteAndLink(
     val noteUid: String,
-    val linkId: Long
+    val linkId: String
 )
