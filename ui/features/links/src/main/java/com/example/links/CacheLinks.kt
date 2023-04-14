@@ -23,6 +23,9 @@ fun CacheLinks(
     url: String
 ) {
     val observeLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
+    val observerNoteAndLinks =
+        remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
+
     val ctx = LocalContext.current
     val linkImgPath = ctx.filesDir.path + "/" + "links_img"
     val scope = rememberCoroutineScope()
@@ -39,7 +42,7 @@ fun CacheLinks(
     )
 
     if (
-        observeLinks.value.none { it.url == url } &&
+        observeLinks.value.none { it.image == img.value } &&
         title.value.isNotBlank() &&
         host.value.isNotBlank() &&
         img.value.isNotBlank()

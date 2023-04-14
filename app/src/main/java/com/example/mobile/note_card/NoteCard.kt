@@ -316,6 +316,7 @@ private fun Card(
                 }
             }
         }
+
         if (
             observeTodoList.value.any {
                 observeNoteAndTodo.value.contains(
@@ -344,11 +345,12 @@ private fun Card(
                 )
             }.forEach { _link ->
                 LinkPart(
+                    linkVM = linkVM,
+                    noteAndLinkVM = noteAndLinkVM,
+                    noteUid = note.uid,
                     swipeable = false,
                     link = _link
-                ) {
-
-                }
+                )
         }
 
 

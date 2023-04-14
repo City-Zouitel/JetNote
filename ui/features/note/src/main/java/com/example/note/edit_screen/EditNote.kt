@@ -362,11 +362,12 @@ fun NoteEdit(
                     )
                 }.forEach { _link ->
                     LinkPart(
+                        linkVM = linkVM,
+                        noteAndLinkVM = noteAndLinkVM,
+                        noteUid = uid,
                         swipeable = true,
                         link = _link
-                    ) {
-
-                    }
+                    )
                 }
             }
 

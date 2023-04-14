@@ -20,22 +20,28 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.common_ui.ImageDisplayed
 import com.example.local.model.Link
+import com.example.local.model.NoteAndLink
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
 
 @Composable
 fun LinkPart(
+    linkVM: LinkVM,
+    noteAndLinkVM: NoteAndLinkVM,
+    noteUid: String,
     swipeable: Boolean,
     link: Link,
-    onSwipe: () -> Unit
 ) {
     val uriHand = LocalUriHandler.current
     val swipeState = rememberSwipeableActionsState()
 
     val action = SwipeAction(
         onSwipe = {
-            onSwipe.invoke()
+            linkVM.deleteLink(link)
+            noteAndLinkVM.deleteNoteAndLink(
+                NoteAndLink(noteUid, link.id)
+            )
         },
         icon = {},
         background = Color.Transparent
@@ -50,6 +56,7 @@ fun LinkPart(
             state = swipeState
         ) {
             LinkCard(
+                linkVM = linkVM,
                 swipeable = swipeable,
                 id = link.id,
                 title = link.title ?: "",
@@ -60,6 +67,7 @@ fun LinkPart(
         }
     } else {
         LinkCard(
+            linkVM = linkVM,
             swipeable = swipeable,
             id = link.id,
             title = link.title ?: "",
@@ -75,7 +83,7 @@ fun LinkPart(
 )
 @Composable
 private fun LinkCard(
-    linkVM: LinkVM = hiltViewModel(),
+    linkVM: LinkVM,
     swipeable: Boolean,
     title: String,
     host: String,
@@ -88,7 +96,7 @@ private fun LinkCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(if (swipeable) 20.dp else 0.dp),
-        shape = if (swipeable) RoundedCornerShape(15.dp) else roundedForCard,
+        shape = if (swipeable) RoundedCornerShape(15.dp) else RoundedCornerShape(0.dp),
         onClick = {
             onClick.invoke()
         }
@@ -96,7 +104,7 @@ private fun LinkCard(
         Row {
             linkVM::imageDecoder.invoke(ctx, id)?.let {
                 Image(
-                    modifier = Modifier.size(80.dp),
+                    modifier = Modifier.size(70.dp),
                     contentScale = ContentScale.Crop,
                     bitmap = it,
                     contentDescription = null

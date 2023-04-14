@@ -19,12 +19,14 @@ import com.example.local.model.Link
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.minutes
 
 @HiltViewModel
 class LinkVM @Inject constructor(
@@ -60,10 +62,8 @@ class LinkVM @Inject constructor(
         }
     }
 
-    // TODO: Move this code to vm.
     fun urlPreview(
         ctx: Context,
-//        scope: CoroutineScope?,
         res: String?,
         title: MutableState<String>?,
         host: MutableState<String>?,
@@ -72,7 +72,6 @@ class LinkVM @Inject constructor(
         res?.let {
             BahaUrlPreview(it, object : IUrlPreviewCallback {
                 override fun onComplete(urlInfo: UrlInfoItem) {
-//                    viewModelScope.launch(Dispatchers.IO) {
                         urlInfo.apply {
                             title?.value = this.title
 //                    description.value = this.description
@@ -80,7 +79,6 @@ class LinkVM @Inject constructor(
 //                            url?.value = this.url
                             img?.value = this.image
                         }
-//                    }
                 }
 
                 override fun onFailed(throwable: Throwable) {
