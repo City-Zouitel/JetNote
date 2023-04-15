@@ -22,10 +22,13 @@ import com.example.common_ui.Cons.SEARCH_IN_TRASH
 import com.example.common_ui.DataStoreVM
 import com.example.common_ui.MatColors.Companion.SURFACE
 import com.example.common_ui.VerticalGrid
+import com.example.links.LinkVM
+import com.example.links.NoteAndLinkVM
 import com.example.mobile.getMaterialColor
 import com.example.local.model.Entity
 import com.example.local.model.Label
 import com.example.local.model.Note
+import com.example.local.model.NoteAndLink
 import com.example.mobile.navigation_drawer.Screens.TRASH_SCREEN
 import com.example.mobile.navigation_drawer.NavigationDrawer
 import com.example.mobile.note_card.NoteCard
@@ -45,6 +48,8 @@ fun TrashScreen(
     viewModule: NoteVM = hiltViewModel(),
     entityVM: EntityVM = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
+    linkVM: LinkVM = hiltViewModel(),
+    noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
@@ -64,6 +69,17 @@ fun TrashScreen(
     if (confirmationDialogState.value) {
         EraseDialog(dialogState = confirmationDialogState) {
             viewModule.eraseTrash()
+            observerTrashedNotes.value.forEach { entity ->
+                entity.links.forEach { link ->
+                    linkVM.deleteLink(link)
+                    noteAndLinkVM.deleteNoteAndLink(
+                        NoteAndLink(
+                            noteUid = entity.note.uid,
+                            linkId = link.id
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -105,7 +121,7 @@ fun TrashScreen(
                         observerTrashedNotes.value.filter { entity ->
                             entity.note.title?.contains(searchTitleState.value, true) ?: true
                         }
-                    ) { entity ->
+                    ) {entity ->
                         NoteCard(
                             entity = entity,
                             navController = navController,
@@ -114,9 +130,12 @@ fun TrashScreen(
                             selectedNotes = null
                         ) {
                             viewModule.deleteNote(Note(uid = entity.note.uid))
-                            entity.note.uid.let {
-                                File(ctx.filesDir.path + "/" + IMAGES, "$it.$JPEG").delete()
-                                File(ctx.filesDir.path + "/" + AUDIOS, "$it.$MP3").delete()
+                            entity.links.forEach { link ->
+                                linkVM.deleteLink(link)
+                            }
+                            entity.note.uid.let { _uid ->
+                                File(ctx.filesDir.path + File.pathSeparator + IMAGES, "$_uid.$JPEG").delete()
+                                File(ctx.filesDir.path + File.pathSeparator + AUDIOS, "$_uid$MP3").delete()
                             }
                         }
                     }
@@ -135,11 +154,7 @@ fun TrashScreen(
                                     selectionState = null,
                                     selectedNotes = null
                                 ){
-                                    viewModule.deleteNote(Note(uid = it.note.uid))
-                                    it.note.uid.let {
-                                        File(ctx.filesDir.path + "/" + IMAGES, "$it.$JPEG").delete()
-                                        File(ctx.filesDir.path + "/" + AUDIOS, "$it.$MP3").delete()
-                                    }
+
                                 }
                             }
                         }

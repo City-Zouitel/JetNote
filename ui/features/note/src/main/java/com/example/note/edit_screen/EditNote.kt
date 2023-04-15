@@ -124,7 +124,7 @@ fun NoteEdit(
 
     val titleState = rememberSaveable {
         mutableStateOf(
-            if(title == NUL) null else decodeUrl.invoke(title)
+            if(title == NUL || title.isNullOrEmpty()) null else decodeUrl.invoke(title)
         )
     }
 //        .filterBadWords()

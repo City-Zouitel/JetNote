@@ -78,6 +78,6 @@ object DatabaseMod {
 
     @Singleton
     @Provides
-    fun provideNoteAndLink(database: Database) = database.getNoteAndLink()
+    fun provideNoteAndLinkDao(database: Database) = database.getNoteAndLink()
 
 }
