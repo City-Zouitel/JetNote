@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.reposImpl.EntityRepoImp
+import com.example.domain.reposImpl.EntityRepoImpl
 import com.example.local.model.Entity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EntityVM @Inject constructor(
-    private val repo: EntityRepoImp
+    private val repo: EntityRepoImpl
 ): ViewModel() {
 
     var isProcessing by mutableStateOf(false)

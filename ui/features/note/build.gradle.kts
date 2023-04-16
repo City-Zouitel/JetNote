@@ -97,10 +97,12 @@ dependencies {
 
     //Swipe.
     implementation (libs.swipe)
+    
     //Glide.
-    implementation (libs.glide)
-    implementation (libs.glide.comp)
-    kapt (libs.glide.compiler)
+//    implementation (libs.glide)
+//    implementation (libs.glide.comp)
+//    kapt (libs.glide.compiler)
+
     //Baha-UrlPreview.
     implementation(libs.url.preview)
 }

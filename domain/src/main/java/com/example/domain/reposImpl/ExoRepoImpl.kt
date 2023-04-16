@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-class ExoRepoImp  @Inject constructor (
+class ExoRepoImpl  @Inject constructor (
     private val exo: ExoPlayer,
 ): ExoRepo {
 

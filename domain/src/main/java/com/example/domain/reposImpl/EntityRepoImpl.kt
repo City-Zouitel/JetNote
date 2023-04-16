@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @ViewModelScoped
-class EntityRepoImp @Inject constructor(
+class EntityRepoImpl @Inject constructor(
     private val dao: EntityDao
 ): EntityRepo {
     override val getAllNotesById: Flow<List<Entity>>

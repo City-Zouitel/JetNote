@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ViewModelScoped
-class NoteAndTodoRepoImp @Inject constructor(
+class NoteAndTodoRepoImpl @Inject constructor(
     private val dao: NoteAndTodoDao
 ): NoteAndTodoRepo {
     override val getAllNotesAndTodo: Flow<List<NoteAndTodo>>

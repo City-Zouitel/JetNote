@@ -2,7 +2,7 @@ package com.example.tasks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.reposImpl.NoteAndTodoRepoImp
+import com.example.domain.reposImpl.NoteAndTodoRepoImpl
 import com.example.local.model.NoteAndTodo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteAndTodoVM @Inject constructor(
-    private val repo: NoteAndTodoRepoImp
+    private val repo: NoteAndTodoRepoImpl
 ): ViewModel() {
 
     private val _getAllNotesAndTodo = MutableStateFlow<List<NoteAndTodo>>(emptyList())

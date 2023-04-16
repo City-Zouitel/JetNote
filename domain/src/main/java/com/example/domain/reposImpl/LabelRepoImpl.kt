@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ViewModelScoped
-class LabelRepoImp @Inject constructor(
+class LabelRepoImpl @Inject constructor(
     private val dao: LabelDao
 ): LabelRepo {
 

@@ -2,7 +2,7 @@ package com.example.tags
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.reposImpl.LabelRepoImp
+import com.example.domain.reposImpl.LabelRepoImpl
 import com.example.local.model.Label
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LabelVM @Inject constructor(
-    private val repo: LabelRepoImp
+    private val repo: LabelRepoImpl
 ): ViewModel(){
 
     private val _getAllLabels = MutableStateFlow<List<Label>>(emptyList())

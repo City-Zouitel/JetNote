@@ -2,7 +2,7 @@ package com.example.tags
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.reposImpl.NoteAndLabelRepoImp
+import com.example.domain.reposImpl.NoteAndLabelRepoImpl
 import com.example.local.model.NoteAndLabel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteAndLabelVM @Inject constructor(
-    private val repo: NoteAndLabelRepoImp
+    private val repo: NoteAndLabelRepoImpl
 ): ViewModel() {
 
     private val _getAllNotesAndLabels = MutableStateFlow<List<NoteAndLabel>>(emptyList())

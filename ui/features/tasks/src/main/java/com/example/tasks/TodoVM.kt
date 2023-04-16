@@ -2,11 +2,9 @@ package com.example.tasks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.reposImpl.TodoRepoImp
-import com.example.domain.utils.Dispatcher
+import com.example.domain.reposImpl.TodoRepoImpl
 import com.example.local.model.Todo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TodoVM @Inject constructor(
 //    private val ioDispatcher: CoroutineDispatcher,
-    private val repo: TodoRepoImp
+    private val repo: TodoRepoImpl
 ): ViewModel() {
 
     private val _getAllTodoList = MutableStateFlow<List<Todo>>(emptyList())

@@ -59,7 +59,6 @@ import com.example.links.LinkPart
 import com.example.links.LinkVM
 import com.example.links.NoteAndLinkVM
 import com.example.local.model.*
-import com.example.note.UrlCard
 import com.example.note.bottom_bar.AddEditBottomBar
 import com.example.record.RecordingNote
 import com.example.note.NoteVM

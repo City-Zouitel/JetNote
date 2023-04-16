@@ -19,16 +19,9 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.request.Request
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SizeReadyCallback
-import com.bumptech.glide.request.target.Target.*
-import com.bumptech.glide.request.transition.Transition
 import com.example.common_ui.Cons.IMAGES
 import com.example.common_ui.Cons.JPEG
-import com.example.domain.reposImpl.NoteRepoImp
+import com.example.domain.reposImpl.NoteRepoImpl
 import com.example.local.model.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +34,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteVM @Inject constructor(
-    private val repo: NoteRepoImp
+    private val repo: NoteRepoImpl
 ):ViewModel() {
 
     var isProcessing by mutableStateOf(false)
@@ -100,60 +93,60 @@ class NoteVM @Inject constructor(
     }
 
     fun saveGifLocally(ctx: Context, gifUri: Uri,uid: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            kotlin.runCatching {
-                Glide.with(ctx)
-                    .asFile()
-                    .load("")
-                    .apply(
-                        RequestOptions()
-                            .format(DecodeFormat.PREFER_ARGB_8888)
-                            .override(SIZE_ORIGINAL)
-                    )
-                    .into(object : com.bumptech.glide.request.target.Target<File?> {
-                        override fun onResourceReady(
-                            resource: File,
-                            transition: Transition<in File?>?
-                        ) {
-                            storeImage(ctx, resource, uid)
-                        }
-
-                        override fun onStart() {
-                        }
-
-                        override fun onStop() {
-                        }
-
-                        override fun onDestroy() {
-                        }
-
-                        override fun onLoadStarted(placeholder: Drawable?) {
-                        }
-
-                        override fun onLoadFailed(errorDrawable: Drawable?) {
-                        }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {
-                        }
-
-                        override fun getSize(cb: SizeReadyCallback) {
-                        }
-
-                        override fun removeCallback(cb: SizeReadyCallback) {
-                        }
-
-                        override fun setRequest(request: Request?) {
-                        }
-
-                        override fun getRequest(): Request? {
-                            return null
-                        }
-
-                    })
-            }.onFailure {
-                Toast.makeText(ctx, "something wrong!!", Toast.LENGTH_SHORT).show()
-            }
-        }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            kotlin.runCatching {
+//                Glide.with(ctx)
+//                    .asFile()
+//                    .load("")
+//                    .apply(
+//                        RequestOptions()
+//                            .format(DecodeFormat.PREFER_ARGB_8888)
+//                            .override(SIZE_ORIGINAL)
+//                    )
+//                    .into(object : com.bumptech.glide.request.target.Target<File?> {
+//                        override fun onResourceReady(
+//                            resource: File,
+//                            transition: Transition<in File?>?
+//                        ) {
+//                            storeImage(ctx, resource, uid)
+//                        }
+//
+//                        override fun onStart() {
+//                        }
+//
+//                        override fun onStop() {
+//                        }
+//
+//                        override fun onDestroy() {
+//                        }
+//
+//                        override fun onLoadStarted(placeholder: Drawable?) {
+//                        }
+//
+//                        override fun onLoadFailed(errorDrawable: Drawable?) {
+//                        }
+//
+//                        override fun onLoadCleared(placeholder: Drawable?) {
+//                        }
+//
+//                        override fun getSize(cb: SizeReadyCallback) {
+//                        }
+//
+//                        override fun removeCallback(cb: SizeReadyCallback) {
+//                        }
+//
+//                        override fun setRequest(request: Request?) {
+//                        }
+//
+//                        override fun getRequest(): Request? {
+//                            return null
+//                        }
+//
+//                    })
+//            }.onFailure {
+//                Toast.makeText(ctx, "something wrong!!", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     private fun storeImage(ctx: Context,image: File,uid: String) {

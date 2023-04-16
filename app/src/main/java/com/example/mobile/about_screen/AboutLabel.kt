@@ -12,14 +12,11 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.example.common_ui.Cons.APP_NAME
 import com.example.common_ui.MatColors.Companion.ON_SURFACE
 import com.example.mobile.getMaterialColor
 
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun AboutLabel() {
     Box(
