@@ -16,7 +16,7 @@ import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.BROOM_ICON
 import com.example.common_ui.Icons.MENU_BURGER_ICON
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.mobile.getMaterialColor
 import com.example.graph.sound
 import com.example.local.model.Label

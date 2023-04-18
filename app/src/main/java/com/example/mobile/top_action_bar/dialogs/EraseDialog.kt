@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.DataStoreVM
-import com.example.common_ui.MatColors.Companion.SURFACE_TINT
+import com.example.common_ui.MaterialColors.Companion.SURFACE_TINT
 import com.example.mobile.getMaterialColor
 import com.example.graph.sound
 

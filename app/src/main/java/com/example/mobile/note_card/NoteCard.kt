@@ -59,7 +59,6 @@ import com.example.links.LinkVM
 import com.example.links.NoteAndLinkVM
 import com.example.local.model.*
 import com.example.note.NoteVM
-import com.example.note.UrlCard
 import com.example.tasks.NoteAndTodoVM
 import com.example.tasks.TodoVM
 import me.saket.swipe.SwipeAction

@@ -3,8 +3,6 @@ package com.example.tags
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
@@ -31,9 +29,9 @@ import com.example.common_ui.Cons.NUL
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.FULL_LABEL_ICON
 import com.example.common_ui.Icons.OUTLINE_LABEL_ICON
-import com.example.common_ui.MatColors
-import com.example.common_ui.MatColors.Companion.SURFACE
-import com.example.common_ui.MatColors.Companion.SURFACE_TINT
+import com.example.common_ui.MaterialColors
+import com.example.common_ui.MaterialColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE_TINT
 import com.example.local.model.Label
 import com.example.local.model.NoteAndLabel
 import com.google.accompanist.flowlayout.FlowRow
@@ -64,7 +62,7 @@ fun Labels(
 
     val labelDialogState = remember { mutableStateOf(false) }
 
-    val getMatColor = MatColors().getMaterialColor
+    val getMatColor = MaterialColors().getMaterialColor
     if (labelDialogState.value) {
             LabelDialogColors(
                 dialogState = labelDialogState,

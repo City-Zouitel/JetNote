@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.DataStoreVM
-import com.example.common_ui.MatColors
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.SoundEffect
 
 @Composable
@@ -34,7 +34,7 @@ fun ColorsRow(
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    val getMatColor = MatColors().getMaterialColor
+    val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
 
     LazyRow(

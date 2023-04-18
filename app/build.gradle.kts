@@ -17,8 +17,8 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 220
-        versionName = "2.2.0"
+        versionCode = 221
+        versionName = "2.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -159,6 +159,10 @@ dependencies {
 //    implementation (libs.glide)
 //    implementation (libs.glide.comp)
 //    kapt (libs.glide.compiler)
+
+    //Coil.
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 
 //    //License.
     implementation (libs.aboutlibraries.comp)

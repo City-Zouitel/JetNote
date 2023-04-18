@@ -45,7 +45,6 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.common_ui.*
-import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.AUDIOS
 import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.IMAGES
@@ -56,8 +55,8 @@ import com.example.common_ui.Cons.NON
 import com.example.common_ui.Cons.NUL
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.DONE_ICON
-import com.example.common_ui.MatColors.Companion.OUT_LINE_VARIANT
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.OUT_LINE_VARIANT
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.links.CacheLinks
 import com.example.links.LinkPart
 import com.example.links.LinkVM
@@ -106,7 +105,7 @@ fun NoteAdd(
     val focusRequester = FocusRequester()
     val focusState = remember { mutableStateOf(false) }
 
-    val getMatColor = MatColors().getMaterialColor
+    val getMatColor = MaterialColors().getMaterialColor
 
     val sound = SoundEffect()
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
@@ -206,8 +205,8 @@ fun NoteAdd(
 
                             noteVM.addNote(
                                 Note(
-                                    title = titleState.value,
-                                    description = descriptionState.value,
+                                    title = if(titleState.value.isNullOrBlank()) null else titleState.value ,
+                                    description = if(descriptionState.value.isNullOrBlank()) null else descriptionState.value,
                                     priority = priorityState.value,
                                     uid = uid,
                                     reminding = remindingValue.value,

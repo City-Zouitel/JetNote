@@ -20,7 +20,7 @@ import com.example.common_ui.Cons.JPEG
 import com.example.common_ui.Cons.MP3
 import com.example.common_ui.Cons.SEARCH_IN_TRASH
 import com.example.common_ui.DataStoreVM
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.VerticalGrid
 import com.example.links.LinkVM
 import com.example.links.NoteAndLinkVM

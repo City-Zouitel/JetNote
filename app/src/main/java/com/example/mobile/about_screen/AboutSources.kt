@@ -19,8 +19,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.GITHUB_ICON
-import com.example.common_ui.MatColors.Companion.ON_SURFACE
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.mobile.getMaterialColor
 import com.example.graph.sound
 

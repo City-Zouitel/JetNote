@@ -21,8 +21,8 @@ import com.example.common_ui.Cons.FOCUS_NAVIGATION
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.Icons.ADD_CIRCLE_ICON
 import com.example.common_ui.Icons.BELL_ICON
-import com.example.common_ui.MatColors.Companion.SURFACE
-import com.example.common_ui.MatColors.Companion.SURFACE_VARIANT
+import com.example.common_ui.MaterialColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE_VARIANT
 import com.example.local.model.Note
 import com.example.note.ColorsRow
 
@@ -50,7 +50,7 @@ fun AddEditBottomBar(
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    val getMatColor = MatColors().getMaterialColor
+    val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
 
     Column {

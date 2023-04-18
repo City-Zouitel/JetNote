@@ -34,9 +34,9 @@ import com.example.common_ui.Icons.DISK_ICON
 import com.example.common_ui.Icons.ERASER_BLACK_ICON
 import com.example.common_ui.Icons.REDO_ICON
 import com.example.common_ui.Icons.UNDO_ICON
-import com.example.common_ui.MatColors.Companion.ON_SURFACE
-import com.example.common_ui.MatColors.Companion.OUTLINE
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
+import com.example.common_ui.MaterialColors.Companion.OUTLINE
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.mobile.getMaterialColor
 import com.example.note.NoteVM
 import io.getstream.sketchbook.ColorPickerDialog

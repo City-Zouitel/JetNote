@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.mobile.getMaterialColor
 import com.example.mobile.navigation_drawer.NavigationDrawer
 import com.example.mobile.top_action_bar.CustomTopAppBar

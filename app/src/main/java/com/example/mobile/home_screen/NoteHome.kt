@@ -31,8 +31,8 @@ import com.example.common_ui.Cons.ORDER_BY_PRIORITY
 import com.example.common_ui.Cons.ORDER_BY_REMINDER
 import com.example.common_ui.Cons.SEARCH_IN_LOCAL
 import com.example.common_ui.Icons.PLUS_ICON
-import com.example.common_ui.MatColors.Companion.SURFACE
-import com.example.common_ui.MatColors.Companion.SURFACE_VARIANT
+import com.example.common_ui.MaterialColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE_VARIANT
 import com.example.common_ui.VerticalGrid
 import com.example.mobile.getMaterialColor
 import com.example.mobile.navigation_drawer.NavigationDrawer

@@ -25,8 +25,8 @@ import androidx.navigation.NavController
 import com.example.common_ui.AdaptingRowBetween
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.DataStoreVM
-import com.example.common_ui.MatColors.Companion.ON_SURFACE
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.mobile.getMaterialColor
 import com.example.mobile.navigation_drawer.NavigationDrawer
 import com.example.graph.sound

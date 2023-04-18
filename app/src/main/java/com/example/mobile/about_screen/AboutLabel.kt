@@ -12,8 +12,10 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.common_ui.Cons.APP_NAME
-import com.example.common_ui.MatColors.Companion.ON_SURFACE
+import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
+import com.example.common_ui.R
 import com.example.mobile.getMaterialColor
 
 
@@ -25,16 +27,16 @@ fun AboutLabel() {
             .fillMaxWidth()
             .height(200.dp)
     ) {
-        GlideImage(
-            com.example.common_ui.R.drawable.mat,
-            contentDescription = "",
-        contentScale = ContentScale.FillBounds,
+        AsyncImage(
+            model = R.drawable.mat,
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .fillMaxWidth()
                 .blur(
-                    radius = 3.dp,
+                    radius = 4.dp,
                     edgeTreatment = BlurredEdgeTreatment.Rectangle
-                ),
+                )
         )
         Text(
             text = APP_NAME,

@@ -53,7 +53,7 @@ import com.example.common_ui.Cons.MP3
 import com.example.common_ui.Cons.NUL
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.EDIT_ICON
-import com.example.common_ui.MatColors.Companion.OUT_LINE_VARIANT
+import com.example.common_ui.MaterialColors.Companion.OUT_LINE_VARIANT
 import com.example.links.CacheLinks
 import com.example.links.LinkPart
 import com.example.links.LinkVM
@@ -118,7 +118,7 @@ fun NoteEdit(
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
-    val getMatColor = MatColors().getMaterialColor
+    val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
 
     val titleState = rememberSaveable {
@@ -193,8 +193,8 @@ fun NoteEdit(
 
                             noteVM.updateNote(
                                 Note(
-                                    title = titleState.value,
-                                    description = descriptionState.value,
+                                    title = if(titleState.value.isNullOrBlank()) null else titleState.value ,
+                                    description = if(descriptionState.value.isNullOrBlank()) null else descriptionState.value,
                                     priority = priorityState.value,
                                     uid = uid,
                                     audioDuration = audioDuration,

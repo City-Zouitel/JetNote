@@ -23,8 +23,8 @@ import com.example.common_ui.Cons.KEY_STANDARD
 import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.CALENDAR_ICON
 import com.example.common_ui.Icons.CLOCK_ICON
-import com.example.common_ui.MatColors
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.SoundEffect
 import com.example.notification.NotificationVM
 
@@ -46,7 +46,7 @@ fun RemindingNote(
     val soundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val sound = SoundEffect()
-    val getMatColor = MatColors().getMaterialColor
+    val getMatColor = MaterialColors().getMaterialColor
     val remindingViewModel = viewModel(ReminderVM::class.java)
     val notifyVM = viewModel(NotificationVM::class.java)
 

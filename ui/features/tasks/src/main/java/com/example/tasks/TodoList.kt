@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Icons.DELETE_OUTLINE_ICON
-import com.example.common_ui.MatColors
-import com.example.common_ui.MatColors.Companion.ON_SURFACE
-import com.example.common_ui.MatColors.Companion.SURFACE
+import com.example.common_ui.MaterialColors
+import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.local.model.NoteAndTodo
 import com.example.local.model.Todo
 import kotlinx.coroutines.Job
@@ -37,7 +37,7 @@ import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
 import kotlin.random.Random
 
-private val getMatColor = MatColors().getMaterialColor
+private val getMatColor = MaterialColors().getMaterialColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
