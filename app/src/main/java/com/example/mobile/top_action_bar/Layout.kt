@@ -1,6 +1,8 @@
 package com.example.mobile.top_action_bar
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,7 +17,9 @@ import com.example.common_ui.Icons.DASHBOARD_ICON
 import com.example.common_ui.Icons.LIST_VIEW_ICON_1
 import com.example.graph.sound
 import com.example.common_ui.DataStoreVM
+import com.example.mobile.home_screen.PopupTip
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun Layout(
     dataStoreVM: DataStoreVM = hiltViewModel()
@@ -24,19 +28,22 @@ internal fun Layout(
     val currentLayout  = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    Icon(
-        painter = if (currentLayout.value == "LIST") painterResource(id = DASHBOARD_ICON) else painterResource(id = LIST_VIEW_ICON_1),
-        contentDescription = null,
-        modifier = Modifier.clickable {
-            sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
-//            scope.launch {
-//                dataStore?.saveLayout(!collectAsState!!)
-//            }
-            dataStoreVM.setLayout(
-                if (currentLayout.value == "GRID") "LIST" else "GRID"
-            )
-        }
-    )
+    PopupTip(message = "...") {
+        Icon(
+            painter = if (currentLayout.value == "LIST") painterResource(id = DASHBOARD_ICON) else painterResource(id = LIST_VIEW_ICON_1),
+            contentDescription = null,
+            modifier = Modifier.combinedClickable(
+                onLongClick = {
+                    it.showAlignBottom()
+                }
+            ) {
+                sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                dataStoreVM.setLayout(
+                    if (currentLayout.value == "GRID") "LIST" else "GRID"
+                )
+            }
+        )
+    }
 }
 
 

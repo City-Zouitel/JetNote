@@ -1,6 +1,8 @@
 package com.example.mobile.top_action_bar
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -36,7 +38,9 @@ import com.example.common_ui.Icons.SORT_ICON
 import com.example.common_ui.Icons.SORT_NUMERIC_ICON
 import com.example.datastore.Cons
 import com.example.graph.sound
+import com.example.mobile.home_screen.PopupTip
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SortBy(
     dataStoreVM: DataStoreVM = hiltViewModel(),
@@ -55,16 +59,23 @@ internal fun SortBy(
         ORDER_BY_REMINDER -> SORT_NUMERIC_ICON
         else -> SORT_ICON
     }
-    Icon(
-        painterResource(currentSortIcon),
-        contentDescription = null,
-        modifier = Modifier
-            .size(24.dp)
-            .clickable {
-                sound.makeSound.invoke(ctx, FOCUS_NAVIGATION, thereIsSoundEffect.value)
-                isShow?.value = true
-            }
-    )
+
+    PopupTip(message = "...") {
+        Icon(
+            painterResource(currentSortIcon),
+            contentDescription = null,
+            modifier = Modifier
+                .size(24.dp)
+                .combinedClickable(
+                    onLongClick = {
+                        it.showAlignBottom()
+                    }
+                ) {
+                    sound.makeSound.invoke(ctx, FOCUS_NAVIGATION, thereIsSoundEffect.value)
+                    isShow?.value = true
+                }
+        )
+    }
 
     if (isShow != null) {
         DropdownMenu(

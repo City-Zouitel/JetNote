@@ -1,6 +1,8 @@
 package com.example.mobile.home_screen
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -54,7 +56,9 @@ import java.util.*
     "UnusedMaterialScaffoldPaddingParameter",
     "UnrememberedMutableState"
 )
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
 fun NoteHome(
     noteVM: NoteVM = hiltViewModel(),
@@ -116,6 +120,8 @@ fun NoteHome(
         scope = coroutineScope,
         trashedNotesState = trashedNotesState
     )
+
+    //
 
     ModalNavigationDrawer(
         drawerContent = {
