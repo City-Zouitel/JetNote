@@ -47,6 +47,7 @@ hilt {
 
 dependencies {
     implementation(projects.data.datastore)
+    
     //AndroidX.
     implementation(libs.androidx.core)
     implementation(libs.androidx.corektx)
@@ -79,8 +80,13 @@ dependencies {
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
+
     //Baha-UrlPreview.
     implementation(libs.url.preview)
+
+    //Balloon.
+    implementation ("com.github.skydoves:balloon-compose:1.5.3")
+
     //Test.
     testImplementation (libs.androidx.junit)
     debugImplementation (libs.compose.manifest)

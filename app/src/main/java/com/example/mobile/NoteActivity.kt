@@ -3,38 +3,31 @@ package com.example.mobile
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.autofill.AutofillValue
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
-import androidx.navigation.compose.rememberNavController
-import com.example.graph.Graph
-import com.example.mobile.CONS.AUDIOS
-import com.example.mobile.CONS.IMAGES
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
-import java.util.*
-import androidx.compose.runtime.Composable
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.common_ui.DataStoreVM
 import com.example.glance.WidgetReceiver
-import com.example.mobile.home_screen.PopupTip
-import com.example.tags.LabelVM
+import com.example.graph.CONS.AUDIOS
+import com.example.graph.CONS.IMAGES
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import java.io.File
+import java.util.*
 
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
-    private val vm = viewModels<LabelVM>()
 
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,10 +40,10 @@ class NoteActivity : ComponentActivity() {
             val navHostController = rememberNavController()
             val scope = rememberCoroutineScope()
 
-            intentHandler(intent, this@NoteActivity, navHostController, scope)
+            com.example.graph.intentHandler(intent, this@NoteActivity, navHostController, scope)
 
             AppTheme {
-                Graph(navHostController)
+                com.example.graph.Graph(navHostController)
             }
         }
     }
@@ -90,7 +83,7 @@ class NoteActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        urlPreview(this,null,null,null,null,null,null)?.cleanUp()
+        com.example.graph.urlPreview(this, null, null, null, null, null, null)?.cleanUp()
     }
 
     override fun onStart() {
@@ -125,7 +118,7 @@ class NoteActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        checkShortcut(this)
+        com.example.graph.checkShortcut(this)
     }
 
     override fun onPause() {
@@ -133,17 +126,6 @@ class NoteActivity : ComponentActivity() {
         WidgetReceiver.updateBroadcast(this)
     }
 
-//    private fun hideSystemUI() {
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
-//        WindowInsetsControllerCompat(window, mainContainer).let { controller ->
-//            controller.hide(WindowInsetsCompat.Type.systemBars())
-//            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-//        }
-//    }
-//
-//    private fun showSystemUI() {
-//        WindowCompat.setDecorFitsSystemWindows(window, true)
-//        WindowInsetsControllerCompat(window, mainContainer).show(WindowInsetsCompat.Type.systemBars())
-//    }
+
 }
 

@@ -41,7 +41,8 @@ include(
     ":ui:features:note",
     ":ui:features:widget",
     ":ui:features:quick-note",
-    ":ui:features:links"
+    ":ui:features:links",
+    ":ui:graph"
 )
 include(
     ":domain"

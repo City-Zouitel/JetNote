@@ -16,10 +16,6 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
     compileOptions {
@@ -29,20 +25,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0"
-    }
 }
-kapt {
-    correctErrorTypes = true
 
-    arguments {
-        arg("room.schemaLocation", "$projectDir/schemas")
-    }
-}
 dependencies {
     implementation(projects.common.commonUi)
 

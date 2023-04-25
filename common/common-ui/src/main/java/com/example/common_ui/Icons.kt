@@ -29,6 +29,7 @@ object Icons {
     val DISK_ICON = R.drawable.disk_24
     val ADD_ICON = R.drawable.add_24
     val PLUS_ICON = R.drawable.plus_20
+    val PLUS_ICON_24 = R.drawable.plus_24
     val LIGHT_ICON = R.drawable.sun_24
     val NIGHT_ICON = R.drawable.moon_24
     val SORT_ICON = R.drawable.sort

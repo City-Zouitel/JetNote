@@ -3,9 +3,9 @@ plugins {
     id ("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
-    id ("com.mikepenz.aboutlibraries.plugin")
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlin.serialization)
+//    id ("com.mikepenz.aboutlibraries.plugin")
+//    alias(libs.plugins.ksp)
+//    alias(libs.plugins.kotlin.serialization)
     id ("com.chrisney.enigma")
 }
 
@@ -66,24 +66,10 @@ enigma.injectFakeKeys = true
 
 dependencies {
 
-    implementation(projects.data.datastore)
-    implementation(projects.data.local)
-
-    implementation(projects.domain)
-
-    implementation(projects.common.notification)
+    //Projects.
     implementation(projects.common.commonUi)
-//    implementation(projects.ui.graph)
+    implementation(projects.ui.graph)
     implementation(projects.ui.features.widget)
-    implementation(projects.ui.features.tags)
-    implementation(projects.ui.features.camera)
-    implementation(projects.ui.features.record)
-    implementation(projects.ui.features.tasks)
-    implementation(projects.ui.features.mediaPlayer)
-    implementation(projects.ui.features.reminder)
-    implementation(projects.ui.features.note)
-    implementation(projects.ui.features.quickNote)
-    implementation(projects.ui.features.links)
 
     //AndroidX.
     implementation(libs.androidx.core)
@@ -110,7 +96,7 @@ dependencies {
 //    implementation (libs.datastore)
 
     //LiveData.
-    implementation(libs.livedatakts)
+//    implementation(libs.livedatakts)
 
     //Dagger-Hilt
     implementation (libs.dagger)
@@ -126,14 +112,14 @@ dependencies {
 //    implementation(libs.koin.compose)
 
 //    //Accompanist.
-    implementation(libs.accompanist.permissions)
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
+//    implementation(libs.accompanist.permissions)
+//    implementation(libs.accompanist.pager)
+//    implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.systemuicontroller)
-    implementation(libs.accompanist.navigation.animation)
-    implementation(libs.accompanist.swiperefresh)
-    implementation(libs.accompanist.flowlayout)
-    implementation(libs.accompanist.insets)
+//    implementation(libs.accompanist.navigation.animation)
+//    implementation(libs.accompanist.swiperefresh)
+//    implementation(libs.accompanist.flowlayout)
+//    implementation(libs.accompanist.insets)
 
 //    // ExoPlayer
 //    api(libs.exoplayer.core)
@@ -147,13 +133,13 @@ dependencies {
 //    implementation (libs.camerax.extensions)
 //
 //    //Sketchbook.
-    implementation (libs.sketchbook)
+//    implementation (libs.sketchbook)
 
     //Balloon.
-    implementation ("com.github.skydoves:balloon-compose:1.5.3")
+//    implementation ("com.github.skydoves:balloon-compose:1.5.3")
 //
 //    //Swipe.
-    implementation (libs.swipe)
+//    implementation (libs.swipe)
 
     //Global Exception Handler.
     implementation (libs.globalexception)
@@ -163,12 +149,12 @@ dependencies {
 //    implementation (libs.glide.comp)
 //    kapt (libs.glide.compiler)
 
-    //Coil.
-    implementation(libs.coil.compose)
-    implementation(libs.coil.svg)
-
-//    //License.
-    implementation (libs.aboutlibraries.comp)
+//    //Coil.
+//    implementation(libs.coil.compose)
+//    implementation(libs.coil.svg)
+//
+////    //License.
+//    implementation (libs.aboutlibraries.comp)
 
 //    //Retrofit.
 //    implementation(libs.retrofit)
@@ -178,14 +164,14 @@ dependencies {
 //    implementation(libs.okhttp.bom.core)
 //    implementation(libs.okhttp.bom.interceptor)
 
-    //Baha-UrlPreview.
+//    //Baha-UrlPreview.
     implementation(libs.url.preview)
 
     //Beetle.
     implementation(libs.beetle)
 
     //Serialization.
-    implementation(libs.kotlinx.serialization)
+//    implementation(libs.kotlinx.serialization)
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
