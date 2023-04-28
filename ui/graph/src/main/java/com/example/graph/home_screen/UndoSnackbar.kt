@@ -21,7 +21,7 @@ internal fun UndoSnackbar(
 
         scope.launch {
             val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                message = note.title +  " " + TRASH_MESSAGE,
+                message = note.title + " " + TRASH_MESSAGE,
                 actionLabel = UNDO
             )
             when(snackbarResult)  {

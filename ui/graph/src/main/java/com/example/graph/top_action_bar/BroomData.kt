@@ -10,7 +10,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import com.example.common_ui.Icons
-import com.example.mobile.home_screen.PopupTip
+import com.example.common_ui.PopupTip
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -19,7 +19,7 @@ fun BroomData(
     ) {
     val haptic = LocalHapticFeedback.current
 
-    PopupTip(message = "...") { balloonWindow ->
+    PopupTip(message = "Wipe All Notes") { balloonWindow ->
         Icon(
             painterResource(Icons.BROOM_ICON),
             null,

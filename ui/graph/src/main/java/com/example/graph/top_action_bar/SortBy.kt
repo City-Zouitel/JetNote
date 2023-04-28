@@ -1,7 +1,6 @@
 package com.example.graph.top_action_bar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenu
@@ -38,9 +37,8 @@ import com.example.common_ui.Icons.SORT_AMOUNT_DOWN_ICON
 import com.example.common_ui.Icons.SORT_AMOUNT_UP_ICON
 import com.example.common_ui.Icons.SORT_ICON
 import com.example.common_ui.Icons.SORT_NUMERIC_ICON
-import com.example.datastore.Cons
 import com.example.graph.sound
-import com.example.mobile.home_screen.PopupTip
+import com.example.common_ui.PopupTip
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -63,7 +61,7 @@ internal fun SortBy(
         else -> SORT_ICON
     }
 
-    PopupTip(message = "...") {
+    PopupTip(message = "Ordination.") {
         Icon(
             painterResource(currentSortIcon),
             contentDescription = null,

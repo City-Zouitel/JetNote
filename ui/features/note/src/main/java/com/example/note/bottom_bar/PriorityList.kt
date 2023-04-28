@@ -18,6 +18,7 @@ import com.example.common_ui.Cons.NORMAL
 import com.example.common_ui.Cons.URGENT
 import com.example.common_ui.Icons.CIRCLE_ICON
 
+@Deprecated("dispensed with!")
 @Composable
 internal fun PriorityList(
     isShow: MutableState<Boolean>,

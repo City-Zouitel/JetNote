@@ -48,6 +48,7 @@ kapt {
     }
 }
 dependencies {
+
     implementation(projects.common.commonUi)
     implementation(projects.domain)
     implementation(projects.data.datastore)
@@ -92,8 +93,11 @@ dependencies {
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.accompanist.flowlayout)
+
     //Sketchbook.
     implementation (libs.sketchbook)
+    //Balloon.
+    implementation ("com.github.skydoves:balloon-compose:1.5.3")
 
     //Swipe.
     implementation (libs.swipe)

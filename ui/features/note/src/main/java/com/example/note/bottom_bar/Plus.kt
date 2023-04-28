@@ -3,6 +3,7 @@ package com.example.note.bottom_bar
 import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.view.View.OnLongClickListener
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.Canvas
@@ -41,6 +42,7 @@ import com.example.common_ui.Icons.TAGS_ICON
 import com.example.local.model.Note
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.skydoves.balloon.compose.BalloonWindow
 
 @OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("SuspiciousIndentation")
@@ -52,7 +54,7 @@ internal fun Plus(
     navController: NavController,
     imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
     recordDialogState: MutableState<Boolean>,
-    priorityColorState: MutableState<String>
+    priorityColorState: MutableState<String>,
 ) {
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()

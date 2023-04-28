@@ -1,4 +1,4 @@
-package com.example.mobile.home_screen
+package com.example.common_ui
 
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -23,9 +23,7 @@ import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonHighlightAnimation
 import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.compose.Balloon
-import com.skydoves.balloon.compose.BalloonWindow
-import com.skydoves.balloon.compose.rememberBalloonBuilder
+import com.skydoves.balloon.compose.*
 
 @Composable
 fun PopupTip(
@@ -42,8 +40,10 @@ fun PopupTip(
         setPadding(5)
 //        setMarginHorizontal(12)
         setCornerRadius(8f)
-        setBackgroundColor(Color.Cyan.toArgb())
+        setBackgroundColor(Color.Cyan)
+        setTextColor(Color.Black)
         setBalloonAnimation(BalloonAnimation.ELASTIC)
+        setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
     }
 
     Balloon(
