@@ -71,6 +71,7 @@ dependencies {
     implementation(projects.common.notification)
     implementation(projects.ui.graph)
     implementation(projects.ui.features.widget)
+    implementation(projects.ui.features.quickNote)
 
     //AndroidX.
     implementation(libs.androidx.core)
