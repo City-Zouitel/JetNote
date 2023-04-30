@@ -24,10 +24,10 @@ import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.VerticalGrid
 import com.example.graph.getMaterialColor
 import com.example.graph.navigation_drawer.NavigationDrawer
-import com.example.graph.navigation_drawer.Screens
 import com.example.graph.navigation_drawer.Screens.*
 import com.example.graph.note_card.NoteCard
 import com.example.graph.top_action_bar.NoteTopAppBar
+import com.example.graph.top_action_bar.TrashSelectionTopAppBar
 import com.example.graph.top_action_bar.dialogs.EraseDialog
 import com.example.links.LinkVM
 import com.example.links.NoteAndLinkVM
@@ -37,6 +37,8 @@ import com.example.local.model.Note
 import com.example.local.model.NoteAndLink
 import com.example.note.EntityVM
 import com.example.note.NoteVM
+import com.example.tasks.NoteAndTodoVM
+import com.example.tasks.TodoVM
 import java.io.File
 
 @SuppressLint(
@@ -51,6 +53,8 @@ fun TrashScreen(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
+    todoVM: TodoVM = hiltViewModel(),
+    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
@@ -66,6 +70,9 @@ fun TrashScreen(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
     val confirmationDialogState = remember { mutableStateOf(false) }
 
+    val trashSelectionState = remember { mutableStateOf(false) }
+    val selectedNotes = remember { mutableStateListOf<Note>() }
+
     //
     if (confirmationDialogState.value) {
         EraseDialog(dialogState = confirmationDialogState) {
@@ -79,6 +86,9 @@ fun TrashScreen(
                             linkId = link.id
                         )
                     )
+                }
+                entity.todoItems.forEach {
+                    // TODO: need finishing.
                 }
             }
         }
@@ -102,16 +112,23 @@ fun TrashScreen(
             scaffoldState = scaffoldState,
             backgroundColor = getMaterialColor(SURFACE),
             topBar = {
-                NoteTopAppBar(
-                    searchNoteTitle = searchTitleState,
-                    scrollBehavior = scrollBehavior,
-                    drawerState = drawerState,
-                    thisHomeScreen = false,
-                    confirmationDialogState = confirmationDialogState,
-                    expandedSortMenuState = null,
-                    searchScreen = SEARCH_IN_TRASH,
-                    label = remember { mutableStateOf(Label()) }
-                )
+                if (trashSelectionState.value) {
+                    TrashSelectionTopAppBar(
+                        trashSelectionState = trashSelectionState,
+                        selectedNotes = selectedNotes
+                    )
+                } else {
+                    NoteTopAppBar(
+                        searchNoteTitle = searchTitleState,
+                        scrollBehavior = scrollBehavior,
+                        drawerState = drawerState,
+                        thisHomeScreen = false,
+                        confirmationDialogState = confirmationDialogState,
+                        expandedSortMenuState = null,
+                        searchScreen = SEARCH_IN_TRASH,
+                        label = remember { mutableStateOf(Label()) }
+                    )
+                }
             }
         ) {
             if (currentLayout.value == "LIST") {
@@ -124,11 +141,12 @@ fun TrashScreen(
                         }
                     ) {entity ->
                         NoteCard(
+                            screen = TRASH_SCREEN,
                             entity = entity,
                             navController = navController,
-                            forScreen = TRASH_SCREEN,
-                            selectionState = null,
-                            selectedNotes = null
+                            homeSelectionState = null,
+                            trashSelectionState = trashSelectionState,
+                            selectedNotes = selectedNotes
                         ) {
                             viewModule.deleteNote(Note(uid = entity.note.uid))
                             entity.links.forEach { link ->
@@ -149,11 +167,12 @@ fun TrashScreen(
                                 entity.note.title?.contains(searchTitleState.value, true) ?: true
                             }.forEach { entity ->
                                 NoteCard(
+                                    screen = TRASH_SCREEN,
                                     entity = entity,
                                     navController = navController,
-                                    forScreen = TRASH_SCREEN,
-                                    selectionState = null,
-                                    selectedNotes = null
+                                    homeSelectionState = null,
+                                    trashSelectionState = trashSelectionState,
+                                    selectedNotes = selectedNotes
                                 ){
 
                                 }

@@ -2,7 +2,6 @@ package com.example.graph.home_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -46,7 +45,7 @@ import com.example.graph.navigation_drawer.NavigationDrawer
 import com.example.graph.navigation_drawer.Screens
 import com.example.graph.note_card.NoteCard
 import com.example.graph.top_action_bar.NoteTopAppBar
-import com.example.graph.top_action_bar.SelectionTopAppBar
+import com.example.graph.top_action_bar.HomeSelectionTopAppBar
 import com.example.note.EntityVM
 import com.example.note.NoteVM
 import java.util.*
@@ -110,7 +109,7 @@ fun NoteHome(
         }
     )
 
-    val selectionState = remember { mutableStateOf(false) }
+    val homeSelectionState = remember { mutableStateOf(false) }
     val selectedNotes = remember { mutableStateListOf<Note>() }
 
     //undo snack-bar.
@@ -141,9 +140,9 @@ fun NoteHome(
             scaffoldState = scaffoldState,
             backgroundColor = getMaterialColor(SURFACE),
             topBar = {
-                if (selectionState.value) {
-                    SelectionTopAppBar(
-                        selectionState = selectionState,
+                if (homeSelectionState.value) {
+                    HomeSelectionTopAppBar(
+                        homeSelectionState = homeSelectionState,
                         selectedNotes = selectedNotes,
                         undo = undo
                     )
@@ -204,10 +203,11 @@ fun NoteHome(
                             }
                         ) { entity ->
                             NoteCard(
+                                screen = Screens.HOME_SCREEN,
                                 entity = entity,
                                 navController = navController,
-                                forScreen = Screens.HOME_SCREEN,
-                                selectionState = selectionState,
+                                homeSelectionState = homeSelectionState,
+                                trashSelectionState = null,
                                 selectedNotes = selectedNotes
                             ) {
                                 noteVM.updateNote(
@@ -239,10 +239,11 @@ fun NoteHome(
                                             it.labels.contains(searchLabelState.value)
                                 }.forEach { entity ->
                                     NoteCard(
+                                        screen = Screens.HOME_SCREEN,
                                         entity = entity,
                                         navController = navController,
-                                        forScreen = Screens.HOME_SCREEN,
-                                        selectionState = selectionState,
+                                        homeSelectionState = homeSelectionState,
+                                        trashSelectionState = null,
                                         selectedNotes = selectedNotes
                                     ) {
                                         noteVM.updateNote(

@@ -44,85 +44,79 @@ fun UndoRedo(
     val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
 
-    PopupTip(message = "Undo") {
-        Icon(
-            painter = painterResource(id = UNDO_ICON),
-            contentDescription = null,
-            tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
-            modifier = Modifier
-                .size(20.dp)
-                .combinedClickable(
-                    onLongClick = {
-                        // To make vibration.
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        it.showAlignTop()
-                    }
-                ) {
-                    sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+    Icon(
+        painter = painterResource(id = UNDO_ICON),
+        contentDescription = null,
+        tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
+        modifier = Modifier
+            .size(20.dp)
+            .combinedClickable(
+                onLongClick = {
+                    // To make vibration.
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                }
+            ) {
+                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
 
-                    if (isTitleFieldSelected.value) {
-                        if (titleFieldState.value?.isNotEmpty() == true) {
-                            titleStack += titleFieldState.value!!
-                                .split(' ')
-                                .takeLast(1)
-                        }
-                        titleFieldState.value = if (!titleFieldState.value?.contains(' ')!!) {
+                if (isTitleFieldSelected.value) {
+                    if (titleFieldState.value?.isNotEmpty() == true) {
+                        titleStack += titleFieldState.value!!
+                            .split(' ')
+                            .takeLast(1)
+                    }
+                    titleFieldState.value = if (!titleFieldState.value?.contains(' ')!!) {
+                        ""
+                    } else {
+                        titleFieldState.value!!.substringBeforeLast(' ')
+                    }
+
+                }
+
+                //
+                if (isDescriptionFieldSelected.value) {
+
+                    if (descriptionFieldState.value?.isNotEmpty() == true) {
+                        descriptionStack += descriptionFieldState.value!!
+                            .split(' ')
+                            .takeLast(1)
+                    }
+                    descriptionFieldState.value =
+                        if (!descriptionFieldState.value?.contains(' ')!!) {
                             ""
                         } else {
-                            titleFieldState.value!!.substringBeforeLast(' ')
+                            descriptionFieldState.value!!.substringBeforeLast(' ')
                         }
+                }
+            }
+    )
 
-                    }
+    Icon(
+        painter = painterResource(id = REDO_ICON),
+        contentDescription = null,
+        tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
+        modifier = Modifier
+            .size(20.dp)
+            .combinedClickable(
+                onLongClick = {
+                    // To make vibration.
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                }
+            ) {
+                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
 
-                    //
-                    if (isDescriptionFieldSelected.value) {
-
-                        if (descriptionFieldState.value?.isNotEmpty() == true) {
-                            descriptionStack += descriptionFieldState.value!!
-                                .split(' ')
-                                .takeLast(1)
-                        }
-                        descriptionFieldState.value =
-                            if (!descriptionFieldState.value?.contains(' ')!!) {
-                                ""
-                            } else {
-                                descriptionFieldState.value!!.substringBeforeLast(' ')
-                            }
+                if (isTitleFieldSelected.value) {
+                    if (titleStack.isNotEmpty()) {
+                        titleFieldState.value += " " + titleStack.last()
+                        titleStack -= titleStack.last()
                     }
                 }
-        )
-    }
 
-    PopupTip(message = "Redo") {
-        Icon(
-            painter = painterResource(id = REDO_ICON),
-            contentDescription = null,
-            tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
-            modifier = Modifier
-                .size(20.dp)
-                .combinedClickable(
-                    onLongClick = {
-                        // To make vibration.
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        it.showAlignLeft()
-                    }
-                ) {
-                    sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
-
-                    if (isTitleFieldSelected.value) {
-                        if (titleStack.isNotEmpty()) {
-                            titleFieldState.value += " " + titleStack.last()
-                            titleStack -= titleStack.last()
-                        }
-                    }
-
-                    if (isDescriptionFieldSelected.value) {
-                        if (descriptionStack.isNotEmpty()) {
-                            descriptionFieldState.value += " " + descriptionStack.last()
-                            descriptionStack -= descriptionStack.last()
-                        }
+                if (isDescriptionFieldSelected.value) {
+                    if (descriptionStack.isNotEmpty()) {
+                        descriptionFieldState.value += " " + descriptionStack.last()
+                        descriptionStack -= descriptionStack.last()
                     }
                 }
-        )
-    }
+            }
+    )
 }

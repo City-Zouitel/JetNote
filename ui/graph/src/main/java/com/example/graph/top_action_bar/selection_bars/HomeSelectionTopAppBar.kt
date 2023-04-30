@@ -27,6 +27,7 @@ import com.example.common_ui.Icons.TRASH_ICON
 import com.example.common_ui.sharNote
 import com.example.graph.copyNote
 import com.example.graph.sound
+import com.example.graph.top_action_bar.selection_bars.SelectionCount
 import com.example.local.model.Note
 import com.example.local.model.NoteAndLabel
 import com.example.local.model.NoteAndTodo
@@ -41,14 +42,14 @@ import kotlin.random.Random.Default.nextLong
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectionTopAppBar(
+fun HomeSelectionTopAppBar(
     noteVM: NoteVM = hiltViewModel(),
     noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
     labelVM: LabelVM = hiltViewModel(),
     todoVM: TodoVM = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
-    selectionState: MutableState<Boolean>?,
+    homeSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Note>?,
     undo: (Note) -> Unit
 ) {
@@ -70,7 +71,9 @@ fun SelectionTopAppBar(
         title = {
             Row {
                 // delete
-                Icon(painter = painterResource(id = TRASH_ICON), contentDescription = null,
+                Icon(
+                    painter = painterResource(id = TRASH_ICON),
+                    contentDescription = null,
                     modifier = Modifier
                         .padding(7.dp)
                         .clickable {
@@ -90,8 +93,9 @@ fun SelectionTopAppBar(
                                 undo.invoke(it)
                             }
                             selectedNotes?.clear()
-                            selectionState?.value = false
-                        })
+                            homeSelectionState?.value = false
+                        }
+                )
 
                 // share
                 AnimatedVisibility(visible = selectedNotes?.count() == 1) {
@@ -108,7 +112,7 @@ fun SelectionTopAppBar(
                                         selectedNotes.single().description!!
                                     ) {
                                         selectedNotes.clear()
-                                        selectionState?.value = false
+                                        homeSelectionState?.value = false
                                     }
                                 })
 
@@ -162,7 +166,7 @@ fun SelectionTopAppBar(
                                             }
                                     }
                                     selectedNotes.clear()
-                                    selectionState?.value = false
+                                    homeSelectionState?.value = false
                                 }
                         )
                     }
@@ -173,16 +177,7 @@ fun SelectionTopAppBar(
             AdaptingRow(
                 modifier = Modifier.width(60.dp)
             ) {
-                Icon(
-                    painter = painterResource(id = CROSS_ICON),
-                    contentDescription = null,
-                    modifier = Modifier.clickable {
-                        selectionState?.value = false
-                        selectedNotes?.clear()
-                    }
-                )
-                // number of selected notes.
-                Text(text = selectedNotes?.count().toString(), fontSize = 24.sp)
+                SelectionCount(selectionState = homeSelectionState, selectedNotes = selectedNotes)
             }
         }
     )

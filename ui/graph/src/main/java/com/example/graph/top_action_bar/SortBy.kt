@@ -2,6 +2,7 @@ package com.example.graph.top_action_bar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -9,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -61,23 +63,25 @@ internal fun SortBy(
         else -> SORT_ICON
     }
 
-    PopupTip(message = "Ordination.") {
-        Icon(
-            painterResource(currentSortIcon),
-            contentDescription = null,
-            modifier = Modifier
-                .size(24.dp)
-                .combinedClickable(
-                    onLongClick = {
-                        // To make vibration.
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        it.showAlignBottom()
+    Row {
+        PopupTip(message = "Sorting") {
+            Icon(
+                painterResource(currentSortIcon),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(24.dp)
+                    .combinedClickable(
+                        onLongClick = {
+                            // To make vibration.
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            it.showAlignBottom()
+                        }
+                    ) {
+                        sound.makeSound.invoke(ctx, FOCUS_NAVIGATION, thereIsSoundEffect.value)
+                        isShow?.value = true
                     }
-                ) {
-                    sound.makeSound.invoke(ctx, FOCUS_NAVIGATION, thereIsSoundEffect.value)
-                    isShow?.value = true
-                }
-        )
+            )
+        }
     }
 
     if (isShow != null) {

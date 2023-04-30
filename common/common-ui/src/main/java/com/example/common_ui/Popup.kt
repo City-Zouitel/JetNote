@@ -3,8 +3,10 @@ package com.example.common_ui
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.contentColorFor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
+import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
+import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonHighlightAnimation
@@ -31,6 +35,9 @@ fun PopupTip(
     window : @Composable (BalloonWindow) -> Unit
 ) {
 
+    val getMaterialColors = MaterialColors().getMaterialColor
+    val backgroundColor = getMaterialColors(ON_SURFACE)
+
     val builder = rememberBalloonBuilder {
         setArrowSize(10)
         setArrowPosition(0.5f)
@@ -40,7 +47,7 @@ fun PopupTip(
         setPadding(5)
 //        setMarginHorizontal(12)
         setCornerRadius(8f)
-        setBackgroundColor(Color.Cyan)
+        setBackgroundColor(backgroundColor)
         setTextColor(Color.Black)
         setBalloonAnimation(BalloonAnimation.ELASTIC)
         setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
@@ -49,8 +56,12 @@ fun PopupTip(
     Balloon(
         builder = builder,
         balloonContent = {
-            Text(message)
-        }
+            Text(
+                text = message,
+                color = getMaterialColors.invoke(SURFACE)
+            )
+        },
+        modifier = Modifier
     ) {
         window.invoke(it)
     }

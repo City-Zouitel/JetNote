@@ -28,29 +28,27 @@ internal fun Layout(
     val ctx = LocalContext.current
     val haptic = LocalHapticFeedback.current
 
-    val currentLayout  = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
+    val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    PopupTip(
-        message = if(currentLayout.value == "LIST") "Grade Layout" else "List Layout"
-    ) {
-        Icon(
-            painter = if (currentLayout.value == "LIST") painterResource(id = DASHBOARD_ICON) else painterResource(id = LIST_VIEW_ICON_1),
-            contentDescription = null,
-            modifier = Modifier.combinedClickable(
-                onLongClick = {
-                    // To make vibration.
-                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    it.showAlignBottom()
-                }
-            ) {
-                sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
-                dataStoreVM.setLayout(
-                    if (currentLayout.value == "GRID") "LIST" else "GRID"
-                )
+    Icon(
+        painter = if (currentLayout.value == "LIST") painterResource(id = DASHBOARD_ICON)
+        else painterResource(
+            id = LIST_VIEW_ICON_1
+        ),
+        contentDescription = null,
+        modifier = Modifier.combinedClickable(
+            onLongClick = {
+                // To make vibration.
+                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             }
-        )
-    }
+        ) {
+            sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+            dataStoreVM.setLayout(
+                if (currentLayout.value == "GRID") "LIST" else "GRID"
+            )
+        }
+    )
 }
 
 

@@ -2,6 +2,7 @@ package com.example.graph.note_card
 
 import android.net.Uri
 import android.text.format.DateFormat
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -40,6 +41,7 @@ import com.example.common_ui.Cons.JPEG
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.Cons.MP3
 import com.example.common_ui.Cons.NON
+import com.example.common_ui.Cons.TAG
 import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.ANGLE_DOWN_ICON
 import com.example.common_ui.Icons.ANGLE_UP_ICON
@@ -47,12 +49,10 @@ import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.CLOCK_ICON
 import com.example.common_ui.Icons.RESET_ICON
 import com.example.common_ui.codeUrl
-import com.example.common_ui.findUrlLink
 import com.example.graph.ImageDisplayed
 import com.example.graph.navigation_drawer.Screens
 import com.example.graph.navigation_drawer.Screens.*
 import com.example.graph.sound
-import com.example.links.CacheLinks
 import com.example.links.LinkPart
 import com.example.links.LinkVM
 import com.example.links.NoteAndLinkVM
@@ -69,10 +69,11 @@ import java.util.*
 @Composable
 fun NoteCard(
     dataStoreVM: DataStoreVM = hiltViewModel(),
-    forScreen: Screens,
+    screen: Screens,
     entity: Entity,
     navController: NavController,
-    selectionState: MutableState<Boolean>?,
+    homeSelectionState: MutableState<Boolean>?,
+    trashSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Note>?,
     onSwipeNote: (Entity) -> Unit
 ) {
@@ -98,8 +99,9 @@ fun NoteCard(
             Card(
                 entity = entity,
                 navController = navController,
-                forScreens = forScreen,
-                selectionState = selectionState,
+                screen = screen,
+                homeSelectionState = homeSelectionState,
+                trashSelectionState = trashSelectionState,
                 selectedNotes = selectedNotes
             )
         }
@@ -107,8 +109,9 @@ fun NoteCard(
         Card(
             entity = entity,
             navController = navController,
-            forScreens = forScreen,
-            selectionState = selectionState,
+            screen = screen,
+            homeSelectionState = homeSelectionState,
+            trashSelectionState = trashSelectionState,
             selectedNotes = selectedNotes
         )
     }
@@ -125,8 +128,9 @@ private fun Card(
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
     entity: Entity,
     navController: NavController,
-    forScreens: Screens,
-    selectionState: MutableState<Boolean>?,
+    screen: Screens,
+    homeSelectionState: MutableState<Boolean>?,
+    trashSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Note>?
 ) {
     val ctx = LocalContext.current
@@ -161,13 +165,22 @@ private fun Card(
                     // To make vibration.
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
 
-                    selectionState?.value = true
+                    when (screen) {
+                        HOME_SCREEN -> {
+                            homeSelectionState?.value = true
+                        }
+                        TRASH_SCREEN -> {
+                            trashSelectionState?.value = true
+                        }
+                        else -> {}
+                    }
+
                     selectedNotes?.add(note)
                 }
             ) {
                 sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
 
-                if (forScreens == HOME_SCREEN && !selectionState?.value!!) {
+                if (screen == HOME_SCREEN && !homeSelectionState?.value!!) {
                     navController.navigate(
                         route = EDIT_ROUTE + "/" +
                                 note.uid + "/" +
@@ -185,7 +198,7 @@ private fun Card(
                         else -> selectedNotes.remove(note)
                     }
                 }
-                selectedNotes?.ifEmpty { selectionState?.value = false }
+                selectedNotes?.ifEmpty { homeSelectionState?.value = false }
             }
             .drawBehind {
                 if (note.priority.equals(NON, true)) {
@@ -196,7 +209,15 @@ private fun Card(
             },
         shape = AbsoluteRoundedCornerShape(15.dp),
         border =
-            if(selectedNotes?.contains(note) == true) BorderStroke(3.dp, Color.Cyan) else BorderStroke(0.dp, Color.Transparent) ,
+            if(selectedNotes?.contains(note) == true) {
+                when(screen) {
+                    HOME_SCREEN -> BorderStroke(3.dp, Color.Cyan)
+                    TRASH_SCREEN -> BorderStroke(3.dp, Color.Red)
+                    else -> { throw Exception("") }
+                }
+            } else {
+                BorderStroke(0.dp, Color.Transparent)
+            } ,
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp
         ),
@@ -205,7 +226,7 @@ private fun Card(
     ) {
 
         // display the image.
-        when (forScreens) {
+        when (screen) {
             HOME_SCREEN, TRASH_SCREEN -> {
                 ImageDisplayed(media = noteVM::imageDecoder.invoke(ctx, note.uid))
             }
@@ -265,7 +286,7 @@ private fun Card(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (forScreens == TRASH_SCREEN) {
+            if (screen == TRASH_SCREEN) {
                 IconButton(onClick = {
                     noteVM.updateNote(
                         Note(
@@ -287,7 +308,7 @@ private fun Card(
             }
 
             //
-            if (forScreens==HOME_SCREEN && note.reminding != 0L) {
+            if (screen==HOME_SCREEN && note.reminding != 0L) {
                 note.reminding.let {
                     kotlin.runCatching {
                         ElevatedAssistChip(
