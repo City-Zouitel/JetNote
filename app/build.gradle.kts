@@ -68,6 +68,7 @@ dependencies {
 
     //Projects.
     implementation(projects.common.commonUi)
+    implementation(projects.common.notification)
     implementation(projects.ui.graph)
     implementation(projects.ui.features.widget)
 
