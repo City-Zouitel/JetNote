@@ -6,10 +6,12 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -101,7 +103,10 @@ private fun LinkCard(
         shape = if (swipeable) RoundedCornerShape(15.dp) else RoundedCornerShape(0.dp),
         onClick = {
             onClick.invoke()
-        }
+        },
+        colors = CardDefaults.cardColors(
+            containerColor = Color(.6f, .6f, .6f, .5f)
+        )
     ) {
         Row {
             linkVM::imageDecoder.invoke(ctx, id)?.let {
@@ -112,22 +117,28 @@ private fun LinkCard(
                     contentDescription = null
                 )
             }
-            Column {
+            Column{
                 Text(
                     text = title,
-                    fontSize = 13.sp,
+                    fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(start = 5.dp)
+                    modifier = Modifier.padding(
+                        start = 5.dp,
+                        top = 10.dp,
+                    )
                 )
+
                 Text(
                     text = host,
                     fontSize = 11.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(start = 5.dp)
+                    modifier = Modifier.padding(
+                        start = 5.dp,
+                        top = 10.dp,
+                    )
                 )
-
             }
         }
     }

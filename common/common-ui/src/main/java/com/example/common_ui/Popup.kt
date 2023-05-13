@@ -45,12 +45,11 @@ fun PopupTip(
         setWidth(BalloonSizeSpec.WRAP)
         setHeight(BalloonSizeSpec.WRAP)
         setPadding(5)
-//        setMarginHorizontal(12)
         setCornerRadius(8f)
         setBackgroundColor(backgroundColor)
-        setTextColor(Color.Black)
         setBalloonAnimation(BalloonAnimation.ELASTIC)
         setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
+        setAutoDismissDuration(5000)
     }
 
     Balloon(

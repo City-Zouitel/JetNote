@@ -20,6 +20,10 @@ import com.example.common_ui.DataStoreVM
 import com.example.glance.WidgetReceiver
 import com.example.graph.CONS.AUDIOS
 import com.example.graph.CONS.IMAGES
+import com.example.graph.Graph
+import com.example.graph.checkShortcut
+import com.example.graph.intentHandler
+import com.example.graph.urlPreview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -40,10 +44,10 @@ class NoteActivity : ComponentActivity() {
             val navHostController = rememberNavController()
             val scope = rememberCoroutineScope()
 
-            com.example.graph.intentHandler(intent, this@NoteActivity, navHostController, scope)
+            intentHandler(intent, this@NoteActivity, navHostController, scope)
 
             AppTheme {
-                com.example.graph.Graph(navHostController)
+                Graph(navHostController)
             }
         }
     }
@@ -83,7 +87,7 @@ class NoteActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        com.example.graph.urlPreview(this, null, null, null, null, null, null)?.cleanUp()
+        urlPreview(this, null, null, null, null, null, null)?.cleanUp()
     }
 
     override fun onStart() {
@@ -118,7 +122,7 @@ class NoteActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        com.example.graph.checkShortcut(this)
+        checkShortcut(this)
     }
 
     override fun onPause() {

@@ -174,7 +174,6 @@ private fun Card(
                         }
                         else -> {}
                     }
-
                     selectedNotes?.add(note)
                 }
             ) {
@@ -192,13 +191,19 @@ private fun Card(
                                 note.audioDuration + "/" +
                                 note.reminding
                     )
+
+                } else if (screen == TRASH_SCREEN && !trashSelectionState?.value!!) {
+                    /*do nothing.*/
                 } else {
                     when {
                         !selectedNotes?.contains(note)!! -> selectedNotes.add(note)
                         else -> selectedNotes.remove(note)
                     }
                 }
-                selectedNotes?.ifEmpty { homeSelectionState?.value = false }
+                selectedNotes?.ifEmpty {
+                    homeSelectionState?.value = false
+                    trashSelectionState?.value = false
+                }
             }
             .drawBehind {
                 if (note.priority.equals(NON, true)) {

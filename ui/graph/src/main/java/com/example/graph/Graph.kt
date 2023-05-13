@@ -1,13 +1,16 @@
 package com.example.graph
 
 import androidx.compose.runtime.Composable
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.AUDIO_DURATION
+import com.example.common_ui.Cons.BASE_URI
 import com.example.common_ui.Cons.CAMERA_ROUTE
 import com.example.common_ui.Cons.COLOR
 import com.example.common_ui.Cons.DESCRIPTION
@@ -60,7 +63,14 @@ fun Graph(
             )
         }
         composable(
-            route = "$EDIT_ROUTE/{$UID}/{$TITLE}/{$DESCRIPTION}/{$COLOR}/{$TEXT_COLOR}/{$PRIORITY}/{$AUDIO_DURATION}/{$REMINDING}",
+            route = "$EDIT_ROUTE/{$UID}/{$TITLE}/{$DESCRIPTION}/{$COLOR}/{$TEXT_COLOR}/" +
+                    "{$PRIORITY}/{$AUDIO_DURATION}/{$REMINDING}",
+            deepLinks = listOf(
+                navDeepLink {
+                    this.uriPattern =  "${BASE_URI.toUri()}/{$UID}/{$TITLE}/{$DESCRIPTION}/{$COLOR}/{$TEXT_COLOR}/" +
+                            "{$PRIORITY}/{$AUDIO_DURATION}/{$REMINDING}"
+                }
+            ),
             arguments = listOf(
                 navArgument(UID) {
                     type = NavType.StringType
@@ -102,7 +112,8 @@ fun Graph(
                 reminding = it.arguments?.getLong(REMINDING) ?: 0L
             )
         }
-        composable("$DRAW_ROUTE/{$TITLE}/{$DESCRIPTION}/{$COLOR}/{$TEXT_COLOR}/{$PRIORITY}/{$UID}/{$AUDIO_DURATION}/{$REMINDING}",
+        composable("$DRAW_ROUTE/{$TITLE}/{$DESCRIPTION}/{$COLOR}/{$TEXT_COLOR}/" +
+                "{$PRIORITY}/{$UID}/{$AUDIO_DURATION}/{$REMINDING}",
             arguments = listOf(
                 navArgument(TITLE) {
                     type = NavType.StringType

@@ -26,13 +26,13 @@ fun intentHandler(
             }
         }
         if (action == Intent.ACTION_VIEW) {
-            if (this.extras?.containsKey("new_shortcut") == true) {
+            if (extras?.containsKey("new_shortcut") == true) {
                 getBooleanExtra("new_shortcut", false)
                 scope.launch {
                     navHC.navigate("$ADD_ROUTE/${UUID.randomUUID()}/$NUL")
                 }
             }
-            if (this.extras?.containsKey("quick_note") == true) {
+            if (extras?.containsKey("quick_note") == true) {
                 getBooleanExtra("quick_note", false)
                 scope.launch {
                     navHC.navigate("$ADD_ROUTE/${UUID.randomUUID()}/$NUL")

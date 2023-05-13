@@ -5,10 +5,7 @@ object Cons {
     const val TAG = "This"
     const val NUL = "null"
 
-    const val APP_VERSION = "2.2.1"
-
-    const val NOTE_TABLE_NAME = "Notes"
-    const val DATABASE_NAME = "JetNoteDatabase"
+    const val APP_VERSION = "2.3.1"
 
     const val ID = "Id"
     const val TITLE = "Title"
@@ -28,6 +25,7 @@ object Cons {
     const val IMAGES = "images_folder"
     const val AUDIOS = "records_folder"
 
+    const val BASE_URI = "app://city.zouitel.jetnote"
     const val HOME_ROUTE = "Home"
     const val ADD_ROUTE = "add_screen"
     const val EDIT_ROUTE = "Edit"

@@ -5,6 +5,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,7 +29,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun NoteTopAppBar(
-    dataStoreVM: DataStoreVM = hiltViewModel(),
     searchNoteTitle: MutableState<String>,
     scrollBehavior: TopAppBarScrollBehavior,
     drawerState: DrawerState,
@@ -37,27 +38,15 @@ fun NoteTopAppBar(
     searchScreen: String,
     label: MutableState<Label>?
 ) {
-    val scope = rememberCoroutineScope()
-    val ctx = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     TopAppBar(
         navigationIcon = {
             Row {
                 AnimatedVisibility(searchNoteTitle.value.isEmpty() && label?.value == Label()) {
                     AdaptingRow(
-                        Modifier.width(40.dp),
+                        Modifier.padding(start = 10.dp, end = 10.dp),
                     ) {
-                        Icon(
-                            painterResource(MENU_BURGER_ICON),
-                            null,
-                            modifier = Modifier.clickable {
-                                scope.launch {
-                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
-                                    drawerState.open()
-                                }
-                            }
-                        )
+                        Open_Drawer(drawerState = drawerState)
                     }
                 }
             }
@@ -72,7 +61,7 @@ fun NoteTopAppBar(
         actions = {
             AnimatedVisibility(visible = searchNoteTitle.value.isEmpty() && label?.value == Label()) {
                 AdaptingRow(
-                    Modifier.width(90.dp)
+                    Modifier.padding(start = 10.dp, end = 10.dp),
                 ) {
                     thisHomeScreen.let {
                         if (it) {
@@ -83,6 +72,9 @@ fun NoteTopAppBar(
                           BroomData(confirmationDialogState = confirmationDialogState)
                         }
                     }
+
+                    Spacer(modifier = Modifier.width(5.dp))
+
                     Layout()
                 }
             }

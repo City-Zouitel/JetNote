@@ -1,9 +1,12 @@
 package com.example.graph.top_action_bar
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -24,6 +27,7 @@ import com.example.common_ui.Icons.COPY_ICON
 import com.example.common_ui.Icons.CROSS_ICON
 import com.example.common_ui.Icons.SHARE_ICON
 import com.example.common_ui.Icons.TRASH_ICON
+import com.example.common_ui.PopupTip
 import com.example.common_ui.sharNote
 import com.example.graph.copyNote
 import com.example.graph.sound
@@ -40,7 +44,7 @@ import com.example.tasks.TodoVM
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeSelectionTopAppBar(
     noteVM: NoteVM = hiltViewModel(),
@@ -67,16 +71,20 @@ fun HomeSelectionTopAppBar(
     val newUid = UUID.randomUUID()
 
     TopAppBar(
-        navigationIcon = { /**/ },
-        title = {
+        navigationIcon = {
             Row {
-                // delete
+            // delete
+            PopupTip(message = "Move To Trash") {
                 Icon(
                     painter = painterResource(id = TRASH_ICON),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(7.dp)
-                        .clickable {
+                        .combinedClickable(
+                            onLongClick = {
+                                it.showAlignBottom()
+                            }
+                        ) {
                             sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                             selectedNotes?.forEach {
                                 noteVM.updateNote(
@@ -96,15 +104,25 @@ fun HomeSelectionTopAppBar(
                             homeSelectionState?.value = false
                         }
                 )
+            }
 
-                // share
-                AnimatedVisibility(visible = selectedNotes?.count() == 1) {
-                    Row {
+            AnimatedVisibility(visible = selectedNotes?.count() == 1) {
+                Row {
+                    // share
+                    PopupTip(message = "Share Note") {
                         Icon(painter = painterResource(id = SHARE_ICON), contentDescription = null,
                             modifier = Modifier
                                 .padding(7.dp)
-                                .clickable {
-                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                                .combinedClickable(
+                                    onLongClick = {
+                                        it.showAlignBottom()
+                                    }
+                                ) {
+                                    sound.makeSound.invoke(
+                                        ctx,
+                                        KEY_CLICK,
+                                        thereIsSoundEffect.value
+                                    )
 
                                     sharNote(
                                         ctx,
@@ -115,20 +133,33 @@ fun HomeSelectionTopAppBar(
                                         homeSelectionState?.value = false
                                     }
                                 })
+                    }
 
-                        // copy the note.
+                    // copy the note.
+                    PopupTip(message = "Copy Note") {
                         Icon(painter = painterResource(id = COPY_ICON), contentDescription = null,
                             modifier = Modifier
                                 .padding(7.dp)
-                                .clickable {
-                                    sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                                .combinedClickable(
+                                    onLongClick = {
+                                        it.showAlignBottom()
+                                    }
+                                ) {
+                                    sound.makeSound.invoke(
+                                        ctx,
+                                        KEY_CLICK,
+                                        thereIsSoundEffect.value
+                                    )
 
                                     copyNote(ctx, noteVM, selectedNotes?.single()!!, newUid) {
                                         // copy each label.
                                         observeLabels.value
                                             .filter {
                                                 observeNotesAndLabels.value.contains(
-                                                    NoteAndLabel(selectedNotes.single().uid, it.id)
+                                                    NoteAndLabel(
+                                                        selectedNotes.single().uid,
+                                                        it.id
+                                                    )
                                                 )
                                             }
                                             .forEach {
@@ -144,7 +175,10 @@ fun HomeSelectionTopAppBar(
                                         observeTodoList.value
                                             .filter {
                                                 observeNoteAndTodo.value.contains(
-                                                    NoteAndTodo(selectedNotes.single().uid, it.id)
+                                                    NoteAndTodo(
+                                                        selectedNotes.single().uid,
+                                                        it.id
+                                                    )
                                                 )
                                             }
                                             .forEach { todo ->
@@ -172,10 +206,12 @@ fun HomeSelectionTopAppBar(
                     }
                 }
             }
+        }
         },
+        title = {},
         actions = {
             AdaptingRow(
-                modifier = Modifier.width(60.dp)
+                Modifier.padding(start = 10.dp, end = 10.dp),
             ) {
                 SelectionCount(selectionState = homeSelectionState, selectedNotes = selectedNotes)
             }

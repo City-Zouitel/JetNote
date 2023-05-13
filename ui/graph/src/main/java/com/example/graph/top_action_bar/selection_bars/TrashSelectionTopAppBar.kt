@@ -1,6 +1,8 @@
 package com.example.graph.top_action_bar
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,16 +20,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.common_ui.AdaptingRow
-import com.example.common_ui.Cons
-import com.example.common_ui.DataStoreVM
-import com.example.common_ui.Icons
+import com.example.common_ui.*
 import com.example.graph.sound
 import com.example.graph.top_action_bar.selection_bars.SelectionCount
 import com.example.local.model.Note
 import com.example.note.NoteVM
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TrashSelectionTopAppBar(
     dataStoreVM: DataStoreVM = hiltViewModel(),
@@ -41,27 +40,34 @@ fun TrashSelectionTopAppBar(
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     TopAppBar(
-        navigationIcon = {},
-        title = {
-            // delete
-            Icon(
-                painter = painterResource(id = Icons.TRASH_ICON),
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(7.dp)
-                    .clickable {
-                        sound.makeSound.invoke(ctx, Cons.KEY_CLICK, thereIsSoundEffect.value)
-                        selectedNotes?.forEach {
-                            noteVM.deleteNote(it)
+        navigationIcon = {
+            // wipe notes.
+            PopupTip(message = "Wipe Notes") {
+                Icon(
+                    painter = painterResource(id = Icons.TRASH_ICON),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(7.dp)
+                        .combinedClickable(
+                            onLongClick = {
+                                it.showAlignBottom()
+                            }
+                        ) {
+                            sound.makeSound.invoke(ctx, Cons.KEY_CLICK, thereIsSoundEffect.value)
+                            selectedNotes?.forEach {
+                                noteVM.deleteNote(it)
+                            }
+                            selectedNotes?.clear()
+                            trashSelectionState?.value = false
                         }
-                        selectedNotes?.clear()
-                        trashSelectionState?.value = false
-                    }
-            )
+                )
+            }
+
         },
+        title = {},
         actions = {
             AdaptingRow(
-                modifier = Modifier.width(60.dp)
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
             ) {
                 SelectionCount(selectionState = trashSelectionState, selectedNotes = selectedNotes)
             }

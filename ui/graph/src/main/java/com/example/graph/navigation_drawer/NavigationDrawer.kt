@@ -178,7 +178,7 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(SHARE_ICON), null) },
                     selected = false,
                     onClick = {
-                        sharApp(ctx,"[YOUR APP STORE LINK]")
+                        sharApp(ctx,"[COMING SOON.]")
                         sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                     }
                 )

@@ -7,13 +7,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.*
+import androidx.glance.action.actionStartActivity
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
 import androidx.glance.layout.*
 import androidx.glance.text.Text
 import androidx.glance.unit.ColorProvider
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.EntryPoints
 
 class AppWidget:GlanceAppWidget() {
@@ -23,18 +28,21 @@ class AppWidget:GlanceAppWidget() {
 
         val ctx = LocalContext.current.applicationContext
 
+        val navC = rememberNavController()
+
         val viewModel = EntryPoints.get(
             ctx,
             EntryPoint::class.java
         ).vm()
 
-        WidgetListNotes(ctx = ctx, widgetVm = viewModel)
+        WidgetListNotes(ctx = ctx, widgetVm = viewModel, navC)
     }
 
     @Composable
     fun WidgetListNotes(
         ctx: Context,
-        widgetVm: WidgetVM
+        widgetVm: WidgetVM,
+        navController: NavController
     ) {
         val notes = widgetVm.getAllEntities()
 
@@ -90,7 +98,6 @@ class AppWidget:GlanceAppWidget() {
                     Spacer(GlanceModifier.height(10.dp))
                 }
             }
-
         }
     }
 }

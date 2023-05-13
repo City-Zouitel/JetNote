@@ -63,7 +63,6 @@ internal fun SortBy(
         else -> SORT_ICON
     }
 
-    Row {
         PopupTip(message = "Sorting") {
             Icon(
                 painterResource(currentSortIcon),
@@ -81,7 +80,6 @@ internal fun SortBy(
                         isShow?.value = true
                     }
             )
-        }
     }
 
     if (isShow != null) {
@@ -104,9 +102,6 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-//                    scope.launch {
-//                        dataStore?.saveOrder(Cons.ORDINATION)
-//                    }
                     dataStoreVM.setOrdination(com.example.common_ui.Cons.BY_ID)
                 }
             )
@@ -116,9 +111,6 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-//                    scope.launch {
-//                        dataStore?.saveOrder(ORDER_BY_NEWEST)
-//                    }
                     dataStoreVM.setOrdination(com.example.common_ui.Cons.ORDER_BY_NEWEST)
                 }
             )
@@ -128,9 +120,6 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-//                    scope.launch {
-//                        dataStore?.saveOrder(ORDER_BY_OLDEST)
-//                    }
                     dataStoreVM.setOrdination(ORDER_BY_OLDEST)
                 }
             )
@@ -140,9 +129,6 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-//                    scope.launch {
-//                        dataStore?.saveOrder(BY_NAME)
-//                    }
                     dataStoreVM.setOrdination(BY_NAME)
                 }
             )
@@ -152,9 +138,6 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-//                    scope.launch {
-//                        dataStore?.saveOrder(ORDER_BY_REMINDER)
-//                    }
                     dataStoreVM.setOrdination(ORDER_BY_REMINDER)
                 }
             )
@@ -164,9 +147,6 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-//                    scope.launch {
-//                        dataStore?.saveOrder(ORDER_BY_PRIORITY)
-//                    }
                     dataStoreVM.setOrdination(ORDER_BY_PRIORITY)
                 }
             )
