@@ -1,5 +1,6 @@
 package com.example.graph
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
@@ -65,12 +66,6 @@ fun Graph(
         composable(
             route = "$EDIT_ROUTE/{$UID}/{$TITLE}/{$DESCRIPTION}/{$COLOR}/{$TEXT_COLOR}/" +
                     "{$PRIORITY}/{$AUDIO_DURATION}/{$REMINDING}",
-            deepLinks = listOf(
-                navDeepLink {
-                    this.uriPattern =  "${BASE_URI.toUri()}/{$UID}/{$TITLE}/{$DESCRIPTION}/{$COLOR}/{$TEXT_COLOR}/" +
-                            "{$PRIORITY}/{$AUDIO_DURATION}/{$REMINDING}"
-                }
-            ),
             arguments = listOf(
                 navArgument(UID) {
                     type = NavType.StringType

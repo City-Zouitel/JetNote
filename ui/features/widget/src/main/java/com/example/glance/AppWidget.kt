@@ -7,10 +7,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.*
+import androidx.glance.action.Action
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.action.actionStartActivity
+import androidx.glance.appwidget.action.actionStartService
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
@@ -18,7 +20,7 @@ import androidx.glance.layout.*
 import androidx.glance.text.Text
 import androidx.glance.unit.ColorProvider
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.example.local.model.Entity
 import dagger.hilt.EntryPoints
 
 class AppWidget:GlanceAppWidget() {
@@ -28,21 +30,18 @@ class AppWidget:GlanceAppWidget() {
 
         val ctx = LocalContext.current.applicationContext
 
-        val navC = rememberNavController()
-
         val viewModel = EntryPoints.get(
             ctx,
             EntryPoint::class.java
         ).vm()
 
-        WidgetListNotes(ctx = ctx, widgetVm = viewModel, navC)
+        WidgetListNotes(ctx = ctx, widgetVm = viewModel)
     }
 
     @Composable
     fun WidgetListNotes(
         ctx: Context,
         widgetVm: WidgetVM,
-        navController: NavController
     ) {
         val notes = widgetVm.getAllEntities()
 
@@ -69,7 +68,9 @@ class AppWidget:GlanceAppWidget() {
                                     .cornerRadius(15.dp)
                             )
                         }
+
                         Spacer(GlanceModifier.width(15.dp))
+
                         Column {
                             Text(
                                 text = entity.note.title ?: "",
@@ -77,7 +78,8 @@ class AppWidget:GlanceAppWidget() {
                                     fontSize = 19.sp,
                                     color = ColorProvider(Color(entity.note.textColor))
                                 ),
-                                modifier = GlanceModifier.padding(3.dp)
+                                modifier = GlanceModifier
+                                    .padding(3.dp)
                             )
 
                             Text(
@@ -86,15 +88,17 @@ class AppWidget:GlanceAppWidget() {
                                     fontSize = 15.sp,
                                     color = ColorProvider(Color(entity.note.textColor))
                                 ),
-                                modifier = GlanceModifier.padding(
-                                    start = 3.dp,
-                                    end = 3.dp,
-                                    bottom = 7.dp
-                                )
+                                modifier = GlanceModifier
+                                    .padding(
+                                        start = 3.dp,
+                                        end = 3.dp,
+                                        bottom = 7.dp
+                                    )
                             )
                         }
 
                     }
+
                     Spacer(GlanceModifier.height(10.dp))
                 }
             }
