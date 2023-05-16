@@ -1,4 +1,4 @@
-package com.example.links
+package com.example.links.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.*
@@ -11,7 +11,6 @@ import com.example.local.model.Link
 import com.example.local.model.NoteAndLink
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 import java.util.*
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -41,12 +40,16 @@ fun CacheLinks(
         ctx, url, title, host, img
     )
 
+    // TODO: this code should handled by work manager.
     if (
         observeLinks.value.none { it.image == img.value } &&
         title.value.isNotBlank() &&
         host.value.isNotBlank() &&
         img.value.isNotBlank()
     ) {
+
+        linkVM.doWork(url)
+
         linkVM.addLink(
             Link(
                 id = link_id,

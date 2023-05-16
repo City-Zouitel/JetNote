@@ -70,6 +70,9 @@ dependencies {
     kapt(libs.hilt.compiler)
     kapt(libs.dagger.hiltcompiler)
 
+    //WorkManager.
+    implementation(libs.androidx.workmanager)
+
     //Swipe.
     implementation(libs.swipe)
 

@@ -2,7 +2,6 @@ package com.example.graph.note_card
 
 import android.net.Uri
 import android.text.format.DateFormat
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -41,7 +40,6 @@ import com.example.common_ui.Cons.JPEG
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.Cons.MP3
 import com.example.common_ui.Cons.NON
-import com.example.common_ui.Cons.TAG
 import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.ANGLE_DOWN_ICON
 import com.example.common_ui.Icons.ANGLE_UP_ICON
@@ -53,9 +51,9 @@ import com.example.graph.ImageDisplayed
 import com.example.graph.navigation_drawer.Screens
 import com.example.graph.navigation_drawer.Screens.*
 import com.example.graph.sound
-import com.example.links.LinkPart
-import com.example.links.LinkVM
-import com.example.links.NoteAndLinkVM
+import com.example.links.ui.LinkPart
+import com.example.links.ui.LinkVM
+import com.example.links.ui.NoteAndLinkVM
 import com.example.local.model.*
 import com.example.note.NoteVM
 import com.example.tasks.NoteAndTodoVM

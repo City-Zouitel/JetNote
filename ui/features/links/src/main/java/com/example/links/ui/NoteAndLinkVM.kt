@@ -1,4 +1,4 @@
-package com.example.links
+package com.example.links.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -29,8 +29,8 @@ import com.example.graph.note_card.NoteCard
 import com.example.graph.top_action_bar.NoteTopAppBar
 import com.example.graph.top_action_bar.TrashSelectionTopAppBar
 import com.example.graph.top_action_bar.dialogs.EraseDialog
-import com.example.links.LinkVM
-import com.example.links.NoteAndLinkVM
+import com.example.links.ui.LinkVM
+import com.example.links.ui.NoteAndLinkVM
 import com.example.local.model.Entity
 import com.example.local.model.Label
 import com.example.local.model.Note

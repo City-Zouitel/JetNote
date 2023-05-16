@@ -57,10 +57,10 @@ import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.DONE_ICON
 import com.example.common_ui.MaterialColors.Companion.OUT_LINE_VARIANT
 import com.example.common_ui.MaterialColors.Companion.SURFACE
-import com.example.links.CacheLinks
-import com.example.links.LinkPart
-import com.example.links.LinkVM
-import com.example.links.NoteAndLinkVM
+import com.example.links.ui.CacheLinks
+import com.example.links.ui.LinkPart
+import com.example.links.ui.LinkVM
+import com.example.links.ui.NoteAndLinkVM
 import com.example.local.model.*
 import com.example.media_player.MediaPlayerVM
 import com.example.note.bottom_bar.AddEditBottomBar

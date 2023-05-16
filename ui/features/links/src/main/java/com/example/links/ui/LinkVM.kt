@@ -1,35 +1,33 @@
-package com.example.links
+package com.example.links.ui
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
-import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
 import com.baha.url.preview.BahaUrlPreview
 import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
 import com.example.common_ui.Cons.JPEG
 import com.example.domain.reposImpl.LinkRepoImpl
+import com.example.links.worker.LinkWorker
 import com.example.local.model.Link
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.minutes
 
 @HiltViewModel
 class LinkVM @Inject constructor(
+    context: Context,
     private val repo: LinkRepoImpl
 ): ViewModel() {
 
@@ -41,6 +39,9 @@ class LinkVM @Inject constructor(
                 SharingStarted.WhileSubscribed(),
                 listOf()
             )
+
+    //
+    private var workManager = WorkManager.getInstance(context.applicationContext)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -82,7 +83,7 @@ class LinkVM @Inject constructor(
                 }
 
                 override fun onFailed(throwable: Throwable) {
-                    Toast.makeText(ctx, "Can't load link", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(ctx, "Can't load link", Toast.LENGTH_SHORT).show()
                 }
             }).fetchUrlPreview()
         }
@@ -103,4 +104,28 @@ class LinkVM @Inject constructor(
         return bitImg?.asImageBitmap()
     }
 
+
+    fun doWork(url: String) = viewModelScope.launch(Dispatchers.IO) {
+
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val worker = OneTimeWorkRequest.Builder(LinkWorker::class.java)
+            .addTag("link_work")
+            .setInputData(
+                Data.Builder()
+                    .putString("link_url", url)
+                    .build()
+            )
+            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            .setConstraints(constraints)
+            .build()
+
+        workManager.enqueueUniqueWork(
+            "unique_link_worker",
+            ExistingWorkPolicy.KEEP,
+            worker
+        )
+    }
 }
