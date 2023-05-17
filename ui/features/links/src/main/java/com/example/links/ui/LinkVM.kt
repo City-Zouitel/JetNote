@@ -1,5 +1,6 @@
 package com.example.links.ui
 
+import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -16,6 +17,7 @@ import com.example.common_ui.Cons.JPEG
 import com.example.domain.reposImpl.LinkRepoImpl
 import com.example.links.worker.LinkWorker
 import com.example.local.model.Link
+import com.example.local.model.NoteAndLink
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -23,11 +25,12 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class LinkVM @Inject constructor(
-    context: Context,
+    application: Application,
     private val repo: LinkRepoImpl
 ): ViewModel() {
 
@@ -41,7 +44,7 @@ class LinkVM @Inject constructor(
             )
 
     //
-    private var workManager = WorkManager.getInstance(context.applicationContext)
+    private var workManager = WorkManager.getInstance(application)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -51,10 +54,10 @@ class LinkVM @Inject constructor(
         }
     }
 
-    fun addLink(link: Link) =
-        viewModelScope.launch(Dispatchers.IO) {
-            repo.addLink(link)
-        }
+//    fun addLink(link: Link) =
+//        viewModelScope.launch(Dispatchers.IO) {
+//            repo.addLink(link)
+//        }
 
 
     fun deleteLink(link: Link) {
@@ -64,7 +67,6 @@ class LinkVM @Inject constructor(
     }
 
     fun urlPreview(
-        ctx: Context,
         res: String?,
         title: MutableState<String>?,
         host: MutableState<String>?,
@@ -89,14 +91,14 @@ class LinkVM @Inject constructor(
         }
     }
 
-    fun saveImageLocally(img:Bitmap?, path:String, name:String?) {
-        FileOutputStream(
-            name?.let { File(path, it) }
-        ).use {
-            img?.compress(Bitmap.CompressFormat.JPEG, 100, it)
-            it.flush()
-        }
-    }
+//    fun saveImageLocally(img:Bitmap?, path:String, name:String?) {
+//        FileOutputStream(
+//            name?.let { File(path, it) }
+//        ).use {
+//            img?.compress(Bitmap.CompressFormat.JPEG, 100, it)
+//            it.flush()
+//        }
+//    }
 
     fun imageDecoder(context: Context, id:String): ImageBitmap? {
         val path = File(context.filesDir.path + "/" + "links_img", "$id.$JPEG")
@@ -105,7 +107,14 @@ class LinkVM @Inject constructor(
     }
 
 
-    fun doWork(url: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun doWork(
+        linkId: String,
+        noteId: String,
+        url: String,
+        image: String,
+        title: String,
+        host: String
+    ) = viewModelScope.launch(Dispatchers.IO) {
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -115,7 +124,12 @@ class LinkVM @Inject constructor(
             .addTag("link_work")
             .setInputData(
                 Data.Builder()
-                    .putString("link_url", url)
+                    .putString("note_id_data", noteId)
+                    .putString("link_id_data", linkId)
+                    .putString("title_data", title)
+                    .putString("url_data", url)
+                    .putString("image_data", image)
+                    .putString("host_data", host)
                     .build()
             )
             .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)

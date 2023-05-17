@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ViewModelScoped
 class NoteAndLinkRepoImpl @Inject constructor(
     private val noteAndLinkDao: NoteAndLinkDao
 ): NoteAndLinkRepo {

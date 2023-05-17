@@ -9,8 +9,8 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ViewModelScoped
 class LinkRepoImpl @Inject constructor(
     private val dao: LinkDao
 ): LinkRepo {

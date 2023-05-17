@@ -79,6 +79,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.runtimektx)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.startup)
 
     //Compose.
     implementation(libs.compose.ui)
@@ -104,9 +105,13 @@ dependencies {
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
+    implementation (libs.hilt.work)
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
+
+    //WorkManager.
+    implementation(libs.androidx.workmanager)
 
     //Koin.
 //    implementation(libs.koin.core)

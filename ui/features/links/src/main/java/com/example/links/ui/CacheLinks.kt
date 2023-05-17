@@ -37,10 +37,9 @@ fun CacheLinks(
 
     //
     linkVM.urlPreview(
-        ctx, url, title, host, img
+        url, title, host, img
     )
 
-    // TODO: this code should handled by work manager.
     if (
         observeLinks.value.none { it.image == img.value } &&
         title.value.isNotBlank() &&
@@ -48,38 +47,45 @@ fun CacheLinks(
         img.value.isNotBlank()
     ) {
 
-        linkVM.doWork(url)
-
-        linkVM.addLink(
-            Link(
-                id = link_id,
-                url = url,
-                image = img.value,
-                title = title.value,
-                host = host.value
-            )
-        )
-        noteAndLinkVM.addNoteAndLink(
-            NoteAndLink(
-                noteUid = noteUid,
-                linkId = link_id
-            )
+        linkVM.doWork(
+            linkId = link_id,
+            noteId = noteUid,
+            url = url,
+            image = img.value,
+            title = title.value,
+            host = host.value
         )
 
-        scope.launch(Dispatchers.IO) {
-            // save link image in local link images file.
-            val ss = ImageLoader(ctx)
-            val cc = ImageRequest.Builder(ctx)
-                .data(img.value)
-                .target {
-                    linkVM.saveImageLocally(
-                        img = it.toBitmap(),
-                        path = linkImgPath,
-                        name = "$link_id.$JPEG"
-                    )
-                }
-                .build()
-            ss.enqueue(cc)
-        }
+//        linkVM.addLink(
+//            Link(
+//                id = link_id,
+//                url = url,
+//                image = img.value,
+//                title = title.value,
+//                host = host.value
+//            )
+//        )
+//        noteAndLinkVM.addNoteAndLink(
+//            NoteAndLink(
+//                noteUid = noteUid,
+//                linkId = link_id
+//            )
+//        )
+
+//        scope.launch(Dispatchers.IO) {
+//            // save link image in local link images file.
+//            val ss = ImageLoader(ctx)
+//            val cc = ImageRequest.Builder(ctx)
+//                .data(img.value)
+//                .target {
+//                    linkVM.saveImageLocally(
+//                        img = it.toBitmap(),
+//                        path = linkImgPath,
+//                        name = "$link_id.$JPEG"
+//                    )
+//                }
+//                .build()
+//            ss.enqueue(cc)
+//        }
     }
 }
