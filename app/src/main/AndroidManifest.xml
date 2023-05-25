@@ -27,7 +27,7 @@
         android:requestLegacyExternalStorage="true">
 
         <receiver
-            android:name="com.example.notification.Notification"
+            android:name="com.example.notification.reciver.Notification"
             android:enabled="true"
             android:exported="true" />
 
@@ -88,6 +88,9 @@
                 android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />
+            <meta-data
+                android:name=" com.example.mobile.initializer"
+                android:value="android.startup" />
         </provider>
     </application>
 

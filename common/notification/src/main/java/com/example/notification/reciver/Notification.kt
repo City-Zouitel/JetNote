@@ -1,4 +1,4 @@
-package com.example.notification
+package com.example.notification.reciver
 
 import android.Manifest
 import android.content.Context

@@ -31,7 +31,7 @@ import com.example.graph.top_action_bar.TrashSelectionTopAppBar
 import com.example.graph.top_action_bar.dialogs.EraseDialog
 import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
-import com.example.local.model.Entity
+import com.example.local.model.relational.Entity
 import com.example.local.model.Label
 import com.example.local.model.Note
 import com.example.local.model.NoteAndLink

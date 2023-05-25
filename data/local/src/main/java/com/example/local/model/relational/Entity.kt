@@ -1,10 +1,11 @@
-package com.example.local.model
+package com.example.local.model.relational
 
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import com.example.local.Cons.ID
-import com.example.local.Cons.UID
+import com.example.local.model.*
+import com.example.local.utils.Constants.ID
+import com.example.local.utils.Constants.UID
 
 data class Entity(
     @Embedded val note: Note,

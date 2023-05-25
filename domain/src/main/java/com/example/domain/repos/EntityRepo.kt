@@ -1,6 +1,6 @@
 package com.example.domain.repos
 
-import com.example.local.model.Entity
+import com.example.local.model.relational.Entity
 import kotlinx.coroutines.flow.Flow
 
 interface EntityRepo {

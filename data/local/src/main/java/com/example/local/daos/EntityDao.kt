@@ -3,7 +3,7 @@ package com.example.local.daos
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.local.model.Entity
+import com.example.local.model.relational.Entity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

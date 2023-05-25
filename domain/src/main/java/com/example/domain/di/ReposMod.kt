@@ -9,35 +9,35 @@ import dagger.hilt.android.components.ViewModelComponent
 
 @Module
 @InstallIn(ViewModelComponent::class)
-abstract class ReposMod {
+interface ReposMod {
 
     @Binds
-    abstract fun entityBinds(impl: EntityRepoImpl): EntityRepo
+     fun entityBinds(impl: EntityRepoImpl): EntityRepo
 
     @Binds
-    abstract fun exoBinds(impl: ExoRepoImpl): ExoRepo
+     fun exoBinds(impl: ExoRepoImpl): ExoRepo
 
     @Binds
-    abstract fun labelBinds(impl: LabelRepoImpl): LabelRepo
+     fun labelBinds(impl: LabelRepoImpl): LabelRepo
 
     @Binds
-    abstract fun noteAndLabelBinds(impl: NoteAndLabelRepoImpl): NoteAndLabelRepo
+     fun noteAndLabelBinds(impl: NoteAndLabelRepoImpl): NoteAndLabelRepo
 
     @Binds
-    abstract fun linkBinds(impl: LinkRepoImpl): LinkRepo
+     fun linkBinds(impl: LinkRepoImpl): LinkRepo
 
 //    @Binds
 //    abstract fun noteAndLinkBinds(impl: NoteAndLinkRepoImpl): NoteAndLabelRepo
 
     @Binds
-    abstract fun todoBinds(impl: TodoRepoImpl): TodoRepo
+     fun todoBinds(impl: TodoRepoImpl): TodoRepo
 
     @Binds
-    abstract fun noteAndTodoBinds(impl: NoteAndTodoRepoImpl): NoteAndTodoRepo
+     fun noteAndTodoBinds(impl: NoteAndTodoRepoImpl): NoteAndTodoRepo
 
     @Binds
-    abstract fun noteBinds(impl: NoteRepoImpl): NoteRepo
+     fun noteBinds(impl: NoteRepoImpl): NoteRepo
 
     @Binds
-    abstract fun widgetBinds(impl: WidgetEntityRepoImpl): WidgetEntityRepo
+     fun widgetBinds(impl: WidgetEntityRepoImpl): WidgetEntityRepo
 }

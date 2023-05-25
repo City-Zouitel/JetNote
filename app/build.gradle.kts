@@ -90,6 +90,11 @@ dependencies {
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.constraintlayout)
 
+    //Lifecycle.
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.process)
+
 //        //Room.
 //    implementation(libs.roomkts)
 //    api(libs.room.runtime)

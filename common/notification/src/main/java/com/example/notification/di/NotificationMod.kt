@@ -1,4 +1,4 @@
-package com.example.notification
+package com.example.notification.di
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel

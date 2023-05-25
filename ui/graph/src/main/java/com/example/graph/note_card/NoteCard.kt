@@ -55,6 +55,7 @@ import com.example.links.ui.LinkPart
 import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
 import com.example.local.model.*
+import com.example.local.model.relational.Entity
 import com.example.note.NoteVM
 import com.example.tasks.NoteAndTodoVM
 import com.example.tasks.TodoVM

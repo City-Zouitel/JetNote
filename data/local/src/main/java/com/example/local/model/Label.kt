@@ -1,12 +1,23 @@
 package com.example.local.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.example.local.Cons.COLOR
-import com.example.local.Cons.ID
+import androidx.room.*
+import com.example.local.utils.Constants
+import com.example.local.utils.Constants.COLOR
+import com.example.local.utils.Constants.ID
+import com.example.local.utils.Constants.UID
 
-@Entity(tableName = "label")
+@Entity(
+    tableName = "label",
+    indices = [Index(ID)],
+    foreignKeys = [
+        ForeignKey(
+            entity = Note::class,
+            parentColumns = arrayOf(UID),
+            childColumns = arrayOf(ID),
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Label(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = ID) val id:Long = 0L,

@@ -3,7 +3,7 @@ package com.example.local.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.local.Cons.ID
+import com.example.local.utils.Constants.ID
 
 @Entity(tableName = "todo")
 data class Todo(

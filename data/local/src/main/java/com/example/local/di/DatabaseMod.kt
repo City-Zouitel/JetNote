@@ -5,7 +5,7 @@ import  android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.Room
-import com.example.local.Cons.DATABASE_NAME
+import com.example.local.utils.Constants.DATABASE_NAME
 import com.example.local.Database
 import com.example.local.Encryption
 import dagger.Module

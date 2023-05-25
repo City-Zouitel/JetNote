@@ -36,7 +36,7 @@ import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_VARIANT
 import com.example.common_ui.VerticalGrid
 import com.example.graph.sound
-import com.example.local.model.Entity
+import com.example.local.model.relational.Entity
 import com.example.local.model.Label
 import com.example.local.model.Note
 import com.example.common_ui.DataStoreVM

@@ -1,6 +1,6 @@
 package com.example.domain.reposImpl
 
-import com.example.local.model.Entity
+import com.example.local.model.relational.Entity
 import com.example.domain.repos.EntityRepo
 import com.example.local.daos.EntityDao
 import dagger.hilt.android.scopes.ViewModelScoped

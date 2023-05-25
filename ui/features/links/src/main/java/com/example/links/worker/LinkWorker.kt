@@ -2,11 +2,16 @@ package com.example.links.worker
 
 import android.content.Context
 import android.graphics.Bitmap
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.graphics.drawable.toBitmap
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import coil.ImageLoader
 import coil.request.ImageRequest
+import com.baha.url.preview.BahaUrlPreview
+import com.baha.url.preview.IUrlPreviewCallback
+import com.baha.url.preview.UrlInfoItem
 import com.example.common_ui.Cons
 import com.example.domain.reposImpl.LinkRepoImpl
 import com.example.domain.reposImpl.NoteAndLinkRepoImpl
@@ -15,9 +20,17 @@ import com.example.local.model.NoteAndLink
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import okhttp3.internal.wait
 import java.io.File
 import java.io.FileOutputStream
+import java.net.URL
+import java.util.*
+import kotlin.time.Duration.Companion.seconds
 
+@OptIn(DelicateCoroutinesApi::class)
 @HiltWorker
 class LinkWorker @AssistedInject constructor(
     @Assisted private val context: Context,

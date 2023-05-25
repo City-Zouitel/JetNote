@@ -14,7 +14,9 @@ class NoteApplication: Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
 
-        //
+        /**
+         * Global Exception Handler.
+         */
         GlobalExceptionHandler.initialize(this,NoteActivity::class.java)
 
         //
@@ -25,6 +27,10 @@ class NoteApplication: Application(), Configuration.Provider {
         Beetle.init(this, "City-Zouitel", "JetNote")
     }
 
+
+    /**
+     * Work Manager Initializer.
+     */
     @Inject
     lateinit var hiltWorkerFactory: HiltWorkerFactory
 

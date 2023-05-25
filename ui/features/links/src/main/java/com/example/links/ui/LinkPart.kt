@@ -58,7 +58,7 @@ fun LinkPart(
                 swipeable = swipeable,
                 id = link.id,
                 title = link.title ?: "",
-                host = link.host,
+                host = link.host ?: "",
             ) {
                 uriHand.openUri(link.url)
             }
@@ -69,7 +69,7 @@ fun LinkPart(
             swipeable = swipeable,
             id = link.id,
             title = link.title ?: "",
-            host = link.host,
+            host = link.host ?: "",
         ) {
             uriHand.openUri(link.url)
         }

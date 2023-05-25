@@ -5,7 +5,7 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.State
 import com.example.common_ui.Cons.TRASH_MESSAGE
 import com.example.common_ui.Cons.UNDO
-import com.example.local.model.Entity
+import com.example.local.model.relational.Entity
 import com.example.local.model.Note
 import com.example.note.NoteVM
 import kotlinx.coroutines.CoroutineScope
