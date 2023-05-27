@@ -1,7 +1,6 @@
-package com.example.local.daos
+package com.example.local.dao
 
 import androidx.room.*
-import com.example.local.model.Link
 import com.example.local.model.NoteAndLink
 import kotlinx.coroutines.flow.Flow
 

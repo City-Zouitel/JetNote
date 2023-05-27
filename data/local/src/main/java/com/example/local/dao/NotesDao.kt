@@ -1,4 +1,4 @@
-package com.example.local.daos
+package com.example.local.dao
 
 import androidx.room.*
 import com.example.local.model.Note
@@ -16,7 +16,7 @@ interface NotesDao {
     suspend fun deleteNote(note: Note)
 
     // delete all trashed notes.
-    @Query("delete from NOTES where Trashed = 1")
+    @Query("delete from NOTES_TABLE where Trashed = 1")
     suspend fun deleteAllTrashedNotes()
 
 }

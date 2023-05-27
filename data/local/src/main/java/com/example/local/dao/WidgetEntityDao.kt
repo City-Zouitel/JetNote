@@ -1,4 +1,4 @@
-package com.example.local.daos
+package com.example.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
@@ -8,6 +8,6 @@ import com.example.local.model.relational.Entity
 @Dao
 interface WidgetEntityDao {
     @Transaction
-    @Query("select * from NOTES where Trashed = 0 order by Date desc")
+    @Query("select * from NOTES_TABLE where Trashed = 0 order by Date desc")
     fun allWidgetEntitiesOrderedById():List<Entity>
 }

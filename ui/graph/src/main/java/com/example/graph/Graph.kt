@@ -152,7 +152,7 @@ fun Graph(
                 type = NavType.StringType
             }
         )){
-//            LaunchCameraX(uid = it.arguments?.getString(UID))
+//            LaunchCameraX(uid = it.arguments?.getString(UUID))
         }
 
         composable(TRASH_ROUTE){

@@ -1,7 +1,7 @@
 package com.example.domain.reposImpl
 
 import com.example.domain.repos.WidgetEntityRepo
-import com.example.local.daos.WidgetEntityDao
+import com.example.local.dao.WidgetEntityDao
 import com.example.local.model.relational.Entity
 import javax.inject.Inject
 

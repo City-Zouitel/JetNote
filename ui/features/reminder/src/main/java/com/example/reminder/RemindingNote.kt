@@ -26,7 +26,7 @@ import com.example.common_ui.Icons.CLOCK_ICON
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.SoundEffect
-import com.example.notification.NotificationVM
+import com.example.notification.viewmodel.NotificationVM
 
 @SuppressLint(
     "UnspecifiedImmutableFlag",

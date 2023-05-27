@@ -9,6 +9,7 @@ dependencyanalysis = "1.19.0"
 
 # KotlinX
 kotlinx_serialization = "1.4.1"
+kotlinx_coroutines = "1.6.4"
 
 #AndroidX.
 core = "1.9.0"
@@ -91,6 +92,7 @@ sqlcipher = "4.5.3"
 [libraries]
 # KotlinX
 kotlinx_serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx_serialization" }
+kotlinx_coroutines_core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines" }
 
 #AndroidX.
 android_gradle_plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle" }

@@ -4,16 +4,29 @@ import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.Companion.CASCADE
-import androidx.room.util.TableInfo
+import androidx.room.Index
+import com.example.local.utils.Constants
 import com.example.local.utils.Constants.DESCRIPTION
 import com.example.local.utils.Constants.HOST
 import com.example.local.utils.Constants.ID
 import com.example.local.utils.Constants.IMG_LINK
+import com.example.local.utils.Constants.LINKS_TABLE
 import com.example.local.utils.Constants.TITLE
 import com.example.local.utils.Constants.URL
+import com.example.local.utils.Constants.UUID
 
-@Entity("links_table")
+@Entity(
+    tableName = LINKS_TABLE,
+    indices = [Index(ID)],
+    foreignKeys = [
+        ForeignKey(
+            entity = Note::class,
+            parentColumns = arrayOf(UUID),
+            childColumns = arrayOf(ID),
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Link(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(ID) var id: String = "",

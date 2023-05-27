@@ -2,7 +2,7 @@ package com.example.domain.reposImpl
 
 import com.example.local.model.relational.Entity
 import com.example.domain.repos.EntityRepo
-import com.example.local.daos.EntityDao
+import com.example.local.dao.EntityDao
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

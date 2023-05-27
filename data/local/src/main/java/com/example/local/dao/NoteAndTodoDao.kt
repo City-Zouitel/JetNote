@@ -1,4 +1,4 @@
-package com.example.local.daos
+package com.example.local.dao
 
 import androidx.room.*
 import com.example.local.model.NoteAndTodo

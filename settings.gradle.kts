@@ -49,5 +49,6 @@ include(
 )
 include(
     ":data:local",
-    ":data:datastore"
+    ":data:datastore",
+    ":data:repository"
 )

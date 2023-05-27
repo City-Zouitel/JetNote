@@ -1,4 +1,4 @@
-package com.example.notification
+package com.example.notification.viewmodel
 
 import android.app.AlarmManager
 import android.app.PendingIntent

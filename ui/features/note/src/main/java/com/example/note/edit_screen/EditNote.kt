@@ -342,7 +342,7 @@ fun NoteEdit(
                 )
             }
 
-            //
+            // Link display.
             item {
                 findUrlLink(descriptionState.value)?.let { url ->
                     CacheLinks(
@@ -354,7 +354,6 @@ fun NoteEdit(
 
                 }
                 // for refresh this screen.
-
                 observerLinks.value.filter {
                     observerNoteAndLink.value.contains(
                         NoteAndLink(uid, it.id)

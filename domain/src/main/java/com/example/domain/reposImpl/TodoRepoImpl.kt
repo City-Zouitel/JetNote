@@ -1,7 +1,7 @@
 package com.example.domain.reposImpl
 
 import com.example.domain.repos.TodoRepo
-import com.example.local.daos.TodoDao
+import com.example.local.dao.TodoDao
 import com.example.local.model.Todo
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers

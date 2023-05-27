@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKeys
+import com.example.local.utils.Constants.CRYPTIC_PASS
 import java.io.File
 import java.security.SecureRandom
 
@@ -12,7 +13,7 @@ class Encryption(private val ctx: Context) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getCrypticPass(): ByteArray {
-        val file = File(ctx.filesDir, "crypticpass.bin")
+        val file = File(ctx.filesDir, CRYPTIC_PASS)
         val encryptedFile = EncryptedFile.Builder(
             file,
             ctx,

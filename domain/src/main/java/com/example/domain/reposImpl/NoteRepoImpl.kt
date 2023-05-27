@@ -1,7 +1,7 @@
 package com.example.domain.reposImpl
 
 import com.example.domain.repos.NoteRepo
-import com.example.local.daos.NotesDao
+import com.example.local.dao.NotesDao
 import com.example.local.model.Note
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.coroutineScope

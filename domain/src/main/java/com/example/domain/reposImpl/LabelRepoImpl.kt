@@ -1,7 +1,7 @@
 package com.example.domain.reposImpl
 
 import com.example.domain.repos.LabelRepo
-import com.example.local.daos.LabelDao
+import com.example.local.dao.LabelDao
 import com.example.local.model.Label
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.coroutineScope

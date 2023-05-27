@@ -10,18 +10,18 @@ import com.example.local.utils.Constants.DATE
 import com.example.local.utils.Constants.DESCRIPTION
 import com.example.local.utils.Constants.IMAGE_UIL
 import com.example.local.utils.Constants.NON
-import com.example.local.utils.Constants.NOTE_TABLE_NAME
+import com.example.local.utils.Constants.NOTES_TABLE
 import com.example.local.utils.Constants.PRIORITY
 import com.example.local.utils.Constants.REMINDING
 import com.example.local.utils.Constants.TEXT_COLOR
 import com.example.local.utils.Constants.TITLE
 import com.example.local.utils.Constants.TRASHED
-import com.example.local.utils.Constants.UID
+import com.example.local.utils.Constants.UUID
 
-@Entity(tableName = NOTE_TABLE_NAME)
+@Entity(tableName = NOTES_TABLE)
 data class Note(
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = UID) var uid: String = "",
+    @ColumnInfo(name = UUID) var uid: String = "",
     @ColumnInfo(name = TITLE) var title: String? = null,
     @ColumnInfo(name = DESCRIPTION) var description: String? = null,
     @ColumnInfo(name = PRIORITY) var priority: String = NON,

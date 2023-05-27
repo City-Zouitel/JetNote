@@ -5,12 +5,12 @@ import androidx.room.Junction
 import androidx.room.Relation
 import com.example.local.model.*
 import com.example.local.utils.Constants.ID
-import com.example.local.utils.Constants.UID
+import com.example.local.utils.Constants.UUID
 
 data class Entity(
     @Embedded val note: Note,
     @Relation(
-        parentColumn = UID,
+        parentColumn = UUID,
         entityColumn = ID,
         entity = Label::class,
         associateBy = Junction(
@@ -21,7 +21,7 @@ data class Entity(
     )
     val labels :List<Label>,
     @Relation(
-        parentColumn = UID,
+        parentColumn = UUID,
         entityColumn = ID,
         entity = Todo::class,
         associateBy = Junction(
@@ -32,7 +32,7 @@ data class Entity(
     )
     val todoItems:List<Todo>,
     @Relation(
-        parentColumn = UID,
+        parentColumn = UUID,
         entityColumn = ID,
         entity = Link::class,
         associateBy = Junction(

@@ -1,17 +1,12 @@
 package com.example.domain.reposImpl
 
 import com.example.domain.repos.NoteAndLinkRepo
-import com.example.local.daos.NoteAndLinkDao
-import com.example.local.model.Link
+import com.example.local.dao.NoteAndLinkDao
 import com.example.local.model.NoteAndLink
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class NoteAndLinkRepoImpl @Inject constructor(
     private val noteAndLinkDao: NoteAndLinkDao

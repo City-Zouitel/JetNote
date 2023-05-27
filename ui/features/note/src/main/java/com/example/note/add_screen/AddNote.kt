@@ -328,7 +328,10 @@ fun NoteAdd(
 
                 OutlinedTextField(
                     value = descriptionState.value ?: "",
-                    onValueChange = { descriptionState.value = it },
+                    onValueChange = {
+                        descriptionState.value = it
+
+                                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .onFocusEvent {
@@ -363,6 +366,7 @@ fun NoteAdd(
                 )
             }
 
+            // Link display.
             item {
                 findUrlLink(descriptionState.value)?.let { url ->
                     CacheLinks(
@@ -371,10 +375,8 @@ fun NoteAdd(
                         noteUid = uid,
                         url = url
                     )
-
                 }
                 // for refresh this screen.
-
                     observerLinks.value.filter {
                         observerNoteAndLink.value.contains(
                             NoteAndLink(uid, it.id)
