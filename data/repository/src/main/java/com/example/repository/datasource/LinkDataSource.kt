@@ -1,6 +1,6 @@
-package com.example.local.repository.data_source
+package com.example.repository.datasource
 
-import com.example.local.model.Link
+import com.example.repository.model.Link
 import kotlinx.coroutines.flow.Flow
 
 interface LinkDataSource {

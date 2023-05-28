@@ -7,15 +7,15 @@ import com.example.local.utils.Constants.TASKS_TABLE
 
 @Entity(
     tableName = TASKS_TABLE,
-    indices = [Index(ID)],
-    foreignKeys = [
-        ForeignKey(
-            entity = Note::class,
-            parentColumns = arrayOf(Constants.UUID),
-            childColumns = arrayOf(ID),
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
+//    indices = [Index(ID)],
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = Note::class,
+//            parentColumns = arrayOf(Constants.UUID),
+//            childColumns = arrayOf(ID),
+//            onDelete = ForeignKey.CASCADE
+//        )
+//    ]
 )
 data class Todo(
     @PrimaryKey(autoGenerate = true)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
@@ -21,10 +22,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="JetNote"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.JetNote"
         android:largeHeap="true"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.JetNote">
+        <profileable
+            android:shell="true"
+            tools:targetApi="29" />
 
         <receiver
             android:name="com.example.notification.reciver.Notification"
@@ -35,50 +39,52 @@
             android:name=".NoteActivity"
             android:exported="true"
             android:label="JetNote"
-            android:theme="@style/Theme.JetNote"
-            android:screenOrientation="unspecified">
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.JetNote">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--            -->
+            <!--  -->
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
 
-            <!--Sending simple data to this app by shareSheet-->
+            <!-- Sending simple data to this app by shareSheet -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
-
         </activity>
         <activity
             android:name="com.example.quick_note.QuickActivity"
-            android:theme="@style/Theme.JetNote.NoActionBar"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.JetNote.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.QUICK_VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name="com.example.quick_note.QuickTileService"
-            android:label="Quick Note"
+            android:exported="true"
             android:icon="@drawable/plus_24"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
-            android:exported="true">
+            android:label="Quick Note"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
-
-        <!--application startup provider-->
+        </service> <!-- application startup provider -->
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

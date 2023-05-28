@@ -34,6 +34,9 @@ kapt {
 }
 dependencies {
 
+    //Projects.
+    implementation(projects.data.repository)
+
     //Room.
     implementation(libs.roomkts)
     api(libs.room.runtime)

@@ -52,3 +52,6 @@ include(
     ":data:datastore",
     ":data:repository"
 )
+include(
+    ":benchmark"
+)

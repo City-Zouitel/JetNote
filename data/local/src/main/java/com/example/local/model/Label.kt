@@ -9,15 +9,15 @@ import com.example.local.utils.Constants.UUID
 
 @Entity(
     tableName = LABELS_TABLE,
-    indices = [Index(ID)],
-    foreignKeys = [
-        ForeignKey(
-            entity = Note::class,
-            parentColumns = arrayOf(UUID),
-            childColumns = arrayOf(ID),
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
+//    indices = [Index(ID)],
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = Note::class,
+//            parentColumns = arrayOf(UUID),
+//            childColumns = arrayOf(ID),
+//            onDelete = ForeignKey.CASCADE
+//        )
+//    ]
 )
 data class Label(
     @PrimaryKey(autoGenerate = true)

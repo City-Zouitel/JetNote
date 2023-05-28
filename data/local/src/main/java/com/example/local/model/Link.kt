@@ -15,18 +15,7 @@ import com.example.local.utils.Constants.TITLE
 import com.example.local.utils.Constants.URL
 import com.example.local.utils.Constants.UUID
 
-@Entity(
-    tableName = LINKS_TABLE,
-    indices = [Index(ID)],
-    foreignKeys = [
-        ForeignKey(
-            entity = Note::class,
-            parentColumns = arrayOf(UUID),
-            childColumns = arrayOf(ID),
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
+@Entity(tableName = LINKS_TABLE)
 data class Link(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(ID) var id: String = "",
