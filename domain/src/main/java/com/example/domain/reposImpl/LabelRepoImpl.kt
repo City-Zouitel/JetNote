@@ -1,8 +1,8 @@
 package com.example.domain.reposImpl
 
 import com.example.domain.repos.LabelRepo
-import com.example.local.dao.LabelDao
-import com.example.local.model.Label
+import com.example.local.dao.TagDao
+import com.example.local.model.TagEntity
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -11,21 +11,21 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class LabelRepoImpl @Inject constructor(
-    private val dao: LabelDao
+    private val dao: TagDao
 ): LabelRepo {
 
-    override val getAllLabels: Flow<List<Label>>
+    override val getAllLabels: Flow<List<TagEntity>>
         get() = dao.getAllLabels()
 
-    override suspend fun addLabel(label: Label) {
-        coroutineScope { launch { dao.addLabel(label) } }
+    override suspend fun addLabel(tagEntity: TagEntity) {
+        coroutineScope { launch { dao.addLabel(tagEntity) } }
     }
 
-    override suspend fun updateLabel(label: Label) {
-        coroutineScope { launch { dao.updateLabel(label) } }
+    override suspend fun updateLabel(tagEntity: TagEntity) {
+        coroutineScope { launch { dao.updateLabel(tagEntity) } }
     }
 
-    override suspend fun deleteLabel(label: Label) {
-        coroutineScope { launch { dao.deleteLabel(label) } }
+    override suspend fun deleteLabel(tagEntity: TagEntity) {
+        coroutineScope { launch { dao.deleteLabel(tagEntity) } }
     }
 }

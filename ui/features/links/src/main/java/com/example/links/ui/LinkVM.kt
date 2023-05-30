@@ -14,9 +14,10 @@ import com.baha.url.preview.BahaUrlPreview
 import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
 import com.example.common_ui.Cons.JPEG
+import com.example.domain.model.Link
 import com.example.domain.reposImpl.LinkRepoImpl
+import com.example.domain.usecase.LinkUseCase
 import com.example.links.worker.LinkWorker
-import com.example.local.model.Link
 import com.example.local.model.NoteAndLink
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -31,8 +32,10 @@ import javax.inject.Inject
 @HiltViewModel
 class LinkVM @Inject constructor(
     application: Application,
-    private val repo: LinkRepoImpl
-): ViewModel() {
+    private val repo: LinkRepoImpl,
+    private val getAllLinks00: LinkUseCase.GetAllLinks,
+    private val deleteLink: LinkUseCase.DeleteLink
+    ): ViewModel() {
 
     private val _getAllLinks = MutableStateFlow<List<Link>>(emptyList())
     val getAllLinks: StateFlow<List<Link>>
@@ -48,7 +51,10 @@ class LinkVM @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getAllLinks.collect {
+//            repo.getAllLinks.collect {
+//                _getAllLinks.value = it
+//            }
+            getAllLinks00.invoke().collect {
                 _getAllLinks.value = it
             }
         }
@@ -62,7 +68,8 @@ class LinkVM @Inject constructor(
 
     fun deleteLink(link: Link) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.deleteLink(link)
+//            repo.deleteLink(link)
+            deleteLink.invoke(link)
         }
     }
 

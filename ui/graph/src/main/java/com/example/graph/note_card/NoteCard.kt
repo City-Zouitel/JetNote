@@ -55,7 +55,7 @@ import com.example.links.ui.LinkPart
 import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
 import com.example.local.model.*
-import com.example.local.model.relational.Entity
+import com.example.local.model.relational.NoteEntity
 import com.example.note.NoteVM
 import com.example.tasks.NoteAndTodoVM
 import com.example.tasks.TodoVM
@@ -69,19 +69,19 @@ import java.util.*
 fun NoteCard(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     screen: Screens,
-    entity: Entity,
+    noteEntity: NoteEntity,
     navController: NavController,
     homeSelectionState: MutableState<Boolean>?,
     trashSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Note>?,
-    onSwipeNote: (Entity) -> Unit
+    onSwipeNote: (NoteEntity) -> Unit
 ) {
     val swipeState = rememberSwipeableActionsState()
     val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
 
     val action = SwipeAction(
         onSwipe = {
-            onSwipeNote.invoke(entity)
+            onSwipeNote.invoke(noteEntity)
         },
         icon = {},
         background = Color.Transparent
@@ -96,7 +96,7 @@ fun NoteCard(
             state = swipeState
         ) {
             Card(
-                entity = entity,
+                noteEntity = noteEntity,
                 navController = navController,
                 screen = screen,
                 homeSelectionState = homeSelectionState,
@@ -106,7 +106,7 @@ fun NoteCard(
         }
     } else {
         Card(
-            entity = entity,
+            noteEntity = noteEntity,
             navController = navController,
             screen = screen,
             homeSelectionState = homeSelectionState,
@@ -125,7 +125,7 @@ private fun Card(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
-    entity: Entity,
+    noteEntity: NoteEntity,
     navController: NavController,
     screen: Screens,
     homeSelectionState: MutableState<Boolean>?,
@@ -135,11 +135,11 @@ private fun Card(
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    val note = entity.note
-    val labels = entity.labels
+    val note = noteEntity.dataEntity
+    val labels = noteEntity.tagEntities
     val internalPath = ctx.filesDir.path
 
-    val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
+    val observeTodoList = remember(todoVM, todoVM::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
@@ -258,7 +258,7 @@ private fun Card(
                     com.example.media_player.NoteMediaPlayer(localMediaUid = note.uid)
                 }
 
-        // labels.
+        // tagEntities.
         LazyRow {
             items(items = labels) { label ->
                 AssistChip(
@@ -391,7 +391,7 @@ private fun Card(
                         ) {
                             RadioButton(selected = todo.isDone, onClick = {
                                 todoVM.updateTotoItem(
-                                    Todo(
+                                    Task(
                                         id = todo.id,
                                         item = todo.item,
                                         isDone = !todo.isDone

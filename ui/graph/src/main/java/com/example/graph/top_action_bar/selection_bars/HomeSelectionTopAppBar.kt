@@ -2,15 +2,11 @@ package com.example.graph.top_action_bar
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -18,13 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.AdaptingRow
 import com.example.common_ui.Cons.KEY_CLICK
 import com.example.common_ui.DataStoreVM
 import com.example.common_ui.Icons.COPY_ICON
-import com.example.common_ui.Icons.CROSS_ICON
 import com.example.common_ui.Icons.SHARE_ICON
 import com.example.common_ui.Icons.TRASH_ICON
 import com.example.common_ui.PopupTip
@@ -35,7 +29,7 @@ import com.example.graph.top_action_bar.selection_bars.SelectionCount
 import com.example.local.model.Note
 import com.example.local.model.NoteAndLabel
 import com.example.local.model.NoteAndTodo
-import com.example.local.model.Todo
+import com.example.local.model.Task
 import com.example.note.NoteVM
 import com.example.tags.LabelVM
 import com.example.tags.NoteAndLabelVM
@@ -64,7 +58,7 @@ fun HomeSelectionTopAppBar(
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
     val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
 
-    val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
+    val observeTodoList = remember(todoVM, todoVM::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
@@ -135,7 +129,7 @@ fun HomeSelectionTopAppBar(
                                 })
                     }
 
-                    // copy the note.
+                    // copy the dataEntity.
                     PopupTip(message = "Copy Note") {
                         Icon(painter = painterResource(id = COPY_ICON), contentDescription = null,
                             modifier = Modifier
@@ -184,7 +178,7 @@ fun HomeSelectionTopAppBar(
                                             .forEach { todo ->
                                                 nextLong().let {
                                                     todoVM.addTotoItem(
-                                                        Todo(
+                                                        Task(
                                                             it,
                                                             todo.item,
                                                             todo.isDone

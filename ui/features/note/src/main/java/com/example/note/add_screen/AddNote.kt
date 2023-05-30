@@ -114,7 +114,7 @@ fun NoteAdd(
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
     val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
 
-    val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
+    val observeTodoList = remember(todoVM, todoVM::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
@@ -392,7 +392,7 @@ fun NoteAdd(
                     }
             }
 
-            // display all added labels.
+            // display all added tagEntities.
             item {
                 FlowRow {
                     observeLabels.value.filter {
@@ -433,7 +433,7 @@ fun NoteAdd(
                             checked = todo.isDone,
                             onCheckedChange = {
                                 todoVM.updateTotoItem(
-                                    Todo(
+                                    Task(
                                         id = todo.id,
                                         item = todo.item,
                                         isDone = !todo.isDone

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.CROSS_CIRCLE_ICON
-import com.example.local.model.Label
+import com.example.local.model.TagEntity
 import com.google.accompanist.flowlayout.FlowRow
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -23,7 +23,7 @@ import com.google.accompanist.flowlayout.FlowRow
 fun HashTagLayout(
     labelVM: LabelVM = hiltViewModel(),
     labelDialogState: MutableState<Boolean>,
-    hashTags: Collection<Label>,
+    hashTags: Collection<TagEntity>,
     idState: MutableState<Long>,
     labelState: MutableState<String>
     ) {

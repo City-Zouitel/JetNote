@@ -14,7 +14,7 @@ class WidgetVM @Inject constructor(
 ) {
 
     @WorkerThread
-    fun getAllEntities() = widgetEntityRepoImpl.getAllWidgetEntityById
+    fun getAllEntities() = widgetEntityRepoImpl.getAllWidgetMainEntityById
 
     @WorkerThread
     fun imageDecoder(context: Context, uid: String): Bitmap {

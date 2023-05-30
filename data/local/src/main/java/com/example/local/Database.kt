@@ -11,24 +11,24 @@ import com.example.local.model.*
 //        AutoMigration(from = 1, to = 2)
                      ],
     entities = [
-        Note::class,
-        Label::class,
-        NoteAndLabel::class,
-        Todo::class,
-        NoteAndTodo::class,
-        Link::class,
-        NoteAndLink::class
+        DataEntity::class,
+        TagEntity::class,
+        NoteAndTagEntity::class,
+        TaskEntity::class,
+        NoteAndTaskEntity::class,
+        LinkEntity::class,
+        NoteAndLinkEntity::class
                ],
     exportSchema = true
 )
 abstract class Database:RoomDatabase() {
     abstract fun getNoteDao(): NotesDao
-    abstract fun getLabelDao(): LabelDao
-    abstract fun getNoteAndLabelDao(): NoteAndLabelDao
-    abstract fun getEntityDao(): EntityDao
-    abstract fun getWidgetEntityDao(): WidgetEntityDao
-    abstract fun getTodoDao(): TodoDao
-    abstract fun getNoteAndTodoDao(): NoteAndTodoDao
+    abstract fun getLabelDao(): TagDao
+    abstract fun getNoteAndLabelDao(): NoteAndTagDao
+    abstract fun getEntityDao(): NoteDao
+    abstract fun getWidgetEntityDao(): WidgetDao
+    abstract fun getTodoDao(): TaskDao
+    abstract fun getNoteAndTodoDao(): NoteAndTaskDao
     abstract fun getLinkDao(): LinkDao
     abstract fun getNoteAndLink(): NoteAndLinkDao
 }

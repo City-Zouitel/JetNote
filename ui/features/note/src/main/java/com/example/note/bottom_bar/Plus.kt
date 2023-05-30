@@ -95,7 +95,7 @@ internal fun Plus(
             onClick = {
 //                navController.navigate(
 //                    CAMERA_ROUTE + "/" +
-//                            note.uid
+//                            dataEntity.uid
 //                )
 //                isShow.value = false
                 Toast.makeText(ctx, "Coming Soon.", Toast.LENGTH_SHORT).show()
@@ -141,13 +141,13 @@ internal fun Plus(
             text = { Text(text = "Labels", fontSize = 18.sp) },
             leadingIcon = { Icon(painterResource(TAGS_ICON), null) },
             onClick = {
-                navController.navigate("labels/${note.uid}")
+                navController.navigate("tagEntities/${note.uid}")
                 sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             }
         )
         DropdownMenuItem(
-            text = { Text(text = "Todo List", fontSize = 18.sp) },
+            text = { Text(text = "Task List", fontSize = 18.sp) },
             leadingIcon = { Icon(painterResource(LIST_CHECK_ICON), null) },
             onClick = {
                 navController.navigate("todo/${note.uid}")

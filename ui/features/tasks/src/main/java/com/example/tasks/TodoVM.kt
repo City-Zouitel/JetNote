@@ -3,7 +3,7 @@ package com.example.tasks
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.reposImpl.TodoRepoImpl
-import com.example.local.model.Todo
+import com.example.local.model.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,27 +19,27 @@ class TodoVM @Inject constructor(
     private val repo: TodoRepoImpl
 ): ViewModel() {
 
-    private val _getAllTodoList = MutableStateFlow<List<Todo>>(emptyList())
-    val getAllTodoList:StateFlow<List<Todo>>
-    get() = _getAllTodoList.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+    private val _getAllTaskList = MutableStateFlow<List<Task>>(emptyList())
+    val getAllTaskList:StateFlow<List<Task>>
+    get() = _getAllTaskList.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     init {
         viewModelScope.launch {
-            repo.getAllTodoItems.collect {
-                _getAllTodoList.value = it
+            repo.getAllTaskItems.collect {
+                _getAllTaskList.value = it
             }
         }
     }
 
-    fun addTotoItem(item: Todo) = viewModelScope.launch(Dispatchers.IO) {
+    fun addTotoItem(item: Task) = viewModelScope.launch(Dispatchers.IO) {
         repo.addTodoItem(item)
     }
 
-    fun updateTotoItem(item: Todo) = viewModelScope.launch(Dispatchers.IO) {
+    fun updateTotoItem(item: Task) = viewModelScope.launch(Dispatchers.IO) {
         repo.updateTodoItem(item)
     }
 
-    fun deleteTotoItem(item: Todo) = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteTotoItem(item: Task) = viewModelScope.launch(Dispatchers.IO) {
         repo.deleteTodoItem(item)
     }
 

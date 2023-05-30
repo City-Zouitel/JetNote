@@ -32,7 +32,7 @@ import com.example.common_ui.Icons.OUTLINE_LABEL_ICON
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_TINT
-import com.example.local.model.Label
+import com.example.local.model.TagEntity
 import com.example.local.model.NoteAndLabel
 import com.google.accompanist.flowlayout.FlowRow
 
@@ -155,7 +155,7 @@ fun Labels(
                         .fillMaxWidth()
                         .background(getMatColor(SURFACE)),
                     placeholder = {
-                        Text("Label..", color = Color.Gray, fontSize = 19.sp)
+                        Text("TagEntity..", color = Color.Gray, fontSize = 19.sp)
                     },
                     leadingIcon = {
                         Icon(
@@ -180,7 +180,7 @@ fun Labels(
                         onDone = {
                             if (observeLabels.value.any { it.id == idState.value }) {
                                 labelVM.updateLabel(
-                                    Label(
+                                    TagEntity(
                                         id = idState.value,
                                         label = labelState.value,
                                         color = colorState.value
@@ -188,7 +188,7 @@ fun Labels(
                                 )
                             } else {
                                 labelVM.addLabel(
-                                    Label(
+                                    TagEntity(
                                         label = labelState.value,
                                         color = colorState.value
                                     )

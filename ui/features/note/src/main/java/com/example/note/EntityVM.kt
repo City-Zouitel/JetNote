@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.reposImpl.EntityRepoImpl
-import com.example.local.model.relational.Entity
+import com.example.local.model.relational.NoteEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,33 +25,33 @@ class EntityVM @Inject constructor(
     var isProcessing by mutableStateOf(false)
         private set
 
-    // for observing the note changes.
-    private val _allNotesById = MutableStateFlow<List<Entity>>(emptyList())
-    val allNotesById: StateFlow<List<Entity>>
+    // for observing the dataEntity changes.
+    private val _allNotesById = MutableStateFlow<List<NoteEntity>>(emptyList())
+    val allNotesById: StateFlow<List<NoteEntity>>
         get() = _allNotesById.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
-    private val _allNotesByOldest = MutableStateFlow<List<Entity>>(emptyList())
-    val allNotesByOldest : StateFlow<List<Entity>>
+    private val _allNotesByOldest = MutableStateFlow<List<NoteEntity>>(emptyList())
+    val allNotesByOldest : StateFlow<List<NoteEntity>>
         get() = _allNotesByOldest.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
-    private val _allNotesByNewest = MutableStateFlow<List<Entity>>(emptyList())
-    val allNotesByNewest : StateFlow<List<Entity>>
+    private val _allNotesByNewest = MutableStateFlow<List<NoteEntity>>(emptyList())
+    val allNotesByNewest : StateFlow<List<NoteEntity>>
         get() = _allNotesByNewest.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
-    private val _allNotesByName = MutableStateFlow<List<Entity>>(emptyList())
-    val allNotesByName : StateFlow<List<Entity>>
+    private val _allNotesByName = MutableStateFlow<List<NoteEntity>>(emptyList())
+    val allNotesByName : StateFlow<List<NoteEntity>>
         get() = _allNotesByName.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
-    private val _allTrashedNotes = MutableStateFlow<List<Entity>>(emptyList())
-    val allTrashedNotes : StateFlow<List<Entity>>
+    private val _allTrashedNotes = MutableStateFlow<List<NoteEntity>>(emptyList())
+    val allTrashedNotes : StateFlow<List<NoteEntity>>
         get() = _allTrashedNotes.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
-    private val _allNotesByPriority = MutableStateFlow<List<Entity>>(emptyList())
-    val allNotesByPriority : StateFlow<List<Entity>>
+    private val _allNotesByPriority = MutableStateFlow<List<NoteEntity>>(emptyList())
+    val allNotesByPriority : StateFlow<List<NoteEntity>>
         get() = _allNotesByPriority.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
-    private val _allRemindingNotes = MutableStateFlow<List<Entity>>(emptyList())
-    val allRemindingNotes : StateFlow<List<Entity>>
+    private val _allRemindingNotes = MutableStateFlow<List<NoteEntity>>(emptyList())
+    val allRemindingNotes : StateFlow<List<NoteEntity>>
         get() = _allRemindingNotes.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     init {

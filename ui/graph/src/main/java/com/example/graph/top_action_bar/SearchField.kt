@@ -28,7 +28,7 @@ import com.example.common_ui.Icons.CROSS_ICON
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.graph.getMaterialColor
 import com.example.graph.sound
-import com.example.local.model.Label
+import com.example.local.model.TagEntity
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +36,7 @@ internal fun SearchField(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     title: MutableState<String>,
     placeholder: String,
-    label: MutableState<Label>?
+    tagEntity: MutableState<TagEntity>?
 ) {
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
@@ -56,18 +56,18 @@ internal fun SearchField(
                     Icon(
                         painter = painterResource(id = CIRCLE_ICON_18),
                         contentDescription = null,
-                        tint = label?.value?.color?.let { Color(it) } ?: Color.Transparent
+                        tint = tagEntity?.value?.color?.let { Color(it) } ?: Color.Transparent
                     )
         },
         trailingIcon = {
-            if (title.value.isNotEmpty() || label?.value?.color != Color.Transparent.toArgb()) {
+            if (title.value.isNotEmpty() || tagEntity?.value?.color != Color.Transparent.toArgb()) {
                 Icon(
                     painter = painterResource(id = CROSS_ICON),
                     contentDescription = null,
                     modifier = Modifier.clickable {
                         sound.makeSound.invoke(ctx, KEY_INVALID, thereIsSoundEffect.value)
                         title.value = ""
-                        label?.value = Label()
+                        tagEntity?.value = TagEntity()
                     }
                 )
             }

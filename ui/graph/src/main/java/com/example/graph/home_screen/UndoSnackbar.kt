@@ -5,7 +5,7 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.State
 import com.example.common_ui.Cons.TRASH_MESSAGE
 import com.example.common_ui.Cons.UNDO
-import com.example.local.model.relational.Entity
+import com.example.local.model.relational.NoteEntity
 import com.example.local.model.Note
 import com.example.note.NoteVM
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +15,7 @@ internal fun UndoSnackbar(
     viewModule: NoteVM,
     scaffoldState : ScaffoldState,
     scope : CoroutineScope,
-    trashedNotesState : State<List<Entity>>
+    trashedNotesState : State<List<NoteEntity>>
 ): (Note) -> Unit {
     val onShowSnackbar: (Note) -> Unit = { note ->
 
@@ -29,13 +29,13 @@ internal fun UndoSnackbar(
                 SnackbarResult.ActionPerformed -> {
                     viewModule.updateNote(
                         Note(
-                            title = trashedNotesState.value.last().note.title,
-                            description = trashedNotesState.value.last().note.description,
-                            priority = trashedNotesState.value.last().note.priority,
-                            uid = trashedNotesState.value.last().note.uid,
-                            textColor = trashedNotesState.value.last().note.textColor,
-                            date = trashedNotesState.value.last().note.date,
-                            color = trashedNotesState.value.last().note.color,
+                            title = trashedNotesState.value.last().dataEntity.title,
+                            description = trashedNotesState.value.last().dataEntity.description,
+                            priority = trashedNotesState.value.last().dataEntity.priority,
+                            uid = trashedNotesState.value.last().dataEntity.uid,
+                            textColor = trashedNotesState.value.last().dataEntity.textColor,
+                            date = trashedNotesState.value.last().dataEntity.date,
+                            color = trashedNotesState.value.last().dataEntity.color,
                             trashed = 0,
                         )
                     )

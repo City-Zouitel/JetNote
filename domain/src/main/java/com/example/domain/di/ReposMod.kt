@@ -1,5 +1,6 @@
 package com.example.domain.di
 
+import com.example.domain.exoplayer.ExoRepo
 import com.example.domain.repos.*
 import com.example.domain.reposImpl.*
 import dagger.Binds

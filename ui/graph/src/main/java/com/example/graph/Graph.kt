@@ -162,7 +162,7 @@ fun Graph(
         composable(SETTING_ROUTE){
             Settings(navC = navHostController)
         }
-        composable("labels/{$UID}", arguments = listOf(
+        composable("tagEntities/{$UID}", arguments = listOf(
             navArgument(UID) {
                 nullable = true
                 type = NavType.StringType

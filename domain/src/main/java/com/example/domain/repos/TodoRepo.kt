@@ -1,14 +1,14 @@
 package com.example.domain.repos
 
-import com.example.local.model.Todo
+import com.example.local.model.Task
 import kotlinx.coroutines.flow.Flow
 
 interface TodoRepo {
-    val getAllTodoItems: Flow<List<Todo>>
+    val getAllTaskItems: Flow<List<Task>>
 
-    suspend fun addTodoItem(item: Todo)
+    suspend fun addTodoItem(item: Task)
 
-    suspend fun updateTodoItem(item: Todo)
+    suspend fun updateTodoItem(item: Task)
 
-    suspend fun deleteTodoItem(item: Todo)
+    suspend fun deleteTodoItem(item: Task)
 }

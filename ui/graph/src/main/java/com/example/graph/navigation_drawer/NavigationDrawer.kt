@@ -31,7 +31,7 @@ import com.example.common_ui.Icons.SETTINGS_ICON
 import com.example.common_ui.Icons.SHARE_ICON
 import com.example.common_ui.Icons.TRASH_ICON
 import com.example.common_ui.sharApp
-import com.example.local.model.Label
+import com.example.local.model.TagEntity
 import com.example.graph.sound
 import com.example.tags.LabelVM
 import com.karacca.beetle.Beetle
@@ -45,7 +45,7 @@ fun NavigationDrawer(
     drawerState: DrawerState,
     navController: NavController,
     searchTitle: MutableState<String>?,
-    searchLabel: MutableState<Label>?
+    searchTagEntity: MutableState<TagEntity>?
 ) {
     val ctx = LocalContext.current
     val observeLabels = remember(labelVM,labelVM::getAllLabels).collectAsState()
@@ -103,7 +103,7 @@ fun NavigationDrawer(
                         modifier = Modifier
                             .padding(15.dp)
                             .clickable {
-                                navController.navigate("labels/${null}")
+                                navController.navigate("tagEntities/${null}")
                                 sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                             }
                     )
@@ -123,7 +123,7 @@ fun NavigationDrawer(
                                     sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
                                 }
                                 searchTitle?.value = label.label!!
-                                searchLabel?.value = label
+                                searchTagEntity?.value = label
                             },
                             leadingIcon = {
                                 Icon(

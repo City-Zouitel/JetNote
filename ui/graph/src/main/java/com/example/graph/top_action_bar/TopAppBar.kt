@@ -2,8 +2,6 @@ package com.example.graph.top_action_bar
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -11,20 +9,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.AdaptingRow
-import com.example.common_ui.Cons.KEY_CLICK
-import com.example.common_ui.DataStoreVM
-import com.example.common_ui.Icons.BROOM_ICON
-import com.example.common_ui.Icons.MENU_BURGER_ICON
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.graph.getMaterialColor
-import com.example.graph.sound
-import com.example.local.model.Label
-import kotlinx.coroutines.launch
+import com.example.local.model.TagEntity
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -36,13 +25,13 @@ fun NoteTopAppBar(
     confirmationDialogState: MutableState<Boolean>?,
     expandedSortMenuState: MutableState<Boolean>?,
     searchScreen: String,
-    label: MutableState<Label>?
+    tagEntity: MutableState<TagEntity>?
 ) {
 
     TopAppBar(
         navigationIcon = {
             Row {
-                AnimatedVisibility(searchNoteTitle.value.isEmpty() && label?.value == Label()) {
+                AnimatedVisibility(searchNoteTitle.value.isEmpty() && tagEntity?.value == TagEntity()) {
                     AdaptingRow(
                         Modifier.padding(start = 10.dp, end = 10.dp),
                     ) {
@@ -55,11 +44,11 @@ fun NoteTopAppBar(
             SearchField(
                 title = searchNoteTitle,
                 placeholder = searchScreen,
-                label = label
+                tagEntity = tagEntity
             )
         },
         actions = {
-            AnimatedVisibility(visible = searchNoteTitle.value.isEmpty() && label?.value == Label()) {
+            AnimatedVisibility(visible = searchNoteTitle.value.isEmpty() && tagEntity?.value == TagEntity()) {
                 AdaptingRow(
                     Modifier.padding(start = 10.dp, end = 10.dp),
                 ) {

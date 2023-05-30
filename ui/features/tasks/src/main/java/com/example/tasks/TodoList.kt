@@ -30,7 +30,7 @@ import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.local.model.NoteAndTodo
-import com.example.local.model.Todo
+import com.example.local.model.Task
 import kotlinx.coroutines.Job
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -47,7 +47,7 @@ fun TodoList(
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     noteUid:String
 ) {
-    val observeTodoList = remember(todoVM, todoVM::getAllTodoList).collectAsState()
+    val observeTodoList = remember(todoVM, todoVM::getAllTaskList).collectAsState()
     val observeNoteAndTodoList =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
@@ -67,7 +67,7 @@ fun TodoList(
                 ) {
                     TodoItem(todo, todoVM, itemState, idState) {
                         todoVM.deleteTotoItem(
-                            Todo(id = todo.id)
+                            Task(id = todo.id)
                         )
                     }
                 }
@@ -80,7 +80,7 @@ fun TodoList(
                         .fillMaxWidth()
                         .background(getMatColor(SURFACE)),
                     placeholder = {
-                        Text("Todo..", color = Color.Gray, fontSize = 19.sp)
+                        Text("Task..", color = Color.Gray, fontSize = 19.sp)
                     },
                     maxLines = 1,
                     textStyle = TextStyle(
@@ -97,11 +97,11 @@ fun TodoList(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             if (observeTodoList.value.any { it.id == idState.value }) {
-                                todoVM.updateTotoItem(Todo(idState.value, itemState.value, false))
+                                todoVM.updateTotoItem(Task(idState.value, itemState.value, false))
                             } else {
                                 Random.nextLong().let {
                                     todoVM.addTotoItem(
-                                        Todo(it, itemState.value, false)
+                                        Task(it, itemState.value, false)
                                     )
                                     noteAndTodoVM.addNoteAndTodoItem(NoteAndTodo(noteUid, it))
                                 }
@@ -123,7 +123,7 @@ fun TodoList(
 
 @Composable
 fun TodoItem(
-    todo: Todo,
+    task: Task,
     todoVM: TodoVM,
     itemState: MutableState<String>,
     idState: MutableState<Long>,
@@ -152,13 +152,13 @@ fun TodoItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
-                checked = todo.isDone,
+                checked = task.isDone,
                 onCheckedChange = {
                     todoVM.updateTotoItem(
-                        Todo(
-                            id = todo.id,
-                            item = todo.item,
-                            isDone = !todo.isDone
+                        Task(
+                            id = task.id,
+                            item = task.item,
+                            isDone = !task.isDone
                         )
                     )
                 },
@@ -169,25 +169,25 @@ fun TodoItem(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            todo.item?.let { item ->
+            task.item?.let { item ->
 
                 ClickableText(
                     text = AnnotatedString(item),
                     style = TextStyle(
                         fontSize = 18.sp,
                         textDecoration =
-                        if (todo.isDone) {
+                        if (task.isDone) {
                             TextDecoration.LineThrough
                         } else {
                             TextDecoration.None
                         },
-                        color = if (todo.isDone) Color.Gray else getMatColor(
+                        color = if (task.isDone) Color.Gray else getMatColor(
                             ON_SURFACE
                         )
                     )
                 ) {
-                    itemState.value = todo.item!!
-                    idState.value = todo.id
+                    itemState.value = task.item!!
+                    idState.value = task.id
                 }
             }
         }

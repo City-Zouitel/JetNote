@@ -21,9 +21,9 @@ fun AboutContent() {
     )
 }
 
-val about = "$APP_NAME is a note-taking and todo management open-source application.\n\n" +
+val about = "$APP_NAME is a dataEntity-taking and todo management open-source application.\n\n" +
         " It is developed by City-Zouitel organization on github.\n\n" +
         " And It is intended for archiving and creating notes in which photos," +
-        " audio and saved web links, numbers and map locations.\n\n" +
+        " audio and saved web linkEntities, numbers and map locations.\n\n" +
         "Version: $APP_VERSION"
 

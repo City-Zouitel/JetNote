@@ -40,20 +40,20 @@ class NoteVM @Inject constructor(
     var isProcessing by mutableStateOf(false)
         private set
 
-    // for putting the note changes on Notes EntityState (the instance of Note class).
+    // for putting the dataEntity changes on Notes EntityState (the instance of Note class).
 //    private var noteState by mutableStateOf(listOf<Any>())
 
-    // for add a note from NoteEntityState as it to NoteEntity class.
+    // for add a dataEntity from NoteEntityState as it to DataEntity class.
     fun addNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
             isProcessing = true
-//            noteState = noteState + note
+//            noteState = noteState + dataEntity
             repo.addNote(note)
             isProcessing = false
         }
     }
 
-    // for updateNote a note from NoteEntityState and put it to NoteEntity class,
+    // for updateNote a dataEntity from NoteEntityState and put it to DataEntity class,
     // depending on changes.
     fun updateNote(note: Note){
         viewModelScope.launch(Dispatchers.IO) {
@@ -63,11 +63,11 @@ class NoteVM @Inject constructor(
         }
     }
 
-    // for deleting a note by the uid.
+    // for deleting a dataEntity by the uid.
     fun deleteNote(note: Note){
         viewModelScope.launch(Dispatchers.IO) {
             isProcessing = true
-//            noteState = noteState - note
+//            noteState = noteState - dataEntity
             repo.deleteNote(note)
             isProcessing = false
         }

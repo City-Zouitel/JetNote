@@ -34,7 +34,7 @@ fun AppAbout(
             NavigationDrawer(
                 navController = navC,
                 drawerState = drawerState,
-                searchLabel = null,
+                searchTagEntity = null,
                 searchTitle = null
             )
         },

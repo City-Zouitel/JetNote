@@ -3,7 +3,7 @@ package com.example.domain.reposImpl
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import androidx.core.net.toUri
-import com.example.domain.repos.ExoRepo
+import com.example.domain.exoplayer.ExoRepo
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import java.io.File

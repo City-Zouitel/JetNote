@@ -31,8 +31,8 @@ import com.example.graph.top_action_bar.TrashSelectionTopAppBar
 import com.example.graph.top_action_bar.dialogs.EraseDialog
 import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
-import com.example.local.model.relational.Entity
-import com.example.local.model.Label
+import com.example.local.model.relational.NoteEntity
+import com.example.local.model.TagEntity
 import com.example.local.model.Note
 import com.example.local.model.NoteAndLink
 import com.example.note.EntityVM
@@ -64,7 +64,7 @@ fun TrashScreen(
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scaffoldState = rememberScaffoldState()
-    val observerTrashedNotes: State<List<Entity>> =
+    val observerTrashedNotes: State<List<NoteEntity>> =
         remember(entityVM, entityVM::allTrashedNotes).collectAsState()
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
@@ -78,16 +78,16 @@ fun TrashScreen(
         EraseDialog(dialogState = confirmationDialogState) {
             viewModule.eraseTrash()
             observerTrashedNotes.value.forEach { entity ->
-                entity.links.forEach { link ->
+                entity.linkEntities.forEach { link ->
                     linkVM.deleteLink(link)
                     noteAndLinkVM.deleteNoteAndLink(
                         NoteAndLink(
-                            noteUid = entity.note.uid,
+                            noteUid = entity.dataEntity.uid,
                             linkId = link.id
                         )
                     )
                 }
-                entity.todoItems.forEach {
+                entity.taskEntities.forEach {
                     // TODO: need finishing.
                 }
             }
@@ -99,7 +99,7 @@ fun TrashScreen(
             NavigationDrawer(
                 drawerState = drawerState,
                 navController = navController,
-                searchLabel = null,
+                searchTagEntity = null,
                 searchTitle = searchTitleState
             )
         },
@@ -126,7 +126,7 @@ fun TrashScreen(
                         confirmationDialogState = confirmationDialogState,
                         expandedSortMenuState = null,
                         searchScreen = SEARCH_IN_TRASH,
-                        label = remember { mutableStateOf(Label()) }
+                        tagEntity = remember { mutableStateOf(TagEntity()) }
                     )
                 }
             }
@@ -137,22 +137,22 @@ fun TrashScreen(
                 ) {
                     items(
                         observerTrashedNotes.value.filter { entity ->
-                            entity.note.title?.contains(searchTitleState.value, true) ?: true
+                            entity.dataEntity.title?.contains(searchTitleState.value, true) ?: true
                         }
                     ) {entity ->
                         NoteCard(
                             screen = TRASH_SCREEN,
-                            entity = entity,
+                            noteEntity = entity,
                             navController = navController,
                             homeSelectionState = null,
                             trashSelectionState = trashSelectionState,
                             selectedNotes = selectedNotes
                         ) {
-                            viewModule.deleteNote(Note(uid = entity.note.uid))
-                            entity.links.forEach { link ->
+                            viewModule.deleteNote(Note(uid = entity.dataEntity.uid))
+                            entity.linkEntities.forEach { link ->
                                 linkVM.deleteLink(link)
                             }
-                            entity.note.uid.let { _uid ->
+                            entity.dataEntity.uid.let { _uid ->
                                 File(ctx.filesDir.path + File.pathSeparator + IMAGES, "$_uid.$JPEG").delete()
                                 File(ctx.filesDir.path + File.pathSeparator + AUDIOS, "$_uid$MP3").delete()
                             }
@@ -164,11 +164,11 @@ fun TrashScreen(
                     item {
                         VerticalGrid(maxColumnWidth = 220.dp) {
                             observerTrashedNotes.value.filter { entity ->
-                                entity.note.title?.contains(searchTitleState.value, true) ?: true
+                                entity.dataEntity.title?.contains(searchTitleState.value, true) ?: true
                             }.forEach { entity ->
                                 NoteCard(
                                     screen = TRASH_SCREEN,
-                                    entity = entity,
+                                    noteEntity = entity,
                                     navController = navController,
                                     homeSelectionState = null,
                                     trashSelectionState = trashSelectionState,

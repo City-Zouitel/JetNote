@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.listOfBackgroundColors
-import com.example.local.model.Label
+import com.example.local.model.TagEntity
 
 @Composable
 fun LabelDialogColors(
@@ -39,7 +39,7 @@ fun LabelDialogColors(
                             .clickable {
 //                                colorState.value = it.toArgb()
                                 labelVM.updateLabel(
-                                    Label(id = idState.value, label = labelState.value, color = it.toArgb())
+                                    TagEntity(id = idState.value, label = labelState.value, color = it.toArgb())
                                 ).invokeOnCompletion {
                                     dialogState.value = false
                                     colorState.value = 0x0000

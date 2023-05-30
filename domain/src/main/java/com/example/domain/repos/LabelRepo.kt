@@ -1,14 +1,14 @@
 package com.example.domain.repos
 
-import com.example.local.model.Label
+import com.example.local.model.TagEntity
 import kotlinx.coroutines.flow.Flow
 
 interface LabelRepo {
-    val getAllLabels:Flow<List<Label>>
+    val getAllLabels:Flow<List<TagEntity>>
 
-    suspend fun addLabel(label: Label)
+    suspend fun addLabel(tagEntity: TagEntity)
 
-    suspend fun updateLabel(label: Label)
+    suspend fun updateLabel(tagEntity: TagEntity)
 
-    suspend fun deleteLabel(label: Label)
+    suspend fun deleteLabel(tagEntity: TagEntity)
 }

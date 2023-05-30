@@ -14,8 +14,8 @@ class LinkDataSourceImpl @Inject constructor(
 ): LinkDataSource {
     override val getAllLinks: Flow<List<Link>>
         get() = linkDao.getAllLinks().map {  list ->
-            list.map { link ->
-                linkMapper.toRepository(link)
+            list.map {
+                linkMapper.readOnly(it)
             }
         }
 

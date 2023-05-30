@@ -36,8 +36,8 @@ import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_VARIANT
 import com.example.common_ui.VerticalGrid
 import com.example.graph.sound
-import com.example.local.model.relational.Entity
-import com.example.local.model.Label
+import com.example.local.model.relational.NoteEntity
+import com.example.local.model.TagEntity
 import com.example.local.model.Note
 import com.example.common_ui.DataStoreVM
 import com.example.graph.getMaterialColor
@@ -68,7 +68,7 @@ fun NoteHome(
     val ctx = LocalContext.current
     //
     val searchTitleState = remember { mutableStateOf("") }
-    val searchLabelState = remember { mutableStateOf(Label()) }
+    val searchTagEntityState = remember { mutableStateOf(TagEntity()) }
 
     //
     val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
@@ -80,7 +80,7 @@ fun NoteHome(
     //
     val scaffoldState = rememberScaffoldState()
 //     to observer notes while changing immediately.
-    val observerLocalNotes: State<List<Entity>> = when (
+    val observerLocalNotes: State<List<NoteEntity>> = when (
         remember(dataStoreVM, dataStoreVM::getOrdination).collectAsState().value
     ) {
         BY_NAME -> remember(entityVM, entityVM::allNotesByName).collectAsState()
@@ -127,7 +127,7 @@ fun NoteHome(
             NavigationDrawer(
                 drawerState = drawerState,
                 navController = navController,
-                searchLabel = searchLabelState,
+                searchTagEntity = searchTagEntityState,
                 searchTitle = searchTitleState
             )
         },
@@ -155,7 +155,7 @@ fun NoteHome(
                         confirmationDialogState = null,
                         expandedSortMenuState = expandedSortMenuState,
                         searchScreen = SEARCH_IN_LOCAL,
-                        label = searchLabelState
+                        tagEntity = searchTagEntityState
                     )
                 }
             },
@@ -198,13 +198,13 @@ fun NoteHome(
                     ) {
                         items(
                             observerLocalNotes.value.filter {
-                                it.note.title?.contains(searchTitleState.value, true) ?: true ||
-                                        it.labels.contains(searchLabelState.value)
+                                it.dataEntity.title?.contains(searchTitleState.value, true) ?: true ||
+                                        it.tagEntities.contains(searchTagEntityState.value)
                             }
                         ) { entity ->
                             NoteCard(
                                 screen = Screens.HOME_SCREEN,
-                                entity = entity,
+                                noteEntity = entity,
                                 navController = navController,
                                 homeSelectionState = homeSelectionState,
                                 trashSelectionState = null,
@@ -212,16 +212,16 @@ fun NoteHome(
                             ) {
                                 noteVM.updateNote(
                                     Note(
-                                        title = it.note.title,
-                                        description = it.note.description,
-                                        priority = it.note.priority,
-                                        uid = it.note.uid,
-                                        color = it.note.color,
-                                        textColor = it.note.textColor,
+                                        title = it.dataEntity.title,
+                                        description = it.dataEntity.description,
+                                        priority = it.dataEntity.priority,
+                                        uid = it.dataEntity.uid,
+                                        color = it.dataEntity.color,
+                                        textColor = it.dataEntity.textColor,
                                         trashed = 1
                                     )
                                 )
-                                undo.invoke(entity.note)
+                                undo.invoke(entity.dataEntity)
                             }
                         }
                     }
@@ -235,12 +235,12 @@ fun NoteHome(
                                 maxColumnWidth = 220.dp
                             ) {
                                 observerLocalNotes.value.filter {
-                                    it.note.title?.contains(searchTitleState.value, true) ?: true ||
-                                            it.labels.contains(searchLabelState.value)
+                                    it.dataEntity.title?.contains(searchTitleState.value, true) ?: true ||
+                                            it.tagEntities.contains(searchTagEntityState.value)
                                 }.forEach { entity ->
                                     NoteCard(
                                         screen = Screens.HOME_SCREEN,
-                                        entity = entity,
+                                        noteEntity = entity,
                                         navController = navController,
                                         homeSelectionState = homeSelectionState,
                                         trashSelectionState = null,
@@ -248,16 +248,16 @@ fun NoteHome(
                                     ) {
                                         noteVM.updateNote(
                                             Note(
-                                                title = it.note.title,
-                                                description = it.note.description,
-                                                priority = it.note.priority,
-                                                uid = it.note.uid,
-                                                color = it.note.color,
-                                                textColor = it.note.textColor,
+                                                title = it.dataEntity.title,
+                                                description = it.dataEntity.description,
+                                                priority = it.dataEntity.priority,
+                                                uid = it.dataEntity.uid,
+                                                color = it.dataEntity.color,
+                                                textColor = it.dataEntity.textColor,
                                                 trashed = 1
                                             )
                                         )
-                                        undo.invoke(entity.note)
+                                        undo.invoke(entity.dataEntity)
                                     }
                                 }
                             }

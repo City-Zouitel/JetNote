@@ -38,7 +38,7 @@ android {
 
 dependencies {
 
-    implementation(projects.data.local)
+    implementation(projects.data.repository)
     implementation(projects.data.datastore)
 
     //AndroidX.

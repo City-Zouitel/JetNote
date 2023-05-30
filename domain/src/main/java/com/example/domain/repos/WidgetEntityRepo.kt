@@ -1,8 +1,8 @@
 package com.example.domain.repos
 
-import com.example.local.model.relational.Entity
+import com.example.local.model.relational.MainEntity
 
 interface WidgetEntityRepo {
 
-    val getAllWidgetEntityById: List<Entity>
+    val getAllWidgetMainEntityById: List<MainEntity>
 }
