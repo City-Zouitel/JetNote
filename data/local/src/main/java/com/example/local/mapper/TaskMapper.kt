@@ -1,15 +1,15 @@
 package com.example.local.mapper
 
 import com.example.local.mapper.base.Mapper
-import com.example.local.model.TaskEntity
-import com.example.repository.model.Task
+import com.example.local.model.TaskEntity as InTask
+import com.example.repository.model.Task as OutTask
 
-class TaskMapper: Mapper.Base<TaskEntity, Task> {
-    override fun toLocal(data: Task): TaskEntity = with(data){
-        TaskEntity(id, item, isDone)
+class TaskMapper: Mapper.Base<InTask, OutTask> {
+    override fun toLocal(data: OutTask): InTask = with(data){
+        InTask(id, item, isDone)
     }
 
-    override fun readOnly(data: TaskEntity): Task = with(data){
-        Task(id, item, isDone)
+    override fun readOnly(data: InTask): OutTask = with(data){
+        OutTask(id, item, isDone)
     }
 }

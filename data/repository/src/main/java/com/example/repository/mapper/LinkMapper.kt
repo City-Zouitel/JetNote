@@ -1,15 +1,15 @@
 package com.example.repository.mapper
 
-import com.example.domain.model.Link as O
-import com.example.repository.mapper.base.MapperBase
-import com.example.repository.model.Link as I
+import com.example.domain.model.Link as OutLink
+import com.example.repository.mapper.base.Mapper
+import com.example.repository.model.Link as InLink
 
-class LinkMapper: MapperBase<O, I> {
-    override fun toRepository(data: O): I = with(data) {
-        I(id, url, host, image, title, description)
+class LinkMapper: Mapper.Base<InLink, OutLink> {
+    override fun toRepository(data: OutLink): InLink = with(data) {
+        InLink(id, url, host, image, title, description)
     }
 
-    override fun toDomain(data: I): O = with(data) {
-        O(id, url, host, image, title, description)
+    override fun readOnly(data: InLink): OutLink = with(data) {
+        OutLink(id, url, host, image, title, description)
     }
 }

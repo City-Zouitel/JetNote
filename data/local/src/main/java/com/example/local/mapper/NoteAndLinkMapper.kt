@@ -1,15 +1,15 @@
 package com.example.local.mapper
 
 import com.example.local.mapper.base.Mapper
-import com.example.local.model.NoteAndLinkEntity
-import com.example.repository.model.NoteAndLink
+import com.example.local.model.NoteAndLinkEntity as InNoteAndLink
+import com.example.repository.model.NoteAndLink as OutNoteAndLink
 
-class NoteAndLinkMapper: Mapper.Base<NoteAndLinkEntity, NoteAndLink> {
-    override fun toLocal(data: NoteAndLink): NoteAndLinkEntity = with(data){
-        NoteAndLinkEntity(noteUid, linkId)
+class NoteAndLinkMapper: Mapper.Base<InNoteAndLink, OutNoteAndLink> {
+    override fun toLocal(data: OutNoteAndLink): InNoteAndLink = with(data){
+        InNoteAndLink(noteUid, linkId)
     }
 
-    override fun readOnly(data: NoteAndLinkEntity): NoteAndLink = with(data){
-        NoteAndLink(noteUid, linkId)
+    override fun readOnly(data: InNoteAndLink): OutNoteAndLink = with(data){
+        OutNoteAndLink(noteUid, linkId)
     }
 }

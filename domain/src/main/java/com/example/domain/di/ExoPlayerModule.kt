@@ -1,6 +1,6 @@
-package com.example.repository.di
+package com.example.domain.di
 
-import com.example.domain.exoplayer.ExoRepositoryImpl
+import com.example.domain.exoplayer.ExoPlayerImpl
 import com.google.android.exoplayer2.ExoPlayer
 import dagger.Module
 import dagger.Provides
@@ -14,5 +14,5 @@ object ExoPlayerModule {
 
     @Singleton
     @Provides
-    fun provideExoPlayer(exo: ExoPlayer) = ExoRepositoryImpl(exo)
+    fun provideExoPlayer(exo: ExoPlayer) = ExoPlayerImpl(exo)
 }

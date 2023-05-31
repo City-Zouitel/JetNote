@@ -1,6 +1,6 @@
 package com.example.repository.repositoryImpl
 
-import com.example.domain.model.Link
+import com.example.domain.model.Link as OutLink
 import com.example.domain.repository.LinkRepository
 import com.example.repository.datasource.LinkDataSource
 import com.example.repository.mapper.LinkMapper
@@ -9,21 +9,21 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class LinkRepositoryImpl @Inject constructor(
-    private val linkMapper: LinkMapper,
-    private val linkDataSource: LinkDataSource
+    private val dataSource: LinkDataSource,
+    private val mapper: LinkMapper
 ): LinkRepository {
-    override val getAllLinks: Flow<List<Link>>
-        get() = linkDataSource.getAllLinks.map { list ->
-            list.map {
-                linkMapper.toDomain(it)
+    override val getAllLinks: Flow<List<OutLink>>
+        get() = dataSource.getAllLinks.map { list ->
+            list.map { link ->
+                mapper.readOnly(link)
             }
         }
 
-    override suspend fun addLink(link: Link) {
-        linkDataSource.addLink(linkMapper.toRepository(link))
+    override suspend fun addLink(link: OutLink) {
+        dataSource.addLink(mapper.toRepository(link))
     }
 
-    override suspend fun deleteLink(link: Link) {
-        linkDataSource.deleteLink(linkMapper.toRepository(link))
+    override suspend fun deleteLink(link: OutLink) {
+        dataSource.deleteLink(mapper.toRepository(link))
     }
 }

@@ -2,7 +2,6 @@ package com.example.links.ui
 
 import android.app.Application
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.ImageBitmap
@@ -14,19 +13,15 @@ import com.baha.url.preview.BahaUrlPreview
 import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
 import com.example.common_ui.Cons.JPEG
-import com.example.domain.model.Link
 import com.example.domain.reposImpl.LinkRepoImpl
 import com.example.domain.usecase.LinkUseCase
 import com.example.links.worker.LinkWorker
-import com.example.local.model.NoteAndLink
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileOutputStream
 import java.net.URL
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel

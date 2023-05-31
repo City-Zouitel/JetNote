@@ -8,21 +8,20 @@ import javax.inject.Singleton
 @Singleton
 sealed class LinkUseCase {
     class GetAllLinks @Inject constructor(
-        private val repo: LinkRepository
-
+        private val repository: LinkRepository
     ): LinkUseCase() {
-        operator fun invoke() = repo.getAllLinks
+        operator fun invoke() = repository.getAllLinks
     }
 
     class AddLink @Inject constructor(
-        private val repo: LinkRepository
+        private val repository: LinkRepository
     ): LinkUseCase() {
-        suspend operator fun invoke(link: Link) = repo.addLink(link)
+        suspend operator fun invoke(link: Link) = repository.addLink(link)
     }
 
     class DeleteLink @Inject constructor(
-        private val repo: LinkRepository
+        private val repository: LinkRepository
     ): LinkUseCase() {
-        suspend operator fun invoke(link: Link) = repo.deleteLink(link)
+        suspend operator fun invoke(link: Link) = repository.deleteLink(link)
     }
 }
