@@ -1,5 +1,6 @@
 package com.example.domain.usecase
 
+import com.example.domain.model.Task
 import com.example.domain.repository.TaskRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -8,27 +9,26 @@ import javax.inject.Singleton
 sealed class TaskUseCase {
 
     class GetAllTaskItems @Inject constructor(
-        repository: TaskRepository
+        private val repository: TaskRepository
     ): TaskUseCase() {
-
+        operator fun invoke() = repository.getAllTaskItems
     }
 
     class AddTaskItem @Inject constructor(
-        repository: TaskRepository
+        private val repository: TaskRepository
     ): TaskUseCase() {
-
+        suspend operator fun invoke(task: Task) = repository.addTaskItem(task)
     }
 
     class UpdateTaskItem @Inject constructor(
-        repository: TaskRepository
+        private val repository: TaskRepository
     ): TaskUseCase() {
-
+        suspend operator fun invoke(task: Task) = repository.updateTaskItem(task)
     }
 
     class DeleteTaskItem @Inject constructor(
-        repository: TaskRepository
+        private val repository: TaskRepository
     ): TaskUseCase() {
-
+        suspend operator fun invoke(task: Task) = repository.deleteTaskItem(task)
     }
-
 }

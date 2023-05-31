@@ -8,44 +8,44 @@ import javax.inject.Singleton
 sealed class NoteUseCase {
 
     class GetAllNotesById @Inject constructor(
-        repository: NoteRepository
+        private val repository: NoteRepository
     ): NoteUseCase() {
-
+        operator fun invoke() = repository.getAllNotesById
     }
 
     class GetAllNotesByName @Inject constructor(
-        repository: NoteRepository
+        private val repository: NoteRepository
     ): NoteUseCase() {
-
+        operator fun invoke() = repository.getAllNotesByName
     }
 
     class GetAllNotesByNewest @Inject constructor(
-        repository: NoteRepository
+        private val repository: NoteRepository
     ): NoteUseCase() {
-
+        operator fun invoke() = repository.getAllNotesByNewest
     }
 
     class GetAllNotesByOldest @Inject constructor(
-        repository: NoteRepository
+        private val repository: NoteRepository
     ): NoteUseCase() {
-
+        operator fun invoke() = repository.getAllNotesByOldest
     }
 
     class GetAllTrashedNotes @Inject constructor(
-        repository: NoteRepository
+        private val repository: NoteRepository
     ): NoteUseCase() {
-
+        operator fun invoke() = repository.getAllTrashedNotes
     }
 
     class AllNotesByPriority @Inject constructor(
-        repository: NoteRepository
+        private val repository: NoteRepository
     ): NoteUseCase() {
-
+        operator fun invoke() = repository.allNotesByPriority
     }
 
     class GetAllRemindingNotes @Inject constructor(
-        repository: NoteRepository
+        private val repository: NoteRepository
     ): NoteUseCase() {
-
+        operator fun invoke() = repository.getAllRemindingNotes
     }
 }

@@ -55,3 +55,6 @@ include(
 include(
     ":benchmark"
 )
+include(":common:common-vm")
+include(":common:common-effect")
+include(":common:common-logic")

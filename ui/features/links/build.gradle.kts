@@ -44,7 +44,6 @@ dependencies {
 
     implementation(projects.common.commonUi)
     implementation(projects.domain)
-    implementation(projects.data.local)
 
     //AndroidX.
     implementation(libs.androidx.core)

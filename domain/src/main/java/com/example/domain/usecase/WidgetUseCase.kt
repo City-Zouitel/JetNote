@@ -8,8 +8,8 @@ import javax.inject.Singleton
 sealed class WidgetUseCase {
 
     class GetAllWidgetMainEntityById @Inject constructor(
-        repository: WidgetRepository
+        private val repository: WidgetRepository
     ): WidgetUseCase() {
-
+        operator fun invoke() = repository.getAllWidgetMainEntityById
     }
 }

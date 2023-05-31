@@ -13,8 +13,8 @@ import com.baha.url.preview.BahaUrlPreview
 import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
 import com.example.common_ui.Cons.JPEG
-import com.example.domain.reposImpl.LinkRepoImpl
 import com.example.domain.usecase.LinkUseCase
+import com.example.links.model.Link
 import com.example.links.worker.LinkWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +27,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LinkVM @Inject constructor(
     application: Application,
-    private val repo: LinkRepoImpl,
     private val getAllLinks00: LinkUseCase.GetAllLinks,
     private val deleteLink: LinkUseCase.DeleteLink
     ): ViewModel() {
