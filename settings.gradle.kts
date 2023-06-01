@@ -28,7 +28,13 @@ include(
 )
 include(
     ":common:common-ui",
-    ":common:notification"
+    ":common:common-vm",
+    ":common:common-effect",
+    ":common:common-logic",
+    ":common:common-mapper",
+)
+include(
+    "service:notification"
 )
 
 include(
@@ -55,6 +61,7 @@ include(
 include(
     ":benchmark"
 )
-include(":common:common-vm")
-include(":common:common-effect")
-include(":common:common-logic")
+
+
+
+

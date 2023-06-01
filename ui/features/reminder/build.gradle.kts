@@ -49,7 +49,7 @@ kapt {
 }
 dependencies {
     implementation(projects.common.commonUi)
-    implementation(projects.common.notification)
+    implementation(projects.service.notification)
     implementation(projects.data.datastore)
 
     //AndroidX.

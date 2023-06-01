@@ -33,14 +33,14 @@ import com.example.common_ui.Icons.TRASH_ICON
 import com.example.common_ui.sharApp
 import com.example.local.model.TagEntity
 import com.example.graph.sound
-import com.example.tags.LabelVM
+import com.example.tags.TagViewModel
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawer(
-    labelVM: LabelVM = hiltViewModel(),
+    tagViewModel: TagViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     drawerState: DrawerState,
     navController: NavController,
@@ -48,7 +48,7 @@ fun NavigationDrawer(
     searchTagEntity: MutableState<TagEntity>?
 ) {
     val ctx = LocalContext.current
-    val observeLabels = remember(labelVM,labelVM::getAllLabels).collectAsState()
+    val observeLabels = remember(tagViewModel,tagViewModel::getAllLabels).collectAsState()
 
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 

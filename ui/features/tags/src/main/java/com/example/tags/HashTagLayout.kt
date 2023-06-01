@@ -15,15 +15,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.CROSS_CIRCLE_ICON
-import com.example.local.model.TagEntity
+import com.example.tags.model.Tag as InTag
 import com.google.accompanist.flowlayout.FlowRow
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HashTagLayout(
-    labelVM: LabelVM = hiltViewModel(),
+    tagViewModel: TagViewModel = hiltViewModel(),
     labelDialogState: MutableState<Boolean>,
-    hashTags: Collection<TagEntity>,
+    hashTags: Collection<InTag>,
     idState: MutableState<Long>,
     labelState: MutableState<String>
     ) {
@@ -47,7 +47,7 @@ fun HashTagLayout(
                         painterResource(CROSS_CIRCLE_ICON),
                         null,
                         modifier = Modifier.clickable {
-                            labelVM.deleteLabel(label)
+                            tagViewModel.deleteLabel(label)
                         }
                     )
                 },

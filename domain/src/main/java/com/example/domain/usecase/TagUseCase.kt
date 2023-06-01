@@ -8,10 +8,10 @@ import javax.inject.Singleton
 @Singleton
 sealed class TagUseCase {
 
-    class GetAllLabels @Inject constructor(
+    class GetAllTags @Inject constructor(
         private val repository: TagRepository
     ): TagUseCase() {
-        operator fun invoke() = repository.getAllLabels
+        operator fun invoke() = repository.getAllTags
     }
 
     class AddTag @Inject constructor(

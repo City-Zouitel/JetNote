@@ -13,11 +13,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.core.view.inputmethod.InputConnectionCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.note.NoteVM
+import com.example.note.DataViewModel
 
 @Composable
 fun NoteTextField(
-    noteVM: NoteVM = hiltViewModel(),
+    dataViewModel: DataViewModel = hiltViewModel(),
     uid: String,
     txtHint: String = "",
     txtSize: Float = 20f,
@@ -53,13 +53,13 @@ fun NoteTextField(
                             gifUri.value = uri
 
                             // gif
-//                                noteVM.saveGifLocally(ctx,uri,uid)
+//                                dataViewModel.saveGifLocally(ctx,uri,uid)
 
 //                            val bitImg = BitmapFactory.decodeFile(uri.path)
-//                            val img = noteVM.decodeBitmapImage(bitImg,uri,ctx)
+//                            val img = dataViewModel.decodeBitmapImage(bitImg,uri,ctx)
 
                             // png
-//                            noteVM.saveImageLocally(img,"$internalPath/$IMAGES", "$uid.$JPEG")
+//                            dataViewModel.saveImageLocally(img,"$internalPath/$IMAGES", "$uid.$JPEG")
 
                             true
                         }

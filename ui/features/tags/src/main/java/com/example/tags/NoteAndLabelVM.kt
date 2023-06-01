@@ -2,24 +2,26 @@ package com.example.tags
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.reposImpl.NoteAndLabelRepoImpl
-import com.example.local.model.NoteAndLabel
+import com.example.domain.usecase.NoteAndTagUseCase
+import com.example.tags.mapper.NoteAndTagMapper
+import com.example.tags.model.NoteAndTag as InNoteAndTag
+import com.example.domain.model.NoteAndTag as OutNoteAndTag
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NoteAndLabelVM @Inject constructor(
-    private val repo: NoteAndLabelRepoImpl
+    private val getAll: NoteAndTagUseCase.GetAllNotesAndTags,
+    private val add: NoteAndTagUseCase.AddNoteAndTag,
+    private val delete: NoteAndTagUseCase.DeleteNoteAndTag,
+    private val mapper: NoteAndTagMapper
 ): ViewModel() {
 
-    private val _getAllNotesAndLabels = MutableStateFlow<List<NoteAndLabel>>(emptyList())
-    val getAllNotesAndLabels: StateFlow<List<NoteAndLabel>>
+    private val _getAllNotesAndLabels = MutableStateFlow<List<OutNoteAndTag>>(emptyList())
+    val getAllNotesAndLabels: StateFlow<List<OutNoteAndTag>>
         get() = _getAllNotesAndLabels
             .stateIn(
                 viewModelScope,
@@ -29,19 +31,21 @@ class NoteAndLabelVM @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getAllNotesAndLabels.collect {
-                _getAllNotesAndLabels.value = it
+            getAll.invoke().collect {
+                _getAllNotesAndLabels.value.map { tag ->
+                    mapper.toView(tag)
+                }
             }
         }
     }
-    fun addNoteAndLabel(noteAndLabel: NoteAndLabel) {
+    fun addNoteAndLabel(noteAndTag: InNoteAndTag) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.addNoteAndLabel(noteAndLabel)
+            add.invoke(mapper.toDomain(noteAndTag))
         }
     }
-    fun deleteNoteAndLabel(noteAndLabel: NoteAndLabel) {
+    fun deleteNoteAndLabel(noteAndTag: InNoteAndTag) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.deleteNoteAndLabel(noteAndLabel)
+            delete.invoke(mapper.toDomain(noteAndTag))
         }
     }
 }

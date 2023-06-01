@@ -7,12 +7,12 @@ import com.example.common_ui.Cons.TRASH_MESSAGE
 import com.example.common_ui.Cons.UNDO
 import com.example.local.model.relational.NoteEntity
 import com.example.local.model.Note
-import com.example.note.NoteVM
+import com.example.note.DataViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 internal fun UndoSnackbar(
-    viewModule: NoteVM,
+    viewModule: DataViewModel,
     scaffoldState : ScaffoldState,
     scope : CoroutineScope,
     trashedNotesState : State<List<NoteEntity>>

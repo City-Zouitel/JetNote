@@ -30,21 +30,21 @@ import com.example.local.model.Note
 import com.example.local.model.NoteAndLabel
 import com.example.local.model.NoteAndTodo
 import com.example.local.model.Task
-import com.example.note.NoteVM
-import com.example.tags.LabelVM
+import com.example.note.DataViewModel
+import com.example.tags.TagViewModel
 import com.example.tags.NoteAndLabelVM
 import com.example.tasks.NoteAndTodoVM
-import com.example.tasks.TodoVM
+import com.example.tasks.TaskViewModel
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeSelectionTopAppBar(
-    noteVM: NoteVM = hiltViewModel(),
+    dataViewModel: DataViewModel = hiltViewModel(),
     noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
-    labelVM: LabelVM = hiltViewModel(),
-    todoVM: TodoVM = hiltViewModel(),
+    tagViewModel: TagViewModel = hiltViewModel(),
+    taskViewModel: TaskViewModel = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     homeSelectionState: MutableState<Boolean>?,
@@ -56,9 +56,9 @@ fun HomeSelectionTopAppBar(
 
     val observeNotesAndLabels =
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
-    val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
+    val observeLabels = remember(tagViewModel, tagViewModel::getAllLabels).collectAsState()
 
-    val observeTodoList = remember(todoVM, todoVM::getAllTaskList).collectAsState()
+    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
@@ -81,7 +81,7 @@ fun HomeSelectionTopAppBar(
                         ) {
                             sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                             selectedNotes?.forEach {
-                                noteVM.updateNote(
+                                dataViewModel.updateNote(
                                     Note(
                                         title = it.title,
                                         description = it.description,
@@ -145,7 +145,7 @@ fun HomeSelectionTopAppBar(
                                         thereIsSoundEffect.value
                                     )
 
-                                    copyNote(ctx, noteVM, selectedNotes?.single()!!, newUid) {
+                                    copyNote(ctx, dataViewModel, selectedNotes?.single()!!, newUid) {
                                         // copy each label.
                                         observeLabels.value
                                             .filter {
@@ -177,7 +177,7 @@ fun HomeSelectionTopAppBar(
                                             }
                                             .forEach { todo ->
                                                 nextLong().let {
-                                                    todoVM.addTotoItem(
+                                                    taskViewModel.addTotoItem(
                                                         Task(
                                                             it,
                                                             todo.item,

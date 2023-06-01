@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,8 +28,8 @@ import com.example.common_ui.Icons.DELETE_OUTLINE_ICON
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE
-import com.example.local.model.NoteAndTodo
-import com.example.local.model.Task
+import com.example.tasks.model.NoteAndTask as InNoteAndTask
+import com.example.tasks.model.Task as InTask
 import kotlinx.coroutines.Job
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -42,14 +41,17 @@ private val getMatColor = MaterialColors().getMaterialColor
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TodoList(
-    todoVM: TodoVM = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+fun TaskList(
+    taskViewModel: TaskViewModel = hiltViewModel(),
+    noteAndTodoVM: NoteAndTaskViewModel = hiltViewModel(),
     noteUid:String
 ) {
-    val observeTodoList = remember(todoVM, todoVM::getAllTaskList).collectAsState()
+    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodoList =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
+
+    //
+    val getAll = taskViewModel.getAll().invoke().collectAsState(emptyList())
 
     val itemState = remember { mutableStateOf("") }//.filterBadWords()
     val idState = remember { mutableStateOf(-1L) }
@@ -62,12 +64,12 @@ fun TodoList(
         ) {
             items(observeTodoList.value) { todo ->
                 if (observeNoteAndTodoList.value.contains(
-                        NoteAndTodo(noteUid, todo.id)
+                        InNoteAndTask(noteUid, todo.id)
                     )
                 ) {
-                    TodoItem(todo, todoVM, itemState, idState) {
-                        todoVM.deleteTotoItem(
-                            Task(id = todo.id)
+                    TodoItem(todo, taskViewModel, itemState, idState) {
+                        taskViewModel.deleteTotoItem(
+                            InTask(id = todo.id)
                         )
                     }
                 }
@@ -97,13 +99,13 @@ fun TodoList(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             if (observeTodoList.value.any { it.id == idState.value }) {
-                                todoVM.updateTotoItem(Task(idState.value, itemState.value, false))
+                                taskViewModel.updateTotoItem(InTask(idState.value, itemState.value, false))
                             } else {
                                 Random.nextLong().let {
-                                    todoVM.addTotoItem(
-                                        Task(it, itemState.value, false)
+                                    taskViewModel.addTotoItem(
+                                        InTask(it, itemState.value, false)
                                     )
-                                    noteAndTodoVM.addNoteAndTodoItem(NoteAndTodo(noteUid, it))
+                                    noteAndTodoVM.addNoteAndTodoItem(InNoteAndTask(noteUid, it))
                                 }
                             }.invokeOnCompletion {
                                 itemState.value = ""
@@ -123,8 +125,8 @@ fun TodoList(
 
 @Composable
 fun TodoItem(
-    task: Task,
-    todoVM: TodoVM,
+    task: InTask,
+    taskViewModel: TaskViewModel,
     itemState: MutableState<String>,
     idState: MutableState<Long>,
     onClick: () -> Job
@@ -154,8 +156,8 @@ fun TodoItem(
             Checkbox(
                 checked = task.isDone,
                 onCheckedChange = {
-                    todoVM.updateTotoItem(
-                        Task(
+                    taskViewModel.updateTotoItem(
+                        InTask(
                             id = task.id,
                             item = task.item,
                             isDone = !task.isDone

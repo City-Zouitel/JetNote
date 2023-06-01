@@ -3,14 +3,6 @@ package com.example.links.ui
 import android.annotation.SuppressLint
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.graphics.drawable.toBitmap
-import coil.ImageLoader
-import coil.request.ImageRequest
-import com.example.common_ui.Cons.JPEG
-import com.example.local.model.Link
-import com.example.local.model.NoteAndLink
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 
 @SuppressLint("CoroutineCreationDuringComposition")

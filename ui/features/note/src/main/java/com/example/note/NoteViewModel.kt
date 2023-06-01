@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.reposImpl.EntityRepoImpl
+import com.example.domain.usecase.NoteUseCase
 import com.example.local.model.relational.NoteEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,8 +18,14 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class EntityVM @Inject constructor(
-    private val repo: EntityRepoImpl
+class NoteViewModel @Inject constructor(
+    private val getAllById: NoteUseCase.GetAllNotesById,
+    private val getAllByOldest: NoteUseCase.GetAllNotesByOldest,
+    private val getAllByNewest: NoteUseCase.GetAllNotesByNewest,
+    private val getAllByName: NoteUseCase.GetAllNotesByName,
+    private val getAllTrashed: NoteUseCase.GetAllTrashedNotes,
+    private val getAllByPriority: NoteUseCase.GetAllNotesByPriority,
+    private val getAllReminding: NoteUseCase.GetAllRemindingNotes
 ): ViewModel() {
 
     var isProcessing by mutableStateOf(false)
@@ -58,38 +64,38 @@ class EntityVM @Inject constructor(
         viewModelScope.apply {
             isProcessing = true
             launch(Dispatchers.IO) {
-                repo.getAllNotesById.collect {
-                    _allNotesById.value = it
+                getAllById.invoke().collect {
+//                    _allNotesById.value = it
                 }
             }
             launch(Dispatchers.IO) {
-                repo.getAllNotesByName.collect {
-                    _allNotesByName.value = it
+                getAllByName.invoke().collect {
+//                    _allNotesByName.value = it
                 }
             }
             launch(Dispatchers.IO) {
-                repo.getAllNotesByNewest.collect {
-                    _allNotesByNewest.value = it
+                getAllByNewest.invoke().collect {
+//                    _allNotesByNewest.value = it
                 }
             }
             launch(Dispatchers.IO) {
-                repo.getAllNotesByOldest.collect {
-                    _allNotesByOldest.value = it
+                getAllByOldest.invoke().collect {
+//                    _allNotesByOldest.value = it
                 }
             }
             launch(Dispatchers.IO) {
-                repo.getAllTrashedNotes.collect {
-                    _allTrashedNotes.value = it
+                getAllTrashed.invoke().collect {
+//                    _allTrashedNotes.value = it
                 }
             }
             launch(Dispatchers.IO) {
-                repo.allNotesByPriority.collect {
-                    _allNotesByPriority.value = it
+                getAllByPriority.invoke().collect {
+//                    _allNotesByPriority.value = it
                 }
             }
             launch(Dispatchers.IO) {
-                repo.getAllRemindingNotes.collect {
-                    _allRemindingNotes.value = it
+                getAllReminding.invoke().collect {
+//                    _allRemindingNotes.value = it
                 }
             }
             isProcessing = false

@@ -56,9 +56,9 @@ import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
 import com.example.local.model.*
 import com.example.local.model.relational.NoteEntity
-import com.example.note.NoteVM
+import com.example.note.DataViewModel
 import com.example.tasks.NoteAndTodoVM
-import com.example.tasks.TodoVM
+import com.example.tasks.TaskViewModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -119,9 +119,9 @@ fun NoteCard(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun Card(
-    todoVM: TodoVM = hiltViewModel(),
+    taskViewModel: TaskViewModel = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
-    noteVM: NoteVM = hiltViewModel(),
+    dataViewModel: DataViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
@@ -139,7 +139,7 @@ private fun Card(
     val labels = noteEntity.tagEntities
     val internalPath = ctx.filesDir.path
 
-    val observeTodoList = remember(todoVM, todoVM::getAllTaskList).collectAsState()
+    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
@@ -232,7 +232,7 @@ private fun Card(
         // display the image.
         when (screen) {
             HOME_SCREEN, TRASH_SCREEN -> {
-                ImageDisplayed(media = noteVM::imageDecoder.invoke(ctx, note.uid))
+                ImageDisplayed(media = dataViewModel::imageDecoder.invoke(ctx, note.uid))
             }
             else -> { // Timber.tag(TAG).d("")
             }
@@ -292,7 +292,7 @@ private fun Card(
         ) {
             if (screen == TRASH_SCREEN) {
                 IconButton(onClick = {
-                    noteVM.updateNote(
+                    dataViewModel.updateNote(
                         Note(
                             title = note.title,
                             description = note.description,
@@ -390,7 +390,7 @@ private fun Card(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(selected = todo.isDone, onClick = {
-                                todoVM.updateTotoItem(
+                                taskViewModel.updateTotoItem(
                                     Task(
                                         id = todo.id,
                                         item = todo.item,

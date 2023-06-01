@@ -61,7 +61,7 @@ import com.example.links.ui.NoteAndLinkVM
 import com.example.local.model.*
 import com.example.note.bottom_bar.AddEditBottomBar
 import com.example.record.RecordingNote
-import com.example.note.NoteVM
+import com.example.note.DataViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
 
@@ -77,11 +77,11 @@ import java.io.File
 @Composable
 fun NoteEdit(
     navController: NavController,
-    noteVM: NoteVM = hiltViewModel(),
+    dataViewModel: DataViewModel = hiltViewModel(),
     exoViewModule: com.example.media_player.MediaPlayerVM = hiltViewModel(),
     noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
-    labelVM: com.example.tags.LabelVM = hiltViewModel(),
-    todoVM: com.example.tasks.TodoVM = hiltViewModel(),
+    tagViewModel: com.example.tags.TagViewModel = hiltViewModel(),
+    taskViewModel: com.example.tasks.TaskViewModel = hiltViewModel(),
     noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
@@ -108,13 +108,13 @@ fun NoteEdit(
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
     val observeNotesAndLabels = remember(noteAndLabelVM,noteAndLabelVM::getAllNotesAndLabels).collectAsState()
-    val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
+    val observeLabels = remember(tagViewModel, tagViewModel::getAllLabels).collectAsState()
 
     val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
     val observerNoteAndLink =
         remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
-    val observeTodoList = remember(todoVM, todoVM::getAllTaskList).collectAsState()
+    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
@@ -161,9 +161,9 @@ fun NoteEdit(
     val chooseImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
             imageUriState.value = it
-            noteVM::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
+            dataViewModel::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
             img.value = photoState.value
-            noteVM::saveImageLocally.invoke(
+            dataViewModel::saveImageLocally.invoke(
                 img.value, "$internalPath/$IMAGES", "$uid.$JPEG"
             )
         }
@@ -191,7 +191,7 @@ fun NoteEdit(
                         onClick = {
                             sound.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
 
-                            noteVM.updateNote(
+                            dataViewModel.updateNote(
                                 Note(
                                     title = if(titleState.value.isNullOrBlank()) null else titleState.value ,
                                     description = if(descriptionState.value.isNullOrBlank()) null else descriptionState.value,
@@ -409,7 +409,7 @@ fun NoteEdit(
                         Checkbox(
                             checked = todo.isDone,
                             onCheckedChange = {
-                                todoVM.updateTotoItem(
+                                taskViewModel.updateTotoItem(
                                     Task(
                                         id = todo.id,
                                         item = todo.item,

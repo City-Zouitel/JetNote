@@ -4,7 +4,7 @@ import com.example.domain.model.Tag as OutTag
 import kotlinx.coroutines.flow.Flow
 
 interface TagRepository {
-    val getAllLabels:Flow<List<OutTag>>
+    val getAllTags:Flow<List<OutTag>>
 
     suspend fun addTag(tag: OutTag)
 

@@ -32,8 +32,8 @@ import com.example.common_ui.Icons.OUTLINE_LABEL_ICON
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_TINT
-import com.example.local.model.TagEntity
-import com.example.local.model.NoteAndLabel
+import com.example.tags.model.Tag as InTag
+import com.example.tags.model.NoteAndTag as InNoteAndTag
 import com.google.accompanist.flowlayout.FlowRow
 
 @SuppressLint(
@@ -47,12 +47,12 @@ import com.google.accompanist.flowlayout.FlowRow
 )
 @Composable
 fun Labels(
-    labelVM: LabelVM = hiltViewModel(),
+    tagViewModel: TagViewModel = hiltViewModel(),
     noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
     noteUid: String?,
 ) {
 
-    val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
+    val observeLabels = remember(tagViewModel, tagViewModel::getAllLabels).collectAsState()
     val observeNotesAndLabels =
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
 
@@ -100,18 +100,18 @@ fun Labels(
                                 modifier = Modifier,
                                 onClick = {
                                     if (observeNotesAndLabels.value.contains(
-                                            NoteAndLabel(noteUid!!, label.id)
+                                            InNoteAndTag(noteUid!!, label.id)
                                         )
                                     ) {
                                         noteAndLabelVM.deleteNoteAndLabel(
-                                            NoteAndLabel(
+                                            InNoteAndTag(
                                                 noteUid = noteUid,
                                                 labelId = label.id
                                             )
                                         )
                                     } else {
                                         noteAndLabelVM.addNoteAndLabel(
-                                            NoteAndLabel(
+                                            InNoteAndTag(
                                                 noteUid = noteUid,
                                                 labelId = label.id
                                             )
@@ -121,7 +121,7 @@ fun Labels(
                                 leadingIcon = {
                                     if (
                                         observeNotesAndLabels.value.contains(
-                                            NoteAndLabel(noteUid!!, label.id)
+                                            InNoteAndTag(noteUid!!, label.id)
                                         )
                                     ) {
                                         Icon(
@@ -179,16 +179,16 @@ fun Labels(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             if (observeLabels.value.any { it.id == idState.value }) {
-                                labelVM.updateLabel(
-                                    TagEntity(
+                                tagViewModel.updateLabel(
+                                    InTag(
                                         id = idState.value,
                                         label = labelState.value,
                                         color = colorState.value
                                     )
                                 )
                             } else {
-                                labelVM.addLabel(
-                                    TagEntity(
+                                tagViewModel.addLabel(
+                                    InTag(
                                         label = labelState.value,
                                         color = colorState.value
                                     )

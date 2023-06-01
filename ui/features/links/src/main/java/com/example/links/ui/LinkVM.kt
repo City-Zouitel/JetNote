@@ -13,8 +13,10 @@ import com.baha.url.preview.BahaUrlPreview
 import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
 import com.example.common_ui.Cons.JPEG
+import com.example.domain.model.Link as OutLink
 import com.example.domain.usecase.LinkUseCase
-import com.example.links.model.Link
+import com.example.links.mapper.LinkMapper
+import com.example.links.model.Link as InLink
 import com.example.links.worker.LinkWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -27,12 +29,13 @@ import javax.inject.Inject
 @HiltViewModel
 class LinkVM @Inject constructor(
     application: Application,
-    private val getAllLinks00: LinkUseCase.GetAllLinks,
-    private val deleteLink: LinkUseCase.DeleteLink
+    private val getAll: LinkUseCase.GetAllLinks,
+    private val delete: LinkUseCase.DeleteLink,
+    private val mapper: LinkMapper
     ): ViewModel() {
 
-    private val _getAllLinks = MutableStateFlow<List<Link>>(emptyList())
-    val getAllLinks: StateFlow<List<Link>>
+    private val _getAllLinks = MutableStateFlow<List<OutLink>>(emptyList())
+    val getAllLinks: StateFlow<List<OutLink>>
         get() = _getAllLinks
             .stateIn(
                 viewModelScope,
@@ -45,25 +48,15 @@ class LinkVM @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-//            repo.getAllLinks.collect {
+            //            repo.getAllLinks.collect {
 //                _getAllLinks.value = it
 //            }
-            getAllLinks00.invoke().collect {
-                _getAllLinks.value = it
-            }
         }
     }
 
-//    fun addLink(link: Link) =
-//        viewModelScope.launch(Dispatchers.IO) {
-//            repo.addLink(link)
-//        }
-
-
-    fun deleteLink(link: Link) {
+    fun deleteLink(link: InLink) {
         viewModelScope.launch(Dispatchers.IO) {
-//            repo.deleteLink(link)
-            deleteLink.invoke(link)
+            delete.invoke(mapper.toDomain(link))
         }
     }
 

@@ -64,13 +64,13 @@ import com.example.links.ui.NoteAndLinkVM
 import com.example.local.model.*
 import com.example.media_player.MediaPlayerVM
 import com.example.note.bottom_bar.AddEditBottomBar
-import com.example.note.NoteVM
+import com.example.note.DataViewModel
 import com.example.record.RecordingNote
 import com.example.reminder.RemindingNote
-import com.example.tags.LabelVM
+import com.example.tags.TagViewModel
 import com.example.tags.NoteAndLabelVM
 import com.example.tasks.NoteAndTodoVM
-import com.example.tasks.TodoVM
+import com.example.tasks.TaskViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
 
@@ -85,11 +85,11 @@ import java.io.File
 )
 @Composable
 fun NoteAdd(
-    noteVM: NoteVM = hiltViewModel(),
+    dataViewModel: DataViewModel = hiltViewModel(),
     exoVM: MediaPlayerVM = hiltViewModel(),
     noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
-    labelVM: LabelVM = hiltViewModel(),
-    todoVM: TodoVM = hiltViewModel(),
+    tagViewModel: TagViewModel = hiltViewModel(),
+    taskViewModel: TaskViewModel = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
@@ -112,9 +112,9 @@ fun NoteAdd(
 
     val observeNotesAndLabels =
         remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
-    val observeLabels = remember(labelVM, labelVM::getAllLabels).collectAsState()
+    val observeLabels = remember(tagViewModel, tagViewModel::getAllLabels).collectAsState()
 
-    val observeTodoList = remember(todoVM, todoVM::getAllTaskList).collectAsState()
+    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
 
@@ -163,9 +163,9 @@ fun NoteAdd(
     val chooseImageLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
             imageUriState.value = it
-            noteVM::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
+            dataViewModel::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
             img.value = photoState.value
-            noteVM::saveImageLocally.invoke(
+            dataViewModel::saveImageLocally.invoke(
                 img.value, "$internalPath/$IMAGES", "$uid.$JPEG"
             )
         }
@@ -203,7 +203,7 @@ fun NoteAdd(
                         onClick = {
                             sound.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
 
-                            noteVM.addNote(
+                            dataViewModel.addNote(
                                 Note(
                                     title = if(titleState.value.isNullOrBlank()) null else titleState.value ,
                                     description = if(descriptionState.value.isNullOrBlank()) null else descriptionState.value,
@@ -432,7 +432,7 @@ fun NoteAdd(
                         Checkbox(
                             checked = todo.isDone,
                             onCheckedChange = {
-                                todoVM.updateTotoItem(
+                                taskViewModel.updateTotoItem(
                                     Task(
                                         id = todo.id,
                                         item = todo.item,

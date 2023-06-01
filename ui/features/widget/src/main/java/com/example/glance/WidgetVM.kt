@@ -5,16 +5,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.annotation.WorkerThread
 import com.example.common_ui.Cons
-import com.example.domain.reposImpl.WidgetEntityRepoImpl
+import com.example.domain.usecase.WidgetUseCase
 import java.io.File
 import javax.inject.Inject
 
 class WidgetVM @Inject constructor(
-    private val widgetEntityRepoImpl: WidgetEntityRepoImpl
+    private val getAll: WidgetUseCase.GetAllWidgetMainEntityById
 ) {
 
     @WorkerThread
-    fun getAllEntities() = widgetEntityRepoImpl.getAllWidgetMainEntityById
+    fun getAllEntities() = getAll
 
     @WorkerThread
     fun imageDecoder(context: Context, uid: String): Bitmap {

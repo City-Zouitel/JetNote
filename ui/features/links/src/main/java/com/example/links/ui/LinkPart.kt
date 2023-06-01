@@ -17,8 +17,8 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.local.model.Link
-import com.example.local.model.NoteAndLink
+import com.example.links.model.Link
+import com.example.links.model.NoteAndLink as InNoteAndLink
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -38,7 +38,7 @@ fun LinkPart(
         onSwipe = {
             linkVM.deleteLink(link)
             noteAndLinkVM.deleteNoteAndLink(
-                NoteAndLink(noteUid, link.id)
+                InNoteAndLink(noteUid, link.id)
             )
         },
         icon = {},

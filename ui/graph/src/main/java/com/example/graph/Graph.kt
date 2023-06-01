@@ -1,17 +1,13 @@
 package com.example.graph
 
-import android.content.Intent
 import androidx.compose.runtime.Composable
-import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.AUDIO_DURATION
-import com.example.common_ui.Cons.BASE_URI
 import com.example.common_ui.Cons.CAMERA_ROUTE
 import com.example.common_ui.Cons.COLOR
 import com.example.common_ui.Cons.DESCRIPTION
@@ -35,7 +31,7 @@ import com.example.graph.trash_screen.TrashScreen
 import com.example.note.add_screen.NoteAdd
 import com.example.note.edit_screen.NoteEdit
 import com.example.tags.Labels
-import com.example.tasks.TodoList
+import com.example.tasks.TaskList
 
 @Composable
 fun Graph(
@@ -177,7 +173,7 @@ fun Graph(
                 type = NavType.StringType
             }
         )) {
-            TodoList(noteUid = it.arguments?.getString(UID) ?: "")
+            TaskList(noteUid = it.arguments?.getString(UID) ?: "")
         }
         composable("licenses") {
             Licenses()

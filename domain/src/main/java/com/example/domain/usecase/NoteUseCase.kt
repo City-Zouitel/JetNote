@@ -37,7 +37,7 @@ sealed class NoteUseCase {
         operator fun invoke() = repository.getAllTrashedNotes
     }
 
-    class AllNotesByPriority @Inject constructor(
+    class GetAllNotesByPriority @Inject constructor(
         private val repository: NoteRepository
     ): NoteUseCase() {
         operator fun invoke() = repository.allNotesByPriority

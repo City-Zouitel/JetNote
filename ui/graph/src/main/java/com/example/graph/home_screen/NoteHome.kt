@@ -46,8 +46,8 @@ import com.example.graph.navigation_drawer.Screens
 import com.example.graph.note_card.NoteCard
 import com.example.graph.top_action_bar.NoteTopAppBar
 import com.example.graph.top_action_bar.HomeSelectionTopAppBar
-import com.example.note.EntityVM
-import com.example.note.NoteVM
+import com.example.note.NoteViewModel
+import com.example.note.DataViewModel
 import java.util.*
 
 @SuppressLint(
@@ -60,8 +60,8 @@ import java.util.*
 )
 @Composable
 fun NoteHome(
-    noteVM: NoteVM = hiltViewModel(),
-    entityVM: EntityVM = hiltViewModel(),
+    dataViewModel: DataViewModel = hiltViewModel(),
+    entityVM: NoteViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     navController: NavController,
 ) {
@@ -98,12 +98,12 @@ fun NoteHome(
     val coroutineScope = rememberCoroutineScope()
 
     val trashedNotesState = remember(entityVM) { entityVM.allTrashedNotes }.collectAsState()
-    val isProcessing = remember(noteVM) { noteVM.isProcessing }
+    val isProcessing = remember(dataViewModel) { dataViewModel.isProcessing }
 
     val expandedSortMenuState = remember { mutableStateOf(false) }
 
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = noteVM.isProcessing,
+        refreshing = dataViewModel.isProcessing,
         onRefresh = {
             navController.navigate(HOME_ROUTE)
         }
@@ -114,7 +114,7 @@ fun NoteHome(
 
     //undo snack-bar.
     val undo = UndoSnackbar(
-        viewModule = noteVM,
+        viewModule = dataViewModel,
         scaffoldState = scaffoldState,
         scope = coroutineScope,
         trashedNotesState = trashedNotesState
@@ -210,7 +210,7 @@ fun NoteHome(
                                 trashSelectionState = null,
                                 selectedNotes = selectedNotes
                             ) {
-                                noteVM.updateNote(
+                                dataViewModel.updateNote(
                                     Note(
                                         title = it.dataEntity.title,
                                         description = it.dataEntity.description,
@@ -246,7 +246,7 @@ fun NoteHome(
                                         trashSelectionState = null,
                                         selectedNotes = selectedNotes
                                     ) {
-                                        noteVM.updateNote(
+                                        dataViewModel.updateNote(
                                             Note(
                                                 title = it.dataEntity.title,
                                                 description = it.dataEntity.description,
@@ -266,7 +266,7 @@ fun NoteHome(
                 }
 
                 PullRefreshIndicator(
-                    refreshing = noteVM.isProcessing,
+                    refreshing = dataViewModel.isProcessing,
                     state = pullRefreshState,
                 )
 

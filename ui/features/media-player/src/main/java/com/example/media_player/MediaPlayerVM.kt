@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.reposImpl.ExoRepoImpl
+import com.example.domain.exoplayer.ExoPlayerImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MediaPlayerVM @Inject constructor(
-    private val exoBuilder : ExoRepoImpl,
+    private val exoBuilder : ExoPlayerImpl,
 ):ViewModel() {
 
     var getMediaDuration = mutableStateOf(0L)

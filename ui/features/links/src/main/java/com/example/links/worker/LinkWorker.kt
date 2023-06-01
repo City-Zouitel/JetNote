@@ -2,33 +2,24 @@ package com.example.links.worker
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.core.graphics.drawable.toBitmap
 import androidx.hilt.work.HiltWorker
 import androidx.work.*
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.baha.url.preview.BahaUrlPreview
-import com.baha.url.preview.IUrlPreviewCallback
-import com.baha.url.preview.UrlInfoItem
 import com.example.common_ui.Cons
-import com.example.domain.reposImpl.LinkRepoImpl
-import com.example.domain.reposImpl.NoteAndLinkRepoImpl
-import com.example.local.model.Link
-import com.example.local.model.NoteAndLink
+import com.example.domain.usecase.LinkUseCase
+import com.example.domain.usecase.NoteAndLinkUseCase
+import com.example.links.mapper.LinkMapper
+import com.example.links.mapper.NoteAndLinkMapper
+import com.example.links.model.Link as InLink
+import com.example.links.model.NoteAndLink as InNoteAndLink
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import okhttp3.internal.wait
 import java.io.File
 import java.io.FileOutputStream
-import java.net.URL
 import java.util.*
-import kotlin.time.Duration.Companion.seconds
 
 @OptIn(DelicateCoroutinesApi::class)
 @HiltWorker
@@ -36,8 +27,10 @@ class LinkWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted workerParameters: WorkerParameters,
     private val ioDeprecated: CoroutineDispatcher,
-    private val linkRepo: LinkRepoImpl,
-    private val noteAndLinkRepo: NoteAndLinkRepoImpl
+    private val addLink: LinkUseCase.AddLink,
+    private val addNoteAndLink: NoteAndLinkUseCase.AddNoteAndLink,
+    private val linkMapper: LinkMapper,
+    private val noteAndLinkMapper: NoteAndLinkMapper,
 ): CoroutineWorker(context, workerParameters) {
 
     val linkImgPath = context.filesDir.path + "/" + "links_img"
@@ -52,21 +45,19 @@ class LinkWorker @AssistedInject constructor(
             val image_data = inputData.getString("image_data") ?: ""
             val host_data = inputData.getString("host_data") ?: ""
 
-            linkRepo.addLink(
-                link = Link(
-                    id = link_id_data,
-                    url = url_data,
-                    host = host_data,
-                    image = image_data,
-                    title = title_data,
-                    description = null
-                )
+            addLink.invoke(
+               linkMapper.toDomain(
+                   InLink(
+                       link_id_data, url_data, host_data,image_data, title_data, null
+                   )
+               )
             )
 
-            noteAndLinkRepo.addNoteAndLink(
-                NoteAndLink(
-                    noteUid = note_id_data,
-                    linkId = link_id_data
+            addNoteAndLink.invoke(
+                noteAndLinkMapper.toDomain(
+                    InNoteAndLink(
+                        note_id_data, link_id_data
+                    )
                 )
             )
 

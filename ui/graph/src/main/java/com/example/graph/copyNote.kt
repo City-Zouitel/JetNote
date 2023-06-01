@@ -6,19 +6,19 @@ import com.example.common_ui.Cons.IMAGES
 import com.example.common_ui.Cons.JPEG
 import com.example.common_ui.Cons.MP3
 import com.example.local.model.Note
-import com.example.note.NoteVM
+import com.example.note.DataViewModel
 import java.io.File
 import java.util.*
 
 //
 fun copyNote(
     ctx: Context,
-    noteVM: NoteVM,
+    dataViewModel: DataViewModel,
     note: Note,
     uid: UUID,
     cc : () -> Unit
 ) {
-    noteVM.addNote(
+    dataViewModel.addNote(
         note.copy(uid = uid.toString())
     )
     //

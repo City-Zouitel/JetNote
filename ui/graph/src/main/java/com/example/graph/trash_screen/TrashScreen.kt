@@ -35,10 +35,10 @@ import com.example.local.model.relational.NoteEntity
 import com.example.local.model.TagEntity
 import com.example.local.model.Note
 import com.example.local.model.NoteAndLink
-import com.example.note.EntityVM
-import com.example.note.NoteVM
+import com.example.note.NoteViewModel
+import com.example.note.DataViewModel
 import com.example.tasks.NoteAndTodoVM
-import com.example.tasks.TodoVM
+import com.example.tasks.TaskViewModel
 import java.io.File
 
 @SuppressLint(
@@ -48,12 +48,12 @@ import java.io.File
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrashScreen(
-    viewModule: NoteVM = hiltViewModel(),
-    entityVM: EntityVM = hiltViewModel(),
+    viewModule: DataViewModel = hiltViewModel(),
+    entityVM: NoteViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
-    todoVM: TodoVM = hiltViewModel(),
+    taskViewModel: TaskViewModel = hiltViewModel(),
     noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
     navController: NavController,
 ) {

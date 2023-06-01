@@ -38,7 +38,7 @@ import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
 import com.example.common_ui.MaterialColors.Companion.OUTLINE
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.graph.getMaterialColor
-import com.example.note.NoteVM
+import com.example.note.DataViewModel
 import io.getstream.sketchbook.ColorPickerDialog
 import io.getstream.sketchbook.PaintColorPalette
 import io.getstream.sketchbook.Sketchbook
@@ -49,7 +49,7 @@ import java.io.File
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DrawingNote(
-    viewModule: NoteVM = hiltViewModel(),
+    viewModule: DataViewModel = hiltViewModel(),
     navController: NavController,
     title: String,
     description: String,

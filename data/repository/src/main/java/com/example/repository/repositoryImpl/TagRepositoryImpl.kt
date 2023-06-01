@@ -12,7 +12,7 @@ class TagRepositoryImpl @Inject constructor(
     private val dataSource: TagDataSource,
     private val mapper: TagMapper
 ): TagRepository {
-    override val getAllLabels: Flow<List<OutTag>>
+    override val getAllTags: Flow<List<OutTag>>
         get() = dataSource.getAllLabels.map { list ->
             list.map { tag ->
                 mapper.readOnly(tag)

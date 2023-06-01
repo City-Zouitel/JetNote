@@ -42,7 +42,7 @@ dependencies {
 
     implementation(projects.domain)
 
-    implementation(projects.common.notification)
+    implementation(projects.service.notification)
     implementation(projects.common.commonUi)
 
     implementation(projects.ui.features.widget)
