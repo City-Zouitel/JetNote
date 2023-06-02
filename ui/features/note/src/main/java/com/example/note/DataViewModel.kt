@@ -1,15 +1,12 @@
 package com.example.note
 
-import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.provider.MediaStore
-import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,52 +18,52 @@ import androidx.lifecycle.viewModelScope
 import com.example.common_ui.Cons.IMAGES
 import com.example.common_ui.Cons.JPEG
 import com.example.domain.usecase.DataUseCase
+import com.example.note.mapper.DataMapper
 import com.example.note.model.Data as InData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
-import java.net.URL
-import java.nio.channels.FileChannel
 import javax.inject.Inject
 
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
     private val add: DataUseCase.AddData,
-    private val editData: DataUseCase.EditData,
-    private val deleteData: DataUseCase.DeleteData,
-    private val deleteAllTrashedData: DataUseCase.DeleteAllTrashedData,
+    private val edit: DataUseCase.EditData,
+    private val delete: DataUseCase.DeleteData,
+    private val eraseTrash: DataUseCase.DeleteAllTrashedData,
+    private val mapper: DataMapper
 
 ):ViewModel() {
 
     var isProcessing by mutableStateOf(false)
         private set
 
-    // for putting the dataEntity changes on Notes EntityState (the instance of Note class).
-//    private var noteState by mutableStateOf(listOf<Any>())
-
     // for add a dataEntity from NoteEntityState as it to DataEntity class.
-    fun addNote(data: InData) {
+    fun addData(data: InData) {
         viewModelScope.launch(Dispatchers.IO) {
             isProcessing = true
+            add.invoke(mapper.toDomain(data))
             isProcessing = false
         }
     }
 
-    // for updateNote a dataEntity from NoteEntityState and put it to DataEntity class,
+    // for editData a dataEntity from NoteEntityState and put it to DataEntity class,
     // depending on changes.
-    fun updateNote(data: InData){
+    fun editData(data: InData){
         viewModelScope.launch(Dispatchers.IO) {
             isProcessing = true
+            edit.invoke(mapper.toDomain(data))
             isProcessing = false
         }
     }
 
     // for deleting a dataEntity by the uid.
-    fun deleteNote(data: InData){
+    fun deleteData(data: InData){
         viewModelScope.launch(Dispatchers.IO) {
             isProcessing = true
+            delete.invoke(mapper.toDomain(data))
             isProcessing = false
         }
     }
@@ -75,6 +72,7 @@ class DataViewModel @Inject constructor(
     fun eraseTrash() {
         viewModelScope.launch(Dispatchers.IO) {
             isProcessing = true
+            eraseTrash.invoke()
             isProcessing = false
         }
     }

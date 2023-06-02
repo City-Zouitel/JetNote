@@ -24,14 +24,19 @@ class TaskViewModel @Inject constructor(
     private val mapper: TaskMapper
 ): ViewModel() {
 
-    private val _getAllTaskList = MutableStateFlow<List<OutTask>>(emptyList())
-    val getAllTaskList:StateFlow<List<OutTask>>
-    get() = _getAllTaskList.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+    private val _getAllTaskList = MutableStateFlow<List<InTask>>(emptyList())
+    val getAllTaskList:StateFlow<List<InTask>>
+        get() = _getAllTaskList
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(),
+                listOf()
+            )
 
     init {
         viewModelScope.launch {
-            getAll.invoke().collect {
-                _getAllTaskList.value = it
+            getAll.invoke().collect { list ->
+                _getAllTaskList.value = list.map { task -> mapper.toView(task) }
             }
         }
     }

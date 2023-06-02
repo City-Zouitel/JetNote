@@ -9,7 +9,7 @@ class NoteAndTagMapper: Mapper.Base<InNoteAndTag, OutNoteAndTag> {
         InNoteAndTag(noteUid, labelId)
     }
 
-    override fun readOnly(data: InNoteAndTag): OutNoteAndTag = with(data){
+    override fun toDomain(data: InNoteAndTag): OutNoteAndTag = with(data){
         OutNoteAndTag(noteUid, labelId)
     }
 }

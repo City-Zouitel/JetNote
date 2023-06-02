@@ -5,10 +5,10 @@ sealed interface Mapper {
 
         fun toRepository(data: Out): In
 
-        fun readOnly(data: In): Out
+        fun toDomain(data: In): Out
     }
     interface ReadOnly<In, Out> {
 
-        fun readOnly(data: In): Out
+        fun toDomain(data: In): Out
     }
 }

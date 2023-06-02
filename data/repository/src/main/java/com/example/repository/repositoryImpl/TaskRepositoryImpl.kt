@@ -15,7 +15,7 @@ class TaskRepositoryImpl @Inject constructor(
     override val getAllTaskItems: Flow<List<OutTask>>
         get() = dataSource.getAllTaskItems.map { list ->
             list.map { task ->
-                mapper.readOnly(task)
+                mapper.toDomain(task)
             }
         }
 

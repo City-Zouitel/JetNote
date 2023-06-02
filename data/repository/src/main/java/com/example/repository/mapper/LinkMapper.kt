@@ -9,7 +9,7 @@ class LinkMapper: Mapper.Base<InLink, OutLink> {
         InLink(id, url, host, image, title, description)
     }
 
-    override fun readOnly(data: InLink): OutLink = with(data) {
+    override fun toDomain(data: InLink): OutLink = with(data) {
         OutLink(id, url, host, image, title, description)
     }
 }

@@ -9,7 +9,7 @@ class TaskMapper: Mapper.Base<InTask, OutTask> {
         InTask(id, item, isDone)
     }
 
-    override fun readOnly(data: InTask): OutTask = with(data){
+    override fun toDomain(data: InTask): OutTask = with(data){
         OutTask(id, item, isDone)
     }
 }

@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-import com.example.repository.utils.Constants.NON
+import com.example.domain.utils.Constants.NON
 
 data class Data(
     var uid: String = "",

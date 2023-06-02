@@ -12,6 +12,6 @@ class WidgetRepositoryImpl @Inject constructor(
 ): WidgetRepository {
     override val getAllWidgetMainEntityById: List<OutNote>
         get() = dataSource.getAllWidgetMainEntityById.map { note ->
-            mapper.readOnly(note)
+            mapper.toDomain(note)
         }
 }

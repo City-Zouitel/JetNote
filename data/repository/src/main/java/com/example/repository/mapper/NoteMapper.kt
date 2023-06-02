@@ -10,12 +10,12 @@ class NoteMapper(
     private val taskMapper: TaskMapper,
     private val linkMapper: LinkMapper
 ): Mapper.ReadOnly<InNote, OutNote> {
-    override fun readOnly(data: InNote): OutNote = with(data){
+    override fun toDomain(data: InNote): OutNote = with(data){
         OutNote(
-            dataEntity = dataMapper.readOnly(dataEntity),
-            tagEntities = tagEntities.map { tagMapper.readOnly(it) },
-            taskEntities = taskEntities.map { taskMapper.readOnly(it) },
-            linkEntities = linkEntities.map { linkMapper.readOnly(it) }
+            dataEntity = dataMapper.toDomain(dataEntity),
+            tagEntities = tagEntities.map { tagMapper.toDomain(it) },
+            taskEntities = taskEntities.map { taskMapper.toDomain(it) },
+            linkEntities = linkEntities.map { linkMapper.toDomain(it) }
         )
     }
 }

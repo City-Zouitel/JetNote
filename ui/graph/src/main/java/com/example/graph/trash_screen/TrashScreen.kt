@@ -27,17 +27,17 @@ import com.example.graph.navigation_drawer.NavigationDrawer
 import com.example.graph.navigation_drawer.Screens.*
 import com.example.graph.note_card.NoteCard
 import com.example.graph.top_action_bar.NoteTopAppBar
-import com.example.graph.top_action_bar.TrashSelectionTopAppBar
+import com.example.graph.top_action_bar.selection_bars.TrashSelectionTopAppBar
 import com.example.graph.top_action_bar.dialogs.EraseDialog
+import com.example.links.model.NoteAndLink
 import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
-import com.example.local.model.relational.NoteEntity
-import com.example.local.model.TagEntity
-import com.example.local.model.Note
-import com.example.local.model.NoteAndLink
 import com.example.note.NoteViewModel
 import com.example.note.DataViewModel
-import com.example.tasks.NoteAndTodoVM
+import com.example.note.model.Data
+import com.example.note.model.Note
+import com.example.tags.model.Tag
+import com.example.tasks.NoteAndTaskViewModel
 import com.example.tasks.TaskViewModel
 import java.io.File
 
@@ -54,7 +54,7 @@ fun TrashScreen(
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
     taskViewModel: TaskViewModel = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    noteAndTodoVM: NoteAndTaskViewModel = hiltViewModel(),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
@@ -64,14 +64,14 @@ fun TrashScreen(
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scaffoldState = rememberScaffoldState()
-    val observerTrashedNotes: State<List<NoteEntity>> =
+    val observerTrashedNotes: State<List<Note>> =
         remember(entityVM, entityVM::allTrashedNotes).collectAsState()
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
     val confirmationDialogState = remember { mutableStateOf(false) }
 
     val trashSelectionState = remember { mutableStateOf(false) }
-    val selectedNotes = remember { mutableStateListOf<Note>() }
+    val selectedNotes = remember { mutableStateListOf<Data>() }
 
     //
     if (confirmationDialogState.value) {
@@ -126,7 +126,7 @@ fun TrashScreen(
                         confirmationDialogState = confirmationDialogState,
                         expandedSortMenuState = null,
                         searchScreen = SEARCH_IN_TRASH,
-                        tagEntity = remember { mutableStateOf(TagEntity()) }
+                        tagEntity = remember { mutableStateOf(Tag()) }
                     )
                 }
             }
@@ -148,7 +148,7 @@ fun TrashScreen(
                             trashSelectionState = trashSelectionState,
                             selectedNotes = selectedNotes
                         ) {
-                            viewModule.deleteNote(Note(uid = entity.dataEntity.uid))
+                            viewModule.deleteData(Data(uid = entity.dataEntity.uid))
                             entity.linkEntities.forEach { link ->
                                 linkVM.deleteLink(link)
                             }

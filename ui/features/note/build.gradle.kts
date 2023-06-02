@@ -52,7 +52,6 @@ dependencies {
     implementation(projects.common.commonUi)
     implementation(projects.domain)
     implementation(projects.data.datastore)
-    implementation(projects.data.local)
     implementation(projects.ui.features.reminder)
     implementation(projects.ui.features.record)
     implementation(projects.ui.features.tasks)

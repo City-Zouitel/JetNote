@@ -48,13 +48,13 @@ import com.google.accompanist.flowlayout.FlowRow
 @Composable
 fun Labels(
     tagViewModel: TagViewModel = hiltViewModel(),
-    noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
+    noteAndTagViewModel: NoteAndTagViewModel = hiltViewModel(),
     noteUid: String?,
 ) {
 
-    val observeLabels = remember(tagViewModel, tagViewModel::getAllLabels).collectAsState()
+    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
     val observeNotesAndLabels =
-        remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
+        remember(noteAndTagViewModel, noteAndTagViewModel::getAllNotesAndTags).collectAsState()
 
     val idState = remember { mutableStateOf(-1L) }
     val labelState = remember { mutableStateOf("") }//.filterBadWords()
@@ -103,14 +103,14 @@ fun Labels(
                                             InNoteAndTag(noteUid!!, label.id)
                                         )
                                     ) {
-                                        noteAndLabelVM.deleteNoteAndLabel(
+                                        noteAndTagViewModel.deleteNoteAndTag(
                                             InNoteAndTag(
                                                 noteUid = noteUid,
                                                 labelId = label.id
                                             )
                                         )
                                     } else {
-                                        noteAndLabelVM.addNoteAndLabel(
+                                        noteAndTagViewModel.addNoteAndTag(
                                             InNoteAndTag(
                                                 noteUid = noteUid,
                                                 labelId = label.id

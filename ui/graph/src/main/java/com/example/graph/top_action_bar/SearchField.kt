@@ -29,6 +29,7 @@ import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.graph.getMaterialColor
 import com.example.graph.sound
 import com.example.local.model.TagEntity
+import com.example.tags.model.Tag
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +37,7 @@ internal fun SearchField(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     title: MutableState<String>,
     placeholder: String,
-    tagEntity: MutableState<TagEntity>?
+    tagEntity: MutableState<Tag>?
 ) {
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
@@ -67,7 +68,7 @@ internal fun SearchField(
                     modifier = Modifier.clickable {
                         sound.makeSound.invoke(ctx, KEY_INVALID, thereIsSoundEffect.value)
                         title.value = ""
-                        tagEntity?.value = TagEntity()
+                        tagEntity?.value = Tag()
                     }
                 )
             }

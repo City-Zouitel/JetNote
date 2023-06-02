@@ -35,13 +35,13 @@ import com.example.common_ui.Icons
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.OUT_LINE_VARIANT
 import com.example.common_ui.MaterialColors.Companion.SURFACE
-import com.example.local.model.Note
+import com.example.quick_note.model.QuickData
 import java.util.UUID
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Quick(
-    quickNoteVM: QuickNoteVM = hiltViewModel(),
+    quickDataViewModel: QuickDataViewModel = hiltViewModel(),
     action:() -> (Unit)
     ) {
     val descriptionState = remember { mutableStateOf("") }
@@ -123,8 +123,8 @@ fun Quick(
                     ) {
                         SmallFloatingActionButton(
                             onClick = {
-                                quickNoteVM.addQuickNote(
-                                    Note(
+                                quickDataViewModel.addQuickData(
+                                    QuickData(
                                         description = descriptionState.value,
                                         uid = UUID.randomUUID().toString(),
                                         color = backgroundColorState.value,

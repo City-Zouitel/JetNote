@@ -5,8 +5,8 @@ import com.example.common_ui.Cons.AUDIOS
 import com.example.common_ui.Cons.IMAGES
 import com.example.common_ui.Cons.JPEG
 import com.example.common_ui.Cons.MP3
-import com.example.local.model.Note
 import com.example.note.DataViewModel
+import com.example.note.model.Data
 import java.io.File
 import java.util.*
 
@@ -14,11 +14,11 @@ import java.util.*
 fun copyNote(
     ctx: Context,
     dataViewModel: DataViewModel,
-    note: Note,
+    note: Data,
     uid: UUID,
     cc : () -> Unit
 ) {
-    dataViewModel.addNote(
+    dataViewModel.addData(
         note.copy(uid = uid.toString())
     )
     //

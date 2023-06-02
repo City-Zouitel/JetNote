@@ -22,8 +22,8 @@ class NoteAndLinkVM @Inject constructor(
     private val mapper: NoteAndLinkMapper
 ): ViewModel() {
 
-    private val _getAllNotesAndLinks = MutableStateFlow<List<OutNoteAndLink>>(emptyList())
-    val getAllNotesAndLinks: StateFlow<List<OutNoteAndLink>>
+    private val _getAllNotesAndLinks = MutableStateFlow<List<InNoteAndLink>>(emptyList())
+    val getAllNotesAndLinks: StateFlow<List<InNoteAndLink>>
         get() = _getAllNotesAndLinks
             .stateIn(
                 viewModelScope,
@@ -33,10 +33,8 @@ class NoteAndLinkVM @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            getAll.invoke().collect {
-                _getAllNotesAndLinks.value.map { noteAndLink ->
-                    mapper.toView(noteAndLink)
-                }
+            getAll.invoke().collect { list ->
+                _getAllNotesAndLinks.value = list.map { noteAndLink -> mapper.toView(noteAndLink) }
             }
         }
     }

@@ -54,14 +54,23 @@ import com.example.common_ui.Cons.NUL
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.EDIT_ICON
 import com.example.common_ui.MaterialColors.Companion.OUT_LINE_VARIANT
+import com.example.links.model.NoteAndLink
 import com.example.links.ui.CacheLinks
 import com.example.links.ui.LinkPart
 import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
-import com.example.local.model.*
+import com.example.media_player.MediaPlayerViewModel
 import com.example.note.bottom_bar.AddEditBottomBar
 import com.example.record.RecordingNote
 import com.example.note.DataViewModel
+import com.example.note.model.Data
+import com.example.tags.NoteAndTagViewModel
+import com.example.tags.TagViewModel
+import com.example.tags.model.NoteAndTag
+import com.example.tasks.NoteAndTaskViewModel
+import com.example.tasks.TaskViewModel
+import com.example.tasks.model.NoteAndTask
+import com.example.tasks.model.Task
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
 
@@ -78,11 +87,11 @@ import java.io.File
 fun NoteEdit(
     navController: NavController,
     dataViewModel: DataViewModel = hiltViewModel(),
-    exoViewModule: com.example.media_player.MediaPlayerVM = hiltViewModel(),
-    noteAndLabelVM: com.example.tags.NoteAndLabelVM = hiltViewModel(),
-    tagViewModel: com.example.tags.TagViewModel = hiltViewModel(),
-    taskViewModel: com.example.tasks.TaskViewModel = hiltViewModel(),
-    noteAndTodoVM: com.example.tasks.NoteAndTodoVM = hiltViewModel(),
+    exoViewModule: MediaPlayerViewModel = hiltViewModel(),
+    noteAndLabelVM: NoteAndTagViewModel = hiltViewModel(),
+    tagViewModel: TagViewModel = hiltViewModel(),
+    taskViewModel: TaskViewModel = hiltViewModel(),
+    noteAndTodoVM: NoteAndTaskViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
@@ -107,8 +116,8 @@ fun NoteEdit(
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
-    val observeNotesAndLabels = remember(noteAndLabelVM,noteAndLabelVM::getAllNotesAndLabels).collectAsState()
-    val observeLabels = remember(tagViewModel, tagViewModel::getAllLabels).collectAsState()
+    val observeNotesAndLabels = remember(noteAndLabelVM,noteAndLabelVM::getAllNotesAndTags).collectAsState()
+    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
 
     val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
     val observerNoteAndLink =
@@ -116,7 +125,7 @@ fun NoteEdit(
 
     val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
-        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
+        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
 
     val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
@@ -191,8 +200,8 @@ fun NoteEdit(
                         onClick = {
                             sound.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
 
-                            dataViewModel.updateNote(
-                                Note(
+                            dataViewModel.editData(
+                                Data(
                                     title = if(titleState.value.isNullOrBlank()) null else titleState.value ,
                                     description = if(descriptionState.value.isNullOrBlank()) null else descriptionState.value,
                                     priority = priorityState.value,
@@ -220,7 +229,7 @@ fun NoteEdit(
                 navController = navController,
                 recordDialogState = recordDialogState,
                 remindingDialogState = remindingDialogState,
-                note = Note(uid = uid),
+                note = Data(uid = uid),
                 backgroundColorState = backgroundColorState,
                 textColorState = textColorState,
                 priorityColorState = priorityState,
@@ -374,7 +383,7 @@ fun NoteEdit(
                 FlowRow {
                     observeLabels.value.filter {
                         observeNotesAndLabels.value.contains(
-                            NoteAndLabel(uid, it.id)
+                            NoteAndTag(uid, it.id)
                         )
                     }.forEach {
                         AssistChip(
@@ -399,7 +408,7 @@ fun NoteEdit(
             item {
                 observeTodoList.value.filter {
                     observeNoteAndTodo.value.contains(
-                        NoteAndTodo(uid, it.id)
+                        NoteAndTask(uid, it.id)
                     )
                 }.forEach { todo ->
                     Row(

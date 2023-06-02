@@ -9,7 +9,7 @@ class TagMapper: Mapper.Base<InTag, OutTag> {
         InTag(id, label, color)
     }
 
-    override fun readOnly(data: InTag): OutTag = with(data){
+    override fun toDomain(data: InTag): OutTag = with(data){
         OutTag(id, label, color)
     }
 }

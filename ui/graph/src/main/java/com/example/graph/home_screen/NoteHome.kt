@@ -1,7 +1,6 @@
 package com.example.graph.home_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -36,18 +35,18 @@ import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_VARIANT
 import com.example.common_ui.VerticalGrid
 import com.example.graph.sound
-import com.example.local.model.relational.NoteEntity
-import com.example.local.model.TagEntity
-import com.example.local.model.Note
 import com.example.common_ui.DataStoreVM
 import com.example.graph.getMaterialColor
 import com.example.graph.navigation_drawer.NavigationDrawer
 import com.example.graph.navigation_drawer.Screens
 import com.example.graph.note_card.NoteCard
 import com.example.graph.top_action_bar.NoteTopAppBar
-import com.example.graph.top_action_bar.HomeSelectionTopAppBar
+import com.example.graph.top_action_bar.selection_bars.HomeSelectionTopAppBar
 import com.example.note.NoteViewModel
 import com.example.note.DataViewModel
+import com.example.note.model.Data
+import com.example.note.model.Note
+import com.example.tags.model.Tag
 import java.util.*
 
 @SuppressLint(
@@ -55,8 +54,9 @@ import java.util.*
     "UnusedMaterialScaffoldPaddingParameter",
     "UnrememberedMutableState"
 )
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class,
-    ExperimentalFoundationApi::class
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterialApi::class,
 )
 @Composable
 fun NoteHome(
@@ -68,7 +68,7 @@ fun NoteHome(
     val ctx = LocalContext.current
     //
     val searchTitleState = remember { mutableStateOf("") }
-    val searchTagEntityState = remember { mutableStateOf(TagEntity()) }
+    val searchTagEntityState = remember { mutableStateOf(Tag()) }
 
     //
     val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
@@ -80,7 +80,7 @@ fun NoteHome(
     //
     val scaffoldState = rememberScaffoldState()
 //     to observer notes while changing immediately.
-    val observerLocalNotes: State<List<NoteEntity>> = when (
+    val observerLocalNotes: State<List<Note>> = when (
         remember(dataStoreVM, dataStoreVM::getOrdination).collectAsState().value
     ) {
         BY_NAME -> remember(entityVM, entityVM::allNotesByName).collectAsState()
@@ -110,7 +110,7 @@ fun NoteHome(
     )
 
     val homeSelectionState = remember { mutableStateOf(false) }
-    val selectedNotes = remember { mutableStateListOf<Note>() }
+    val selectedNotes = remember { mutableStateListOf<Data>() }
 
     //undo snack-bar.
     val undo = UndoSnackbar(
@@ -210,8 +210,8 @@ fun NoteHome(
                                 trashSelectionState = null,
                                 selectedNotes = selectedNotes
                             ) {
-                                dataViewModel.updateNote(
-                                    Note(
+                                dataViewModel.editData(
+                                    Data(
                                         title = it.dataEntity.title,
                                         description = it.dataEntity.description,
                                         priority = it.dataEntity.priority,
@@ -246,8 +246,8 @@ fun NoteHome(
                                         trashSelectionState = null,
                                         selectedNotes = selectedNotes
                                     ) {
-                                        dataViewModel.updateNote(
-                                            Note(
+                                        dataViewModel.editData(
+                                            Data(
                                                 title = it.dataEntity.title,
                                                 description = it.dataEntity.description,
                                                 priority = it.dataEntity.priority,

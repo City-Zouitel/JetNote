@@ -22,7 +22,7 @@ import com.example.local.model.*
     exportSchema = true
 )
 abstract class Database:RoomDatabase() {
-    abstract fun getNoteDao(): NotesDao
+    abstract fun getNoteDao(): DataDao
     abstract fun getLabelDao(): TagDao
     abstract fun getNoteAndLabelDao(): NoteAndTagDao
     abstract fun getEntityDao(): NoteDao

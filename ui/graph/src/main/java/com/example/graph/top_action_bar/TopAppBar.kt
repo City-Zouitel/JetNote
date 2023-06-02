@@ -14,6 +14,7 @@ import com.example.common_ui.AdaptingRow
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.graph.getMaterialColor
 import com.example.local.model.TagEntity
+import com.example.tags.model.Tag
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -25,13 +26,13 @@ fun NoteTopAppBar(
     confirmationDialogState: MutableState<Boolean>?,
     expandedSortMenuState: MutableState<Boolean>?,
     searchScreen: String,
-    tagEntity: MutableState<TagEntity>?
+    tagEntity: MutableState<Tag>?
 ) {
 
     TopAppBar(
         navigationIcon = {
             Row {
-                AnimatedVisibility(searchNoteTitle.value.isEmpty() && tagEntity?.value == TagEntity()) {
+                AnimatedVisibility(searchNoteTitle.value.isEmpty() && tagEntity?.value == Tag()) {
                     AdaptingRow(
                         Modifier.padding(start = 10.dp, end = 10.dp),
                     ) {
@@ -48,7 +49,7 @@ fun NoteTopAppBar(
             )
         },
         actions = {
-            AnimatedVisibility(visible = searchNoteTitle.value.isEmpty() && tagEntity?.value == TagEntity()) {
+            AnimatedVisibility(visible = searchNoteTitle.value.isEmpty() && tagEntity?.value == Tag()) {
                 AdaptingRow(
                     Modifier.padding(start = 10.dp, end = 10.dp),
                 ) {

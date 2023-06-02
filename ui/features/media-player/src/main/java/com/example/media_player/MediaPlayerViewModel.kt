@@ -12,7 +12,7 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class MediaPlayerVM @Inject constructor(
+class MediaPlayerViewModel @Inject constructor(
     private val exoBuilder : ExoPlayerImpl,
 ):ViewModel() {
 

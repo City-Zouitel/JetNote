@@ -21,7 +21,7 @@
         android:name=".NoteApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:tagEntity="JetNote"
+        android:label="JetNote"
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
@@ -38,7 +38,7 @@
         <activity
             android:name=".NoteActivity"
             android:exported="true"
-            android:tagEntity="JetNote"
+            android:label="JetNote"
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.JetNote">
             <intent-filter>
@@ -79,7 +79,7 @@
             android:name="com.example.quick_note.QuickTileService"
             android:exported="true"
             android:icon="@drawable/plus_24"
-            android:tagEntity="Quick Note"
+            android:label="Quick Note"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />

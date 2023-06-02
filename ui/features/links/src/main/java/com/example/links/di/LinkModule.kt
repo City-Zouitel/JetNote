@@ -1,6 +1,8 @@
 package com.example.links.di
 
 import android.content.Context
+import com.example.links.mapper.LinkMapper
+import com.example.links.mapper.NoteAndLinkMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +14,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object LinkMod {
+object LinkModule {
 
     @Singleton
     @Provides
@@ -20,4 +22,12 @@ object LinkMod {
 
     @Provides
     fun provideDispatcherIO(): CoroutineDispatcher = Dispatchers.IO
+
+    @Singleton
+    @Provides
+    fun provideLinkMapper() = LinkMapper()
+
+    @Singleton
+    @Provides
+    fun provideNoteAndLinkMapper() = NoteAndLinkMapper()
 }

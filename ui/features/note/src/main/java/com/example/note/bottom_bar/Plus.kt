@@ -39,7 +39,7 @@ import com.example.common_ui.Icons.IMAGE_ICON
 import com.example.common_ui.Icons.LIST_CHECK_ICON
 import com.example.common_ui.Icons.MIC_ICON
 import com.example.common_ui.Icons.TAGS_ICON
-import com.example.local.model.Note
+import com.example.note.model.Data
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.skydoves.balloon.compose.BalloonWindow
@@ -50,7 +50,7 @@ import com.skydoves.balloon.compose.BalloonWindow
 internal fun Plus(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     isShow: MutableState<Boolean>,
-    note: Note,
+    note: Data,
     navController: NavController,
     imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
     recordDialogState: MutableState<Boolean>,

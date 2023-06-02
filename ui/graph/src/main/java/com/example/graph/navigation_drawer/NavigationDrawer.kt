@@ -34,6 +34,7 @@ import com.example.common_ui.sharApp
 import com.example.local.model.TagEntity
 import com.example.graph.sound
 import com.example.tags.TagViewModel
+import com.example.tags.model.Tag
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
 
@@ -45,10 +46,10 @@ fun NavigationDrawer(
     drawerState: DrawerState,
     navController: NavController,
     searchTitle: MutableState<String>?,
-    searchTagEntity: MutableState<TagEntity>?
+    searchTagEntity: MutableState<Tag>?
 ) {
     val ctx = LocalContext.current
-    val observeLabels = remember(tagViewModel,tagViewModel::getAllLabels).collectAsState()
+    val observeLabels = remember(tagViewModel,tagViewModel::getAllLTags).collectAsState()
 
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 

@@ -1,4 +1,4 @@
-package com.example.graph.top_action_bar
+package com.example.graph.top_action_bar.selection_bars
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
@@ -18,9 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common_ui.*
 import com.example.graph.sound
-import com.example.graph.top_action_bar.selection_bars.SelectionCount
-import com.example.local.model.Note
 import com.example.note.DataViewModel
+import com.example.note.model.Data
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -28,7 +27,7 @@ fun TrashSelectionTopAppBar(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     dataViewModel: DataViewModel = hiltViewModel(),
     trashSelectionState: MutableState<Boolean>?,
-    selectedNotes: SnapshotStateList<Note>?,
+    selectedNotes: SnapshotStateList<Data>?,
 
     ) {
     val ctx = LocalContext.current
@@ -51,7 +50,7 @@ fun TrashSelectionTopAppBar(
                         ) {
                             sound.makeSound.invoke(ctx, Cons.KEY_CLICK, thereIsSoundEffect.value)
                             selectedNotes?.forEach {
-                                dataViewModel.deleteNote(it)
+                                dataViewModel.deleteData(it)
                             }
                             selectedNotes?.clear()
                             trashSelectionState?.value = false

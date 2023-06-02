@@ -9,7 +9,7 @@ class NoteAndTaskMapper: Mapper.Base<InNoteAndTask, OutNoteAndTask> {
         InNoteAndTask(noteUid, todoId)
     }
 
-    override fun readOnly(data: InNoteAndTask): OutNoteAndTask = with(data){
+    override fun toDomain(data: InNoteAndTask): OutNoteAndTask = with(data){
         OutNoteAndTask(noteUid, todoId)
     }
 }

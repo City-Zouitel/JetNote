@@ -51,14 +51,17 @@ import com.example.graph.ImageDisplayed
 import com.example.graph.navigation_drawer.Screens
 import com.example.graph.navigation_drawer.Screens.*
 import com.example.graph.sound
+import com.example.links.model.NoteAndLink
 import com.example.links.ui.LinkPart
 import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
-import com.example.local.model.*
-import com.example.local.model.relational.NoteEntity
 import com.example.note.DataViewModel
-import com.example.tasks.NoteAndTodoVM
+import com.example.note.model.Data
+import com.example.note.model.Note
+import com.example.tasks.NoteAndTaskViewModel
 import com.example.tasks.TaskViewModel
+import com.example.tasks.model.NoteAndTask
+import com.example.tasks.model.Task
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -69,12 +72,12 @@ import java.util.*
 fun NoteCard(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     screen: Screens,
-    noteEntity: NoteEntity,
+    noteEntity: Note,
     navController: NavController,
     homeSelectionState: MutableState<Boolean>?,
     trashSelectionState: MutableState<Boolean>?,
-    selectedNotes: SnapshotStateList<Note>?,
-    onSwipeNote: (NoteEntity) -> Unit
+    selectedNotes: SnapshotStateList<Data>?,
+    onSwipeNote: (Note) -> Unit
 ) {
     val swipeState = rememberSwipeableActionsState()
     val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
@@ -120,17 +123,17 @@ fun NoteCard(
 @Composable
 private fun Card(
     taskViewModel: TaskViewModel = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    noteAndTodoVM: NoteAndTaskViewModel = hiltViewModel(),
     dataViewModel: DataViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
-    noteEntity: NoteEntity,
+    noteEntity: Note,
     navController: NavController,
     screen: Screens,
     homeSelectionState: MutableState<Boolean>?,
     trashSelectionState: MutableState<Boolean>?,
-    selectedNotes: SnapshotStateList<Note>?
+    selectedNotes: SnapshotStateList<Data>?
 ) {
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
@@ -141,7 +144,7 @@ private fun Card(
 
     val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
-        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
+        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
 
     val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
     val observerNoteAndLink =
@@ -292,8 +295,8 @@ private fun Card(
         ) {
             if (screen == TRASH_SCREEN) {
                 IconButton(onClick = {
-                    dataViewModel.updateNote(
-                        Note(
+                    dataViewModel.editData(
+                        Data(
                             title = note.title,
                             description = note.description,
                             priority = note.priority,
@@ -343,7 +346,7 @@ private fun Card(
         if (
             observeTodoList.value.any {
                 observeNoteAndTodo.value.contains(
-                    NoteAndTodo(note.uid, it.id)
+                    NoteAndTask(note.uid, it.id)
                 )
             }
         ) {
@@ -382,7 +385,7 @@ private fun Card(
                 item {
                     observeTodoList.value.filter {
                         observeNoteAndTodo.value.contains(
-                            NoteAndTodo(note.uid, it.id)
+                            NoteAndTask(note.uid, it.id)
                         )
                     }.forEach { todo ->
                         Row(

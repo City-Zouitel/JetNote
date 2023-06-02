@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
 import com.example.common_ui.getColorOfPriority
-import com.example.local.model.Note
+import com.example.note.model.Data
 
-val DrawScope.clipNotePath: (Note) -> Unit get() = {
+val DrawScope.clipNotePath: (Data) -> Unit get() = {
     clipPath(
         Path().apply {
             lineTo(size.width, 0f)
@@ -46,7 +46,7 @@ val DrawScope.clipNotePath: (Note) -> Unit get() = {
     }
 }
 
-val DrawScope.normalNotePath: (Note) -> Unit get() = {
+val DrawScope.normalNotePath: (Data) -> Unit get() = {
     clipPath(
         Path().apply {
             lineTo(size.width, 0f)
@@ -65,7 +65,7 @@ val DrawScope.normalNotePath: (Note) -> Unit get() = {
 }
 
 
-val AnnotatedString.Builder.hashtagText: (Note, String) -> Unit get() = { note, txt ->
+val AnnotatedString.Builder.hashtagText: (Data, String) -> Unit get() = { note, txt ->
     for (link in txt.split(' ')) {
         if (link.matches("(.*|\\n)#\\w+|https?://.+|\\d{3}+(.*|\\n)".toRegex())) {
             withStyle(SpanStyle(color = Color.Cyan, fontSize = 19.sp)) {

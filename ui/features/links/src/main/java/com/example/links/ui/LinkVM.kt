@@ -29,13 +29,13 @@ import javax.inject.Inject
 @HiltViewModel
 class LinkVM @Inject constructor(
     application: Application,
-    private val getAll: LinkUseCase.GetAllLinks,
+    getAll: LinkUseCase.GetAllLinks,
     private val delete: LinkUseCase.DeleteLink,
     private val mapper: LinkMapper
     ): ViewModel() {
 
-    private val _getAllLinks = MutableStateFlow<List<OutLink>>(emptyList())
-    val getAllLinks: StateFlow<List<OutLink>>
+    private val _getAllLinks = MutableStateFlow<List<InLink>>(emptyList())
+    val getAllLinks: StateFlow<List<InLink>>
         get() = _getAllLinks
             .stateIn(
                 viewModelScope,
@@ -48,9 +48,9 @@ class LinkVM @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            //            repo.getAllLinks.collect {
-//                _getAllLinks.value = it
-//            }
+            getAll.invoke().collect { list ->
+                _getAllLinks.value = list.map { mapper.toView(it) }
+            }
         }
     }
 

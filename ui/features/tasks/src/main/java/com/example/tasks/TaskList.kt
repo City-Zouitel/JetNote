@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -46,12 +47,9 @@ fun TaskList(
     noteAndTodoVM: NoteAndTaskViewModel = hiltViewModel(),
     noteUid:String
 ) {
-    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
+    val observeTaskList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodoList =
-        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
-
-    //
-    val getAll = taskViewModel.getAll().invoke().collectAsState(emptyList())
+        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
 
     val itemState = remember { mutableStateOf("") }//.filterBadWords()
     val idState = remember { mutableStateOf(-1L) }
@@ -62,14 +60,14 @@ fun TaskList(
         LazyColumn(
             modifier = Modifier.padding(top = 25.dp)
         ) {
-            items(observeTodoList.value) { todo ->
+            items(observeTaskList.value) { task ->
                 if (observeNoteAndTodoList.value.contains(
-                        InNoteAndTask(noteUid, todo.id)
+                        InNoteAndTask(noteUid, task.id)
                     )
                 ) {
-                    TodoItem(todo, taskViewModel, itemState, idState) {
+                    TodoItem(task, taskViewModel, itemState, idState) {
                         taskViewModel.deleteTotoItem(
-                            InTask(id = todo.id)
+                            InTask(id = task.id)
                         )
                     }
                 }
@@ -98,14 +96,14 @@ fun TaskList(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            if (observeTodoList.value.any { it.id == idState.value }) {
+                            if (observeTaskList.value.any { it.id == idState.value }) {
                                 taskViewModel.updateTotoItem(InTask(idState.value, itemState.value, false))
                             } else {
                                 Random.nextLong().let {
                                     taskViewModel.addTotoItem(
                                         InTask(it, itemState.value, false)
                                     )
-                                    noteAndTodoVM.addNoteAndTodoItem(InNoteAndTask(noteUid, it))
+                                    noteAndTodoVM.addNoteAndTaskItem(InNoteAndTask(noteUid, it))
                                 }
                             }.invokeOnCompletion {
                                 itemState.value = ""

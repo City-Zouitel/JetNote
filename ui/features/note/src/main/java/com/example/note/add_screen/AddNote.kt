@@ -57,20 +57,24 @@ import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.DONE_ICON
 import com.example.common_ui.MaterialColors.Companion.OUT_LINE_VARIANT
 import com.example.common_ui.MaterialColors.Companion.SURFACE
+import com.example.links.model.NoteAndLink
 import com.example.links.ui.CacheLinks
 import com.example.links.ui.LinkPart
 import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
-import com.example.local.model.*
-import com.example.media_player.MediaPlayerVM
+import com.example.media_player.MediaPlayerViewModel
 import com.example.note.bottom_bar.AddEditBottomBar
 import com.example.note.DataViewModel
+import com.example.note.model.Data
 import com.example.record.RecordingNote
 import com.example.reminder.RemindingNote
 import com.example.tags.TagViewModel
-import com.example.tags.NoteAndLabelVM
-import com.example.tasks.NoteAndTodoVM
+import com.example.tags.NoteAndTagViewModel
+import com.example.tags.model.NoteAndTag
+import com.example.tasks.NoteAndTaskViewModel
 import com.example.tasks.TaskViewModel
+import com.example.tasks.model.NoteAndTask
+import com.example.tasks.model.Task
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
 
@@ -86,11 +90,11 @@ import java.io.File
 @Composable
 fun NoteAdd(
     dataViewModel: DataViewModel = hiltViewModel(),
-    exoVM: MediaPlayerVM = hiltViewModel(),
-    noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
+    exoVM: MediaPlayerViewModel = hiltViewModel(),
+    noteAndTagViewModel: NoteAndTagViewModel = hiltViewModel(),
     tagViewModel: TagViewModel = hiltViewModel(),
     taskViewModel: TaskViewModel = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    noteAndTodoVM: NoteAndTaskViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
@@ -111,12 +115,12 @@ fun NoteAdd(
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val observeNotesAndLabels =
-        remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
-    val observeLabels = remember(tagViewModel, tagViewModel::getAllLabels).collectAsState()
+        remember(noteAndTagViewModel, noteAndTagViewModel::getAllNotesAndTags).collectAsState()
+    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
 
     val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
-        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
+        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
 
     val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
     val observerNoteAndLink = remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
@@ -203,8 +207,8 @@ fun NoteAdd(
                         onClick = {
                             sound.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
 
-                            dataViewModel.addNote(
-                                Note(
+                            dataViewModel.addData(
+                                Data(
                                     title = if(titleState.value.isNullOrBlank()) null else titleState.value ,
                                     description = if(descriptionState.value.isNullOrBlank()) null else descriptionState.value,
                                     priority = priorityState.value,
@@ -232,7 +236,7 @@ fun NoteAdd(
                 navController = navController,
                 recordDialogState = recordDialogState,
                 remindingDialogState = remindingDialogState,
-                note = Note(uid = uid),
+                note = Data(uid = uid),
                 backgroundColorState = backgroundColorState,
                 textColorState = textColorState,
                 priorityColorState = priorityState,
@@ -397,7 +401,7 @@ fun NoteAdd(
                 FlowRow {
                     observeLabels.value.filter {
                         observeNotesAndLabels.value.contains(
-                            NoteAndLabel(uid, it.id)
+                            NoteAndTag(uid, it.id)
                         )
                     }.forEach {
                         AssistChip(
@@ -422,7 +426,7 @@ fun NoteAdd(
             item {
                 observeTodoList.value.filter {
                     observeNoteAndTodo.value.contains(
-                        NoteAndTodo(uid, it.id)
+                        NoteAndTask(uid, it.id)
                     )
                 }.forEach { todo ->
                     Row(

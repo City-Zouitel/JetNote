@@ -29,7 +29,7 @@ import java.io.File
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun NoteMediaPlayer(
-    exoViewModule: MediaPlayerVM = hiltViewModel(),
+    exoViewModule: MediaPlayerViewModel = hiltViewModel(),
     datastoreVM: DataStoreVM = hiltViewModel(),
     localMediaUid: String?
 ) {

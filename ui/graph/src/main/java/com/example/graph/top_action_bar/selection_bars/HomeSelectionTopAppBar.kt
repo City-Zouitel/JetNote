@@ -1,4 +1,4 @@
-package com.example.graph.top_action_bar
+package com.example.graph.top_action_bar.selection_bars
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -25,16 +25,15 @@ import com.example.common_ui.PopupTip
 import com.example.common_ui.sharNote
 import com.example.graph.copyNote
 import com.example.graph.sound
-import com.example.graph.top_action_bar.selection_bars.SelectionCount
-import com.example.local.model.Note
-import com.example.local.model.NoteAndLabel
-import com.example.local.model.NoteAndTodo
-import com.example.local.model.Task
 import com.example.note.DataViewModel
+import com.example.note.model.Data
 import com.example.tags.TagViewModel
-import com.example.tags.NoteAndLabelVM
-import com.example.tasks.NoteAndTodoVM
+import com.example.tags.NoteAndTagViewModel
+import com.example.tags.model.NoteAndTag
+import com.example.tasks.NoteAndTaskViewModel
 import com.example.tasks.TaskViewModel
+import com.example.tasks.model.NoteAndTask
+import com.example.tasks.model.Task
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 
@@ -42,25 +41,25 @@ import kotlin.random.Random.Default.nextLong
 @Composable
 fun HomeSelectionTopAppBar(
     dataViewModel: DataViewModel = hiltViewModel(),
-    noteAndLabelVM: NoteAndLabelVM = hiltViewModel(),
+    noteAndTagViewModel: NoteAndTagViewModel = hiltViewModel(),
     tagViewModel: TagViewModel = hiltViewModel(),
     taskViewModel: TaskViewModel = hiltViewModel(),
-    noteAndTodoVM: NoteAndTodoVM = hiltViewModel(),
+    noteAndTodoVM: NoteAndTaskViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     homeSelectionState: MutableState<Boolean>?,
-    selectedNotes: SnapshotStateList<Note>?,
-    undo: (Note) -> Unit
+    selectedNotes: SnapshotStateList<Data>?,
+    undo: (Data) -> Unit
 ) {
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val observeNotesAndLabels =
-        remember(noteAndLabelVM, noteAndLabelVM::getAllNotesAndLabels).collectAsState()
-    val observeLabels = remember(tagViewModel, tagViewModel::getAllLabels).collectAsState()
+        remember(noteAndTagViewModel, noteAndTagViewModel::getAllNotesAndTags).collectAsState()
+    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
 
     val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
-        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTodo).collectAsState()
+        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
 
     val newUid = UUID.randomUUID()
 
@@ -81,8 +80,8 @@ fun HomeSelectionTopAppBar(
                         ) {
                             sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                             selectedNotes?.forEach {
-                                dataViewModel.updateNote(
-                                    Note(
+                                dataViewModel.editData(
+                                    Data(
                                         title = it.title,
                                         description = it.description,
                                         priority = it.priority,
@@ -150,15 +149,15 @@ fun HomeSelectionTopAppBar(
                                         observeLabels.value
                                             .filter {
                                                 observeNotesAndLabels.value.contains(
-                                                    NoteAndLabel(
+                                                    NoteAndTag(
                                                         selectedNotes.single().uid,
                                                         it.id
                                                     )
                                                 )
                                             }
                                             .forEach {
-                                                noteAndLabelVM.addNoteAndLabel(
-                                                    NoteAndLabel(
+                                                noteAndTagViewModel.addNoteAndTag(
+                                                    NoteAndTag(
                                                         noteUid = newUid.toString(),
                                                         labelId = it.id
                                                     )
@@ -169,7 +168,7 @@ fun HomeSelectionTopAppBar(
                                         observeTodoList.value
                                             .filter {
                                                 observeNoteAndTodo.value.contains(
-                                                    NoteAndTodo(
+                                                    NoteAndTask(
                                                         selectedNotes.single().uid,
                                                         it.id
                                                     )
@@ -184,8 +183,8 @@ fun HomeSelectionTopAppBar(
                                                             todo.isDone
                                                         )
                                                     )
-                                                    noteAndTodoVM.addNoteAndTodoItem(
-                                                        NoteAndTodo(
+                                                    noteAndTodoVM.addNoteAndTaskItem(
+                                                        NoteAndTask(
                                                             newUid.toString(),
                                                             it
                                                         )

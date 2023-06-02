@@ -15,7 +15,7 @@ class NoteAndLinkRepositoryImpl @Inject constructor(
     override val getAllNotesAndLinks: Flow<List<OutNoteAndLink>>
         get() = dataSource.getAllNotesAndLinks.map { list ->
             list.map { noteAndLink ->
-                mapper.readOnly(noteAndLink)
+                mapper.toDomain(noteAndLink)
             }
         }
 

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.NoteAndTaskUseCase
 import com.example.tasks.mapper.NoteAndTaskMapper
 import com.example.tasks.model.NoteAndTask as InNoteAndTask
-import com.example.domain.model.NoteAndTask as OutNoteAndTask
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,28 +16,33 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteAndTaskViewModel @Inject constructor(
-    private val getAll: NoteAndTaskUseCase.GetAllNotesAndTask,
+    getAll: NoteAndTaskUseCase.GetAllNotesAndTask,
     private val add: NoteAndTaskUseCase.AddNoteAndTask,
     private val delete: NoteAndTaskUseCase.DeleteNoteAndTask,
     private val mapper: NoteAndTaskMapper
 ): ViewModel() {
 
-    private val _getAllNotesAndTodo = MutableStateFlow<List<OutNoteAndTask>>(emptyList())
-    val getAllNotesAndTodo:StateFlow<List<OutNoteAndTask>>
-    get() = _getAllNotesAndTodo.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+    private val _getAllNotesAndTask = MutableStateFlow<List<InNoteAndTask>>(emptyList())
+    val getAllNotesAndTask: StateFlow<List<InNoteAndTask>>
+        get() = _getAllNotesAndTask
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(),
+                listOf()
+            )
 
     init {
         viewModelScope.launch {
-            getAll.invoke().collect {
-                _getAllNotesAndTodo.value = it
+            getAll.invoke().collect { list ->
+                _getAllNotesAndTask.value = list.map { task -> mapper.toView(task) }
             }
         }
     }
 
-    fun addNoteAndTodoItem(noteAndTodo: InNoteAndTask) = viewModelScope.launch(Dispatchers.IO) {
+    fun addNoteAndTaskItem(noteAndTodo: InNoteAndTask) = viewModelScope.launch(Dispatchers.IO) {
         add.invoke(mapper.toDomain(noteAndTodo))
     }
-    fun deleteNoteAndTodoItem(noteAndTodo: InNoteAndTask) = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteNoteAndTaskItem(noteAndTodo: InNoteAndTask) = viewModelScope.launch(Dispatchers.IO) {
         delete.invoke(mapper.toDomain(noteAndTodo))
     }
 }

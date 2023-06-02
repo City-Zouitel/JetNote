@@ -27,8 +27,8 @@ import com.example.common_ui.Icons.ADD_CIRCLE_ICON
 import com.example.common_ui.Icons.BELL_ICON
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_VARIANT
-import com.example.local.model.Note
 import com.example.note.ColorsRow
+import com.example.note.model.Data
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class,
     ExperimentalFoundationApi::class
@@ -36,7 +36,7 @@ import com.example.note.ColorsRow
 @Composable
 fun AddEditBottomBar(
     dataStoreVM: DataStoreVM = hiltViewModel(),
-    note: Note,
+    note: Data,
     navController: NavController,
     imageLaunch : ManagedActivityResultLauncher<String, Uri?>,
     recordDialogState: MutableState<Boolean>,

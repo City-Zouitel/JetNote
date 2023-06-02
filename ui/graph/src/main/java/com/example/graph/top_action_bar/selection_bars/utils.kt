@@ -15,13 +15,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.common_ui.Icons
 import com.example.common_ui.PopupTip
-import com.example.local.model.Note
+import com.example.note.model.Data
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SelectionCount(
     selectionState: MutableState<Boolean>?,
-    selectedNotes: SnapshotStateList<Note>?
+    selectedNotes: SnapshotStateList<Data>?
 ) {
     PopupTip(message = "Cancel") {
         Icon(

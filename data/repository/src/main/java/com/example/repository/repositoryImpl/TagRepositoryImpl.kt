@@ -15,7 +15,7 @@ class TagRepositoryImpl @Inject constructor(
     override val getAllTags: Flow<List<OutTag>>
         get() = dataSource.getAllLabels.map { list ->
             list.map { tag ->
-                mapper.readOnly(tag)
+                mapper.toDomain(tag)
             }
         }
 
