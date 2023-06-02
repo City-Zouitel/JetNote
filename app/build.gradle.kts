@@ -3,9 +3,6 @@ plugins {
     id ("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
-//    id ("com.mikepenz.aboutlibraries.plugin")
-//    alias(libs.plugins.ksp)
-//    alias(libs.plugins.kotlin.serialization)
     id ("com.chrisney.enigma")
 }
 
@@ -17,8 +14,8 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 231
-        versionName = "2.3.1"
+        versionCode = 300
+        versionName = "3.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -71,7 +68,7 @@ enigma.injectFakeKeys = true
 
 dependencies {
 
-    //Projects.
+    //Modules.
     implementation(projects.common.commonUi)
     implementation(projects.service.notification)
     implementation(projects.ui.graph)
@@ -100,17 +97,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.process)
 
-//        //Room.
-//    implementation(libs.roomkts)
-//    api(libs.room.runtime)
-//    ksp(libs.room.compiler)
-
-    //DataStore.
-//    implementation (libs.datastore)
-
-    //LiveData.
-//    implementation(libs.livedatakts)
-
     //Dagger-Hilt
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
@@ -123,72 +109,17 @@ dependencies {
     //WorkManager.
     implementation(libs.androidx.workmanager)
 
-    //Koin.
-//    implementation(libs.koin.core)
-//    implementation(libs.koin.android)
-//    implementation(libs.koin.compose)
-
-//    //Accompanist.
-//    implementation(libs.accompanist.permissions)
-//    implementation(libs.accompanist.pager)
-//    implementation(libs.accompanist.pager.indicators)
+    //Accompanist.
     implementation(libs.accompanist.systemuicontroller)
-//    implementation(libs.accompanist.navigation.animation)
-//    implementation(libs.accompanist.swiperefresh)
-//    implementation(libs.accompanist.flowlayout)
-//    implementation(libs.accompanist.insets)
 
-//    // ExoPlayer
-//    api(libs.exoplayer.core)
-//    api(libs.exoplayer.ui)
-//    api(libs.exoplayer.extension)
-//
-//    // CameraX
-//    implementation (libs.camerax.core)
-//    implementation (libs.camerax.lifecycle)
-//    implementation (libs.camerax.view)
-//    implementation (libs.camerax.extensions)
-//
-//    //Sketchbook.
-//    implementation (libs.sketchbook)
-
-    //Balloon.
-//    implementation ("com.github.skydoves:balloon-compose:1.5.3")
-//
-//    //Swipe.
-//    implementation (libs.swipe)
-
-    //Global Exception Handler.
-    implementation (libs.globalexception)
-
-//    //Glide.
-//    implementation (libs.glide)
-//    implementation (libs.glide.comp)
-//    kapt (libs.glide.compiler)
-
-//    //Coil.
-//    implementation(libs.coil.compose)
-//    implementation(libs.coil.svg)
-//
-////    //License.
-//    implementation (libs.aboutlibraries.comp)
-
-//    //Retrofit.
-//    implementation(libs.retrofit)
-//
-//    //Okhttp.
-//    implementation(libs.okhttp.bom)
-//    implementation(libs.okhttp.bom.core)
-//    implementation(libs.okhttp.bom.interceptor)
-
-//    //Baha-UrlPreview.
+    //Baha-UrlPreview.
     implementation(libs.url.preview)
 
     //Beetle.
     implementation(libs.beetle)
 
-    //Serialization.
-//    implementation(libs.kotlinx.serialization)
+    //Global Exception.
+    implementation(libs.globalexception)
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
