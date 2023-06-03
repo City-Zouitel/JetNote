@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NotificationMod {
+object NotificationModule {
 
     @SuppressLint("InvalidColorHexValue")
     @Singleton

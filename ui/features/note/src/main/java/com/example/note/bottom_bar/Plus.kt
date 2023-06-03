@@ -138,7 +138,7 @@ internal fun Plus(
             }
         )
         DropdownMenuItem(
-            text = { Text(text = "Labels", fontSize = 18.sp) },
+            text = { Text(text = "Tags", fontSize = 18.sp) },
             leadingIcon = { Icon(painterResource(TAGS_ICON), null) },
             onClick = {
                 navController.navigate("tagEntities/${note.uid}")

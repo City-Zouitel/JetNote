@@ -42,10 +42,11 @@ android {
 }
 
 dependencies {
-    //
+    //Modules.
     implementation(projects.common.commonUi)
     implementation(projects.domain)
     implementation(projects.data.datastore)
+
     //AndroidX.
     implementation(libs.androidx.core)
     implementation(libs.androidx.corektx)
@@ -61,16 +62,22 @@ dependencies {
     implementation(libs.compose.toolingpreview)
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.constraintlayout)
+
     //LiveData.
     implementation(libs.livedatakts)
-    //Dagger-Hilt
+
+    //Lifecycle.
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    //Dagger-Hilt.
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
     implementation (libs.hilt.navcomp)
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
+
     //Accompanist.
     implementation(libs.accompanist.flowlayout)
-
 }

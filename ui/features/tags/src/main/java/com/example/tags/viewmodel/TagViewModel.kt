@@ -1,4 +1,4 @@
-package com.example.tags
+package com.example.tags.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,6 +24,8 @@ class TagViewModel @Inject constructor(
 ): ViewModel(){
 
     private val _getAllTags = MutableStateFlow<List<InTag>>(emptyList())
+
+    //stated!!
     val getAllLTags: StateFlow<List<InTag>>
         get() = _getAllTags
             .stateIn(
@@ -40,15 +42,15 @@ class TagViewModel @Inject constructor(
         }
     }
 
-    fun addLabel(tag: InTag) = viewModelScope.launch(Dispatchers.IO) {
+    fun addTag(tag: InTag) = viewModelScope.launch(Dispatchers.IO) {
         add.invoke(mapper.toDomain(tag))
     }
 
-    fun updateLabel(tag: InTag) = viewModelScope.launch(Dispatchers.IO) {
+    fun updateTag(tag: InTag) = viewModelScope.launch(Dispatchers.IO) {
         update.invoke(mapper.toDomain(tag))
     }
 
-    fun deleteLabel(tag: InTag) = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteTag(tag: InTag) = viewModelScope.launch(Dispatchers.IO) {
         delete.invoke(mapper.toDomain(tag))
     }
 }

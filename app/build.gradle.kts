@@ -92,11 +92,6 @@ dependencies {
     implementation(libs.compose.viewmodel)
     implementation(libs.compose.constraintlayout)
 
-    //Lifecycle.
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.process)
-
     //Dagger-Hilt
     implementation (libs.dagger)
     implementation (libs.dagger.hilt)
@@ -105,6 +100,11 @@ dependencies {
     kapt (libs.dagger.compiler)
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
+    
+    //Lifecycle.
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.process)
 
     //WorkManager.
     implementation(libs.androidx.workmanager)

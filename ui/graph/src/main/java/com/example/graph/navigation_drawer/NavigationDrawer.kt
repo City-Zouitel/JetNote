@@ -31,9 +31,8 @@ import com.example.common_ui.Icons.SETTINGS_ICON
 import com.example.common_ui.Icons.SHARE_ICON
 import com.example.common_ui.Icons.TRASH_ICON
 import com.example.common_ui.sharApp
-import com.example.local.model.TagEntity
 import com.example.graph.sound
-import com.example.tags.TagViewModel
+import com.example.tags.viewmodel.TagViewModel
 import com.example.tags.model.Tag
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
@@ -91,7 +90,7 @@ fun NavigationDrawer(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Labels",
+                        text = "Tags",
                         fontSize = 12.sp,
                         modifier = Modifier.padding(15.dp)
                     )

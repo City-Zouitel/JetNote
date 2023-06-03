@@ -1,4 +1,4 @@
-package com.example.tags
+package com.example.tags.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

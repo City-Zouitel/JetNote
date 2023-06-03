@@ -1,7 +1,6 @@
-package com.example.tags
+package com.example.tags.ui
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,6 +31,9 @@ import com.example.common_ui.Icons.OUTLINE_LABEL_ICON
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_TINT
+import com.example.tags.state.TagsState
+import com.example.tags.viewmodel.NoteAndTagViewModel
+import com.example.tags.viewmodel.TagViewModel
 import com.example.tags.model.Tag as InTag
 import com.example.tags.model.NoteAndTag as InNoteAndTag
 import com.google.accompanist.flowlayout.FlowRow
@@ -43,16 +45,17 @@ import com.google.accompanist.flowlayout.FlowRow
     "UnusedMaterialScaffoldPaddingParameter"
 )
 @OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class,
 )
 @Composable
-fun Labels(
+fun Tags(
     tagViewModel: TagViewModel = hiltViewModel(),
     noteAndTagViewModel: NoteAndTagViewModel = hiltViewModel(),
     noteUid: String?,
 ) {
 
-    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
+//    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
+    val observeTags = TagsState(tagViewModel).rememberAllTagsState
     val observeNotesAndLabels =
         remember(noteAndTagViewModel, noteAndTagViewModel::getAllNotesAndTags).collectAsState()
 
@@ -64,7 +67,7 @@ fun Labels(
 
     val getMatColor = MaterialColors().getMaterialColor
     if (labelDialogState.value) {
-            LabelDialogColors(
+            DialogColors(
                 dialogState = labelDialogState,
                 idState = idState,
                 labelState = labelState,
@@ -86,7 +89,7 @@ fun Labels(
                 if (noteUid == NUL) {
                     HashTagLayout(
                         labelDialogState = labelDialogState,
-                        hashTags = observeLabels.value,
+                        hashTags = observeTags,
                         idState = idState,
                         labelState = labelState
                     )
@@ -94,7 +97,7 @@ fun Labels(
                     FlowRow(
                         mainAxisSpacing = 3.dp
                     ) {
-                        observeLabels.value.forEach { label ->
+                        observeTags.forEach { label ->
                             ElevatedFilterChip(
                                 selected = true,
                                 modifier = Modifier,
@@ -178,8 +181,8 @@ fun Labels(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            if (observeLabels.value.any { it.id == idState.value }) {
-                                tagViewModel.updateLabel(
+                            if (observeTags.any { it.id == idState.value }) {
+                                tagViewModel.updateTag(
                                     InTag(
                                         id = idState.value,
                                         label = labelState.value,
@@ -187,7 +190,7 @@ fun Labels(
                                     )
                                 )
                             } else {
-                                tagViewModel.addLabel(
+                                tagViewModel.addTag(
                                     InTag(
                                         label = labelState.value,
                                         color = colorState.value

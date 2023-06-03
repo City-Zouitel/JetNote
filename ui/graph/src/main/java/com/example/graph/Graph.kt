@@ -30,7 +30,7 @@ import com.example.graph.settings_screen.Settings
 import com.example.graph.trash_screen.TrashScreen
 import com.example.note.add_screen.NoteAdd
 import com.example.note.edit_screen.NoteEdit
-import com.example.tags.Labels
+import com.example.tags.ui.Tags
 import com.example.tasks.TaskList
 
 @Composable
@@ -164,7 +164,7 @@ fun Graph(
                 type = NavType.StringType
             }
         )) {
-            Labels(
+            Tags(
                 noteUid = it.arguments?.getString(UID) ?: "",
             )
         }

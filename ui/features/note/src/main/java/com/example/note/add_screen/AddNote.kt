@@ -68,8 +68,8 @@ import com.example.note.DataViewModel
 import com.example.note.model.Data
 import com.example.record.RecordingNote
 import com.example.reminder.RemindingNote
-import com.example.tags.TagViewModel
-import com.example.tags.NoteAndTagViewModel
+import com.example.tags.viewmodel.TagViewModel
+import com.example.tags.viewmodel.NoteAndTagViewModel
 import com.example.tags.model.NoteAndTag
 import com.example.tasks.NoteAndTaskViewModel
 import com.example.tasks.TaskViewModel
