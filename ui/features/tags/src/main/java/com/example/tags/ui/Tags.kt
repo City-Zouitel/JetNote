@@ -158,7 +158,7 @@ fun Tags(
                         .fillMaxWidth()
                         .background(getMatColor(SURFACE)),
                     placeholder = {
-                        Text("TagEntity..", color = Color.Gray, fontSize = 19.sp)
+                        Text("Tag..", color = Color.Gray, fontSize = 19.sp)
                     },
                     leadingIcon = {
                         Icon(
