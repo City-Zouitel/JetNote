@@ -6,10 +6,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import com.example.glance.ui.AppWidget
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WidgetReceiver:GlanceAppWidgetReceiver() {
+class WidgetReceiver: GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget
         get() = AppWidget()
 

@@ -1,8 +1,9 @@
 package com.example.note.model
 
+import androidx.annotation.Keep
 import com.example.common_ui.Cons.NON
 
-
+@Keep
 data class Data(
     var uid: String = "",
     var title: String? = null,

@@ -2,6 +2,7 @@ package com.example.tags.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.model.NoteAndTag as OutNoteAndTag
 import com.example.domain.usecase.NoteAndTagUseCase
 import com.example.tags.mapper.NoteAndTagMapper
 import com.example.tags.model.NoteAndTag as InNoteAndTag
@@ -31,7 +32,7 @@ class NoteAndTagViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             getAll.invoke().collect { list ->
-            _getAllNotesAndTags.value = list.map { noteAndTag -> mapper.toView(noteAndTag) }
+                _getAllNotesAndTags.value = list.map { noteAndTag -> mapper.toView(noteAndTag) }
             }
         }
     }

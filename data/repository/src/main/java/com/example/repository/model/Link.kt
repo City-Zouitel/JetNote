@@ -1,5 +1,8 @@
 package com.example.repository.model
 
+import androidx.annotation.Keep
+
+@Keep
 data class Link(
      var id: String = "",
      var url: String = "",

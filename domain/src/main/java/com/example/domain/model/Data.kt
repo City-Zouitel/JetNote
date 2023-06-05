@@ -1,7 +1,9 @@
 package com.example.domain.model
 
+import androidx.annotation.Keep
 import com.example.domain.utils.Constants.NON
 
+@Keep
 data class Data(
     var uid: String = "",
     var title: String? = null,

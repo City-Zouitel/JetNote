@@ -98,6 +98,11 @@
             <meta-data
                 android:name="com.example.mobile.initializer.ComposeInitializer"
                 android:value="androidx.startup" />
+
+            <!-- This entry makes SQLCipherDataBaseInitializer discoverable. -->
+            <meta-data
+                android:name="com.example.mobile.initializer.SQLCipherDBInitializer"
+                android:value="androidx.startup" />
         </provider>
     </application>
 

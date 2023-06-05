@@ -1,5 +1,6 @@
 package com.example.glance
 
+import com.example.glance.ui.WidgetViewModel
 import dagger.hilt.InstallIn
 import dagger.hilt.EntryPoint
 import dagger.hilt.components.SingletonComponent
@@ -9,5 +10,5 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 interface EntryPoint {
 
-    fun vm(): WidgetVM
+    fun vm(): WidgetViewModel
 }

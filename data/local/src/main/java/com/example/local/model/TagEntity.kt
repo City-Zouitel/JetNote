@@ -1,5 +1,6 @@
 package com.example.local.model
 
+import androidx.annotation.Keep
 import androidx.room.*
 import com.example.local.utils.Constants.COLOR
 import com.example.local.utils.Constants.ID

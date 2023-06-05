@@ -1,5 +1,6 @@
 package com.example.local.model
 
+import androidx.annotation.Keep
 import androidx.room.*
 import com.example.local.utils.Constants.ID
 import com.example.local.utils.Constants.TASKS_TABLE

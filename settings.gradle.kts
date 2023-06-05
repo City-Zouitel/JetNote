@@ -29,9 +29,9 @@ include(
 include(
     ":common:common-ui",
     ":common:common-vm",
-    ":common:common-effect",
+    ":common:effect",
     ":common:common-logic",
-    ":common:common-mapper",
+    ":common:mapper",
 )
 include(
     "service:notification"
@@ -65,3 +65,4 @@ include(
 
 
 
+include(":common:viewmodel")

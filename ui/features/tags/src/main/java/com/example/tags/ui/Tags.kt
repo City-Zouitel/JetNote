@@ -8,7 +8,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -31,7 +30,7 @@ import com.example.common_ui.Icons.OUTLINE_LABEL_ICON
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_TINT
-import com.example.tags.state.TagsState
+import com.example.tags.state.State
 import com.example.tags.viewmodel.NoteAndTagViewModel
 import com.example.tags.viewmodel.TagViewModel
 import com.example.tags.model.Tag as InTag
@@ -53,11 +52,11 @@ fun Tags(
     noteAndTagViewModel: NoteAndTagViewModel = hiltViewModel(),
     noteUid: String?,
 ) {
+    val tagState = State.Tag(tagViewModel)
+    val noteAndTagState = State.NoteTag(noteAndTagViewModel)
 
-//    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
-    val observeTags = TagsState(tagViewModel).rememberAllTagsState
-    val observeNotesAndLabels =
-        remember(noteAndTagViewModel, noteAndTagViewModel::getAllNotesAndTags).collectAsState()
+    val allTags = tagState.rememberAllTags
+    val allNoteAndTags = noteAndTagState.rememberAllNoteTags
 
     val idState = remember { mutableStateOf(-1L) }
     val labelState = remember { mutableStateOf("") }//.filterBadWords()
@@ -89,7 +88,7 @@ fun Tags(
                 if (noteUid == NUL) {
                     HashTagLayout(
                         labelDialogState = labelDialogState,
-                        hashTags = observeTags,
+                        hashTags = allTags,
                         idState = idState,
                         labelState = labelState
                     )
@@ -97,12 +96,12 @@ fun Tags(
                     FlowRow(
                         mainAxisSpacing = 3.dp
                     ) {
-                        observeTags.forEach { label ->
+                        allTags.forEach { label ->
                             ElevatedFilterChip(
                                 selected = true,
                                 modifier = Modifier,
                                 onClick = {
-                                    if (observeNotesAndLabels.value.contains(
+                                    if (allNoteAndTags.contains(
                                             InNoteAndTag(noteUid!!, label.id)
                                         )
                                     ) {
@@ -123,7 +122,7 @@ fun Tags(
                                 },
                                 leadingIcon = {
                                     if (
-                                        observeNotesAndLabels.value.contains(
+                                        allNoteAndTags.contains(
                                             InNoteAndTag(noteUid!!, label.id)
                                         )
                                     ) {
@@ -181,7 +180,7 @@ fun Tags(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            if (observeTags.any { it.id == idState.value }) {
+                            if (allTags.any { it.id == idState.value }) {
                                 tagViewModel.updateTag(
                                     InTag(
                                         id = idState.value,

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.TagUseCase
 import com.example.tags.mapper.TagMapper
+import com.example.tags.model.NoteAndTag
 import com.example.tags.model.Tag as InTag
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,6 @@ class TagViewModel @Inject constructor(
 
     private val _getAllTags = MutableStateFlow<List<InTag>>(emptyList())
 
-    //stated!!
     val getAllLTags: StateFlow<List<InTag>>
         get() = _getAllTags
             .stateIn(

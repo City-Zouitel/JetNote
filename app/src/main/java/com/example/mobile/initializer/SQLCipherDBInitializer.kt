@@ -1,14 +1,13 @@
 package com.example.mobile.initializer
 
 import android.content.Context
-import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ProcessLifecycleInitializer
 import androidx.startup.Initializer
-import androidx.work.WorkManager
+import net.sqlcipher.database.SQLiteDatabase
 
-internal class ComposeInitializer: Initializer<Unit> {
+internal class SQLCipherDBInitializer: Initializer<Unit?> {
     override fun create(context: Context) {
-        ComposeView(context)
+        SQLiteDatabase.loadLibs(context)
     }
 
     override fun dependencies(): MutableList<Class<ProcessLifecycleInitializer>> {

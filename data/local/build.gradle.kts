@@ -31,7 +31,7 @@ kapt {
 }
 dependencies {
 
-    //Projects.
+    //Modules.
     implementation(projects.data.repository)
 
     //Room.
@@ -47,10 +47,10 @@ dependencies {
     kapt (libs.hilt.compiler)
     kapt (libs.dagger.hiltcompiler)
 
-    // security
+    //Security.
     implementation (libs.androidx.security)
 
-    // sqlcipher
+    //Sqlcipher.
     implementation (libs.sqlcipher)
 
 }

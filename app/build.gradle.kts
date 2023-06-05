@@ -102,7 +102,6 @@ dependencies {
     kapt (libs.dagger.hiltcompiler)
     
     //Lifecycle.
-    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.process)
 
@@ -120,6 +119,10 @@ dependencies {
 
     //Global Exception.
     implementation(libs.globalexception)
+
+    //Sqlcipher.
+    implementation (libs.sqlcipher)
+    implementation("androidx.sqlite:sqlite:2.3.1")
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")

@@ -4,6 +4,7 @@ import com.example.domain.model.NoteAndTag as OutNoteAndTag
 import com.example.domain.repository.NoteAndTagRepository
 import com.example.repository.datasource.NoteAndTagDataSource
 import com.example.repository.mapper.NoteAndTagMapper
+import com.example.repository.model.NoteAndTag as InNoteAndTag
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
