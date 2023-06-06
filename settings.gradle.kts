@@ -2,11 +2,13 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
+        includeBuild("Source")
         gradlePluginPortal()
         google()
         mavenCentral()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -19,8 +21,8 @@ dependencyResolutionManagement {
             from(files("gradle/libraries.versions.toml"))
         }
     }
-
 }
+
 rootProject.name = "JetNote"
 
 include(
@@ -61,8 +63,4 @@ include(
 include(
     ":benchmark"
 )
-
-
-
-
 include(":common:viewmodel")

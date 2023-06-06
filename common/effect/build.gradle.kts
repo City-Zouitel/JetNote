@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.common_effect"
-    compileSdk = Versions.compileSdk
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 25
