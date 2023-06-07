@@ -10,7 +10,5 @@ dependencies {
 
 repositories {
     mavenCentral()
-    maven("https://jitpack.io")
     google()
-    gradlePluginPortal()
 }
