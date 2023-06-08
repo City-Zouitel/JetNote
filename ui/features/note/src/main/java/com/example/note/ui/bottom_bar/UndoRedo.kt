@@ -1,7 +1,6 @@
-package com.example.note.bottom_bar
+package com.example.note.ui.bottom_bar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -20,7 +19,6 @@ import com.example.common_ui.Icons.REDO_ICON
 import com.example.common_ui.Icons.UNDO_ICON
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.SURFACE_VARIANT
-import com.example.common_ui.PopupTip
 import com.example.common_ui.SoundEffect
 
 // TODO: need improvement.

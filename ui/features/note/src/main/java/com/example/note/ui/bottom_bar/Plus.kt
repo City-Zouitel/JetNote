@@ -1,9 +1,8 @@
-package com.example.note.bottom_bar
+package com.example.note.ui.bottom_bar
 
 import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.view.View.OnLongClickListener
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.Canvas
@@ -42,7 +41,6 @@ import com.example.common_ui.Icons.TAGS_ICON
 import com.example.note.model.Data
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.skydoves.balloon.compose.BalloonWindow
 
 @OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("SuspiciousIndentation")

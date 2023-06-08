@@ -24,7 +24,6 @@ buildscript {
         google()
         gradlePluginPortal()
     }
-
 }
 
 tasks.register("clean", Delete::class){

@@ -1,10 +1,9 @@
-package com.example.note.bottom_bar
+package com.example.note.ui.bottom_bar
 
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomSheetScaffoldState

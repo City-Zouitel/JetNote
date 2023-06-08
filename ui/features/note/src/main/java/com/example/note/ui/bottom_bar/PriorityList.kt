@@ -1,4 +1,4 @@
-package com.example.note.bottom_bar
+package com.example.note.ui.bottom_bar
 
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem

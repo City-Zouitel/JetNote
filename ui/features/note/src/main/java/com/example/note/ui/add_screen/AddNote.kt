@@ -1,4 +1,4 @@
-package com.example.note.add_screen
+package com.example.note.ui.add_screen
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
@@ -63,7 +63,7 @@ import com.example.links.ui.LinkPart
 import com.example.links.ui.LinkVM
 import com.example.links.ui.NoteAndLinkVM
 import com.example.media_player.MediaPlayerViewModel
-import com.example.note.bottom_bar.AddEditBottomBar
+import com.example.note.ui.bottom_bar.AddEditBottomBar
 import com.example.note.DataViewModel
 import com.example.note.model.Data
 import com.example.record.RecordingNote

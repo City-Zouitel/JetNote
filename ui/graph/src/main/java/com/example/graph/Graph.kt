@@ -28,8 +28,8 @@ import com.example.graph.home_screen.NoteHome
 import com.example.graph.settings_screen.Licenses
 import com.example.graph.settings_screen.Settings
 import com.example.graph.trash_screen.TrashScreen
-import com.example.note.add_screen.NoteAdd
-import com.example.note.edit_screen.NoteEdit
+import com.example.note.ui.add_screen.NoteAdd
+import com.example.note.ui.edit_screen.NoteEdit
 import com.example.tags.ui.Tags
 import com.example.tasks.TaskList
 
