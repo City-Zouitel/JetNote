@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.android.gradle.plugin)
+    implementation(libs.dagger.hilt.gradle.plugin)
 }
 
 repositories {

@@ -1,26 +1,27 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("city.android-lib")
+//    id("com.android.library")
+//    id("org.jetbrains.kotlin.android")
+    id("city.dagger-hilt")
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
-
 }
 
 android {
     namespace = "com.example.local"
-    compileSdk = 33
-    defaultConfig {
-        minSdk = 25
-
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+//    compileSdk = 33
+//    defaultConfig {
+//        minSdk = 25
+//
+//    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_1_8
+//        targetCompatibility = JavaVersion.VERSION_1_8
+//    }
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//    }
 }
 kapt {
     correctErrorTypes = true
