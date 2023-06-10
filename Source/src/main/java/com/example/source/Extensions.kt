@@ -4,9 +4,11 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.CompileOptions
 import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
+import org.gradle.api.plugins.ExtensionAware
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 
-fun CommonExtension<*,*,*,*>.androidConfig() {
+fun CommonExtension<*, *, *, *>.androidConfig() {
     defaultConfig {
         compileSdk = Versions.compileSdk
         minSdk = Versions.minSdk
@@ -18,11 +20,18 @@ fun CommonExtension<*,*,*,*>.androidConfig() {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 
-
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
-fun CommonExtension<*,*,*,*>.composeConfig() {
+fun CommonExtension<*, *, *, *>.composeConfig() {
     buildFeatures {
         compose = true
     }
@@ -35,12 +44,13 @@ fun LibraryExtension.proguardConfig() {
     buildTypes {
         release {
             isMinifyEnabled = true
-//            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
-
+}
+private fun CommonExtension<*, *, *, *>.kotlinOptions (options: KotlinJvmOptions.() -> Unit) {
+    (this as ExtensionAware).extensions.configure("kotlinOptions", options)
 }

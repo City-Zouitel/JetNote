@@ -22,10 +22,10 @@ val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().name
 dependencies {
 
     //AndroidX.
-    implementation(libs.core)
-    implementation(libs.coreKtx)
-    implementation(libs.appcompat)
-    implementation(libs.runTimeKtx)
+    "implementation"(libs.core)
+    "implementation"(libs.coreKtx)
+    "implementation"(libs.appcompat)
+    "implementation"(libs.runTimeKtx)
 }
 
 

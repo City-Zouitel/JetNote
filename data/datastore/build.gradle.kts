@@ -2,8 +2,9 @@ plugins {
     id("city.android-lib")
 //    id("com.android.library")
 //    id("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
-    id ("dagger.hilt.android.plugin")
+    id("city.dagger-hilt")
+//    id ("kotlin-kapt")
+//    id ("dagger.hilt.android.plugin")
 }
 
 android {
@@ -41,12 +42,12 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     //Dagger-Hilt
-    implementation (libs.dagger)
-    implementation (libs.dagger.hilt)
-    implementation (libs.hilt.navcomp)
-    kapt (libs.dagger.compiler)
-    kapt (libs.hilt.compiler)
-    kapt (libs.dagger.hiltcompiler)
+//    implementation (libs.dagger)
+//    implementation (libs.dagger.hilt)
+//    implementation (libs.hilt.navcomp)
+//    kapt (libs.dagger.compiler)
+//    kapt (libs.hilt.compiler)
+//    kapt (libs.dagger.hiltcompiler)
 
     //SecurityDatastore.
     implementation("io.github.osipxd:security-crypto-datastore-preferences:1.0.0-alpha04")

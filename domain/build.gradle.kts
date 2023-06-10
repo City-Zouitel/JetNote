@@ -2,8 +2,9 @@ plugins {
     id("city.android-lib")
 //    id("com.android.library")
 //    id("org.jetbrains.kotlin.android")
-    id ("kotlin-kapt")
-    id ("dagger.hilt.android.plugin")
+    id("city.dagger-hilt")
+//    id ("kotlin-kapt")
+//    id ("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
 }
 
@@ -51,12 +52,12 @@ dependencies {
 //    implementation(libs.androidx.appcompat)
 
     //Dagger-Hilt
-    implementation (libs.dagger)
-    implementation (libs.dagger.hilt)
-    implementation (libs.hilt.navcomp)
-    kapt (libs.dagger.compiler)
-    kapt (libs.hilt.compiler)
-    kapt (libs.dagger.hiltcompiler)
+//    implementation (libs.dagger)
+//    implementation (libs.dagger.hilt)
+//    implementation (libs.hilt.navcomp)
+//    kapt (libs.dagger.compiler)
+//    kapt (libs.hilt.compiler)
+//    kapt (libs.dagger.hiltcompiler)
 
     // ExoPlayer
     api(libs.exoplayer.core)

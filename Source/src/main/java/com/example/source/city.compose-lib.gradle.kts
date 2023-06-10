@@ -18,7 +18,6 @@ plugins {
     id("kotlin-android")
 }
 
-
 android {
     composeConfig()
 }
@@ -26,11 +25,11 @@ android {
 val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 dependencies {
-    implementation(libs.ui)
-    implementation(libs.material3)
-    implementation(libs.navigation)
-    implementation(libs.viewmodel)
-    implementation(libs.toolingPreview)
-    implementation(libs.activity)
-    implementation(libs.constraintLayout)
+    "implementation"(libs.ui)
+    "implementation"(libs.material3)
+    "implementation"(libs.navigation)
+    "implementation"(libs.viewmodel)
+    "implementation"(libs.toolingPreview)
+    "implementation"(libs.activity)
+    "implementation"(libs.constraintLayout)
 }

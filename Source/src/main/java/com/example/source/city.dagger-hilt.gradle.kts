@@ -5,7 +5,8 @@ import com.example.source.Libraries.hilt
 import com.example.source.Libraries.hiltCompiler
 import com.example.source.Libraries.hiltNavComp
 import com.example.source.Libraries.hiltWork
-import gradle.kotlin.dsl.accessors._71f190358cebd46a469f2989484fd643.implementation
+import dagger.hilt.android.plugin.HiltExtension
+import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 
 plugins {
     id ("dagger.hilt.android.plugin")
@@ -13,13 +14,18 @@ plugins {
 }
 
 val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
+val hilt = extensions.getByType<HiltExtension>()
+val kapt = extensions.getByType<KaptExtension>()
+
+kapt.correctErrorTypes = true
+hilt.enableAggregatingTask = true
 
 dependencies {
-    implementation(libs.dagger)
-    implementation(libs.compiler)
-    implementation(libs.hilt)
-    implementation(libs.daggerHiltCompiler)
-    implementation(libs.hiltNavComp)
-    implementation(libs.hiltCompiler)
-    implementation(libs.hiltWork)
+    "implementation"(libs.dagger)
+    "implementation"(libs.hilt)
+    "implementation"(libs.hiltWork)
+    "implementation"(libs.hiltNavComp)
+    "kapt"(libs.daggerHiltCompiler)
+    "kapt"(libs.hiltCompiler)
+    "kapt"(libs.compiler)
 }

@@ -3,8 +3,8 @@ plugins {
 //    id("com.android.library")
 //    id("org.jetbrains.kotlin.android")
     id("city.dagger-hilt")
-    id ("kotlin-kapt")
-    id ("dagger.hilt.android.plugin")
+//    id ("kotlin-kapt")
+//    id ("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
 }
 
@@ -24,7 +24,7 @@ android {
 //    }
 }
 kapt {
-    correctErrorTypes = true
+//    correctErrorTypes = true
 
     arguments {
         arg("room.schemaLocation", "$projectDir/schemas")
@@ -41,12 +41,12 @@ dependencies {
     ksp(libs.room.compiler)
 
     //Dagger-Hilt
-    implementation (libs.dagger)
-    implementation (libs.dagger.hilt)
-    implementation (libs.hilt.navcomp)
-    kapt (libs.dagger.compiler)
-    kapt (libs.hilt.compiler)
-    kapt (libs.dagger.hiltcompiler)
+//    implementation (libs.dagger)
+//    implementation (libs.dagger.hilt)
+//    implementation (libs.hilt.navcomp)
+//    kapt (libs.dagger.compiler)
+//    kapt (libs.hilt.compiler)
+//    kapt (libs.dagger.hiltcompiler)
 
     //Security.
     implementation (libs.androidx.security)
