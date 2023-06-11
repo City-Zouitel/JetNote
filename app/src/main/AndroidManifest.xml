@@ -85,25 +85,6 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
-        <!-- application startup provider -->
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <meta-data
-                android:name="androidx.work.WorkManagerInitializer"
-                android:value="androidx.startup"
-                tools:node="remove" />
-            <meta-data
-                android:name="com.example.mobile.initializer.ComposeInitializer"
-                android:value="androidx.startup" />
-
-            <!-- This entry makes SQLCipherDataBaseInitializer discoverable. -->
-            <meta-data
-                android:name="com.example.mobile.initializer.SQLCipherDBInitializer"
-                android:value="androidx.startup" />
-        </provider>
     </application>
 
 </manifest>

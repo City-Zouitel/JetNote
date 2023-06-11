@@ -4,7 +4,10 @@ import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.emirhankolver.GlobalExceptionHandler
+import com.example.mobile.initializer.ComposeInitializer
+import com.example.mobile.initializer.SQLCipherDBInitializer
 import com.karacca.beetle.Beetle
+import com.rousetime.android_startup.StartupManager
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -17,14 +20,27 @@ class NoteApplication: Application(), Configuration.Provider {
         /**
          * Global Exception Handler.
          */
-        GlobalExceptionHandler.initialize(this,NoteActivity::class.java)
+        GlobalExceptionHandler.initialize(this, NoteActivity::class.java)
 
-        //
+        /**
+         *
+         */
         Beetle.configure {
             enableAssignees = true
             enableLabels = true
         }
         Beetle.init(this, "City-Zouitel", "JetNote")
+
+        /**
+         *
+         */
+        StartupManager.Builder()
+            .addAllStartup(
+                listOf(ComposeInitializer(), SQLCipherDBInitializer())
+            )
+            .build(this)
+            .start()
+            .await()
     }
 
 

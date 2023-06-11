@@ -27,3 +27,5 @@ val about = "$APP_NAME is a dataEntity-taking and todo management open-source ap
         " audio and saved web linkEntities, numbers and map locations.\n\n" +
         "Version: $APP_VERSION"
 
+
+

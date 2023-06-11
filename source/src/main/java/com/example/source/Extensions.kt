@@ -51,6 +51,7 @@ fun LibraryExtension.proguardConfig() {
         }
     }
 }
+
 private fun CommonExtension<*, *, *, *>.kotlinOptions (options: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", options)
 }
