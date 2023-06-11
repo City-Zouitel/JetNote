@@ -13,9 +13,15 @@ plugins {
     id ("kotlin-kapt")
 }
 
-val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
-val hilt = extensions.getByType<HiltExtension>()
-val kapt = extensions.getByType<KaptExtension>()
+val libs: VersionCatalog = extensions
+        .getByType<VersionCatalogsExtension>()
+        .named("libs")
+
+val hilt = extensions
+        .getByType<HiltExtension>()
+
+val kapt = extensions
+        .getByType<KaptExtension>()
 
 kapt.correctErrorTypes = true
 hilt.enableAggregatingTask = true

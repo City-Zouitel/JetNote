@@ -17,7 +17,9 @@ android {
     proguardConfig()
 }
 
-val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
+val libs: VersionCatalog = extensions
+        .getByType<VersionCatalogsExtension>()
+        .named("libs")
 
 dependencies {
 
