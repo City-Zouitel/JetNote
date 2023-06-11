@@ -1,7 +1,6 @@
 package com.example.repository.di
 
 import com.example.domain.repository.*
-import com.example.repository.model.NoteAndTag
 import com.example.repository.repositoryImpl.*
 import dagger.Binds
 import dagger.Module

@@ -4,6 +4,9 @@ plugins {
     id ("kotlin-kapt")
     id ("dagger.hilt.android.plugin")
     id ("com.mikepenz.aboutlibraries.plugin")
+//    id("city.android-lib")
+//    id("city.compose-lib")
+//    id("city.dagger-hilt")
 }
 
 android {

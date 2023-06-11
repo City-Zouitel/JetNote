@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.example.common_ui.AdaptingRow
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.graph.getMaterialColor
-import com.example.local.model.TagEntity
 import com.example.tags.model.Tag
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

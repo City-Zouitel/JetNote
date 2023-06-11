@@ -28,7 +28,6 @@ import com.example.common_ui.Icons.CROSS_ICON
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.graph.getMaterialColor
 import com.example.graph.sound
-import com.example.local.model.TagEntity
 import com.example.tags.model.Tag
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
