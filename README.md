@@ -79,6 +79,9 @@ An image loading library for Android backed by Kotlin Coroutines.
 ### [AboutLibraries](https://github.com/mikepenz/AboutLibraries)
 Collects all dependency details including licenses at compile time, and offers simple APIs to visualize these in the app.
 
+### [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager)
+WorkManager is the recommended solution for persistent work. Work is persistent when it remains scheduled through app restarts and system reboots.
+
 ## Security
 ### [Jetpack Security](https://developer.android.com/jetpack/androidx/releases/security)
 Safely manage keys and encrypt files and sharedpreferences.

@@ -343,6 +343,22 @@ private fun Card(
             }
         }
 
+        // display link card.
+        observerLinks.value.filter {
+            observerNoteAndLink.value.contains(
+                NoteAndLink(note.uid, it.id)
+            )
+        }.forEach { _link ->
+            LinkPart(
+                linkVM = linkVM,
+                noteAndLinkVM = noteAndLinkVM,
+                noteUid = note.uid,
+                swipeable = false,
+                link = _link,
+            )
+        }
+
+        // display tasks list.
         if (
             observeTodoList.value.any {
                 observeNoteAndTodo.value.contains(
@@ -363,22 +379,6 @@ private fun Card(
                 tint = Color(note.textColor)
             )
         }
-
-        // display link card.
-            observerLinks.value.filter {
-                observerNoteAndLink.value.contains(
-                    NoteAndLink(note.uid, it.id)
-                )
-            }.forEach { _link ->
-                LinkPart(
-                    linkVM = linkVM,
-                    noteAndLinkVM = noteAndLinkVM,
-                    noteUid = note.uid,
-                    swipeable = false,
-                    link = _link,
-                )
-        }
-
 
         AnimatedVisibility(visible = todoListState, modifier = Modifier.height(100.dp)) {
             LazyColumn {

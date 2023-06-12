@@ -58,7 +58,7 @@ fun AppAbout(
                 state = lazyListState
             ) {
                 item { AboutLabel() }
-                item { AboutContent() }
+                item { AboutDescription() }
                 item { AboutSources() }
             }
         }
