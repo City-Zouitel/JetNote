@@ -1,8 +1,6 @@
 package com.example.mobile.initializer
 
 import android.content.Context
-import androidx.lifecycle.ProcessLifecycleInitializer
-import androidx.startup.Initializer
 import com.rousetime.android_startup.AndroidStartup
 import net.sqlcipher.database.SQLiteDatabase
 

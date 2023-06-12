@@ -82,7 +82,7 @@ dependencies {
     implementation(libs.androidx.runtimektx)
     ////////////
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.startup)
+//    implementation(libs.androidx.startup)
 
     //Compose.
     implementation(libs.compose.ui)
