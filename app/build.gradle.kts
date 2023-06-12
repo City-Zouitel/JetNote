@@ -80,9 +80,7 @@ dependencies {
     implementation(libs.androidx.corektx)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.runtimektx)
-    ////////////
     implementation(libs.androidx.constraintlayout)
-//    implementation(libs.androidx.startup)
 
     //Compose.
     implementation(libs.compose.ui)
@@ -125,8 +123,9 @@ dependencies {
     implementation (libs.sqlcipher)
     implementation("androidx.sqlite:sqlite:2.3.1")
 
-    //
+    //AndroidStartup.
     implementation("io.github.idisfkj:android-startup:1.1.0")
+
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 //    debugImplementation ("com.guolindev.glance:glance:1.1.0")

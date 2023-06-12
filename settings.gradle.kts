@@ -30,7 +30,6 @@ include(
 )
 include(
     ":common:common-ui",
-    ":common:common-vm",
     ":common:effect",
     ":common:common-logic",
     ":common:mapper",
@@ -63,4 +62,3 @@ include(
 include(
     ":benchmark"
 )
-include(":common:viewmodel")

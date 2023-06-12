@@ -12,10 +12,4 @@ internal class SQLCipherDBInitializer: AndroidStartup<Unit?>() {
     }
 
     override fun waitOnMainThread(): Boolean = false
-
-//    override fun dependencies(): MutableList<Class<ProcessLifecycleInitializer>> {
-//        return mutableListOf(
-//            ProcessLifecycleInitializer::class.java
-//        )
-//    }
 }
