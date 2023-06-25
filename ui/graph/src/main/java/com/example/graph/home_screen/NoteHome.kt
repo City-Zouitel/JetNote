@@ -1,6 +1,7 @@
 package com.example.graph.home_screen
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import city.zouitel.api.FirestoreViewModel
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.KEY_STANDARD
@@ -63,6 +65,7 @@ fun NoteHome(
     dataViewModel: DataViewModel = hiltViewModel(),
     entityVM: NoteViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
+    firestoreViewModel: FirestoreViewModel = hiltViewModel(),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
@@ -76,6 +79,8 @@ fun NoteHome(
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     //
+    val observeEnglishList = remember(firestoreViewModel, firestoreViewModel::englishList)
+
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     //
     val scaffoldState = rememberScaffoldState()

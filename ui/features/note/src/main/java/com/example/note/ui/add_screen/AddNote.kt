@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import city.zouitel.api.FirestoreViewModel
 import com.example.common_ui.*
 import com.example.common_ui.Cons.AUDIOS
 import com.example.common_ui.Cons.HOME_ROUTE
@@ -98,6 +99,7 @@ fun NoteAdd(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
+    firestoreViewModel: FirestoreViewModel = hiltViewModel(),
     navController: NavController,
     uid: String,
     description: String?
@@ -131,17 +133,12 @@ fun NoteAdd(
     val titleState = rememberSaveable {
         mutableStateOf<String?>(null)
     }
-//        .filterBadWords()
-//        .filterBadEmoji()
-//        .filterBadWebsites()
 
-    val descriptionState = rememberSaveable { mutableStateOf(
-        if (description == NUL) null else decodeUrl(description)
-    )
+    val descriptionState = rememberSaveable {
+        mutableStateOf(
+            if (description == NUL) null else decodeUrl(description)
+        )
     }
-//        .filterBadWords()
-//        .filterBadEmoji()
-//        .filterBadWebsites()
 
     val backgroundColor = getMatColor(SURFACE).toArgb()
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
@@ -150,6 +147,7 @@ fun NoteAdd(
     val priorityState = remember { mutableStateOf(NON) }
 
     val mediaFile = "$internalPath/$AUDIOS/$uid.$MP3"
+    val observeEnglishList = remember(firestoreViewModel, firestoreViewModel::englishList)
 
     //
     val dateState = mutableStateOf(Calendar.getInstance().time)
@@ -221,6 +219,20 @@ fun NoteAdd(
                                 )
                             )
                             navController.navigate(HOME_ROUTE)
+
+//                            firestoreViewModel.doWork(
+//                                titleState.value,
+//                                descriptionState.value
+//                            )
+
+                            observeEnglishList.value.data?.forEach {
+                                dataViewModel.addData(
+                                    Data(
+                                        uid = it.id.toString(),
+                                        title = it.data
+                                        )
+                                )
+                            }
                         }
                     ) {
                         Icon(
