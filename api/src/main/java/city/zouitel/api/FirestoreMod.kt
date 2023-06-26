@@ -29,12 +29,11 @@ object FirestoreMod {
 
     @Provides
     @Singleton
-    @Named("invalid-english")
     fun getSortedFirestoreData(
         firestore: FirebaseFirestore,
     ): Query = firestore
         .collection("invalid")
-        .document("words")
-        .collection("english")
+        .document("ajrMEcJn1lYAb6V1lZqF")
+        .collection("english-words") // data
         .orderBy("id", Query.Direction.DESCENDING)
 }

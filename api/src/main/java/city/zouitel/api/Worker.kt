@@ -21,11 +21,15 @@ class Worker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            Toast.makeText(context, "...........", Toast.LENGTH_SHORT).show()
-
-//            val vm = FirestoreViewModel(application, firestoreRepoImp)
-//
-//            vm.englishList.value.data?.forEach {}
+            println("""
+                *************************************************************
+                *************************************************************
+                *************************************************************
+                ${inputData.getString("title_data") ?: "null"}
+                *************************************************************
+                *************************************************************
+                *************************************************************
+            """.trimIndent())
 
             Result.success()
         } catch (e: Exception) {

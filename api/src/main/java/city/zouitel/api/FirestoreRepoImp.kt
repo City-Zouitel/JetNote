@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class FirestoreRepoImp @Inject constructor(
-    @Named("invalid-english") private val query: Query,
+    private val query: Query,
     private val usersStore: CollectionReference,
     ): FirestoreRepo {
     override suspend fun getAllEnglishWords(): DataOrException<List<Data>, Exception> {
@@ -30,13 +30,10 @@ class FirestoreRepoImp @Inject constructor(
 
     override suspend fun addData(data: Data) {
         this@FirestoreRepoImp.usersStore
-            .document("words")
-            .collection("english")
+            .document("ajrMEcJn1lYAb6V1lZqF")
+            .collection("english-words")
             .document(data.data)
-            .set(data.data)
-            .addOnSuccessListener {
-
-            }
+            .set(data)
             .await()
     }
 }

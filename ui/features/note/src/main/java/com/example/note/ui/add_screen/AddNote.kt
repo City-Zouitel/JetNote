@@ -225,14 +225,9 @@ fun NoteAdd(
 //                                descriptionState.value
 //                            )
 
-                            observeEnglishList.value.data?.forEach {
-                                dataViewModel.addData(
-                                    Data(
-                                        uid = it.id.toString(),
-                                        title = it.data
-                                        )
-                                )
-                            }
+                            firestoreViewModel.addDataToCloud(
+                                city.zouitel.api.Data(4, "fore")
+                            )
                         }
                     ) {
                         Icon(

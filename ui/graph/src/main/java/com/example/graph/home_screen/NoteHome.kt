@@ -49,6 +49,7 @@ import com.example.note.DataViewModel
 import com.example.note.model.Data
 import com.example.note.model.Note
 import com.example.tags.model.Tag
+import kotlinx.coroutines.launch
 import java.util.*
 
 @SuppressLint(
@@ -69,6 +70,7 @@ fun NoteHome(
     navController: NavController,
 ) {
     val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
     //
     val searchTitleState = remember { mutableStateOf("") }
     val searchTagEntityState = remember { mutableStateOf(Tag()) }
@@ -111,6 +113,19 @@ fun NoteHome(
         refreshing = dataViewModel.isProcessing,
         onRefresh = {
             navController.navigate(HOME_ROUTE)
+            println("-------------------------------------------------")
+            observeEnglishList.value.data?.forEach {
+                scope.launch {
+                    println("*********************************************************")
+                    println("*********************************************************")
+                    println("*********************************************************")
+                    println("************************${it.data}***********************")
+                    println("*********************************************************")
+                    println("*********************************************************")
+                    println("*********************************************************")
+                }
+
+            }
         }
     )
 

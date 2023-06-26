@@ -1,8 +1,6 @@
 package city.zouitel.api
 
 import android.app.Application
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,12 +19,11 @@ class FirestoreViewModel @Inject constructor(
     private val repo: FirestoreRepoImp
     ): ViewModel() {
 
-    var isLoading by mutableStateOf(false)
-    private set
+    var isProcessing by mutableStateOf(false)
+        private set
 
-    val englishList : MutableState<DataOrException<List<Data>, Exception>>
-            = mutableStateOf(
-        DataOrException(listOf(),Exception())
+    val englishList: MutableState<DataOrException<List<Data>, Exception>> = mutableStateOf(
+        DataOrException(listOf(), Exception())
     )
 
     private var workManager = WorkManager.getInstance(application)
@@ -35,17 +33,17 @@ class FirestoreViewModel @Inject constructor(
     }
 
     private fun getAllEnglishWords() = viewModelScope.launch {
-            isLoading = true
-            englishList.value = repo.getAllEnglishWords()
-            isLoading = false
-        }
+        isProcessing = true
+        englishList.value = repo.getAllEnglishWords()
+        isProcessing = false
+    }
 
 
     fun addDataToCloud(data: Data) {
-        viewModelScope.launch {
-            isLoading = true
+        viewModelScope.launch(Dispatchers.IO) {
+            isProcessing = true
             repo.addData(data)
-            isLoading = false
+            isProcessing = false
         }
     }
 
@@ -53,7 +51,7 @@ class FirestoreViewModel @Inject constructor(
     fun doWork(
         title: String?,
         description: String?
-    ) {
+    ) = viewModelScope.launch(Dispatchers.IO) {
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)

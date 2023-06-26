@@ -74,6 +74,7 @@ dependencies {
     implementation(projects.ui.graph)
     implementation(projects.ui.features.widget)
     implementation(projects.ui.features.quickNote)
+    implementation(projects.init)
 
     //AndroidX.
     implementation(libs.androidx.core)

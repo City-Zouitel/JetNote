@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:206403086797:android:3e80959aa7058884cf7c84",
+        "mobilesdk_app_id": "1:206403086797:android:8c98e25512a7fc2acf7c84",
         "android_client_info": {
           "package_name": "city.zouitel.api"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "206403086797-sgladluckb4os65ifvaveh56ftj18179.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "city.zouitel.api",
-            "certificate_hash": "5cacd3797072b7befadb2ab8fe850810af90355c"
-          }
-        },
         {
           "client_id": "206403086797-sfict0tol39po2mjq50d0cn09mtvm7vq.apps.googleusercontent.com",
           "client_type": 3
