@@ -147,7 +147,6 @@ fun NoteAdd(
     val priorityState = remember { mutableStateOf(NON) }
 
     val mediaFile = "$internalPath/$AUDIOS/$uid.$MP3"
-    val observeEnglishList = remember(firestoreViewModel, firestoreViewModel::englishList)
 
     //
     val dateState = mutableStateOf(Calendar.getInstance().time)
@@ -220,14 +219,12 @@ fun NoteAdd(
                             )
                             navController.navigate(HOME_ROUTE)
 
-//                            firestoreViewModel.doWork(
-//                                titleState.value,
-//                                descriptionState.value
-//                            )
-
-                            firestoreViewModel.addDataToCloud(
-                                city.zouitel.api.Data(4, "fore")
+                            firestoreViewModel.doWork(
+                                uid=uid,
+                                titleState.value,
+                                descriptionState.value
                             )
+
                         }
                     ) {
                         Icon(

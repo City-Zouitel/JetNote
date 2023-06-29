@@ -22,33 +22,34 @@ class FirestoreViewModel @Inject constructor(
     var isProcessing by mutableStateOf(false)
         private set
 
-    val englishList: MutableState<DataOrException<List<Data>, Exception>> = mutableStateOf(
-        DataOrException(listOf(), Exception())
-    )
+//    val englishList: MutableState<DataOrException<List<Info>, Exception>> = mutableStateOf(
+//        DataOrException(listOf(), Exception(""))
+//    )
 
     private var workManager = WorkManager.getInstance(application)
 
-    init {
-        getAllEnglishWords()
-    }
+//    init {
+//        getAllEnglishWords()
+//    }
+//
+//    private fun getAllEnglishWords() = viewModelScope.launch {
+//        isProcessing = true
+//        englishList.value = repo.getAllEnglishWords()
+//        isProcessing = false
+//    }
 
-    private fun getAllEnglishWords() = viewModelScope.launch {
-        isProcessing = true
-        englishList.value = repo.getAllEnglishWords()
-        isProcessing = false
-    }
 
-
-    fun addDataToCloud(data: Data) {
+    fun addDataToCloud(info: Info) {
         viewModelScope.launch(Dispatchers.IO) {
             isProcessing = true
-            repo.addData(data)
+            repo.addData(info)
             isProcessing = false
         }
     }
 
 
     fun doWork(
+        uid: String?,
         title: String?,
         description: String?
     ) = viewModelScope.launch(Dispatchers.IO) {
@@ -61,6 +62,7 @@ class FirestoreViewModel @Inject constructor(
             .addTag("api_work")
             .setInputData(
                 androidx.work.Data.Builder()
+                    .putString("uid_data", uid)
                     .putString("title_data", title)
                     .putString("description_data", description)
                     .build()

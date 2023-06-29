@@ -81,7 +81,6 @@ fun NoteHome(
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     //
-    val observeEnglishList = remember(firestoreViewModel, firestoreViewModel::englishList)
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     //
@@ -113,19 +112,6 @@ fun NoteHome(
         refreshing = dataViewModel.isProcessing,
         onRefresh = {
             navController.navigate(HOME_ROUTE)
-            println("-------------------------------------------------")
-            observeEnglishList.value.data?.forEach {
-                scope.launch {
-                    println("*********************************************************")
-                    println("*********************************************************")
-                    println("*********************************************************")
-                    println("************************${it.data}***********************")
-                    println("*********************************************************")
-                    println("*********************************************************")
-                    println("*********************************************************")
-                }
-
-            }
         }
     )
 

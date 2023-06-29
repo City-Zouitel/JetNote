@@ -55,7 +55,7 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
 
-            <!-- Sending simple data to this app by shareSheet -->
+            <!-- Sending simple info to this app by shareSheet -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 

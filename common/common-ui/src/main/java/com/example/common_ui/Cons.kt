@@ -71,7 +71,7 @@ object Cons {
     const val UNDO = "Undo"
     const val REDO = "Redo"
 
-    const val TRASH_MESSAGE = "Moved To Trash."
+    const val TRASHED_MESSAGE = "Moved To Trash."
 
     const val KEY_CLICK = 0
     const val KEY_STANDARD = 5
