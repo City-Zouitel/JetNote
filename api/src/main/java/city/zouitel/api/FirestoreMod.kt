@@ -30,6 +30,23 @@ object FirestoreMod {
     fun provideDataMapper() = DataMapper()
 
     @Provides
+    @Singleton
+    fun provideTaskMapper() = TaskMapper()
+
+    @Provides
+    @Singleton
+    fun provideLinkMapper() = LinkMapper()
+
+    @Singleton
+    @Provides
+    fun provideNoteMapper(
+        dataMapper: DataMapper,
+        tagMapper: TagMapper,
+        taskMapper: TaskMapper,
+        linkMapper: LinkMapper
+    ) = NoteMapper(dataMapper, tagMapper, taskMapper, linkMapper)
+
+    @Provides
     fun provideFirebaseFirestore() = Firebase.firestore
 
     @Provides

@@ -33,6 +33,9 @@ dependencies {
     //LiveData.
     implementation(libs.livedatakts)
 
+    //Lifecycle.
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
     //Accompanist.
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.pager)

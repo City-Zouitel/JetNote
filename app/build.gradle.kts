@@ -75,6 +75,7 @@ dependencies {
     implementation(projects.ui.features.widget)
     implementation(projects.ui.features.quickNote)
     implementation(projects.init)
+    implementation(projects.api)
 
     //AndroidX.
     implementation(libs.androidx.core)
@@ -103,6 +104,7 @@ dependencies {
     
     //Lifecycle.
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.process)
 
     //WorkManager.

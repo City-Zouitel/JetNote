@@ -1,16 +1,15 @@
-package com.example.local.mapper
+package city.zouitel.api
 
-import com.example.local.mapper.base.Mapper
-import com.example.local.model.DataEntity as InData
-import com.example.repository.model.Data as OutData
+import com.example.domain.model.Data as OutData
+import city.zouitel.api.Data as InData
 
 class DataMapper: Mapper.Base<InData, OutData> {
-    override fun toLocal(data: OutData): InData = with(data){
+    override fun toView(data: OutData): InData = with(data) {
         InData(uid, title, description, priority, color, textColor, date,
             trashed, audioDuration, reminding, isVerified)
     }
 
-    override fun readOnly(data: InData): OutData = with(data){
+    override fun toDomain(data: InData): OutData = with(data) {
         OutData(uid, title, description, priority, color, textColor, date,
             trashed, audioDuration, reminding, isVerified)
     }

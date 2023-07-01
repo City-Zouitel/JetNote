@@ -19,4 +19,6 @@ interface NoteRepository {
 
     val getAllRemindingNotes: Flow<List<OutNote>>
 
+    val getAllUnVerifiedNotes: Flow<List<OutNote>>
+
 }

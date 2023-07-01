@@ -1,6 +1,8 @@
 package city.zouitel.api
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,48 +13,28 @@ import androidx.work.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.minutes
 
 @HiltViewModel
 class FirestoreViewModel @Inject constructor(
     application: Application,
-    private val repo: FirestoreRepoImp
     ): ViewModel() {
-
-    var isProcessing by mutableStateOf(false)
-        private set
-
-//    val englishList: MutableState<DataOrException<List<Info>, Exception>> = mutableStateOf(
-//        DataOrException(listOf(), Exception(""))
-//    )
 
     private var workManager = WorkManager.getInstance(application)
 
-//    init {
-//        getAllEnglishWords()
-//    }
-//
-//    private fun getAllEnglishWords() = viewModelScope.launch {
-//        isProcessing = true
-//        englishList.value = repo.getAllEnglishWords()
-//        isProcessing = false
+//    fun addDataToCloud(info: Info) {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            isProcessing = true
+//            repo.addData(info)
+//            isProcessing = false
+//        }
 //    }
 
-
-    fun addDataToCloud(info: Info) {
-        viewModelScope.launch(Dispatchers.IO) {
-            isProcessing = true
-            repo.addData(info)
-            isProcessing = false
-        }
-    }
-
-
-    fun doWork(
-        uid: String?,
-        title: String?,
-        description: String?
-    ) = viewModelScope.launch(Dispatchers.IO) {
+    fun doWork() = viewModelScope.launch(Dispatchers.IO) {
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -60,13 +42,6 @@ class FirestoreViewModel @Inject constructor(
 
         val worker = OneTimeWorkRequest.Builder(Worker::class.java)
             .addTag("api_work")
-            .setInputData(
-                androidx.work.Data.Builder()
-                    .putString("uid_data", uid)
-                    .putString("title_data", title)
-                    .putString("description_data", description)
-                    .build()
-            )
             .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             .setConstraints(constraints)
             .build()

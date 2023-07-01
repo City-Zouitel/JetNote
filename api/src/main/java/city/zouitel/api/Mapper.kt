@@ -9,6 +9,6 @@ sealed interface Mapper {
     }
     interface ReadOnly<In, Out> {
 
-        fun toView(data: In): Out
+        fun toView(data: Out): In
     }
 }

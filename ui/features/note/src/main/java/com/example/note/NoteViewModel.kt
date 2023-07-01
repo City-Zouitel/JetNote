@@ -27,6 +27,7 @@ class NoteViewModel @Inject constructor(
     private val getAllTrashed: NoteUseCase.GetAllTrashedNotes,
     private val getAllByPriority: NoteUseCase.GetAllNotesByPriority,
     private val getAllReminding: NoteUseCase.GetAllRemindingNotes,
+    private val getAllUnVerifiedNotes: NoteUseCase.GetAllUnVerifiedNotes,
     private val mapper: NoteMapper
 ): ViewModel() {
 
@@ -100,6 +101,7 @@ class NoteViewModel @Inject constructor(
                     _allRemindingNotes.value = list.map { note -> mapper.toView(note) }
                 }
             }
+
             isProcessing = false
         }
     }

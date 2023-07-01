@@ -20,8 +20,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import city.zouitel.api.AppNetworkState
 import city.zouitel.api.FirestoreViewModel
+import city.zouitel.api.NetworkMonitor
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.KEY_STANDARD
@@ -42,6 +45,7 @@ import com.example.graph.getMaterialColor
 import com.example.graph.navigation_drawer.NavigationDrawer
 import com.example.graph.navigation_drawer.Screens
 import com.example.graph.note_card.NoteCard
+import com.example.graph.rememberNetworkState
 import com.example.graph.top_action_bar.NoteTopAppBar
 import com.example.graph.top_action_bar.selection_bars.HomeSelectionTopAppBar
 import com.example.note.NoteViewModel
@@ -49,7 +53,6 @@ import com.example.note.DataViewModel
 import com.example.note.model.Data
 import com.example.note.model.Note
 import com.example.tags.model.Tag
-import kotlinx.coroutines.launch
 import java.util.*
 
 @SuppressLint(
@@ -67,6 +70,8 @@ fun NoteHome(
     entityVM: NoteViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     firestoreViewModel: FirestoreViewModel = hiltViewModel(),
+    networkMonitor: NetworkMonitor,
+    netState: AppNetworkState = rememberNetworkState(networkMonitor = networkMonitor),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
@@ -118,6 +123,7 @@ fun NoteHome(
     val homeSelectionState = remember { mutableStateOf(false) }
     val selectedNotes = remember { mutableStateListOf<Data>() }
 
+    val isOnline by netState.isOnline.collectAsStateWithLifecycle()
     //undo snack-bar.
     val undo = UndoSnackbar(
         viewModule = dataViewModel,
@@ -127,6 +133,11 @@ fun NoteHome(
     )
 
     //
+    LaunchedEffect(key1 = isOnline) {
+        if (isOnline) {
+
+        }
+    }
 
     ModalNavigationDrawer(
         drawerContent = {

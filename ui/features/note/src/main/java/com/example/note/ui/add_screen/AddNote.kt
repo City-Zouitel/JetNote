@@ -219,11 +219,7 @@ fun NoteAdd(
                             )
                             navController.navigate(HOME_ROUTE)
 
-                            firestoreViewModel.doWork(
-                                uid=uid,
-                                titleState.value,
-                                descriptionState.value
-                            )
+                            firestoreViewModel.doWork()
 
                         }
                     ) {
