@@ -51,7 +51,6 @@ import com.example.graph.top_action_bar.NoteTopAppBar
 import com.example.graph.top_action_bar.selection_bars.HomeSelectionTopAppBar
 import com.example.note.NoteViewModel
 import com.example.note.DataViewModel
-import com.example.note.listOfBadEnglishWords
 import com.example.note.model.Data
 import com.example.note.model.Note
 import com.example.tags.model.Tag
@@ -119,7 +118,11 @@ fun NoteHome(
         refreshing = dataViewModel.isProcessing,
         onRefresh = {
             navController.navigate(HOME_ROUTE)
-
+//            for (s in listOfBadEnglishWords) {
+//                firestoreViewModel.addDataToCloud(
+//                    Info(data = s)
+//                )
+//            }
         }
     )
 
