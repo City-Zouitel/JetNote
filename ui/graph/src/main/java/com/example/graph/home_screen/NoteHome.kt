@@ -119,11 +119,7 @@ fun NoteHome(
         refreshing = dataViewModel.isProcessing,
         onRefresh = {
             navController.navigate(HOME_ROUTE)
-//            for (s in listOfBadEnglishWords) {
-//                firestoreViewModel.addDataToCloud(
-//                    Info(data = s)
-//                )
-//            }
+
         }
     )
 
