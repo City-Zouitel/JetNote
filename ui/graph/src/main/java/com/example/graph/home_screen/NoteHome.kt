@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import city.zouitel.api.AppNetworkState
 import city.zouitel.api.FirestoreViewModel
+import city.zouitel.api.Info
 import city.zouitel.api.NetworkMonitor
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
@@ -50,6 +51,7 @@ import com.example.graph.top_action_bar.NoteTopAppBar
 import com.example.graph.top_action_bar.selection_bars.HomeSelectionTopAppBar
 import com.example.note.NoteViewModel
 import com.example.note.DataViewModel
+import com.example.note.listOfBadEnglishWords
 import com.example.note.model.Data
 import com.example.note.model.Note
 import com.example.tags.model.Tag
@@ -117,6 +119,11 @@ fun NoteHome(
         refreshing = dataViewModel.isProcessing,
         onRefresh = {
             navController.navigate(HOME_ROUTE)
+//            for (s in listOfBadEnglishWords) {
+//                firestoreViewModel.addDataToCloud(
+//                    Info(data = s)
+//                )
+//            }
         }
     )
 
@@ -134,9 +141,7 @@ fun NoteHome(
 
     //
     LaunchedEffect(key1 = isOnline) {
-        if (isOnline) {
-
-        }
+        if (isOnline) firestoreViewModel.doWork()
     }
 
     ModalNavigationDrawer(

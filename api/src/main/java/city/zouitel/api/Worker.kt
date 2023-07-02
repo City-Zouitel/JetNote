@@ -56,11 +56,26 @@ class Worker @AssistedInject constructor(
         return try {
             englishList.value.data?.forEach { word ->
                 allUnVerifiedNotes.value.forEach { note ->
-                    if(note.dataEntity.title?.split(' ')?.contains(word.data) == true) {
-                        editData.invoke(dataMapper.toDomain(note.dataEntity.copy(title="******")))
+                    if(note.dataEntity.title
+                            ?.lowercase()
+                            ?.split(' ')
+                            ?.contains(word.data) == true) {
+                        editData.invoke(
+                            dataMapper.toDomain(
+                                note.dataEntity.copy(
+                                    title= note.dataEntity.title
+                                        ?.split(' ')?.joinToString(" ") {
+                                            if (it.lowercase() == word.data) {
+//                                                "\uD83E\uDD2C"
+                                                ""
+                                            } else
+                                                it
+                                        }
+                                )
+                            )
+                        )
                     }
                 }
-
             }
 
             Result.success()

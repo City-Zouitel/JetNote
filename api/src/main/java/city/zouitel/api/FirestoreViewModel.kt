@@ -22,17 +22,16 @@ import kotlin.time.minutes
 @HiltViewModel
 class FirestoreViewModel @Inject constructor(
     application: Application,
-    ): ViewModel() {
+    private val repo: FirestoreRepoImp,
+): ViewModel() {
 
     private var workManager = WorkManager.getInstance(application)
 
-//    fun addDataToCloud(info: Info) {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            isProcessing = true
-//            repo.addData(info)
-//            isProcessing = false
-//        }
-//    }
+    fun addDataToCloud(info: Info) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.addData(info)
+        }
+    }
 
     fun doWork() = viewModelScope.launch(Dispatchers.IO) {
 
