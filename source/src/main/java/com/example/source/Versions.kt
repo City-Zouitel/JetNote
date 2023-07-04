@@ -8,5 +8,5 @@ object Versions {
     const val code = 320
     const val name = "3.2.0"
 
-    const val composeVersion = "1.4.8"
+    const val composeVersion = "1.4.0"
 }
