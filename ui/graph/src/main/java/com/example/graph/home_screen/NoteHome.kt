@@ -43,7 +43,6 @@ import com.example.common_ui.VerticalGrid
 import com.example.graph.sound
 import com.example.common_ui.DataStoreVM
 import com.example.graph.getMaterialColor
-import com.example.graph.listOfBadEnglishWords
 import com.example.graph.navigation_drawer.NavigationDrawer
 import com.example.graph.navigation_drawer.Screens
 import com.example.graph.note_card.NoteCard
