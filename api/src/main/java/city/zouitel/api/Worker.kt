@@ -28,12 +28,11 @@ class Worker @AssistedInject constructor(
     private val noteMapper: NoteMapper
 ): CoroutineWorker(context, workerParameters) {
 
-    private val englishList: MutableState<DataOrException<List<Info>, Exception>> =
+    private val englishList: MutableState<ArrayList<String>> =
         mutableStateOf(
-            DataOrException(listOf(), Exception(""))
+            arrayListOf("")
     )
-    private val allUnVerifiedNotes: MutableState<List<Note>> =
-        mutableStateOf(listOf())
+    private val allUnVerifiedNotes = MutableStateFlow<List<Note>>(emptyList())
 
     init {
         getAllEnglishWords()
@@ -54,20 +53,20 @@ class Worker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            englishList.value.data?.forEach { word ->
+            englishList.value.forEach { word ->
                 allUnVerifiedNotes.value.forEach { note ->
                     if(note.dataEntity.title
                             ?.lowercase()
                             ?.split(' ')
-                            ?.contains(word.data) == true) {
+                            ?.contains(word) == true) {
                         editData.invoke(
                             dataMapper.toDomain(
                                 note.dataEntity.copy(
                                     title= note.dataEntity.title
                                         ?.split(' ')?.joinToString(" ") {
-                                            if (it.lowercase() == word.data) {
-//                                                "\uD83E\uDD2C"
-                                                ""
+                                            if (it.lowercase() == word) {
+                                                "\uD83E\uDD2C"
+//                                                ""
                                             } else
                                                 it
                                         }

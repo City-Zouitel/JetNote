@@ -20,9 +20,6 @@
                 android:name="city.zouitel.init.SQLCipherDBInitializer"
                 android:value="androidx.startup" />
 
-            <meta-data
-                android:name="city.zouitel.init.WorkManagerInitializer"
-                android:value="androidx.startup" />
         </provider>
     </application>
 </manifest>

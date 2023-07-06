@@ -218,9 +218,6 @@ fun NoteAdd(
                                 )
                             )
                             navController.navigate(HOME_ROUTE)
-
-                            firestoreViewModel.doWork()
-
                         }
                     ) {
                         Icon(

@@ -101,9 +101,7 @@ class NoteViewModel @Inject constructor(
                     _allRemindingNotes.value = list.map { note -> mapper.toView(note) }
                 }
             }
-
             isProcessing = false
         }
     }
-
 }

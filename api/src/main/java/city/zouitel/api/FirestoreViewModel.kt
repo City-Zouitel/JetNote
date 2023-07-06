@@ -1,23 +1,23 @@
 package city.zouitel.api
 
 import android.app.Application
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.content.Context
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.*
+import com.example.domain.usecase.DataUseCase
+import com.example.domain.usecase.NoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.time.Duration
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.minutes
 
 @HiltViewModel
 class FirestoreViewModel @Inject constructor(
@@ -27,14 +27,13 @@ class FirestoreViewModel @Inject constructor(
 
     private var workManager = WorkManager.getInstance(application)
 
-    fun addDataToCloud(info: Info) {
+    fun addDataToCloud(list: HashMap<String, ArrayList<String>>) {
         viewModelScope.launch(Dispatchers.IO) {
-            repo.addData(info)
+            repo.addData(list)
         }
     }
 
     fun doWork() = viewModelScope.launch(Dispatchers.IO) {
-
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
@@ -51,5 +50,4 @@ class FirestoreViewModel @Inject constructor(
             worker
         )
     }
-
 }

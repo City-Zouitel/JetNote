@@ -135,16 +135,12 @@ fun NoteEdit(
             if(title == NUL || title.isNullOrEmpty()) null else decodeUrl.invoke(title)
         )
     }
-//        .filterBadWords()
-//        .filterBadEmoji()
 
     val descriptionState = rememberSaveable {
         mutableStateOf(
             if(description == NUL) null else decodeUrl.invoke(description)
         )
     }
-//        .filterBadWords()
-//        .filterBadEmoji()
 
     val backgroundColorState = rememberSaveable { mutableStateOf(color) }
     val textColorState = rememberSaveable { mutableStateOf(textColor) }
