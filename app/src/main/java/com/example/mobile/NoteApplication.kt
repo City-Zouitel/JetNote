@@ -9,7 +9,7 @@ import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
-class NoteApplication: Application(), Configuration.Provider {
+class NoteApplication: Application()/*, Configuration.Provider*/ {
 
     override fun onCreate() {
         super.onCreate()
@@ -31,13 +31,13 @@ class NoteApplication: Application(), Configuration.Provider {
     }
 
 
-    /**
-     * Work Manager Initializer.
-     */
-    @Inject
-    lateinit var hiltWorkerFactory: HiltWorkerFactory
-
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder().setWorkerFactory(hiltWorkerFactory).build()
-    }
+//    /**
+//     * Work Manager Initializer.
+//     */
+//    @Inject
+//    lateinit var hiltWorkerFactory: HiltWorkerFactory
+//
+//    override fun getWorkManagerConfiguration(): Configuration {
+//        return Configuration.Builder().setWorkerFactory(hiltWorkerFactory).build()
+//    }
 }
