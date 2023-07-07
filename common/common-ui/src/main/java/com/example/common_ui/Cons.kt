@@ -5,7 +5,7 @@ object Cons {
     const val TAG = "This"
     const val NUL = "null"
 
-    const val APP_VERSION = "3.2.0"
+    const val APP_VERSION = "3.3.0"
 
     const val ID = "Id"
     const val TITLE = "Title"
