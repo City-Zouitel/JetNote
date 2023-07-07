@@ -2,7 +2,9 @@ package com.example.mobile
 
 import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
+import androidx.startup.AppInitializer
 import androidx.work.Configuration
+import city.zouitel.init.WorkManagerInitializer
 import com.emirhankolver.GlobalExceptionHandler
 import com.karacca.beetle.Beetle
 import dagger.hilt.android.HiltAndroidApp
@@ -28,6 +30,10 @@ class NoteApplication: Application()/*, Configuration.Provider*/ {
         }
         Beetle.init(this, "City-Zouitel", "JetNote")
 
+        /**
+         * Work Manager Initializer.
+         */
+        AppInitializer.getInstance(this).initializeComponent(WorkManagerInitializer::class.java)
     }
 
 
