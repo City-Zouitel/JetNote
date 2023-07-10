@@ -14,8 +14,8 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 330
-        versionName = "3.3.0"
+        versionCode = 331
+        versionName = "3.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -55,6 +55,30 @@ android {
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+
+    /**
+     * Configure the build for multiple APKs
+     */
+    splits {
+
+       /**
+        * Configure multiple APKs for screen densities.
+        */
+        density {
+            isEnable = true
+            include("xxhdpi")
+            compatibleScreens("small", "normal", "large", "xlarge")
+        }
+        /**
+         * Configure multiple APKs for Application Binary Interfaces.
+         */
+        abi {
+            isEnable = true
+            reset()
+            include("x86", "x86_64", "armeabi-v7a")
+            isUniversalApk = false
         }
     }
 }
