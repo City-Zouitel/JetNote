@@ -2,6 +2,8 @@ package com.example.graph.home_screen
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,16 +18,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import city.zouitel.api.AppNetworkState
-import city.zouitel.api.FirestoreViewModel
-import city.zouitel.api.Info
-import city.zouitel.api.NetworkMonitor
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.KEY_STANDARD
@@ -46,7 +45,6 @@ import com.example.graph.getMaterialColor
 import com.example.graph.navigation_drawer.NavigationDrawer
 import com.example.graph.navigation_drawer.Screens
 import com.example.graph.note_card.NoteCard
-import com.example.graph.rememberNetworkState
 import com.example.graph.top_action_bar.NoteTopAppBar
 import com.example.graph.top_action_bar.selection_bars.HomeSelectionTopAppBar
 import com.example.note.NoteViewModel
@@ -70,9 +68,6 @@ fun NoteHome(
     dataViewModel: DataViewModel = hiltViewModel(),
     entityVM: NoteViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
-    firestoreViewModel: FirestoreViewModel = hiltViewModel(),
-    networkMonitor: NetworkMonitor,
-    netState: AppNetworkState = rememberNetworkState(networkMonitor = networkMonitor),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
@@ -118,17 +113,12 @@ fun NoteHome(
         refreshing = dataViewModel.isProcessing,
         onRefresh = {
             navController.navigate(HOME_ROUTE)
-
-            runCatching {
-                firestoreViewModel.doWork()
-            }
         }
     )
 
     val homeSelectionState = remember { mutableStateOf(false) }
     val selectedNotes = remember { mutableStateListOf<Data>() }
 
-    val isOnline by netState.isOnline.collectAsStateWithLifecycle()
     //undo snack-bar.
     val undo = UndoSnackbar(
         viewModule = dataViewModel,
@@ -136,11 +126,6 @@ fun NoteHome(
         scope = coroutineScope,
         trashedNotesState = trashedNotesState
     )
-
-    //
-    LaunchedEffect(key1 = isOnline) {
-        if (isOnline) firestoreViewModel.doWork()
-    }
 
     ModalNavigationDrawer(
         drawerContent = {

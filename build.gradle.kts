@@ -16,7 +16,6 @@ buildscript {
         classpath(libs.android.gradle.plugin)
         classpath(libs.aboutlibraries.plugin)
         classpath("gradle.plugin.chrisney:enigma:1.0.0.8")
-        classpath ("com.google.gms:google-services:4.3.15")
     }
 
     repositories {

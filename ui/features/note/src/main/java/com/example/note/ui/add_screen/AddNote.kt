@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import city.zouitel.api.FirestoreViewModel
 import com.example.common_ui.*
 import com.example.common_ui.Cons.AUDIOS
 import com.example.common_ui.Cons.HOME_ROUTE
@@ -99,7 +98,6 @@ fun NoteAdd(
     dataStoreVM: DataStoreVM = hiltViewModel(),
     linkVM: LinkVM = hiltViewModel(),
     noteAndLinkVM: NoteAndLinkVM = hiltViewModel(),
-    firestoreViewModel: FirestoreViewModel = hiltViewModel(),
     navController: NavController,
     uid: String,
     description: String?

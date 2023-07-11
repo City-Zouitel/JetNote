@@ -17,7 +17,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import city.zouitel.api.NetworkMonitor
 import com.example.common_ui.DataStoreVM
 import com.example.glance.WidgetReceiver
 import com.example.graph.CONS.AUDIOS
@@ -36,9 +35,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var networkMonitor: NetworkMonitor
-
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +49,7 @@ class NoteActivity : ComponentActivity() {
             intentHandler(intent, this@NoteActivity, navHostController, scope)
 
             AppTheme {
-                Graph(navHostController, networkMonitor)
+                Graph(navHostController)
             }
         }
     }
