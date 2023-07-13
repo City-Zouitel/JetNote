@@ -14,8 +14,8 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 332
-        versionName = "3.3.2"
+        versionCode = 333
+        versionName = "3.3.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -147,8 +147,8 @@ dependencies {
     implementation(libs.globalexception)
 
     //Sqlcipher.
-    implementation (libs.sqlcipher)
-    implementation("androidx.sqlite:sqlite:2.3.1")
+//    implementation (libs.sqlcipher)
+//    implementation("androidx.sqlite:sqlite:2.3.1")
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")

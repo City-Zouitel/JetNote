@@ -9,8 +9,10 @@ android {
 
 dependencies {
     implementation(libs.androidx.startup)
+
     //Lifecycle.
     implementation(libs.androidx.lifecycle.process)
+
     //Sqlcipher.
     implementation (libs.sqlcipher)
     implementation("androidx.sqlite:sqlite:2.3.1")
