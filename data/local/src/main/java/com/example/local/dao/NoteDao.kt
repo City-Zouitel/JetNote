@@ -26,7 +26,7 @@ interface NoteDao {
     fun getAllNotesByName():Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where Trashed = 0 order by case " +
+@Query("select * from NOTES_TABLE where Trashed = 0 order by case " +
             "when Priority like 'URGENT' then 1 " +
             "when Priority like 'IMPORTANT' then 2 " +
             "when Priority like 'NORMAL' then 3 " +
@@ -43,8 +43,5 @@ interface NoteDao {
     @Query("select * from NOTES_TABLE where Trashed = 0 order by Reminding desc")
     fun getAllRemindingNotes(): Flow<List<NoteEntity>>
 
-    @Transaction
-    @Query("select * from NOTES_TABLE where isVerified = false")
-    fun getAllUnverifiedNotes(): Flow<List<NoteEntity>>
 
 }

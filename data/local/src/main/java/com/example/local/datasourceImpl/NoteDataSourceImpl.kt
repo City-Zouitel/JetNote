@@ -61,10 +61,4 @@ class NoteDataSourceImpl @Inject constructor(
                 noteMapper.readOnly(it)
             }
         }
-    override val getAllUnVerifiedNotes: Flow<List<com.example.repository.model.Note>>
-        get() = noteDao.getAllUnverifiedNotes().map { list ->
-            list.map {
-                noteMapper.readOnly(it)
-            }
-        }
 }

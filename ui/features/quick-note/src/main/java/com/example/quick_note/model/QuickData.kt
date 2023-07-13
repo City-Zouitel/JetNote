@@ -14,5 +14,6 @@ data class QuickData(
     var trashed: Int = 0,
     var audioDuration: Int = 0,
     var reminding: Long = 0L,
-    var isVerified: Boolean = false
+    var imageUrl: String? = null,
+    var audioUrl: String? = null,
 )

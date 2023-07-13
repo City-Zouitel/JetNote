@@ -1,17 +1,14 @@
 package com.example.mobile
 
 import android.app.Application
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.startup.AppInitializer
-import androidx.work.Configuration
-import city.zouitel.init.WorkManagerInitializer
 import com.emirhankolver.GlobalExceptionHandler
 import com.karacca.beetle.Beetle
 import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
+import city.zouitel.init.WorkManagerInitializer
 
 @HiltAndroidApp
-class NoteApplication: Application()/*, Configuration.Provider*/ {
+class NoteApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -36,14 +33,4 @@ class NoteApplication: Application()/*, Configuration.Provider*/ {
         AppInitializer.getInstance(this).initializeComponent(WorkManagerInitializer::class.java)
     }
 
-
-//    /**
-//     * Work Manager Initializer.
-//     */
-//    @Inject
-//    lateinit var hiltWorkerFactory: HiltWorkerFactory
-//
-//    override fun getWorkManagerConfiguration(): Configuration {
-//        return Configuration.Builder().setWorkerFactory(hiltWorkerFactory).build()
-//    }
 }

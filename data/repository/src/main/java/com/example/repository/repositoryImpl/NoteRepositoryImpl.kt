@@ -60,10 +60,4 @@ class NoteRepositoryImpl @Inject constructor(
                 mapper.toDomain(note)
             }
         }
-    override val getAllUnVerifiedNotes: Flow<List<OutNote>>
-        get() = dataSource.getAllUnVerifiedNotes.map { list ->
-            list.map { note ->
-                mapper.toDomain(note)
-            }
-        }
 }

@@ -48,10 +48,4 @@ sealed class NoteUseCase {
     ): NoteUseCase() {
         operator fun invoke() = repository.getAllRemindingNotes
     }
-
-    class GetAllUnVerifiedNotes @Inject constructor(
-        private val repository: NoteRepository
-    ): NoteUseCase() {
-        operator fun invoke() = repository.getAllUnVerifiedNotes
-    }
 }

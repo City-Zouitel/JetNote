@@ -3,7 +3,7 @@ package com.example.graph.home_screen
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.State
-import com.example.common_ui.Cons.TRASHED_MESSAGE
+import com.example.common_ui.Cons.TRASH_MESSAGE
 import com.example.common_ui.Cons.UNDO
 import com.example.note.DataViewModel
 import com.example.note.model.Data
@@ -21,7 +21,7 @@ internal fun UndoSnackbar(
 
         scope.launch {
             val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
-                message = note.title + " " + TRASHED_MESSAGE,
+                message = note.title + " " + TRASH_MESSAGE,
                 actionLabel = UNDO
             )
             when(snackbarResult)  {

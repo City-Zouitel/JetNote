@@ -19,6 +19,4 @@ interface NoteDataSource {
 
     val getAllRemindingNotes: Flow<List<Note>>
 
-    val getAllUnVerifiedNotes: Flow<List<Note>>
-
 }

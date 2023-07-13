@@ -1,9 +1,6 @@
 package com.example.graph.home_screen
 
 import android.annotation.SuppressLint
-import android.widget.Toast
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,12 +15,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
@@ -71,7 +66,6 @@ fun NoteHome(
     navController: NavController,
 ) {
     val ctx = LocalContext.current
-    val scope = rememberCoroutineScope()
     //
     val searchTitleState = remember { mutableStateOf("") }
     val searchTagEntityState = remember { mutableStateOf(Tag()) }
@@ -82,7 +76,6 @@ fun NoteHome(
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     //
-
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     //
     val scaffoldState = rememberScaffoldState()
@@ -126,6 +119,8 @@ fun NoteHome(
         scope = coroutineScope,
         trashedNotesState = trashedNotesState
     )
+
+    //
 
     ModalNavigationDrawer(
         drawerContent = {
