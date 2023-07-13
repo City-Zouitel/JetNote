@@ -99,7 +99,7 @@ dependencies {
     implementation(projects.ui.features.widget)
     implementation(projects.ui.features.quickNote)
     implementation(projects.init)
-    implementation(projects.api)
+//    implementation(projects.api)
 
     //AndroidX.
     implementation(libs.androidx.core)
@@ -149,9 +149,6 @@ dependencies {
     //Sqlcipher.
     implementation (libs.sqlcipher)
     implementation("androidx.sqlite:sqlite:2.3.1")
-
-    //AndroidStartup.
-    implementation("io.github.idisfkj:android-startup:1.1.0")
 
     //
 //    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")

@@ -20,7 +20,6 @@ dependencies {
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.camera)
     implementation(projects.ui.features.links)
-    implementation(projects.api)
 
     //AndroidX.
     implementation(libs.androidx.constraintlayout)

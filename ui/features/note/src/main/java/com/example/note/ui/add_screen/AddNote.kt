@@ -131,12 +131,17 @@ fun NoteAdd(
     val titleState = rememberSaveable {
         mutableStateOf<String?>(null)
     }
+//        .filterBadWords()
+//        .filterBadEmoji()
+//        .filterBadWebsites()
 
-    val descriptionState = rememberSaveable {
-        mutableStateOf(
-            if (description == NUL) null else decodeUrl(description)
-        )
+    val descriptionState = rememberSaveable { mutableStateOf(
+        if (description == NUL) null else decodeUrl(description)
+    )
     }
+//        .filterBadWords()
+//        .filterBadEmoji()
+//        .filterBadWebsites()
 
     val backgroundColor = getMatColor(SURFACE).toArgb()
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }

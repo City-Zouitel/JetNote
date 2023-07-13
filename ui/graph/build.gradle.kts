@@ -25,16 +25,12 @@ dependencies {
     implementation(projects.ui.features.note)
     implementation(projects.ui.features.quickNote)
     implementation(projects.ui.features.links)
-    implementation(projects.api)
 
     //AndroidX.
     implementation(libs.androidx.constraintlayout)
 
     //LiveData.
     implementation(libs.livedatakts)
-
-    //Lifecycle.
-    implementation(libs.androidx.lifecycle.runtime.compose)
 
     //Accompanist.
     implementation(libs.accompanist.permissions)
