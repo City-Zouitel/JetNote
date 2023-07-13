@@ -10,6 +10,8 @@ import com.example.source.Libraries.viewmodel
 import com.example.source.androidConfig
 import com.example.source.composeConfig
 import com.example.source.proguardConfig
+import gradle.kotlin.dsl.accessors._71f190358cebd46a469f2989484fd643.android
+import gradle.kotlin.dsl.accessors._71f190358cebd46a469f2989484fd643.implementation
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 

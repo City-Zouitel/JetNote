@@ -35,7 +35,7 @@ import com.example.tasks.TaskList
 
 @Composable
 fun Graph(
-    navHostController: NavHostController,
+    navHostController: NavHostController
 ) {
 
     NavHost(navController = navHostController, startDestination = HOME_ROUTE) {

@@ -5,7 +5,7 @@ object Cons {
     const val TAG = "This"
     const val NUL = "null"
 
-    const val APP_VERSION = "3.3.2"
+    const val APP_VERSION = "3.2.0"
 
     const val ID = "Id"
     const val TITLE = "Title"
@@ -71,7 +71,7 @@ object Cons {
     const val UNDO = "Undo"
     const val REDO = "Redo"
 
-    const val TRASHED_MESSAGE = "Moved To Trash."
+    const val TRASH_MESSAGE = "Moved To Trash."
 
     const val KEY_CLICK = 0
     const val KEY_STANDARD = 5

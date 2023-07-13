@@ -34,5 +34,6 @@ data class DataEntity(
     @ColumnInfo(name = TRASHED) var trashed: Int = 0,
     @ColumnInfo(name = AUDIO_DURATION) var audioDuration: Int = 0,
     @ColumnInfo(name = REMINDING) var reminding: Long = 0L,
-    @ColumnInfo(name = "isVerified") var isVerified: Boolean = false
+    @ColumnInfo(name = IMAGE_UIL) var imageUrl: String? = null,
+    @ColumnInfo(name = AUDIO_URL) var audioUrl: String? = null,
 )
