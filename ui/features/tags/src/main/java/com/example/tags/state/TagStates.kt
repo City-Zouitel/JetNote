@@ -7,25 +7,23 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tags.viewmodel.NoteAndTagViewModel
 import com.example.tags.viewmodel.TagViewModel
 
-internal sealed class State {
+sealed class TagStates {
 
     @Stable
     class Tag(
         private val viewModel: TagViewModel
-    ) : State() {
+    ) : TagStates() {
         val rememberAllTags
-            @Composable get() =
-                remember(
-                    viewModel,
-                    viewModel::getAllLTags
-                ).collectAsStateWithLifecycle().value
-
+            @Composable get() = remember(
+                viewModel,
+                viewModel::getAllLTags
+            ).collectAsStateWithLifecycle().value
     }
 
     @Stable
     class NoteTag(
         private val viewModel: NoteAndTagViewModel
-    ): State() {
+    ): TagStates() {
 
         val rememberAllNoteTags
             @Composable get() =

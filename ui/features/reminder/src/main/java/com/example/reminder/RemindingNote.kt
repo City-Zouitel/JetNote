@@ -42,7 +42,6 @@ fun RemindingNote(
     remindingValue: MutableState<Long>?
 ) {
     val ctx = LocalContext.current
-//    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
     val soundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val sound = SoundEffect()
@@ -93,8 +92,8 @@ fun RemindingNote(
                         .fillMaxWidth()
                         .height(50.dp),
                     onClick = {
+                        sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
                         remindingViewModel.getTimePicker(ctx)
-                            sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
@@ -118,6 +117,7 @@ fun RemindingNote(
                     .size(90.dp,35.dp),
                 onClick = {
                     runCatching {
+                        sound.makeSound(ctx, KEY_STANDARD, soundEffect.value)
                         notifyVM.scheduleNotification(
                             context = ctx,
                             dateTime = remindingViewModel::getTimeReminder.invoke(),
@@ -125,7 +125,6 @@ fun RemindingNote(
                             message = message,
                             uid = uid
                         )
-                        sound.makeSound(ctx, KEY_STANDARD, soundEffect.value)
                     }.onSuccess {
                         remindingValue?.value = remindingViewModel::getDateTimeReminder.invoke().value.time
                     }

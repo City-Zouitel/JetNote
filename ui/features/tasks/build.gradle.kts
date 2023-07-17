@@ -16,6 +16,10 @@ dependencies {
     //AndroidX.
     implementation(libs.androidx.constraintlayout)
 
+    //Lifecycle.
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
     //Swipe.
     implementation (libs.swipe)
 }

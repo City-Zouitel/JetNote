@@ -30,10 +30,7 @@
             android:shell="true"
             tools:targetApi="29" />
 
-        <receiver
-            android:name="com.example.notification.reciver.Notification"
-            android:enabled="true"
-            android:exported="true" />
+
 
         <activity
             android:name=".NoteActivity"

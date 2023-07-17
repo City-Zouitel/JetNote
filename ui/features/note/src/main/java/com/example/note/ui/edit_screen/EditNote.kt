@@ -54,6 +54,7 @@ import com.example.common_ui.Cons.NUL
 import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.EDIT_ICON
 import com.example.common_ui.MaterialColors.Companion.OUT_LINE_VARIANT
+import com.example.links.LinkStates
 import com.example.links.model.NoteAndLink
 import com.example.links.ui.CacheLinks
 import com.example.links.ui.LinkPart
@@ -67,7 +68,9 @@ import com.example.note.model.Data
 import com.example.tags.viewmodel.NoteAndTagViewModel
 import com.example.tags.viewmodel.TagViewModel
 import com.example.tags.model.NoteAndTag
+import com.example.tags.state.TagStates
 import com.example.tasks.NoteAndTaskViewModel
+import com.example.tasks.TaskStates
 import com.example.tasks.TaskViewModel
 import com.example.tasks.model.NoteAndTask
 import com.example.tasks.model.Task
@@ -88,7 +91,7 @@ fun NoteEdit(
     navController: NavController,
     dataViewModel: DataViewModel = hiltViewModel(),
     exoViewModule: MediaPlayerViewModel = hiltViewModel(),
-    noteAndLabelVM: NoteAndTagViewModel = hiltViewModel(),
+    noteAndTagViewModel: NoteAndTagViewModel = hiltViewModel(),
     tagViewModel: TagViewModel = hiltViewModel(),
     taskViewModel: TaskViewModel = hiltViewModel(),
     noteAndTodoVM: NoteAndTaskViewModel = hiltViewModel(),
@@ -116,16 +119,12 @@ fun NoteEdit(
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
-    val observeNotesAndLabels = remember(noteAndLabelVM,noteAndLabelVM::getAllNotesAndTags).collectAsState()
-    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
-
-    val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
-    val observerNoteAndLink =
-        remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
-
-    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
-    val observeNoteAndTodo =
-        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
+    val tags = TagStates.Tag(tagViewModel).rememberAllTags
+    val noteTags = TagStates.NoteTag(noteAndTagViewModel).rememberAllNoteTags
+    val tasks = TaskStates.Task(taskViewModel).rememberAllTasks
+    val noteTasks = TaskStates.NoteTask(noteAndTodoVM).rememberAllNoteTasks
+    val links = LinkStates.Link(linkVM).rememberAllLinks
+    val noteLinks = LinkStates.NoteLinks(noteAndLinkVM).rememberAllNoteLinks
 
     val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
@@ -135,16 +134,12 @@ fun NoteEdit(
             if(title == NUL || title.isNullOrEmpty()) null else decodeUrl.invoke(title)
         )
     }
-//        .filterBadWords()
-//        .filterBadEmoji()
 
     val descriptionState = rememberSaveable {
         mutableStateOf(
             if(description == NUL) null else decodeUrl.invoke(description)
         )
     }
-//        .filterBadWords()
-//        .filterBadEmoji()
 
     val backgroundColorState = rememberSaveable { mutableStateOf(color) }
     val textColorState = rememberSaveable { mutableStateOf(textColor) }
@@ -363,8 +358,8 @@ fun NoteEdit(
 
                 }
                 // for refresh this screen.
-                observerLinks.value.filter {
-                    observerNoteAndLink.value.contains(
+                links.filter {
+                    noteLinks.contains(
                         NoteAndLink(uid, it.id)
                     )
                 }.forEach { _link ->
@@ -381,8 +376,8 @@ fun NoteEdit(
             // display all added tagEntities.
             item {
                 FlowRow {
-                    observeLabels.value.filter {
-                        observeNotesAndLabels.value.contains(
+                    tags.filter {
+                        noteTags.contains(
                             NoteAndTag(uid, it.id)
                         )
                     }.forEach {
@@ -406,8 +401,8 @@ fun NoteEdit(
 
             // display the todo list.
             item {
-                observeTodoList.value.filter {
-                    observeNoteAndTodo.value.contains(
+                tasks.filter {
+                    noteTasks.contains(
                         NoteAndTask(uid, it.id)
                     )
                 }.forEach { todo ->
@@ -446,7 +441,7 @@ fun NoteEdit(
                 }
             }
 
-//            // void space.
+            // void space.
             item {
                 Box(modifier = Modifier
                     .fillMaxWidth()

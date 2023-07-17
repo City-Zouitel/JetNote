@@ -14,8 +14,8 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 333
-        versionName = "3.3.3"
+        versionCode = 334
+        versionName = "3.3.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -127,12 +127,12 @@ dependencies {
     kapt (libs.dagger.hiltcompiler)
     
     //Lifecycle.
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.lifecycle.process)
+//    implementation(libs.androidx.lifecycle.viewmodel.compose)
+//    implementation(libs.androidx.lifecycle.runtime.compose)
+//    implementation(libs.androidx.lifecycle.process)
 
     //WorkManager.
-    implementation(libs.androidx.workmanager)
+//    implementation(libs.androidx.workmanager)
 
     //Accompanist.
     implementation(libs.accompanist.systemuicontroller)
@@ -155,16 +155,16 @@ dependencies {
 //    debugImplementation ("com.guolindev.glance:glance:1.1.0")
 
     //Test.
-    testImplementation (libs.androidx.junit)
-    debugImplementation (libs.compose.manifest)
-    debugImplementation (libs.compose.uitest)
+//    testImplementation (libs.androidx.junit)
+//    debugImplementation (libs.compose.manifest)
+//    debugImplementation (libs.compose.uitest)
 
-    androidTestImplementation (libs.androidx.extjunit)
-    androidTestImplementation (libs.compose.junit4)
+//    androidTestImplementation (libs.androidx.extjunit)
+//    androidTestImplementation (libs.compose.junit4)
 
-    androidTestImplementation(libs.bundles.composetest) {
-        exclude(group = "androidx.core", module = "core-ktx")
-        exclude(group = "androidx.activity", module = "activity")
-        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-ktx")
-    }
+//    androidTestImplementation(libs.bundles.composetest) {
+//        exclude(group = "androidx.core", module = "core-ktx")
+//        exclude(group = "androidx.activity", module = "activity")
+//        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-ktx")
+//    }
 }

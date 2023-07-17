@@ -57,6 +57,8 @@ import com.example.common_ui.Icons.CIRCLE_ICON_18
 import com.example.common_ui.Icons.DONE_ICON
 import com.example.common_ui.MaterialColors.Companion.OUT_LINE_VARIANT
 import com.example.common_ui.MaterialColors.Companion.SURFACE
+import com.example.links.LinkStates
+import com.example.links.LinkStates.*
 import com.example.links.model.NoteAndLink
 import com.example.links.ui.CacheLinks
 import com.example.links.ui.LinkPart
@@ -71,7 +73,11 @@ import com.example.reminder.RemindingNote
 import com.example.tags.viewmodel.TagViewModel
 import com.example.tags.viewmodel.NoteAndTagViewModel
 import com.example.tags.model.NoteAndTag
+import com.example.tags.state.TagStates
+import com.example.tags.state.TagStates.*
 import com.example.tasks.NoteAndTaskViewModel
+import com.example.tasks.TaskStates
+import com.example.tasks.TaskStates.*
 import com.example.tasks.TaskViewModel
 import com.example.tasks.model.NoteAndTask
 import com.example.tasks.model.Task
@@ -114,16 +120,12 @@ fun NoteAdd(
     val sound = SoundEffect()
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    val observeNotesAndLabels =
-        remember(noteAndTagViewModel, noteAndTagViewModel::getAllNotesAndTags).collectAsState()
-    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
-
-    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
-    val observeNoteAndTodo =
-        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
-
-    val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
-    val observerNoteAndLink = remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
+    val tags = Tag(tagViewModel).rememberAllTags
+    val noteTags = NoteTag(noteAndTagViewModel).rememberAllNoteTags
+    val tasks = Task(taskViewModel).rememberAllTasks
+    val noteTasks = NoteTask(noteAndTodoVM).rememberAllNoteTasks
+    val links = Link(linkVM).rememberAllLinks
+    val noteLinks = NoteLinks(noteAndLinkVM).rememberAllNoteLinks
 
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
@@ -131,17 +133,11 @@ fun NoteAdd(
     val titleState = rememberSaveable {
         mutableStateOf<String?>(null)
     }
-//        .filterBadWords()
-//        .filterBadEmoji()
-//        .filterBadWebsites()
 
     val descriptionState = rememberSaveable { mutableStateOf(
         if (description == NUL) null else decodeUrl(description)
     )
     }
-//        .filterBadWords()
-//        .filterBadEmoji()
-//        .filterBadWebsites()
 
     val backgroundColor = getMatColor(SURFACE).toArgb()
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
@@ -381,8 +377,8 @@ fun NoteAdd(
                     )
                 }
                 // for refresh this screen.
-                    observerLinks.value.filter {
-                        observerNoteAndLink.value.contains(
+                    links.filter {
+                        noteLinks.contains(
                             NoteAndLink(uid, it.id)
                         )
                     }.forEach { _link ->
@@ -399,8 +395,8 @@ fun NoteAdd(
             // display all added tagEntities.
             item {
                 FlowRow {
-                    observeLabels.value.filter {
-                        observeNotesAndLabels.value.contains(
+                    tags.filter {
+                        noteTags.contains(
                             NoteAndTag(uid, it.id)
                         )
                     }.forEach {
@@ -424,8 +420,8 @@ fun NoteAdd(
 
             // display the todo list.
             item {
-                observeTodoList.value.filter {
-                    observeNoteAndTodo.value.contains(
+                tasks.filter {
+                    noteTasks.contains(
                         NoteAndTask(uid, it.id)
                     )
                 }.forEach { todo ->
@@ -464,7 +460,7 @@ fun NoteAdd(
                 }
             }
 
-//            // void space.
+            // void space.
             item {
                 Box(
                     modifier = Modifier
