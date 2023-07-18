@@ -18,7 +18,7 @@ import com.example.common_ui.Cons.AUDIOS
 import com.example.common_ui.Cons.IMAGES
 import com.example.common_ui.Cons.JPEG
 import com.example.common_ui.Cons.MP3
-import com.example.common_ui.Cons.SEARCH_IN_TRASH
+import com.example.common_ui.Cons.TRASH_PLACEHOLDER
 import com.example.common_ui.DataStoreVM
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.VerticalGrid
@@ -125,7 +125,7 @@ fun TrashScreen(
                         thisHomeScreen = false,
                         confirmationDialogState = confirmationDialogState,
                         expandedSortMenuState = null,
-                        searchScreen = SEARCH_IN_TRASH,
+                        searchScreen = TRASH_PLACEHOLDER,
                         tagEntity = remember { mutableStateOf(Tag()) }
                     )
                 }

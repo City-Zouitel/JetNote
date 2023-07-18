@@ -58,8 +58,8 @@ object Cons {
     const val CHANNEL_ID = "NOTE_CHANNEL"
     const val CHANNEL_NAME = "JETNOTE_NOTIFY"
 
-    const val SEARCH_IN_LOCAL = "Search in local.."
-    const val SEARCH_IN_TRASH = "Search in trash.."
+    const val NOTES_PLACEHOLDER = "Search in notes.."
+    const val TRASH_PLACEHOLDER = "Search in trash.."
     const val SEARCH_IN_CLOUD = "Search in cloud.."
 
     const val URGENT = "URGENT"

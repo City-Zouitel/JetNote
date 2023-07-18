@@ -29,7 +29,7 @@ import com.example.common_ui.Cons.ORDER_BY_NEWEST
 import com.example.common_ui.Cons.ORDER_BY_OLDEST
 import com.example.common_ui.Cons.ORDER_BY_PRIORITY
 import com.example.common_ui.Cons.ORDER_BY_REMINDER
-import com.example.common_ui.Cons.SEARCH_IN_LOCAL
+import com.example.common_ui.Cons.NOTES_PLACEHOLDER
 import com.example.common_ui.Icons.PLUS_ICON
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_VARIANT
@@ -79,7 +79,8 @@ fun NoteHome(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     //
     val scaffoldState = rememberScaffoldState()
-//     to observer notes while changing immediately.
+
+    //  to observer notes while changing immediately.
     val observerLocalNotes: State<List<Note>> = when (
         remember(dataStoreVM, dataStoreVM::getOrdination).collectAsState().value
     ) {
@@ -98,7 +99,6 @@ fun NoteHome(
     val coroutineScope = rememberCoroutineScope()
 
     val trashedNotesState = remember(entityVM) { entityVM.allTrashedNotes }.collectAsState()
-    val isProcessing = remember(dataViewModel) { dataViewModel.isProcessing }
 
     val expandedSortMenuState = remember { mutableStateOf(false) }
 
@@ -119,8 +119,6 @@ fun NoteHome(
         scope = coroutineScope,
         trashedNotesState = trashedNotesState
     )
-
-    //
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -154,7 +152,7 @@ fun NoteHome(
                         thisHomeScreen = true,
                         confirmationDialogState = null,
                         expandedSortMenuState = expandedSortMenuState,
-                        searchScreen = SEARCH_IN_LOCAL,
+                        searchScreen = NOTES_PLACEHOLDER,
                         tagEntity = searchTagEntityState
                     )
                 }
