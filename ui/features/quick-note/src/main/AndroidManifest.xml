@@ -15,7 +15,7 @@
     </activity>
 
     <service
-        android:name="com.example.quick_note.QuickTileService"
+        android:name=".QuickTileService"
         android:exported="true"
         android:icon="@drawable/plus_24"
         android:label="Quick Note"
