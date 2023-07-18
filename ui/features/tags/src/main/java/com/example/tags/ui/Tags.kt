@@ -31,6 +31,7 @@ import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_TINT
 import com.example.tags.state.TagStates.*
+import com.example.tags.utils.DialogColors
 import com.example.tags.viewmodel.NoteAndTagViewModel
 import com.example.tags.viewmodel.TagViewModel
 import com.example.tags.model.Tag as InTag

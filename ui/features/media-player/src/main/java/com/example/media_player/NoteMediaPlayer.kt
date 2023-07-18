@@ -69,7 +69,7 @@ fun NoteMediaPlayer(
             AdaptingRow(modifier = Modifier
                 .padding(start = 5.dp, end = 5.dp)) {
                 //
-                if (currentLayout.value == "GRID"){
+                if (currentLayout.value == "LIST"){
                         Icon(
                             painter = painterResource(
                                 id = if (isPlaying.value) PAUSE_CIRCLE_FILLED_ICON else PLAY_CIRCLE_FILLED_ICON
