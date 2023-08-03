@@ -62,5 +62,5 @@ include(
 include(
     ":benchmark"
 )
-include(":data:remote")
 include(":init")
+include(":api")

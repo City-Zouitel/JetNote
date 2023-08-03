@@ -1,6 +1,7 @@
 package com.example.graph.home_screen
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,6 +21,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import city.zouitel.api.ApiResult
+import city.zouitel.api.ApiViewModel
+import city.zouitel.api.Invalid
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.KEY_STANDARD
@@ -63,6 +67,7 @@ fun NoteHome(
     dataViewModel: DataViewModel = hiltViewModel(),
     entityVM: NoteViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
+    apiViewModel: ApiViewModel = hiltViewModel(),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
@@ -102,9 +107,28 @@ fun NoteHome(
 
     val expandedSortMenuState = remember { mutableStateOf(false) }
 
+    val api_vm by remember(apiViewModel, apiViewModel::uiState).collectAsState()
+
     val pullRefreshState = rememberPullRefreshState(
         refreshing = dataViewModel.isProcessing,
         onRefresh = {
+
+//            when(api_vm) {
+//                is ApiResult.Error -> {
+//                    Toast.makeText(
+//                        ctx,
+//                        (api_vm as? ApiResult.Error)?.message,
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//
+//                ApiResult.Loading -> {
+//                }
+//                is ApiResult.Success -> {
+//                    ((api_vm as? ApiResult.Success)?.data as? List<Invalid>)?.forEach(::println)
+//                }
+//            }
+
             navController.navigate(HOME_ROUTE)
         }
     )

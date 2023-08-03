@@ -99,7 +99,7 @@ dependencies {
     implementation(projects.ui.features.widget)
     implementation(projects.ui.features.quickNote)
     implementation(projects.init)
-//    implementation(projects.api)
+    implementation(projects.api)
 
     //AndroidX.
     implementation(libs.androidx.core)
