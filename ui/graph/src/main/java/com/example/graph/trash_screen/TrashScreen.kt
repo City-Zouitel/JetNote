@@ -24,7 +24,7 @@ import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.VerticalGrid
 import com.example.graph.getMaterialColor
 import com.example.graph.navigation_drawer.NavigationDrawer
-import com.example.graph.navigation_drawer.Screens.*
+import com.example.graph.Screens.*
 import com.example.graph.note_card.NoteCard
 import com.example.graph.top_action_bar.NoteTopAppBar
 import com.example.graph.top_action_bar.selection_bars.TrashSelectionTopAppBar

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -13,28 +12,29 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import city.zouitel.api.ApiViewModel
+import city.zouitel.network.NetworkMonitor
 import com.example.common_ui.DataStoreVM
 import com.example.glance.WidgetReceiver
 import com.example.graph.CONS.AUDIOS
 import com.example.graph.CONS.IMAGES
-import com.example.graph.Graph
+import com.example.graph.CONS.LINKS
+import com.example.graph.Navigation
 import com.example.graph.checkShortcut
-import com.example.graph.intentHandler
 import com.example.graph.urlPreview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import java.io.File
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NoteActivity : ComponentActivity() {
 
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +49,7 @@ class NoteActivity : ComponentActivity() {
             intentHandler(intent, this@NoteActivity, navHostController, scope)
 
             AppTheme {
-                Graph(navHostController)
+                Navigation(navHostController, networkMonitor)
             }
         }
     }
@@ -94,10 +94,10 @@ class NoteActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        // TODO: move it to init module as work manager.
+        // TODO: move it to init module.
         File(this.filesDir.path + "/" + IMAGES).mkdirs()
         File(this.filesDir.path + "/" + AUDIOS).mkdirs()
-        File(this.filesDir.path + "/" + "links_img").mkdirs()
+        File(this.filesDir.path + "/" + LINKS).mkdirs()
 
 //        mapOf(
 //            "Coffee" to "Prepare hot coffee for my self.",
@@ -131,7 +131,5 @@ class NoteActivity : ComponentActivity() {
         super.onPause()
         WidgetReceiver.updateBroadcast(this)
     }
-
-
 }
 

@@ -21,7 +21,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-//        compileSdkPreview ="UpsideDownCake"
+        /*compileSdkPreview = "UpsideDownCake"*/
     }
 
     buildTypes {
@@ -77,7 +77,8 @@ android {
         abi {
             isEnable = true
             reset()
-            include("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
+            //noinspection ChromeOsAbiSupport
+            include("arm64-v8a") // and "x86", "x86_64", "armeabi-v7a" by default.
             isUniversalApk = true
         }
     }
@@ -94,12 +95,12 @@ dependencies {
 
     //Modules.
     implementation(projects.common.commonUi)
-    implementation(projects.service.notification)
+//    implementation(projects.service.notification)
     implementation(projects.ui.graph)
     implementation(projects.ui.features.widget)
-    implementation(projects.ui.features.quickNote)
+//    implementation(projects.ui.features.quickNote)
     implementation(projects.init)
-    implementation(projects.api)
+//    implementation(projects.api)
 
     //AndroidX.
     implementation(libs.androidx.core)
@@ -114,8 +115,8 @@ dependencies {
     implementation(libs.compose.activity)
     implementation(libs.compose.navigation)
     implementation(libs.compose.toolingpreview)
-    implementation(libs.compose.viewmodel)
-    implementation(libs.compose.constraintlayout)
+//    implementation(libs.compose.viewmodel)
+//    implementation(libs.compose.constraintlayout)
 
     //Dagger-Hilt
     implementation (libs.dagger)

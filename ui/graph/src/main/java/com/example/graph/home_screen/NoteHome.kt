@@ -17,13 +17,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withStarted
 import androidx.navigation.NavController
 import city.zouitel.api.ApiResult
 import city.zouitel.api.ApiViewModel
+import city.zouitel.network.AppNetworkState
 import city.zouitel.api.Invalid
+import city.zouitel.network.NetworkMonitor
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.HOME_ROUTE
 import com.example.common_ui.Cons.KEY_STANDARD
@@ -42,7 +47,7 @@ import com.example.graph.sound
 import com.example.common_ui.DataStoreVM
 import com.example.graph.getMaterialColor
 import com.example.graph.navigation_drawer.NavigationDrawer
-import com.example.graph.navigation_drawer.Screens
+import com.example.graph.Screens
 import com.example.graph.note_card.NoteCard
 import com.example.graph.top_action_bar.NoteTopAppBar
 import com.example.graph.top_action_bar.selection_bars.HomeSelectionTopAppBar
@@ -51,12 +56,15 @@ import com.example.note.DataViewModel
 import com.example.note.model.Data
 import com.example.note.model.Note
 import com.example.tags.model.Tag
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 @SuppressLint(
     "UnusedMaterial3ScaffoldPaddingParameter",
     "UnusedMaterialScaffoldPaddingParameter",
-    "UnrememberedMutableState"
+    "UnrememberedMutableState", "CoroutineCreationDuringComposition"
 )
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -68,9 +76,20 @@ fun NoteHome(
     entityVM: NoteViewModel = hiltViewModel(),
     dataStoreVM: DataStoreVM = hiltViewModel(),
     apiViewModel: ApiViewModel = hiltViewModel(),
+    networkMonitor: NetworkMonitor,
+    appNetState: AppNetworkState = rememberNetworkState(networkMonitor = networkMonitor),
     navController: NavController,
 ) {
     val ctx = LocalContext.current
+    val life = LocalLifecycleOwner.current
+    val scope = rememberCoroutineScope()
+
+//    scope.launch {
+//        life.lifecycle.withStarted {
+//            println("*************************")
+//        }
+//    }
+
     //
     val searchTitleState = remember { mutableStateOf("") }
     val searchTagEntityState = remember { mutableStateOf(Tag()) }
@@ -107,27 +126,34 @@ fun NoteHome(
 
     val expandedSortMenuState = remember { mutableStateOf(false) }
 
-    val api_vm by remember(apiViewModel, apiViewModel::uiState).collectAsState()
+    val api_state by remember(apiViewModel, apiViewModel::uiState).collectAsState()
+
+    val isOffline by appNetState.isOnline.collectAsState()
+    //
+    LaunchedEffect(key1 = isOffline) {
+        if (isOffline) {
+            Toast.makeText(ctx, "you're online.", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = dataViewModel.isProcessing,
         onRefresh = {
 
-//            when(api_vm) {
-//                is ApiResult.Error -> {
-//                    Toast.makeText(
-//                        ctx,
-//                        (api_vm as? ApiResult.Error)?.message,
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//
-//                ApiResult.Loading -> {
-//                }
-//                is ApiResult.Success -> {
-//                    ((api_vm as? ApiResult.Success)?.data as? List<Invalid>)?.forEach(::println)
-//                }
-//            }
+            when(api_state) {
+                is ApiResult.Error -> {
+                    Toast.makeText(
+                        ctx,
+                        (api_state as? ApiResult.Error)?.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                ApiResult.Loading -> {}
+                is ApiResult.Success -> {
+                    ((api_state as? ApiResult.Success)?.data as? List<Invalid>)?.forEach(::println)
+                }
+            }
 
             navController.navigate(HOME_ROUTE)
         }

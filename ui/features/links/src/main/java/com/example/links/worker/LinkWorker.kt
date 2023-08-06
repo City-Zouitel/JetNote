@@ -33,7 +33,7 @@ class LinkWorker @AssistedInject constructor(
     private val noteAndLinkMapper: NoteAndLinkMapper,
 ): CoroutineWorker(context, workerParameters) {
 
-    val linkImgPath = context.filesDir.path + "/" + "links_img"
+    private val linkImgPath = context.filesDir.path + "/" + "links_folder"
 
     override suspend fun doWork(): Result = withContext(ioDeprecated) {
         return@withContext try {

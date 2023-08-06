@@ -23,7 +23,7 @@ class ApiViewModel @Inject constructor(
         get() = _uiState
             .stateIn(
                 viewModelScope,
-                SharingStarted.WhileSubscribed(),
+                SharingStarted.WhileSubscribed(stopTimeout = 10.seconds),
                 ApiResult.Loading
             )
 

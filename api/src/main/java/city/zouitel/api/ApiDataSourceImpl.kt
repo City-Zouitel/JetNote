@@ -43,7 +43,7 @@ class ApiDataSourceImpl @Inject constructor(
     override fun dataModifier(data: Invalid) = flow {
             emit(ApiResult.Loading)
              kotlin.runCatching {
-//                 client.postgrest.from("invalid_english").insert(data)
+                 client.postgrest.from("invalid_english").insert(data)
 //                 client.postgrest.from("english").update(data) {
 //                     eq("id", data.id)
 //                 }

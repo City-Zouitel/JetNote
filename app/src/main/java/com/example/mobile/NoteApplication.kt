@@ -19,7 +19,7 @@ class NoteApplication: Application() {
         GlobalExceptionHandler.initialize(this, NoteActivity::class.java)
 
         /**
-         *
+         * Github repository feedback configuration.
          */
         Beetle.configure {
             enableAssignees = true
@@ -30,7 +30,9 @@ class NoteApplication: Application() {
         /**
          * Work Manager Initializer.
          */
-        AppInitializer.getInstance(this).initializeComponent(WorkManagerInitializer::class.java)
+        AppInitializer
+            .getInstance(this)
+            .initializeComponent(WorkManagerInitializer::class.java)
     }
 
 }

@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import city.zouitel.network.NetworkMonitor
 import com.example.common_ui.Cons.ADD_ROUTE
 import com.example.common_ui.Cons.AUDIO_DURATION
 import com.example.common_ui.Cons.CAMERA_ROUTE
@@ -34,13 +35,16 @@ import com.example.tags.ui.Tags
 import com.example.tasks.TaskList
 
 @Composable
-fun Graph(
-    navHostController: NavHostController
+fun Navigation(
+    navHostController: NavHostController,
+    networkMonitor: city.zouitel.network.NetworkMonitor
 ) {
 
     NavHost(navController = navHostController, startDestination = HOME_ROUTE) {
         composable(route = HOME_ROUTE) {
-            NoteHome(navController = navHostController)
+            NoteHome(
+                navController = navHostController,
+                networkMonitor = networkMonitor)
         }
         composable(
             route = "$ADD_ROUTE/{$UID}/{$DESCRIPTION}",

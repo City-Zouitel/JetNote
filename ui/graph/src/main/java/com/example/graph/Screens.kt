@@ -1,4 +1,4 @@
-package com.example.graph.navigation_drawer
+package com.example.graph
 
 enum class Screens {
     HOME_SCREEN,

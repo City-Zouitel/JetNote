@@ -62,5 +62,12 @@ include(
 include(
     ":benchmark"
 )
-include(":init")
-include(":api")
+include(
+    ":init"
+)
+include(
+    ":api"
+)
+include(
+    ":network"
+)
