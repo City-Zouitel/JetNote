@@ -98,7 +98,7 @@ dependencies {
 //    implementation(projects.service.notification)
     implementation(projects.ui.graph)
     implementation(projects.ui.features.widget)
-//    implementation(projects.ui.features.quickNote)
+    implementation(projects.ui.features.quickNote)
     implementation(projects.init)
 //    implementation(projects.api)
 
