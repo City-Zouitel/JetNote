@@ -29,7 +29,6 @@ import com.example.common_ui.Icons.DELETE_OUTLINE_ICON
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.ON_SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE
-import com.example.tasks.TaskStates.*
 import com.example.tasks.model.NoteAndTask as InNoteAndTask
 import com.example.tasks.model.Task as InTask
 import kotlinx.coroutines.Job
@@ -45,13 +44,14 @@ private val getMatColor = MaterialColors().getMaterialColor
 @Composable
 fun TaskList(
     taskViewModel: TaskViewModel = hiltViewModel(),
-    noteAndTodoViewModel: NoteAndTaskViewModel = hiltViewModel(),
-    noteUid: String
+    noteAndTodoVM: NoteAndTaskViewModel = hiltViewModel(),
+    noteUid:String
 ) {
-    val tasks = Task(taskViewModel).rememberAllTasks
-    val noteTAsks = NoteTask(noteAndTodoViewModel).rememberAllNoteTasks
+    val observeTaskList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
+    val observeNoteAndTodoList =
+        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
 
-    val itemState = remember { mutableStateOf("") }
+    val itemState = remember { mutableStateOf("") }//.filterBadWords()
     val idState = remember { mutableStateOf(-1L) }
 
     Scaffold(
@@ -60,8 +60,8 @@ fun TaskList(
         LazyColumn(
             modifier = Modifier.padding(top = 25.dp)
         ) {
-            items(tasks) { task ->
-                if (noteTAsks.contains(
+            items(observeTaskList.value) { task ->
+                if (observeNoteAndTodoList.value.contains(
                         InNoteAndTask(noteUid, task.id)
                     )
                 ) {
@@ -96,14 +96,14 @@ fun TaskList(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            if (tasks.any { it.id == idState.value }) {
+                            if (observeTaskList.value.any { it.id == idState.value }) {
                                 taskViewModel.updateTotoItem(InTask(idState.value, itemState.value, false))
                             } else {
                                 Random.nextLong().let {
                                     taskViewModel.addTotoItem(
                                         InTask(it, itemState.value, false)
                                     )
-                                    noteAndTodoViewModel.addNoteAndTaskItem(InNoteAndTask(noteUid, it))
+                                    noteAndTodoVM.addNoteAndTaskItem(InNoteAndTask(noteUid, it))
                                 }
                             }.invokeOnCompletion {
                                 itemState.value = ""

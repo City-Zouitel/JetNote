@@ -2,13 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-feature
-        android:name="android.hardware.telephony"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
@@ -36,6 +29,11 @@
         <profileable
             android:shell="true"
             tools:targetApi="29" />
+
+        <receiver
+            android:name="com.example.notification.reciver.Notification"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".NoteActivity"
@@ -66,18 +64,27 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.example.quick_note.QuickActivity"
             android:exported="true"
-            android:theme="@style/Theme.JetNote.NoActionBar"
-            tools:ignore="WrongManifestParent">
+            android:theme="@style/Theme.JetNote.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.QUICK_VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="com.example.quick_note.QuickTileService"
+            android:exported="true"
+            android:icon="@drawable/plus_24"
+            android:label="Quick Note"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

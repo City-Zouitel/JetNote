@@ -78,13 +78,6 @@ retrofit = "2.9.0"
 #Okhttp
 okhttp = "5.0.0-alpha.1"
 
-#Supabase.
-supabase_postgrest_kt = "1.0.2"
-supabase = "1.0.0"
-
-#Ktor.
-ktor = "2.3.0"
-
 #Junit.
 junit = "4.13.2"
 
@@ -200,15 +193,6 @@ okhttp_bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp
 okhttp_bom_core = { module = "com.squareup.okhttp3:okhttp" }
 okhttp_bom_interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
 
-#Supabase.
-supabase-bom = { group = "io.github.jan-tennert.supabase", name = "bom", version.ref = "supabase" }
-supabase-gotrue = { group = "io.github.jan-tennert.supabase", name = "gotrue-kt" }
-supabase-realtime = { group = "io.github.jan-tennert.supabase", name = "realtime-kt" }
-supabase-postgrest = { group = "io.github.jan-tennert.supabase", name = "postgrest-kt" }
-
-#Ktor.
-ktor-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
-
 #Junit.
 androidx_junit = { module = "junit:junit", version.ref = "junit" }
 
@@ -223,7 +207,6 @@ sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "
 [bundles]
 compose = ["compose.ui", "compose.toolingpreview", "compose.material3"]
 composetest = ["compose.uitest", "compose.junit4", "compose.manifest"]
-supabase = [ "supabase-gotrue", "supabase-realtime", "supabase-postgrest" ]
 
 [plugins]
 kotlin_serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-gradle-plugin" }

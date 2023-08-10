@@ -16,10 +16,6 @@ dependencies {
 
     //AndroidX.
     implementation(libs.androidx.constraintlayout)
-    
-    //Lifecycle.
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     //WorkManager.
     implementation(libs.androidx.workmanager)

@@ -81,6 +81,7 @@ fun Quick(
                 Column(
                     modifier = Modifier
                         .background(Color.Transparent)
+//                    .border(border = BorderStroke(0.dp, Color.Transparent), shape = CircleShape)
                 ) {
                     OutlinedTextField(
                         value = descriptionState.value,

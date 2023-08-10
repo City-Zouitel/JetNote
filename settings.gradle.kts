@@ -2,7 +2,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     repositories {
-        includeBuild("Script")
+        includeBuild("source")
         gradlePluginPortal()
         google()
         mavenCentral()
@@ -62,12 +62,5 @@ include(
 include(
     ":benchmark"
 )
-include(
-    ":init"
-)
-include(
-    ":api"
-)
-include(
-    ":network"
-)
+include(":data:remote")
+include(":init")

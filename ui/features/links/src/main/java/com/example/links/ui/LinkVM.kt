@@ -32,7 +32,7 @@ class LinkVM @Inject constructor(
     getAll: LinkUseCase.GetAllLinks,
     private val delete: LinkUseCase.DeleteLink,
     private val mapper: LinkMapper
-): ViewModel() {
+    ): ViewModel() {
 
     private val _getAllLinks = MutableStateFlow<List<InLink>>(emptyList())
     val getAllLinks: StateFlow<List<InLink>>
@@ -71,20 +71,31 @@ class LinkVM @Inject constructor(
                 override fun onComplete(urlInfo: UrlInfoItem) {
                         urlInfo.apply {
                             title?.value = this.title
+//                    description.value = this.description
                             host?.value = URL(this.url).host
+//                            url?.value = this.url
                             img?.value = this.image
                         }
                 }
 
                 override fun onFailed(throwable: Throwable) {
-
+//                    Toast.makeText(ctx, "Can't load link", Toast.LENGTH_SHORT).show()
                 }
             }).fetchUrlPreview()
         }
     }
 
+//    fun saveImageLocally(img:Bitmap?, path:String, name:String?) {
+//        FileOutputStream(
+//            name?.let { File(path, it) }
+//        ).use {
+//            img?.compress(Bitmap.CompressFormat.JPEG, 100, it)
+//            it.flush()
+//        }
+//    }
+
     fun imageDecoder(context: Context, id:String): ImageBitmap? {
-        val path = File(context.filesDir.path + "/" + "links_folder", "$id.$JPEG")
+        val path = File(context.filesDir.path + "/" + "links_img", "$id.$JPEG")
         val bitImg = BitmapFactory.decodeFile(path.absolutePath)
         return bitImg?.asImageBitmap()
     }

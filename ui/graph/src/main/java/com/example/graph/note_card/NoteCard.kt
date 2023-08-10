@@ -48,8 +48,8 @@ import com.example.common_ui.Icons.CLOCK_ICON
 import com.example.common_ui.Icons.RESET_ICON
 import com.example.common_ui.codeUrl
 import com.example.graph.ImageDisplayed
-import com.example.graph.Screens
-import com.example.graph.Screens.*
+import com.example.graph.navigation_drawer.Screens
+import com.example.graph.navigation_drawer.Screens.*
 import com.example.graph.sound
 import com.example.links.model.NoteAndLink
 import com.example.links.ui.LinkPart

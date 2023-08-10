@@ -25,8 +25,6 @@ dependencies {
     implementation(projects.ui.features.note)
     implementation(projects.ui.features.quickNote)
     implementation(projects.ui.features.links)
-    api(projects.api)
-    api(projects.network)
 
     //AndroidX.
     implementation(libs.androidx.constraintlayout)

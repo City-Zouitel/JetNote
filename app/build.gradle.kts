@@ -14,14 +14,14 @@ android {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 334
-        versionName = "3.3.4"
+        versionCode = 333
+        versionName = "3.3.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-        /*compileSdkPreview = "UpsideDownCake"*/
+//        compileSdkPreview ="UpsideDownCake"
     }
 
     buildTypes {
@@ -77,9 +77,8 @@ android {
         abi {
             isEnable = true
             reset()
-            //noinspection ChromeOsAbiSupport
-            include("arm64-v8a") // and "x86", "x86_64", "armeabi-v7a" by default.
-            isUniversalApk = true
+            include("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
+            isUniversalApk = false
         }
     }
 }
@@ -95,7 +94,7 @@ dependencies {
 
     //Modules.
     implementation(projects.common.commonUi)
-//    implementation(projects.service.notification)
+    implementation(projects.service.notification)
     implementation(projects.ui.graph)
     implementation(projects.ui.features.widget)
     implementation(projects.ui.features.quickNote)
@@ -115,8 +114,8 @@ dependencies {
     implementation(libs.compose.activity)
     implementation(libs.compose.navigation)
     implementation(libs.compose.toolingpreview)
-//    implementation(libs.compose.viewmodel)
-//    implementation(libs.compose.constraintlayout)
+    implementation(libs.compose.viewmodel)
+    implementation(libs.compose.constraintlayout)
 
     //Dagger-Hilt
     implementation (libs.dagger)
@@ -128,12 +127,12 @@ dependencies {
     kapt (libs.dagger.hiltcompiler)
     
     //Lifecycle.
-//    implementation(libs.androidx.lifecycle.viewmodel.compose)
-//    implementation(libs.androidx.lifecycle.runtime.compose)
-//    implementation(libs.androidx.lifecycle.process)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.process)
 
     //WorkManager.
-//    implementation(libs.androidx.workmanager)
+    implementation(libs.androidx.workmanager)
 
     //Accompanist.
     implementation(libs.accompanist.systemuicontroller)
@@ -156,16 +155,16 @@ dependencies {
 //    debugImplementation ("com.guolindev.glance:glance:1.1.0")
 
     //Test.
-//    testImplementation (libs.androidx.junit)
-//    debugImplementation (libs.compose.manifest)
-//    debugImplementation (libs.compose.uitest)
+    testImplementation (libs.androidx.junit)
+    debugImplementation (libs.compose.manifest)
+    debugImplementation (libs.compose.uitest)
 
-//    androidTestImplementation (libs.androidx.extjunit)
-//    androidTestImplementation (libs.compose.junit4)
+    androidTestImplementation (libs.androidx.extjunit)
+    androidTestImplementation (libs.compose.junit4)
 
-//    androidTestImplementation(libs.bundles.composetest) {
-//        exclude(group = "androidx.core", module = "core-ktx")
-//        exclude(group = "androidx.activity", module = "activity")
-//        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-ktx")
-//    }
+    androidTestImplementation(libs.bundles.composetest) {
+        exclude(group = "androidx.core", module = "core-ktx")
+        exclude(group = "androidx.activity", module = "activity")
+        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-ktx")
+    }
 }

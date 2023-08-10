@@ -1,4 +1,4 @@
-package com.example.tags.utils
+package com.example.tags.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -29,7 +29,7 @@ internal fun DialogColors(
     AlertDialog(
         onDismissRequest = { dialogState.value = false },
         confirmButton = {},
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier.padding(30.dp),
         text = {
             LazyVerticalGrid(columns = GridCells.Fixed(7), content = {
                 items(listOfBackgroundColors) {

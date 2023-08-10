@@ -30,8 +30,7 @@ import com.example.common_ui.Icons.OUTLINE_LABEL_ICON
 import com.example.common_ui.MaterialColors
 import com.example.common_ui.MaterialColors.Companion.SURFACE
 import com.example.common_ui.MaterialColors.Companion.SURFACE_TINT
-import com.example.tags.state.TagStates.*
-import com.example.tags.utils.DialogColors
+import com.example.tags.state.State
 import com.example.tags.viewmodel.NoteAndTagViewModel
 import com.example.tags.viewmodel.TagViewModel
 import com.example.tags.model.Tag as InTag
@@ -53,11 +52,14 @@ fun Tags(
     noteAndTagViewModel: NoteAndTagViewModel = hiltViewModel(),
     noteUid: String?,
 ) {
-    val tags = Tag(tagViewModel).rememberAllTags
-    val noteTags = NoteTag(noteAndTagViewModel).rememberAllNoteTags
+    val tagState = State.Tag(tagViewModel)
+    val noteAndTagState = State.NoteTag(noteAndTagViewModel)
+
+    val allTags = tagState.rememberAllTags
+    val allNoteAndTags = noteAndTagState.rememberAllNoteTags
 
     val idState = remember { mutableStateOf(-1L) }
-    val labelState = remember { mutableStateOf("") }
+    val labelState = remember { mutableStateOf("") }//.filterBadWords()
     val colorState = remember { mutableStateOf(Color.Transparent.toArgb()) }
 
     val labelDialogState = remember { mutableStateOf(false) }
@@ -86,7 +88,7 @@ fun Tags(
                 if (noteUid == NUL) {
                     HashTagLayout(
                         labelDialogState = labelDialogState,
-                        hashTags = tags,
+                        hashTags = allTags,
                         idState = idState,
                         labelState = labelState
                     )
@@ -94,12 +96,12 @@ fun Tags(
                     FlowRow(
                         mainAxisSpacing = 3.dp
                     ) {
-                        tags.forEach { label ->
+                        allTags.forEach { label ->
                             ElevatedFilterChip(
                                 selected = true,
                                 modifier = Modifier,
                                 onClick = {
-                                    if (noteTags.contains(
+                                    if (allNoteAndTags.contains(
                                             InNoteAndTag(noteUid!!, label.id)
                                         )
                                     ) {
@@ -120,7 +122,7 @@ fun Tags(
                                 },
                                 leadingIcon = {
                                     if (
-                                        noteTags.contains(
+                                        allNoteAndTags.contains(
                                             InNoteAndTag(noteUid!!, label.id)
                                         )
                                     ) {
@@ -178,7 +180,7 @@ fun Tags(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            if (tags.any { it.id == idState.value }) {
+                            if (allTags.any { it.id == idState.value }) {
                                 tagViewModel.updateTag(
                                     InTag(
                                         id = idState.value,
