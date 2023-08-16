@@ -38,7 +38,7 @@ koin_compose = "3.4.0"
 koin_android = "3.3.1"
 
 #Exo.
-exoplayer = "2.18.2"
+exoplayer = "2.19.1"
 
 #Room.
 room = "2.5.1"
