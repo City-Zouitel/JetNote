@@ -4,7 +4,7 @@ gradle = "7.4.0"
 kotlin-gradle-plugin = "1.8.0"
 
 # Plugins
-ksp = "1.8.10-1.0.9"
+ksp = "1.9.22-1.0.16"
 dependencyanalysis = "1.19.0"
 
 # KotlinX
