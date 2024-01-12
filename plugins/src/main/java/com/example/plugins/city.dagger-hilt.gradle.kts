@@ -1,10 +1,10 @@
-import com.example.source.Libraries.compiler
-import com.example.source.Libraries.dagger
-import com.example.source.Libraries.daggerHiltCompiler
-import com.example.source.Libraries.hilt
-import com.example.source.Libraries.hiltCompiler
-import com.example.source.Libraries.hiltNavComp
-import com.example.source.Libraries.hiltWork
+import com.example.plugins.Libraries.compiler
+import com.example.plugins.Libraries.dagger
+import com.example.plugins.Libraries.daggerHiltCompiler
+import com.example.plugins.Libraries.hilt
+import com.example.plugins.Libraries.hiltCompiler
+import com.example.plugins.Libraries.hiltNavComp
+import com.example.plugins.Libraries.hiltWork
 import dagger.hilt.android.plugin.HiltExtension
 import org.jetbrains.kotlin.gradle.plugin.KaptExtension
 

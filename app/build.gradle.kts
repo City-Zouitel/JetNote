@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.mobile"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "city.zouitel.jetnote"

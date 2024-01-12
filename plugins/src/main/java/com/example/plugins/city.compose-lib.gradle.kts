@@ -1,15 +1,15 @@
-import com.example.source.Bundles.compose
-import com.example.source.Bundles.composeTest
-import com.example.source.Libraries.activity
-import com.example.source.Libraries.constraintLayout
-import com.example.source.Libraries.material3
-import com.example.source.Libraries.navigation
-import com.example.source.Libraries.toolingPreview
-import com.example.source.Libraries.ui
-import com.example.source.Libraries.viewmodel
-import com.example.source.androidConfig
-import com.example.source.composeConfig
-import com.example.source.proguardConfig
+import com.example.plugins.Bundles.compose
+import com.example.plugins.Bundles.composeTest
+import com.example.plugins.Libraries.activity
+import com.example.plugins.Libraries.constraintLayout
+import com.example.plugins.Libraries.material3
+import com.example.plugins.Libraries.navigation
+import com.example.plugins.Libraries.toolingPreview
+import com.example.plugins.Libraries.ui
+import com.example.plugins.Libraries.viewmodel
+import com.example.plugins.androidConfig
+import com.example.plugins.composeConfig
+import com.example.plugins.proguardConfig
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 

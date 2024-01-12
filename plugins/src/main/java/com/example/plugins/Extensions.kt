@@ -1,8 +1,9 @@
-package com.example.source
+package com.example.plugins
 
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.CompileOptions
 import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.dsl.Packaging
 import org.gradle.api.JavaVersion
 import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
@@ -20,7 +21,7 @@ fun CommonExtension<*, *, *, *, *>.androidConfig() {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    packagingOptions {
+    fun Packaging.options() {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }

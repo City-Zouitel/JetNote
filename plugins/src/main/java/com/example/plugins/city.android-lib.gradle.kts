@@ -1,9 +1,9 @@
-import com.example.source.Libraries.appcompat
-import com.example.source.Libraries.core
-import com.example.source.Libraries.coreKtx
-import com.example.source.Libraries.runTimeKtx
-import com.example.source.androidConfig
-import com.example.source.proguardConfig
+import com.example.plugins.Libraries.appcompat
+import com.example.plugins.Libraries.core
+import com.example.plugins.Libraries.coreKtx
+import com.example.plugins.Libraries.runTimeKtx
+import com.example.plugins.androidConfig
+import com.example.plugins.proguardConfig
 
 plugins {
     id("com.android.library")

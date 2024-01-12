@@ -1,4 +1,4 @@
-package com.example.source
+package com.example.plugins
 
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.VersionCatalog

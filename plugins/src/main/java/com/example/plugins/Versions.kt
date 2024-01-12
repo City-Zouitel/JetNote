@@ -1,7 +1,7 @@
-package com.example.source
+package com.example.plugins
 
 object Versions {
-    const val compileSdk = 34
+    const val compileSdk = 33
     const val targetSdk = 33
     const val minSdk = 25
 
