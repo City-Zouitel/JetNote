@@ -8,7 +8,7 @@ import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 
-fun CommonExtension<*, *, *, *>.androidConfig() {
+fun CommonExtension<*, *, *, *, *>.androidConfig() {
     defaultConfig {
         compileSdk = Versions.compileSdk
         minSdk = Versions.minSdk
@@ -31,7 +31,7 @@ fun CommonExtension<*, *, *, *>.androidConfig() {
     }
 }
 
-fun CommonExtension<*, *, *, *>.composeConfig() {
+fun CommonExtension<*, *, *, *, *>.composeConfig() {
     buildFeatures {
         compose = true
     }
@@ -52,6 +52,6 @@ fun LibraryExtension.proguardConfig() {
     }
 }
 
-private fun CommonExtension<*, *, *, *>.kotlinOptions (options: KotlinJvmOptions.() -> Unit) {
+private fun CommonExtension<*, *, *, *, *>.kotlinOptions (options: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", options)
 }

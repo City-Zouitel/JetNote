@@ -1,7 +1,7 @@
 plugins {
     id("city.android-lib")
     id("city.dagger-hilt")
-    alias(libs.plugins.ksp)
+//    alias(libs.plugins.ksp)
 }
 
 android {

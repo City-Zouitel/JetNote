@@ -13,7 +13,7 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.data.datastore)
     implementation(projects.ui.features.note)
-    implementation(projects.common.commonUi)
+    implementation(projects.common.ui)
 
     //AndroidX.
     implementation(libs.androidx.constraintlayout)

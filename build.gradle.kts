@@ -12,7 +12,7 @@ plugins {
 buildscript {
     dependencies {
         classpath(libs.dagger.hilt.gradle.plugin)
-        classpath(libs.kotlin.gradle.plugin)
+        classpath(libs.kotlin)
         classpath(libs.android.gradle.plugin)
         classpath(libs.aboutlibraries.plugin)
         classpath("gradle.plugin.chrisney:enigma:1.0.0.8")

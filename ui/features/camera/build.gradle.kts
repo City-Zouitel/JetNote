@@ -43,7 +43,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.common.commonUi)
+    implementation(projects.common.ui)
     //AndroidX.
 //    implementation(libs.androidx.core)
 //    implementation(libs.androidx.corektx)

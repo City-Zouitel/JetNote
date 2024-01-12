@@ -10,7 +10,7 @@ android {
 
 dependencies {
     //Projects.
-    implementation(projects.common.commonUi)
+    implementation(projects.common.ui)
     implementation(projects.service.notification)
     implementation(projects.data.datastore)
 

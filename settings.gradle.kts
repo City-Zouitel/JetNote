@@ -29,15 +29,14 @@ include(
     ":app"
 )
 include(
-    ":common:common-ui",
+    ":common:ui",
     ":common:effect",
-    ":common:common-logic",
+    ":common:logic",
     ":common:mapper",
 )
 include(
     "service:notification"
 )
-
 include(
     ":ui:features:camera",
     ":ui:features:tags",
@@ -62,5 +61,9 @@ include(
 include(
     ":benchmark"
 )
-include(":data:remote")
-include(":init")
+include(
+    ":data:remote"
+)
+include(
+    ":init"
+)

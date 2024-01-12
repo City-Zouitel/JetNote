@@ -1,7 +1,8 @@
 plugins {
     id("city.android-lib")
     id("city.dagger-hilt")
-    alias(libs.plugins.ksp)
+    id ("kotlin-kapt")
+//    alias(libs.plugins.ksp)
 }
 
 android {
@@ -21,7 +22,7 @@ dependencies {
     //Room.
     implementation(libs.roomkts)
     api(libs.room.runtime)
-    ksp(libs.room.compiler)
+    kapt(libs.room.compiler)
 
     //Security.
     implementation (libs.androidx.security)

@@ -14,7 +14,7 @@ dependencies {
     implementation(projects.data.local)
     implementation(projects.domain)
     implementation(projects.service.notification)
-    implementation(projects.common.commonUi)
+    implementation(projects.common.ui)
     implementation(projects.ui.features.widget)
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.camera)

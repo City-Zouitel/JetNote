@@ -4,8 +4,6 @@ import com.example.source.Libraries.coreKtx
 import com.example.source.Libraries.runTimeKtx
 import com.example.source.androidConfig
 import com.example.source.proguardConfig
-import gradle.kotlin.dsl.accessors._71f190358cebd46a469f2989484fd643.android
-import gradle.kotlin.dsl.accessors._71f190358cebd46a469f2989484fd643.implementation
 
 plugins {
     id("com.android.library")

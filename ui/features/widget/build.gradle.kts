@@ -11,7 +11,7 @@ android {
 dependencies {
     //Projects.
     implementation(projects.domain)
-    implementation(projects.common.commonUi)
+    implementation(projects.common.ui)
 
     //AndroidX.
     implementation(libs.androidx.constraintlayout)

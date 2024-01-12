@@ -1,65 +1,65 @@
 [versions]
 # Project
-gradle = "7.4.0"
-kotlin-gradle-plugin = "1.8.0"
+gradle = "8.1.0"
+kotlin = "1.9.10"
 
 # Plugins
-ksp = "1.8.10-1.0.9"
-dependencyanalysis = "1.19.0"
+ksp = "1.9.10-1.0.13"
+dependencyanalysis = "1.25.0"
 
 # KotlinX
-kotlinx_serialization = "1.4.1"
-kotlinx_coroutines = "1.6.4"
+kotlinx_serialization = "1.6.0"
+kotlinx_coroutines = "1.7.3"
 
 #AndroidX.
-core = "1.9.0"
-corektx = "1.9.0"
+core = "1.12.0"
+corektx = "1.12.0"
 appcompat = "1.6.1"
-runtimektx = "2.5.1"
+runtimektx = "2.6.2"
 constraintlayout = "2.1.4"
 extjunit = "1.1.5"
-glance = "1.0.0-alpha05"
+glance = "1.0.0"
 security = "1.0.0"
-workmanager = "2.7.1"
+workmanager = "2.9.0"
 startup = "1.1.1"
-lifecycle = "2.6.1"
+lifecycle = "2.6.2"
 
 #Compose.
-comp = "1.3.3"
-comp_nav = "2.5.3"
-comp_viewmodel = "2.5.1"
-comp_activity = "1.6.1"
-comp_material3 = "1.0.1"
-comp_constraintlayout = "1.1.0-alpha07"
+comp = "1.5.4"
+comp_nav = "2.7.6"
+comp_viewmodel = "2.6.2"
+comp_activity = "1.8.2"
+comp_material3 = "1.1.2"
+comp_constraintlayout = "1.1.0-alpha13"
 
 # Koin
-koin_core = "3.3.0"
-koin_compose = "3.4.0"
-koin_android = "3.3.1"
+#koin_core = "3.5.0"
+#koin_compose = "3.5.0"
+#koin_android = "3.5.0"
 
 #Exo.
-exoplayer = "2.18.2"
+exoplayer = "2.19.1"
 
 #Room.
-room = "2.5.1"
+room = "2.6.1"
 
 #Datastore.
 datastore = "1.0.0"
 
 #Livedata.
-livedatakts = "2.5.1"
+livedatakts = "2.6.2"
 
 #Dagger-Hilt.
-dagger_hilt = "2.45"
-hilt_nav_comp = "1.0.0"
-hilt_compiler = "1.0.0"
-hilt-work = "1.0.0"
+dagger_hilt = "2.48"
+hilt_nav_comp = "1.1.0"
+hilt_compiler = "1.1.0"
+hilt-work = "1.1.0"
 
 #Accompanist.
-accompanist = "0.28.0"
+accompanist = "0.32.0"
 
 #CameraX.
-camerax = "1.2.1"
+camerax = "1.3.1"
 
 #Glide.
 #glide = "4.15.0"
@@ -70,7 +70,7 @@ coil_compose = "2.2.1"
 coil_svg = "2.2.2"
 
 #License.
-about_libraries = "10.6.1"
+about_libraries = "10.9.2"
 
 #Retrofit.
 retrofit = "2.9.0"
@@ -90,8 +90,11 @@ beetle = "2.0.1"
 sqlcipher = "4.5.3"
 
 [libraries]
-# KotlinX
-kotlinx_serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx_serialization" }
+#Kotlin
+kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+#KotlinX
+#kotlinx_serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx_serialization" }
 kotlinx_coroutines_core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx_coroutines" }
 
 #AndroidX.
@@ -123,11 +126,10 @@ compose_junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = 
 compose_manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "comp" }
 
 #Koin
-koin_core = { module = "io.insert-koin:koin-core", version.ref = "koin_core" }
-koin_android = { module = "io.insert-koin:koin-android", version.ref = "koin_android" }
-koin_compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin_compose" }
-koin_test = { module = "io.insert-koin:koin-test", version.ref = "koin_core" }
-kotlin_gradle_plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle-plugin" }
+#koin_core = { module = "io.insert-koin:koin-core", version.ref = "koin_core" }
+#koin_android = { module = "io.insert-koin:koin-android", version.ref = "koin_android" }
+#koin_compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin_compose" }
+#koin_test = { module = "io.insert-koin:koin-test", version.ref = "koin_core" }
 
 # Exo.
 exoplayer_core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
@@ -186,12 +188,12 @@ aboutlibraries_plugin = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibr
 
 #Retrofit.
 #retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+#retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 #Okhttp.
-okhttp_bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp" }
-okhttp_bom_core = { module = "com.squareup.okhttp3:okhttp" }
-okhttp_bom_interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
+#okhttp_bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp" }
+#okhttp_bom_core = { module = "com.squareup.okhttp3:okhttp" }
+#okhttp_bom_interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
 
 #Junit.
 androidx_junit = { module = "junit:junit", version.ref = "junit" }
@@ -209,6 +211,6 @@ compose = ["compose.ui", "compose.toolingpreview", "compose.material3"]
 composetest = ["compose.uitest", "compose.junit4", "compose.manifest"]
 
 [plugins]
-kotlin_serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-gradle-plugin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+#kotlin_serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+#ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dependencyanalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyanalysis" }

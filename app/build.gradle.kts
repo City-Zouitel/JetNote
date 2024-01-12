@@ -8,14 +8,14 @@ plugins {
 
 android {
     namespace = "com.example.mobile"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "city.zouitel.jetnote"
         minSdk = 25
         targetSdk = 33
-        versionCode = 333
-        versionName = "3.3.3"
+        versionCode = 334
+        versionName = "3.3.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -50,7 +50,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packagingOptions {
         resources {
@@ -93,13 +93,12 @@ enigma.injectFakeKeys = true
 dependencies {
 
     //Modules.
-    implementation(projects.common.commonUi)
+    implementation(projects.common.ui)
     implementation(projects.service.notification)
     implementation(projects.ui.graph)
     implementation(projects.ui.features.widget)
     implementation(projects.ui.features.quickNote)
     implementation(projects.init)
-//    implementation(projects.api)
 
     //AndroidX.
     implementation(libs.androidx.core)
@@ -146,13 +145,8 @@ dependencies {
     //Global Exception.
     implementation(libs.globalexception)
 
-    //Sqlcipher.
-//    implementation (libs.sqlcipher)
-//    implementation("androidx.sqlite:sqlite:2.3.1")
-
     //
-//    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
-//    debugImplementation ("com.guolindev.glance:glance:1.1.0")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 
     //Test.
     testImplementation (libs.androidx.junit)
