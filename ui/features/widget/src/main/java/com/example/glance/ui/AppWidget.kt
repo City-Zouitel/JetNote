@@ -19,7 +19,7 @@ import dagger.hilt.EntryPoints
 class AppWidget: GlanceAppWidget() {
 
     @Composable
-    override fun Content() {
+    fun Content() {
 
         val ctx = LocalContext.current.applicationContext
 
@@ -96,5 +96,9 @@ class AppWidget: GlanceAppWidget() {
                 }
             }
         }
+    }
+
+    override suspend fun provideGlance(context: Context, id: GlanceId) {
+        TODO("Not yet implemented")
     }
 }

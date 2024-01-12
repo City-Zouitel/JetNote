@@ -23,26 +23,30 @@ fun RecordTimer(
         modifier = Modifier
             .height(100.dp)
     ) {
-        val numberTransitionSpec: AnimatedContentScope<String>.() -> ContentTransform = {
-            slideInVertically(
+        val numberTransitionSpec:  AnimatedContentTransitionScope<String>.() -> ContentTransform = {
+            (slideInVertically(
                 initialOffsetY = { it }
-            ) + fadeIn() with slideOutVertically(
+            ) + fadeIn()).togetherWith(slideOutVertically(
                 targetOffsetY = { -it }
-            ) + fadeOut() using SizeTransform(
+            ) + fadeOut()) using SizeTransform(
                 false
             )
         }
 
         CompositionLocalProvider(LocalTextStyle provides TextStyle(fontSize = 50.sp)) {
-            AnimatedContent(targetState = hours, transitionSpec = numberTransitionSpec) {
+            AnimatedContent(targetState = hours, transitionSpec = numberTransitionSpec, label = "") {
                 Text(text = it)
             }
             Text(text = ":")
-            AnimatedContent(targetState = minutes, transitionSpec = numberTransitionSpec) {
+            AnimatedContent(targetState = minutes, transitionSpec = numberTransitionSpec,
+                label = ""
+            ) {
                 Text(text = it)
             }
             Text(text = ":")
-            AnimatedContent(targetState = seconds, transitionSpec = numberTransitionSpec) {
+            AnimatedContent(targetState = seconds, transitionSpec = numberTransitionSpec,
+                label = ""
+            ) {
                 Text(text = it)
             }
         }

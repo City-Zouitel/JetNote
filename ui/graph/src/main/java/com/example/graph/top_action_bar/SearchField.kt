@@ -85,7 +85,7 @@ internal fun SearchField(
             }
         ),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color.DarkGray,
+            focusedTextColor = Color.DarkGray,
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent
         )

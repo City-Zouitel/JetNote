@@ -56,7 +56,7 @@ hilt_compiler = "1.1.0"
 hilt-work = "1.1.0"
 
 #Accompanist.
-accompanist = "0.32.0"
+accompanist = "0.28.0"
 
 #CameraX.
 camerax = "1.3.1"

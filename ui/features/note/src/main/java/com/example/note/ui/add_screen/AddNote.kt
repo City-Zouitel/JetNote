@@ -322,7 +322,7 @@ fun NoteAdd(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
-                        textColor = contentColorFor(backgroundColor = Color(backgroundColorState.value))
+                        focusedTextColor = contentColorFor(backgroundColor = Color(backgroundColorState.value))
                     )
                 )
             }
