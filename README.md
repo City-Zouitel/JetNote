@@ -2,9 +2,9 @@
 JetNote is modern note android application written by kotlin language and [jetpack-compose](https://github.com/JetBrains/compose-jb) toolkit. The app dealing with Room for Database, Dagger-Hilt dependency injection, Coroutine the non-blocking programming, Navigation-Compose, DataStore, ExoPlayer to play the recorded media in the app, CameraX to take and save picture, And more to make it good app that inspired by google app **keep Notes**.
 
 [![API](https://img.shields.io/badge/API-25%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=25)
-[![Kotlin Version](https://img.shields.io/badge/Kotlin-v1.8.0-blue.svg)](https://kotlinlang.org)
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.3.3-blueviolet)](https://developer.android.com/jetpack/androidx/releases/compose)
-[![Kotlin Coroutines Version](https://img.shields.io/badge/Coroutines-v1.6.4-yellow.svg)](https://kotlinlang.org/docs/reference/coroutines-overview.html)
+[![Kotlin Version](https://img.shields.io/badge/Kotlin-v1.9.10-blue.svg)](https://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.4-blueviolet)](https://developer.android.com/jetpack/androidx/releases/compose)
+[![Kotlin Coroutines Version](https://img.shields.io/badge/Coroutines-v1.7.3-yellow.svg)](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 [![Gradle](https://img.shields.io/badge/Gradle-7.4-green)](https://gradle.org)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Android Platform](https://img.shields.io/badge/Platform-Android-green.svg?style=flat)](https://www.android.com/)
