@@ -47,7 +47,7 @@ room = "2.6.1"
 datastore = "1.0.0"
 
 #Livedata.
-livedatakts = "2.6.2"
+livedatakts = "2.7.0"
 
 #Dagger-Hilt.
 dagger_hilt = "2.48"
