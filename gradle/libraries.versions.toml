@@ -70,7 +70,7 @@ coil_compose = "2.2.1"
 coil_svg = "2.2.2"
 
 #License.
-about_libraries = "10.9.2"
+about_libraries = "10.10.0"
 
 #Retrofit.
 retrofit = "2.9.0"
