@@ -1,0 +1,9 @@
+package city.zouitel.domain.model
+
+import androidx.annotation.Keep
+
+@Keep
+data class NoteAndTag(
+    val noteUid: String,
+    val labelId: Long
+)

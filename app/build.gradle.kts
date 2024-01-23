@@ -1,44 +1,35 @@
-import com.android.build.api.dsl.Packaging
-
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    id ("com.android.application")
-    id ("org.jetbrains.kotlin.android")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
     id ("kotlin-kapt")
-    id ("dagger.hilt.android.plugin")
     id ("com.chrisney.enigma")
 }
 
 android {
-    namespace = "com.example.mobile"
+    namespace = "city.zouitel.jetnote"
     compileSdk = 34
 
     defaultConfig {
         applicationId = "city.zouitel.jetnote"
-        minSdk = 25
-        targetSdk = 33
-        versionCode = 334
-        versionName = "3.3.4"
+        minSdk = 26
+        targetSdk = 34
+        versionCode = 400
+        versionName = "4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-//        compileSdkPreview ="UpsideDownCake"
     }
 
     buildTypes {
         release {
-            isShrinkResources = true
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-        create("benchmark") {
-            signingConfig = signingConfigs.getByName("debug")
-            matchingFallbacks += listOf("release")
-            isDebuggable = false
         }
     }
     compileOptions {
@@ -52,12 +43,16 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
-    fun Packaging.options() {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+
+    lint {
+        abortOnError = false
     }
 
     /**
@@ -65,9 +60,9 @@ android {
      */
     splits {
 
-       /**
-        * Configure multiple APKs for screen densities.
-        */
+        /**
+         * Configure multiple APKs for screen densities.
+         */
         density {
             isEnable = true
             include("ldpi", "xxhdpi", "xxxhdpi")
@@ -85,55 +80,46 @@ android {
     }
 }
 
-hilt {
-    enableAggregatingTask = true
-}
-
 enigma.enabled = true
 enigma.injectFakeKeys = true
 
 dependencies {
 
-    //Modules.
-    implementation(projects.common.ui)
-    implementation(projects.service.notification)
-    implementation(projects.ui.graph)
-    implementation(projects.ui.features.widget)
-    implementation(projects.ui.features.quickNote)
-    implementation(projects.init)
-
-    //AndroidX.
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.corektx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.runtimektx)
-    implementation(libs.androidx.constraintlayout)
-
-    //Compose.
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.activity)
+    implementation(libs.core.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
     implementation(libs.compose.navigation)
-    implementation(libs.compose.toolingpreview)
-    implementation(libs.compose.viewmodel)
-    implementation(libs.compose.constraintlayout)
 
-    //Dagger-Hilt
-    implementation (libs.dagger)
-    implementation (libs.dagger.hilt)
-    implementation (libs.hilt.navcomp)
-    implementation (libs.hilt.work)
-    kapt (libs.dagger.compiler)
-    kapt (libs.hilt.compiler)
-    kapt (libs.dagger.hiltcompiler)
-    
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+
+    //Modules.
+    implementation(projects.core.database)
+    implementation(projects.core.datastore)
+    implementation(projects.core.repository)
+    implementation(projects.domain)
+    implementation(projects.init)
+    implementation(projects.services.notifications)
+    implementation(projects.ui.common.systemDesign)
+    api(projects.ui.navigation)
+
     //Lifecycle.
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.lifecycle.process)
+    implementation(libs.lifecycle.compose.viewmodel)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.process)
 
     //WorkManager.
-    implementation(libs.androidx.workmanager)
+    implementation(libs.workmanager)
 
     //Accompanist.
     implementation(libs.accompanist.systemuicontroller)
@@ -145,22 +131,12 @@ dependencies {
     implementation(libs.beetle)
 
     //Global Exception.
-    implementation(libs.globalexception)
+//    implementation(libs.globalexception)
 
-    //
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 
-    //Test.
-    testImplementation (libs.androidx.junit)
-    debugImplementation (libs.compose.manifest)
-    debugImplementation (libs.compose.uitest)
-
-    androidTestImplementation (libs.androidx.extjunit)
-    androidTestImplementation (libs.compose.junit4)
-
-    androidTestImplementation(libs.bundles.composetest) {
-        exclude(group = "androidx.core", module = "core-ktx")
-        exclude(group = "androidx.activity", module = "activity")
-        exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-ktx")
-    }
+    //Koin.
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.worker)
+    implementation(libs.koin.compose)
 }

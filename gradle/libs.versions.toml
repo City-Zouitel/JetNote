@@ -1,0 +1,166 @@
+[versions]
+agp = "8.2.1"
+kotlin = "1.9.20"
+
+#Android.
+core-ktx = "1.12.0"
+junit = "4.13.2"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
+lifecycle = "2.7.0"
+constraintlayout = "2.1.4"
+glance = "1.0.0-alpha05"
+security = "1.0.0"
+workmanager = "2.9.0"
+startup = "1.1.1"
+
+#Compose.
+activity-compose = "1.8.2"
+compose-bom = "2023.10.01"
+appcompat = "1.6.1"
+material = "1.11.0"
+navigation-compose = "2.7.6"
+compose-constraintlayout = "1.1.0-alpha07"
+
+#Plugins.
+ksp = "1.9.10-1.0.13"
+dependencyanalysis = "1.25.0"
+
+#KotlinX.
+serialization = "1.6.0"
+coroutines = "1.7.3"
+
+#Koin.
+koin-core = "3.5.0"
+koin-compose = "3.5.0"
+koin-android = "3.5.0"
+koin-worker = "3.5.0"
+koin-test = "3.5.0"
+
+#Room.
+room = "2.6.1"
+
+#Datastore.
+datastore = "1.0.0"
+
+#Exo.
+exoplayer = "2.19.1"
+
+#Accompanist.
+accompanist = "0.28.0"
+
+#CameraX.
+camerax = "1.3.1"
+
+#Coil
+coil-compose = "2.2.1"
+coil-svg = "2.2.2"
+
+#License.
+license = "10.9.2"
+
+#Others.
+sketchbook = "1.0.4"
+swipe = "1.1.1"
+global-exception = "1.0.1"
+url-preview = "1.0.1"
+beetle = "2.0.1"
+sqlcipher = "4.5.3"
+
+[libraries]
+# KotlinX
+serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+#Android.
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle" }
+lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+lifecycle-compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+glance = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
+security = { module = "androidx.security:security-crypto", version.ref = "security" }
+workmanager = { module = "androidx.work:work-runtime-ktx", version.ref = "workmanager" }
+startup = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
+
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+compose-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraintlayout" }
+
+#Koin.
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-core" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
+koin-worker = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-worker" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
+
+#Room.
+roomkts = { module = "androidx.room:room-ktx", version.ref = "room" }
+room_runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room_compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+#DataStore.
+datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+
+# Exo.
+exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }
+exoplayer-ui = { module = "com.google.android.exoplayer:exoplayer-ui", version.ref = "exoplayer" }
+exoplayer-extension = { module = "com.google.android.exoplayer:extension-mediasession", version.ref = "exoplayer" }
+
+#Accompanist.
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
+accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
+accompanist-pager_indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+accompanist-navigation_animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
+accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
+accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
+accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
+
+#CameraX.
+camerax-core = { module = "androidx.camera:camera-core", version.ref = "camerax" }
+camerax-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camerax" }
+camerax-view = { module = "androidx.camera:camera-view", version.ref = "camerax" }
+camerax-extensions = { module = "androidx.camera:camera-extensions", version.ref = "camerax" }
+
+#Coil.
+coil_compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
+coil_svg = { module = "io.coil-kt:coil-svg", version.ref = "coil-svg" }
+
+#License.
+licenses = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "license" }
+licenses-plugin = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin", version.ref = "license" }
+
+#Others.
+url_preview = { module = "tw.com.oneup.www:Baha-UrlPreview", version.ref = "url-preview" }
+beetle = { module = "com.karacca:beetle", version.ref = "beetle" }
+swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
+#globalexception = { module = "com.github.emirhankolver:GlobalExceptionHandler", version.ref = "global-exception" }
+sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
+sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "sqlcipher" }
+
+[bundles]
+compose = ["ui", "ui-tooling-preview", "material3"]
+composetest = ["ui-test-junit4", "ui-test-manifest"]
+
+[plugins]
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+dependencyanalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyanalysis" }
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+

@@ -1,20 +1,15 @@
-
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.dependencyanalysis)
-    id("com.android.application") version "7.4.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.0" apply false
-    id("com.android.library") version "7.4.0" apply false
-    id("com.android.dynamic-feature") version "7.4.2" apply false
-    id("com.android.test") version "7.4.2" apply false
-    id("org.jetbrains.kotlin.jvm") version "1.7.21" apply false
+    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.kotlinAndroid) apply false
+    alias(libs.plugins.androidLibrary) apply false
+    alias(libs.plugins.dependencyanalysis) apply false
 }
 
 buildscript {
     dependencies {
-        classpath(libs.dagger.hilt.gradle.plugin)
-        classpath(libs.kotlin)
-        classpath(libs.android.gradle.plugin)
-        classpath(libs.aboutlibraries.plugin)
+        classpath(libs.licenses.plugin)
         classpath("gradle.plugin.chrisney:enigma:1.0.0.8")
     }
 
@@ -27,5 +22,5 @@ buildscript {
 }
 
 tasks.register("clean", Delete::class){
-    delete(rootProject.layout.buildDirectory)
+    delete(rootProject.buildDir)
 }

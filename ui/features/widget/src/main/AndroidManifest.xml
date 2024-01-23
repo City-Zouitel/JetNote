@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
     <application>
         <receiver
             android:name=".WidgetReceiver"
@@ -14,5 +13,4 @@
                 android:resource="@xml/new_app_widget_info" />
         </receiver>
     </application>
-
 </manifest>
