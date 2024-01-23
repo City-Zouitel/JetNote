@@ -52,5 +52,5 @@ dependencies {
     implementation(libs.constraintlayout)
 
     //SecurityDatastore.
-    implementation("io.github.osipxd:security-crypto-datastore-preferences:1.0.0-alpha04")
+    implementation("io.github.osipxd:security-crypto-datastore-preferences:1.0.0-beta01")
 }
