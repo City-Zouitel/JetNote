@@ -65,7 +65,7 @@ swipe = "1.1.1"
 global-exception = "1.0.1"
 url-preview = "1.0.1"
 beetle = "2.0.1"
-sqlcipher = "4.5.3"
+sqlcipher = "4.5.4"
 
 [libraries]
 # KotlinX
