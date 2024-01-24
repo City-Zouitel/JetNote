@@ -55,13 +55,8 @@ val repositoryKoinModule = module {
         NoteMapper(get(), get(), get(), get())
     }
 
-    factory { param ->
-        WidgetMapper(
-           param.get<DataMapper>(),
-           param.get<TagMapper>(),
-           param.get<TaskMapper>(),
-           param.get<LinkMapper>()
-        )
+    factory {
+        WidgetMapper(get(), get(), get(), get())
     }
 
     //Repositories.

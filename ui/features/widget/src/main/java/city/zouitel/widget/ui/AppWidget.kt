@@ -25,7 +25,7 @@ class AppWidget: GlanceAppWidget() {
 //        val viewModel = EntryPoints.get(
 //            ctx,
 //            EntryPoint::class.java
-//        ).vm()
+//        ).viewmodel()
 
         WidgetListNotes(ctx = ctx, widgetViewModel = viewModel)
     }

@@ -7,7 +7,6 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKeys
 import io.github.osipxd.security.crypto.createEncrypted
-import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind

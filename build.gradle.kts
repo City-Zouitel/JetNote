@@ -5,11 +5,11 @@ plugins {
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.dependencyanalysis) apply false
+    alias(libs.plugins.licenses) apply false
 }
 
 buildscript {
     dependencies {
-        classpath(libs.licenses.plugin)
         classpath("gradle.plugin.chrisney:enigma:1.0.0.8")
     }
 

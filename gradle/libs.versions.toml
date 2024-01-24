@@ -142,7 +142,6 @@ coil_svg = { module = "io.coil-kt:coil-svg", version.ref = "coil-svg" }
 
 #License.
 licenses = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "license" }
-licenses-plugin = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin", version.ref = "license" }
 
 #Others.
 url_preview = { module = "tw.com.oneup.www:Baha-UrlPreview", version.ref = "url-preview" }
@@ -163,4 +162,4 @@ dependencyanalysis = { id = "com.autonomousapps.dependency-analysis", version.re
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
-
+licenses = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "license" }

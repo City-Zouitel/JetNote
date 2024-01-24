@@ -2,7 +2,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    id ("kotlin-kapt")
+    alias(libs.plugins.licenses)
     id ("com.chrisney.enigma")
 }
 
@@ -132,7 +132,6 @@ dependencies {
 
     //Global Exception.
 //    implementation(libs.globalexception)
-
 
     //Koin.
     implementation(libs.koin.core)

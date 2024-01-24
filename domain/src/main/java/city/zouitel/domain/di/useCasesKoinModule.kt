@@ -1,16 +1,6 @@
 package city.zouitel.domain.di
 
-import city.zouitel.domain.usecase.DataUseCase
-import city.zouitel.domain.usecase.LinkUseCase
-import city.zouitel.domain.usecase.NoteAndLinkUseCase
-import city.zouitel.domain.usecase.NoteAndTagUseCase
-import city.zouitel.domain.usecase.NoteAndTaskUseCase
-import city.zouitel.domain.usecase.NoteUseCase
-import city.zouitel.domain.usecase.TagUseCase
-import city.zouitel.domain.usecase.TaskUseCase
-import city.zouitel.domain.usecase.WidgetUseCase
 import org.koin.core.annotation.KoinInternalApi
-import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 @OptIn(KoinInternalApi::class)

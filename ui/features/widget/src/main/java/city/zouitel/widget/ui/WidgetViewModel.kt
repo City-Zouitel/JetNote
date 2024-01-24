@@ -9,7 +9,7 @@ import city.zouitel.domain.usecase.WidgetUseCase
 import city.zouitel.systemDesign.Cons
 import java.io.File
 
-class WidgetViewModel /*@Inject*/ constructor(
+class WidgetViewModel(
     private val getAll: WidgetUseCase.GetAllWidgetMainEntityById
 ): ViewModel() {
 

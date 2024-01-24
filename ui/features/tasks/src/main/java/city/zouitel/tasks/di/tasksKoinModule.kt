@@ -7,19 +7,6 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
-//@Module
-//@InstallIn(SingletonComponent::class)
-object TaskModule {
-
-//    @Singleton
-//    @Provides
-    fun provideTaskMapper() = TaskMapper()
-
-//    @Singleton
-//    @Provides
-    fun provideNoteAndTaskMapper() = NoteAndTaskMapper()
-}
-
 val tasksKoinModule = module {
     factoryOf(::TaskMapper)
     factoryOf(::NoteAndTaskMapper)

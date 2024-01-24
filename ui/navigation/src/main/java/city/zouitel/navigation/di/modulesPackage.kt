@@ -12,6 +12,3 @@ import city.zouitel.tasks.di.tasksKoinModule
 import city.zouitel.widget.di.widgetKoinModule
 import org.koin.dsl.module
 
-val featuresKoinModule = module {
-
-}

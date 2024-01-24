@@ -1,6 +1,7 @@
 package city.zouitel.jetnote
 
 import android.app.Application
+import android.content.Context
 import city.zouitel.audios.di.exoPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
@@ -23,11 +24,11 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class NoteApplication: Application()
-{
+class NoteApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         startKoin {
             androidLogger(Level.INFO)
             androidContext(this@NoteApplication)

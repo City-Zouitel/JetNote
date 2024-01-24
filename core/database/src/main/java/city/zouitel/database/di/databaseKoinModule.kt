@@ -1,6 +1,5 @@
 package city.zouitel.database.di
 
-import android.app.Application
 import androidx.room.Room
 import city.zouitel.database.Database
 import city.zouitel.database.Encryption
@@ -33,7 +32,6 @@ import city.zouitel.repository.datasource.TagDataSource
 import city.zouitel.repository.datasource.TaskDataSource
 import city.zouitel.repository.datasource.WidgetDataSource
 import net.sqlcipher.database.SupportFactory
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -75,13 +73,8 @@ val databaseKoinModule = module {
     factory {
         NoteMapper(get(), get(), get(), get())
     }
-    factory { param ->
-        WidgetMapper(
-            param.get<DataMapper>(),
-            param.get<TagMapper>(),
-            param.get<TaskMapper>(),
-            param.get<LinkMapper>(),
-        )
+    factory {
+        WidgetMapper(get(), get(), get(), get())
     }
 
     //Database.
@@ -90,9 +83,8 @@ val databaseKoinModule = module {
             androidContext(),
             Database::class.java,
             Constants.DATABASE_NAME
-        ).openHelperFactory(
-            SupportFactory(Encryption(androidContext()).getCrypticPass())
         )
+//            .openHelperFactory(SupportFactory(Encryption(androidContext()).getCrypticPass()))
             .fallbackToDestructiveMigration()
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()

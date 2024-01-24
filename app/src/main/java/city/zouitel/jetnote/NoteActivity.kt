@@ -102,7 +102,7 @@ class NoteActivity : ComponentActivity() {
 //            "Appointment" to "Health check up with physician."
 //
 //        ).forEach {
-//            vm.value.addNote(
+//            viewmodel.value.addNote(
 //                Note(
 //                    uid = UUID.randomUUID().toString(),
 //                    title = it.key,

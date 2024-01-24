@@ -65,7 +65,7 @@ fun DrawingNote(
     val controller = rememberSketchbookController()
     var eraseState by remember { mutableStateOf(false) }
 
-    // TODO: move to vm
+    // TODO: move to viewmodel
     val path = File(ctx.filesDir.path + "/" + IMAGES, "$uid.$JPEG")
     val bitImg = BitmapFactory.decodeFile(path.absolutePath)
 
