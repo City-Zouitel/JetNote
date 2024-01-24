@@ -1,7 +1,7 @@
 # JetNote
 JetNote is modern note android application written by kotlin language and [jetpack-compose](https://github.com/JetBrains/compose-jb) toolkit. The app dealing with Room for Database, Dagger-Hilt dependency injection, Coroutine the non-blocking programming, Navigation-Compose, DataStore, ExoPlayer to play the recorded media in the app, CameraX to take and save picture, And more to make it good app that inspired by google app **keep Notes**.
 
-[![API](https://img.shields.io/badge/API-25%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=25)
+[![API](https://img.shields.io/badge/API-25%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
 [![Kotlin Version](https://img.shields.io/badge/Kotlin-v1.9.20-blue.svg)](https://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.4-blueviolet)](https://developer.android.com/jetpack/androidx/releases/compose)
 [![Kotlin Coroutines Version](https://img.shields.io/badge/Coroutines-v1.7.3-yellow.svg)](https://kotlinlang.org/docs/reference/coroutines-overview.html)
@@ -43,8 +43,8 @@ The Room persistence library provides an abstraction layer over SQLite to allow 
 ### [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
 Jetpack DataStore is a data storage solution that allows you to store key-value pairs or typed objects with protocol buffers. DataStore uses Kotlin coroutines and Flow to store data asynchronously, consistently, and transactionally.
 
-### [Dependency-injection-with-hilt](https://developer.android.com/training/dependency-injection/hilt-android)
-Hilt is a dependency injection library for Android that reduces the boilerplate of doing manual dependency injection in your project. Doing manual dependency injection requires you to construct every class and its dependencies by hand, and to use containers to reuse and manage dependencies.
+### [Koin](https://github.com/InsertKoinIO/koin)
+Koin is a pragmatic lightweight dependency injection framework for Kotlin developers.
 
 ### [Sketchbook](https://github.com/GetStream/sketchbook-compose) 
 Jetpack Compose canvas library that helps you draw paths, images on canvas with color pickers and palettes.
