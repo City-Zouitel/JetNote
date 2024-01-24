@@ -7,6 +7,7 @@ import city.zouitel.audios.di.exoPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
 import city.zouitel.domain.di.useCasesKoinModule
+import city.zouitel.init.ComposeInitializer
 import city.zouitel.init.WorkManagerInitializer
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.note.di.noteKoinModule
@@ -70,8 +71,12 @@ class NoteApplication: Application() {
         Beetle.init(this, "City-Zouitel", "JetNote")
 
         /**
-         * Work Manager Initializer.
+         * Initialize WorkManager.
          */
         AppInitializer.getInstance(this).initializeComponent(WorkManagerInitializer::class.java)
+        /**
+         * Initialize ComposeView.
+         */
+        AppInitializer.getInstance(this).initializeComponent(ComposeInitializer::class.java)
     }
 }
