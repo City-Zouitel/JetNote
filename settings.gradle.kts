@@ -4,6 +4,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        includeBuild("source")
     }
 }
 dependencyResolutionManagement {

@@ -72,7 +72,6 @@ dependencies {
     implementation(libs.lifecycle.livedata)
 
     //Lifecycle.
-    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.compose.viewmodel)
 
     //Accompanist.

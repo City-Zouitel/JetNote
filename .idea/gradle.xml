@@ -4,6 +4,17 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/source" name="source">
+                <projects>
+                  <project path="$PROJECT_DIR$/source" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
@@ -18,6 +29,7 @@
             <option value="$PROJECT_DIR$/init" />
             <option value="$PROJECT_DIR$/services" />
             <option value="$PROJECT_DIR$/services/notifications" />
+            <option value="$PROJECT_DIR$/source" />
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/ui/common" />
             <option value="$PROJECT_DIR$/ui/common/logic" />
