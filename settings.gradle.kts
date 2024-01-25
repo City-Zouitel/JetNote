@@ -1,10 +1,10 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     repositories {
+        includeBuild("source")
         google()
         mavenCentral()
         gradlePluginPortal()
-        includeBuild("source")
     }
 }
 dependencyResolutionManagement {
@@ -12,6 +12,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://jitpack.io")
     }
 }
 

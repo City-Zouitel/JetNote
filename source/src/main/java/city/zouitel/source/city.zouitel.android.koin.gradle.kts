@@ -9,6 +9,7 @@ plugins {
     id("kotlin-android")
 }
 
+
 android {
     androidConfig(libs)
     proguardConfig()

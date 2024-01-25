@@ -9,6 +9,7 @@ import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 fun CommonExtension<*, *, *, *, *>.androidConfig(libs: VersionCatalog) {
+
     defaultConfig {
         compileSdk = 34 /*libs.findVersion("").get().requiredVersion.toInt()*/
         minSdk = 26 /*libs.findVersion("").get().requiredVersion.toInt()*/
