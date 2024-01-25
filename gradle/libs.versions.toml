@@ -88,6 +88,7 @@ workmanager = { module = "androidx.work:work-runtime-ktx", version.ref = "workma
 startup = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 
+#Compose.
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 ui = { group = "androidx.compose.ui", name = "ui" }
@@ -159,7 +160,7 @@ compose = ["ui", "ui-tooling-preview", "material3"]
 composetest = ["ui-test-junit4", "ui-test-manifest"]
 
 [plugins]
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+#kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dependencyanalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyanalysis" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }

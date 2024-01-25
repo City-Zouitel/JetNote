@@ -8,3 +8,5 @@ dependencyResolutionManagement {
         }
     }
 }
+
+rootProject.name = "source"
