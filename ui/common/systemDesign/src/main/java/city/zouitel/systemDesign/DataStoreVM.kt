@@ -11,8 +11,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-//@HiltViewModel
-class DataStoreVM /*@Inject*/ constructor(
+class DataStoreVM(
     private val dataStoreRepo: DataStoreRepo
 ) : ViewModel() {
 

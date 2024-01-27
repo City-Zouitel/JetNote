@@ -10,7 +10,7 @@ plugins {
 
 buildscript {
     dependencies {
-        classpath("gradle.plugin.chrisney:enigma:1.0.0.8")
+//        classpath("gradle.plugin.chrisney:enigma:1.0.0.8")
     }
 
     repositories {

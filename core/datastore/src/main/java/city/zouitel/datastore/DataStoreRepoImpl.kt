@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 
-class DataStoreRepoImpl /*@Inject*/ constructor(
+class DataStoreRepoImpl(
     private val dataStore: DataStore<Preferences>
-) : DataStoreRepo {
+): DataStoreRepo {
 
     override val getLayout: Flow<String>
         get() = dataStore.data

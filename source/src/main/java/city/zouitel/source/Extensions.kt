@@ -75,9 +75,9 @@ fun DependencyHandlerScope.composeDependencies(libs: VersionCatalog) {
     add("implementation", libs.findLibrary("compose-navigation").get())
 }
 
-fun DependencyHandlerScope.koinDependencies(libs: VersionCatalog) {
-    add("implementation", libs.findLibrary("koin-core").get())
-    add("implementation", libs.findLibrary("koin-android").get())
-    add("implementation", libs.findLibrary("koin-compose").get())
-    add("implementation", libs.findLibrary("koin-worker").get())
-}
+//fun DependencyHandlerScope.koinDependencies(libs: VersionCatalog) {
+//    add("implementation", libs.findLibrary("koin-core").get())
+//    add("implementation", libs.findLibrary("koin-android").get())
+//    add("implementation", libs.findLibrary("koin-compose").get())
+//    add("implementation", libs.findLibrary("koin-worker").get())
+//}

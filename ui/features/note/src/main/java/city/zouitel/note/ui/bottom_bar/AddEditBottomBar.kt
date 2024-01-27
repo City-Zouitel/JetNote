@@ -8,6 +8,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
@@ -36,7 +37,7 @@ import city.zouitel.systemDesign.listOfTextColors
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class
+    ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class
 )
 @Composable
 fun AddEditBottomBar(
@@ -54,7 +55,7 @@ fun AddEditBottomBar(
     descriptionFieldState : MutableState<String?>,
     isTitleFieldSelected : MutableState<Boolean>,
     isDescriptionFieldSelected : MutableState<Boolean>,
-    isCollapsed: BottomSheetScaffoldState
+    isCollapsed: BottomSheetScaffoldState?
 ) {
 
     val ctx = LocalContext.current
@@ -73,7 +74,7 @@ fun AddEditBottomBar(
                     .fillMaxWidth()
                     .background(getMatColor(SURFACE))
                     .height(50.dp)
-                    .padding(end = if (isCollapsed.bottomSheetState.isCollapsed) 80.dp else 0.dp)
+//                    .padding(end = if (isCollapsed?.bottomSheetState?.isCollapsed == true) 80.dp else 0.dp)
             ) {
 
                 PopupTip(message = "More Options") {

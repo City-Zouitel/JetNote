@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.licenses)
-    id ("com.chrisney.enigma")
+//    id ("com.chrisney.enigma")
 }
 
 android {
@@ -25,7 +25,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -80,8 +81,8 @@ android {
     }
 }
 
-enigma.enabled = true
-enigma.injectFakeKeys = true
+//enigma.enabled = true
+//enigma.injectFakeKeys = true
 
 dependencies {
 

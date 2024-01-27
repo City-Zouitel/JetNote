@@ -51,6 +51,10 @@ dependencies {
     //AndroidX.
     implementation(libs.constraintlayout)
 
-    //SecurityDatastore.
+    //Koin.
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+
+    //DS Security.
     implementation("io.github.osipxd:security-crypto-datastore-preferences:1.0.0-beta01")
 }

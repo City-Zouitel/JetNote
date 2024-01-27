@@ -8,18 +8,23 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.swipeable
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
@@ -29,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -43,12 +49,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
+import city.zouitel.audios.MediaPlayerViewModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.CacheLinks
 import city.zouitel.links.ui.LinkPart
 import city.zouitel.links.ui.LinkVM
 import city.zouitel.links.ui.NoteAndLinkVM
-import city.zouitel.audios.MediaPlayerViewModel
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
 import city.zouitel.note.DataViewModel
 import city.zouitel.note.model.Data
@@ -75,10 +81,10 @@ import city.zouitel.systemDesign.findUrlLink
 import city.zouitel.tags.viewmodel.TagViewModel
 import city.zouitel.tags.viewmodel.NoteAndTagViewModel
 import city.zouitel.tags.model.NoteAndTag
-import city.zouitel.tasks.viewmodel.NoteAndTaskViewModel
-import city.zouitel.tasks.viewmodel.TaskViewModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
+import city.zouitel.tasks.viewmodel.NoteAndTaskViewModel
+import city.zouitel.tasks.viewmodel.TaskViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
@@ -90,7 +96,6 @@ import java.io.File
 @OptIn(
     ExperimentalMaterial3Api::class,
     ExperimentalMaterialApi::class,
-    ExperimentalComposeUiApi::class,
 )
 @Composable
 fun NoteAdd(
@@ -143,9 +148,9 @@ fun NoteAdd(
     }
 
     val backgroundColor = getMatColor(SURFACE).toArgb()
-    val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
+    val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
     val textColor = contentColorFor(getMatColor(SURFACE)).toArgb()
-    val textColorState = rememberSaveable { mutableStateOf(textColor) }
+    val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
     val priorityState = remember { mutableStateOf(NON) }
 
     val mediaFile = "$internalPath/$AUDIOS/$uid.$MP3"
@@ -175,10 +180,13 @@ fun NoteAdd(
 
     val state = rememberBottomSheetScaffoldState()
 
+    val modalBottomSheetState = rememberModalBottomSheetState()
+
     val remindingValue = remember { mutableStateOf(0L) }
 
     val audioDurationState = remember { mutableStateOf(0) }
 
+    val density = LocalDensity.current
 
     LaunchedEffect(Unit) {
         kotlin.runCatching {
@@ -186,16 +194,12 @@ fun NoteAdd(
         }
     }
 
-    BottomSheetScaffold(
-        scaffoldState = state,
-        sheetPeekHeight = 50.dp,
-        backgroundColor = Color(backgroundColorState.value),
+    Scaffold(
         modifier = Modifier
-            .navigationBarsPadding()
-            .imePadding(),
+            .navigationBarsPadding(),
         floatingActionButton = {
-            Column {
-                AnimatedVisibility(visible = state.bottomSheetState.isCollapsed) {
+//            Column {
+//                AnimatedVisibility(visible = state.bottomSheetState.isCollapsed) {
                     FloatingActionButton(
                         containerColor = getMatColor(OUT_LINE_VARIANT),
                         contentColor = contentColorFor(
@@ -227,10 +231,10 @@ fun NoteAdd(
                             null
                         )
                     }
-                }
-            }
+//                }
+//            }
         },
-        sheetContent = {
+        bottomBar = {
             AddEditBottomBar(
                 navController = navController,
                 recordDialogState = recordDialogState,
@@ -247,139 +251,143 @@ fun NoteAdd(
                 isDescriptionFieldSelected = isDescriptionFieldFocused,
                 isCollapsed = state
             )
-        }) {
-
-        // recording dialog visibility.
-        if (recordDialogState.value) {
-            RecordingNote(uid = uid, dialogState = recordDialogState)
         }
-
-        // reminding dialog visibility.
-        if (remindingDialogState.value) {
-            RemindingNote(
-                dialogState = remindingDialogState,
-                remindingValue = remindingValue,
-                title = titleState.value,
-                message = descriptionState.value,
-                uid = uid
-            )
-        }
-
-        LazyColumn(Modifier.fillMaxSize()) {
-
-            // display the image.
-            item {
-                ImageDisplayed(media = img.value?.asImageBitmap())
+    ) {
+            // recording dialog visibility.
+            if (recordDialogState.value) {
+                RecordingNote(uid = uid, dialogState = recordDialogState)
             }
 
-            // display the media player.
-            item {
-                Spacer(modifier = Modifier.height(18.dp))
-                if (
-                    File(mediaFile).exists() && !recordDialogState.value
-                ) {
-                    city.zouitel.audios.NoteMediaPlayer(localMediaUid = uid)
-                    audioDurationState.value =
-                        exoVM.getMediaDuration(ctx, mediaFile).toInt()
-
-                }
-            }
-
-            // The Title.
-            item {
-
-                OutlinedTextField(
-                    value = titleState.value ?: "",
-                    onValueChange = { titleState.value = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 20.dp)
-                        .focusRequester(focusRequester)
-                        .onFocusEvent {
-                            isTitleFieldFocused.value = it.isFocused
-                        },
-                    placeholder = {
-                        Text("Title", color = Color.Gray, fontSize = 24.sp)
-                    },
-                    textStyle = TextStyle(
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Normal,
-                        fontFamily = FontFamily.Default,
-                        color = Color(textColorState.value)
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences,
-                        autoCorrect = false,
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            keyboardManager.moveFocus(FocusDirection.Next)
-                        }
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent,
-                        focusedTextColor = contentColorFor(backgroundColor = Color(backgroundColorState.value))
-                    )
+            // reminding dialog visibility.
+            if (remindingDialogState.value) {
+                RemindingNote(
+                    dialogState = remindingDialogState,
+                    remindingValue = remindingValue,
+                    title = titleState.value,
+                    message = descriptionState.value,
+                    uid = uid
                 )
             }
 
-            //The Description.
-            item {
+            LazyColumn(
+                Modifier
+                    .background(Color(backgroundColorState.value))
+                    .fillMaxSize()
+            ) {
 
-                OutlinedTextField(
-                    value = descriptionState.value ?: "",
-                    onValueChange = {
-                        descriptionState.value = it
+                // display the image.
+                item {
+                    ImageDisplayed(media = img.value?.asImageBitmap())
+                }
 
-                                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onFocusEvent {
-                            isDescriptionFieldFocused.value = it.isFocused
-                            focusState.value = it.isFocused
+                // display the media player.
+                item {
+                    Spacer(modifier = Modifier.height(18.dp))
+                    if (
+                        File(mediaFile).exists() && !recordDialogState.value
+                    ) {
+                        city.zouitel.audios.NoteMediaPlayer(localMediaUid = uid)
+                        audioDurationState.value =
+                            exoVM.getMediaDuration(ctx, mediaFile).toInt()
+
+                    }
+                }
+
+                // The Title.
+                item {
+
+                    OutlinedTextField(
+                        value = titleState.value ?: "",
+                        onValueChange = { titleState.value = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 20.dp)
+                            .focusRequester(focusRequester)
+                            .onFocusEvent {
+                                isTitleFieldFocused.value = it.isFocused
+                            },
+                        placeholder = {
+                            Text("Title", color = Color.Gray, fontSize = 24.sp)
                         },
-                    placeholder = {
-                        Text("Note", color = Color.Gray, fontSize = 19.sp)
-                    },
-                    textStyle = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Normal,
-                        fontFamily = FontFamily.Default,
-                        color = Color(textColorState.value)
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences,
-                        autoCorrect = false,
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Default
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                            keyboardManager.clearFocus()
-                        }
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
-                    )
-                )
-            }
-
-            // Link display.
-            item {
-                findUrlLink(descriptionState.value)?.let { url ->
-                    CacheLinks(
-                        linkVM = linkVM,
-                        noteAndLinkVM = noteAndLinkVM,
-                        noteUid = uid,
-                        url = url
+                        textStyle = TextStyle(
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = FontFamily.Default,
+                            color = Color(textColorState.value)
+                        ),
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences,
+                            autoCorrect = false,
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Next
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                keyboardManager.moveFocus(FocusDirection.Next)
+                            }
+                        ),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedBorderColor = Color.Transparent,
+                            focusedTextColor = contentColorFor(backgroundColor = Color(backgroundColorState.value))
+                        )
                     )
                 }
-                // for refresh this screen.
+
+                //The Description.
+                item {
+
+                    OutlinedTextField(
+                        value = descriptionState.value ?: "",
+                        onValueChange = {
+                            descriptionState.value = it
+
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onFocusEvent {
+                                isDescriptionFieldFocused.value = it.isFocused
+                                focusState.value = it.isFocused
+                            },
+                        placeholder = {
+                            Text("Note", color = Color.Gray, fontSize = 19.sp)
+                        },
+                        textStyle = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = FontFamily.Default,
+                            color = Color(textColorState.value)
+                        ),
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences,
+                            autoCorrect = false,
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Default
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                                keyboardManager.clearFocus()
+                            }
+                        ),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedBorderColor = Color.Transparent
+                        )
+                    )
+                }
+
+                // Link display.
+                item {
+                    findUrlLink(descriptionState.value)?.let { url ->
+                        CacheLinks(
+                            linkVM = linkVM,
+                            noteAndLinkVM = noteAndLinkVM,
+                            noteUid = uid,
+                            url = url
+                        )
+                    }
+                    // for refresh this screen.
                     observerLinks.value.filter {
                         observerNoteAndLink.value.contains(
                             NoteAndLink(uid, it.id)
@@ -393,84 +401,373 @@ fun NoteAdd(
                             link = _link
                         )
                     }
-            }
-
-            // display all added tagEntities.
-            item {
-                FlowRow {
-                    observeLabels.value.filter {
-                        observeNotesAndLabels.value.contains(
-                            NoteAndTag(uid, it.id)
-                        )
-                    }.forEach {
-                        AssistChip(
-                            onClick = { },
-                            leadingIcon = {
-                                Icon(
-                                    painter = painterResource(id = CIRCLE_ICON_18),
-                                    contentDescription = null,
-                                    tint = Color(it.color),
-                                    modifier = Modifier.size(10.dp)
-                                )
-                            },
-                            label = {
-                                it.label?.let { it1 -> Text(it1) }
-                            }
-                        )
-                    }
                 }
-            }
 
-            // display the todo list.
-            item {
-                observeTodoList.value.filter {
-                    observeNoteAndTodo.value.contains(
-                        NoteAndTask(uid, it.id)
-                    )
-                }.forEach { todo ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = todo.isDone,
-                            onCheckedChange = {
-                                taskViewModel.updateTotoItem(
-                                    Task(
-                                        id = todo.id,
-                                        item = todo.item,
-                                        isDone = !todo.isDone
-                                    )
-                                )
-                            },
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = Color.Gray,
-                                uncheckedColor = Color(textColorState.value)
+                // display all added tagEntities.
+                item {
+                    FlowRow {
+                        observeLabels.value.filter {
+                            observeNotesAndLabels.value.contains(
+                                NoteAndTag(uid, it.id)
                             )
-                        )
-
-                        todo.item?.let { item ->
-                            Text(
-                                text = item,
-                                style = TextStyle(
-                                    fontSize = 14.sp,
-                                    textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
-                                    color = if (todo.isDone) Color.Gray else Color(textColorState.value)
-                                )
+                        }.forEach {
+                            AssistChip(
+                                onClick = { },
+                                leadingIcon = {
+                                    Icon(
+                                        painter = painterResource(id = CIRCLE_ICON_18),
+                                        contentDescription = null,
+                                        tint = Color(it.color),
+                                        modifier = Modifier.size(10.dp)
+                                    )
+                                },
+                                label = {
+                                    it.label?.let { it1 -> Text(it1) }
+                                }
                             )
                         }
                     }
                 }
-            }
+
+                // display the todo list.
+                item {
+                    observeTodoList.value.filter {
+                        observeNoteAndTodo.value.contains(
+                            NoteAndTask(uid, it.id)
+                        )
+                    }.forEach { todo ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = todo.isDone,
+                                onCheckedChange = {
+                                    taskViewModel.updateTotoItem(
+                                        Task(
+                                            id = todo.id,
+                                            item = todo.item,
+                                            isDone = !todo.isDone
+                                        )
+                                    )
+                                },
+                                colors = CheckboxDefaults.colors(
+                                    checkedColor = Color.Gray,
+                                    uncheckedColor = Color(textColorState.value)
+                                )
+                            )
+
+                            todo.item?.let { item ->
+                                Text(
+                                    text = item,
+                                    style = TextStyle(
+                                        fontSize = 14.sp,
+                                        textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
+                                        color = if (todo.isDone) Color.Gray else Color(textColorState.value)
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
 
 //            // void space.
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp)
-                )
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                    )
+                }
             }
         }
-    }
+
+
+//    androidx.compose.material3.BottomSheetScaffold(
+//        scaffoldState = state,
+//        sheetPeekHeight = 50.dp,
+//        backgroundColor = Color(backgroundColorState.value),
+//        modifier = Modifier
+//            .navigationBarsPadding()
+//            .imePadding(),
+//        floatingActionButton = {
+//            Column {
+//                AnimatedVisibility(visible = state.bottomSheetState.isCollapsed) {
+//                    FloatingActionButton(
+//                        containerColor = getMatColor(OUT_LINE_VARIANT),
+//                        contentColor = contentColorFor(
+//                            backgroundColor = getMatColor(
+//                                OUT_LINE_VARIANT
+//                            )
+//                        ),
+//                        onClick = {
+//                            sound.makeSound.invoke(ctx, KEY_STANDARD,thereIsSoundEffect.value)
+//
+//                            dataViewModel.addData(
+//                                Data(
+//                                    title = if(titleState.value.isNullOrBlank()) null else titleState.value ,
+//                                    description = if(descriptionState.value.isNullOrBlank()) null else descriptionState.value,
+//                                    priority = priorityState.value,
+//                                    uid = uid,
+//                                    reminding = remindingValue.value,
+//                                    date = dateState.value.toString(),
+//                                    audioDuration = audioDurationState.value,
+//                                    color = backgroundColorState.value,
+//                                    textColor = textColorState.value,
+//                                )
+//                            )
+//                            navController.navigate(HOME_ROUTE)
+//                        }
+//                    ) {
+//                        Icon(
+//                            painter = painterResource(id = DONE_ICON),
+//                            null
+//                        )
+//                    }
+//                }
+//            }
+//        },
+//        sheetContent = {
+//            AddEditBottomBar(
+//                navController = navController,
+//                recordDialogState = recordDialogState,
+//                remindingDialogState = remindingDialogState,
+//                note = Data(uid = uid),
+//                backgroundColorState = backgroundColorState,
+//                textColorState = textColorState,
+//                priorityColorState = priorityState,
+//                notePriority = priorityState,
+//                imageLaunch = chooseImageLauncher,
+//                titleFieldState = titleState,
+//                descriptionFieldState = descriptionState,
+//                isTitleFieldSelected = isTitleFieldFocused,
+//                isDescriptionFieldSelected = isDescriptionFieldFocused,
+//                isCollapsed = state
+//            )
+//        }) {
+//
+//        // recording dialog visibility.
+//        if (recordDialogState.value) {
+//            RecordingNote(uid = uid, dialogState = recordDialogState)
+//        }
+//
+//        // reminding dialog visibility.
+//        if (remindingDialogState.value) {
+//            RemindingNote(
+//                dialogState = remindingDialogState,
+//                remindingValue = remindingValue,
+//                title = titleState.value,
+//                message = descriptionState.value,
+//                uid = uid
+//            )
+//        }
+//
+//        LazyColumn(Modifier.fillMaxSize()) {
+//
+//            // display the image.
+//            item {
+//                ImageDisplayed(media = img.value?.asImageBitmap())
+//            }
+//
+//            // display the media player.
+//            item {
+//                Spacer(modifier = Modifier.height(18.dp))
+//                if (
+//                    File(mediaFile).exists() && !recordDialogState.value
+//                ) {
+//                    city.zouitel.audios.NoteMediaPlayer(localMediaUid = uid)
+//                    audioDurationState.value =
+//                        exoVM.getMediaDuration(ctx, mediaFile).toInt()
+//
+//                }
+//            }
+//
+//            // The Title.
+//            item {
+//
+//                OutlinedTextField(
+//                    value = titleState.value ?: "",
+//                    onValueChange = { titleState.value = it },
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(top = 20.dp)
+//                        .focusRequester(focusRequester)
+//                        .onFocusEvent {
+//                            isTitleFieldFocused.value = it.isFocused
+//                        },
+//                    placeholder = {
+//                        Text("Title", color = Color.Gray, fontSize = 24.sp)
+//                    },
+//                    textStyle = TextStyle(
+//                        fontSize = 24.sp,
+//                        fontWeight = FontWeight.Normal,
+//                        fontFamily = FontFamily.Default,
+//                        color = Color(textColorState.value)
+//                    ),
+//                    keyboardOptions = KeyboardOptions(
+//                        capitalization = KeyboardCapitalization.Sentences,
+//                        autoCorrect = false,
+//                        keyboardType = KeyboardType.Text,
+//                        imeAction = ImeAction.Next
+//                    ),
+//                    keyboardActions = KeyboardActions(
+//                        onNext = {
+//                            keyboardManager.moveFocus(FocusDirection.Next)
+//                        }
+//                    ),
+//                    colors = TextFieldDefaults.outlinedTextFieldColors(
+//                        focusedBorderColor = Color.Transparent,
+//                        unfocusedBorderColor = Color.Transparent,
+//                        focusedTextColor = contentColorFor(backgroundColor = Color(backgroundColorState.value))
+//                    )
+//                )
+//            }
+//
+//            //The Description.
+//            item {
+//
+//                OutlinedTextField(
+//                    value = descriptionState.value ?: "",
+//                    onValueChange = {
+//                        descriptionState.value = it
+//
+//                                    },
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .onFocusEvent {
+//                            isDescriptionFieldFocused.value = it.isFocused
+//                            focusState.value = it.isFocused
+//                        },
+//                    placeholder = {
+//                        Text("Note", color = Color.Gray, fontSize = 19.sp)
+//                    },
+//                    textStyle = TextStyle(
+//                        fontSize = 18.sp,
+//                        fontWeight = FontWeight.Normal,
+//                        fontFamily = FontFamily.Default,
+//                        color = Color(textColorState.value)
+//                    ),
+//                    keyboardOptions = KeyboardOptions(
+//                        capitalization = KeyboardCapitalization.Sentences,
+//                        autoCorrect = false,
+//                        keyboardType = KeyboardType.Text,
+//                        imeAction = ImeAction.Default
+//                    ),
+//                    keyboardActions = KeyboardActions(
+//                        onDone = {
+//                            keyboardController?.hide()
+//                            keyboardManager.clearFocus()
+//                        }
+//                    ),
+//                    colors = TextFieldDefaults.outlinedTextFieldColors(
+//                        focusedBorderColor = Color.Transparent,
+//                        unfocusedBorderColor = Color.Transparent
+//                    )
+//                )
+//            }
+//
+//            // Link display.
+//            item {
+//                findUrlLink(descriptionState.value)?.let { url ->
+//                    CacheLinks(
+//                        linkVM = linkVM,
+//                        noteAndLinkVM = noteAndLinkVM,
+//                        noteUid = uid,
+//                        url = url
+//                    )
+//                }
+//                // for refresh this screen.
+//                    observerLinks.value.filter {
+//                        observerNoteAndLink.value.contains(
+//                            NoteAndLink(uid, it.id)
+//                        )
+//                    }.forEach { _link ->
+//                        LinkPart(
+//                            linkVM = linkVM,
+//                            noteAndLinkVM = noteAndLinkVM,
+//                            noteUid = uid,
+//                            swipeable = true,
+//                            link = _link
+//                        )
+//                    }
+//            }
+//
+//            // display all added tagEntities.
+//            item {
+//                FlowRow {
+//                    observeLabels.value.filter {
+//                        observeNotesAndLabels.value.contains(
+//                            NoteAndTag(uid, it.id)
+//                        )
+//                    }.forEach {
+//                        AssistChip(
+//                            onClick = { },
+//                            leadingIcon = {
+//                                Icon(
+//                                    painter = painterResource(id = CIRCLE_ICON_18),
+//                                    contentDescription = null,
+//                                    tint = Color(it.color),
+//                                    modifier = Modifier.size(10.dp)
+//                                )
+//                            },
+//                            label = {
+//                                it.label?.let { it1 -> Text(it1) }
+//                            }
+//                        )
+//                    }
+//                }
+//            }
+//
+//            // display the todo list.
+//            item {
+//                observeTodoList.value.filter {
+//                    observeNoteAndTodo.value.contains(
+//                        NoteAndTask(uid, it.id)
+//                    )
+//                }.forEach { todo ->
+//                    Row(
+//                        modifier = Modifier.fillMaxWidth(),
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Checkbox(
+//                            checked = todo.isDone,
+//                            onCheckedChange = {
+//                                taskViewModel.updateTotoItem(
+//                                    Task(
+//                                        id = todo.id,
+//                                        item = todo.item,
+//                                        isDone = !todo.isDone
+//                                    )
+//                                )
+//                            },
+//                            colors = CheckboxDefaults.colors(
+//                                checkedColor = Color.Gray,
+//                                uncheckedColor = Color(textColorState.value)
+//                            )
+//                        )
+//
+//                        todo.item?.let { item ->
+//                            Text(
+//                                text = item,
+//                                style = TextStyle(
+//                                    fontSize = 14.sp,
+//                                    textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
+//                                    color = if (todo.isDone) Color.Gray else Color(textColorState.value)
+//                                )
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//
+////            // void space.
+//            item {
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(300.dp)
+//                )
+//            }
+//        }
+//    }
 }

@@ -18,5 +18,4 @@ android {
 dependencies {
     androidDependencies(libs)
     composeDependencies(libs)
-    koinDependencies(libs)
 }

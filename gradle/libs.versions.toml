@@ -36,6 +36,7 @@ koin-compose = "3.5.0"
 koin-android = "3.5.0"
 koin-worker = "3.5.0"
 koin-test = "3.5.0"
+koin-gradle = "3.5.0"
 
 #Room.
 room = "2.6.1"
@@ -110,6 +111,7 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-and
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-compose" }
 koin-worker = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koin-worker" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin-test" }
+koin-gradle-plugin = { module = "io.insert-koin:koin-gradle-plugin", version.ref = "koin-gradle" }
 
 #Room.
 roomkts = { module = "androidx.room:room-ktx", version.ref = "room" }

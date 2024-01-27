@@ -27,7 +27,8 @@
 
     <application
         android:name=".NoteApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="JetNote"
         android:largeHeap="true"
