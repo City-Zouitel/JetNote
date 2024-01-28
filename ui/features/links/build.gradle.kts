@@ -28,4 +28,7 @@ dependencies {
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)
+
+    //Koin
+    implementation(libs.koin.worker)
 }
