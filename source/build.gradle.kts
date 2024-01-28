@@ -1,4 +1,4 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     `kotlin-dsl`
     `kotlin-dsl-precompiled-script-plugins`
@@ -12,4 +12,19 @@ dependencies {
 repositories {
     mavenCentral()
     google()
+}
+
+gradlePlugin {
+    plugins {
+        register("android-library") {
+            id = "city.zouitel.android.library"
+            implementationClass = "AndroidLibrary"
+        }
+    }
+    plugins {
+        register("android-koin") {
+            id = "city.zouitel.android.koin"
+            implementationClass = "AndroidKoin"
+        }
+    }
 }

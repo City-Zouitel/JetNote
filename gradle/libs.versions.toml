@@ -169,3 +169,6 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 licenses = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "license" }
+
+cityzouitel-android-library = { id = "city.zouitel.android.library", version = "unspecified" }
+cityzouitel-android-koin = { id = "city.zouitel.android.koin", version = "unspecified" }
