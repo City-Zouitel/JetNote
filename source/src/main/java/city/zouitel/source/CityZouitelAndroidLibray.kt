@@ -11,10 +11,10 @@ fun Project.configureAndroidLibrary(
     common: CommonExtension<*, *, *, *, *>,
 ) {
     common.apply {
-        compileSdk = 34
+        compileSdk = libs.findVersion("compileSdkVersion").get().requiredVersion.toInt()
 
         defaultConfig {
-            minSdk = 26
+            minSdk = libs.findVersion("minSdkVersion").get().requiredVersion.toInt()
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
@@ -49,6 +49,7 @@ fun Project.configureAndroidLibrary(
         dependencies {
             androidDependencies(libs)
             androidTestDependencies(libs)
+            androidKoinDependencies(libs)
         }
     }
 }

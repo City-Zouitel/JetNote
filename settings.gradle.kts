@@ -17,23 +17,28 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "JetNote"
+
 include(":app")
-include(":core:database")
-include(":core:repository")
-include(":core:datastore")
+include(
+    ":core:database",
+    ":core:repository",
+    ":core:datastore"
+)
 include(":domain")
-include(":ui:features:note")
-include(":ui:features:quickNote")
-include(":ui:features:camera")
-include(":ui:features:links")
-include(":ui:features:audios")
-include(":ui:features:recorder")
-include(":ui:features:reminder")
-include(":ui:features:tags")
-include(":ui:features:tasks")
-include(":ui:features:widget")
-include(":ui:navigation")
+include(
+    ":ui:features:note",
+    ":ui:features:quickNote",
+    ":ui:features:camera",
+    ":ui:features:links",
+    ":ui:features:audios",
+    ":ui:features:recorder",
+    ":ui:features:reminder",
+    ":ui:features:tags",
+    ":ui:features:tasks",
+    ":ui:features:widget",
+    ":ui:navigation",
+    ":ui:common:systemDesign",
+    ":ui:common:logic"
+)
 include(":services:notifications")
 include(":init")
-include(":ui:common:systemDesign")
-include(":ui:common:logic")

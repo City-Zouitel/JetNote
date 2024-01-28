@@ -13,18 +13,13 @@ internal fun Project.configureAndroidCompose(
         }
 
         composeOptions {
-            kotlinCompilerExtensionVersion = "1.5.4" //libs.findVersion("").get().toString()
+            kotlinCompilerExtensionVersion = libs.findVersion("composeVersion").get().requiredVersion
         }
 
         dependencies {
-                add("implementation", platform(libs.findLibrary("compose-bom").get()))
-                add("implementation", libs.findLibrary("activity-compose").get())
-                add("implementation", libs.findLibrary("ui").get())
-                add("implementation", libs.findLibrary("ui-graphics").get())
-                add("implementation", libs.findLibrary("ui-tooling").get())
-                add("implementation", libs.findLibrary("material3").get())
-                add("implementation", libs.findLibrary("compose-navigation").get())
-            }
+            androidComposeDependencies(libs)
+            androidComposeKoinDependencies(libs)
+        }
 
         testOptions {
             unitTests {

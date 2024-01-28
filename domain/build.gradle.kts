@@ -1,7 +1,6 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias(libs.plugins.cityzouitel.android.library)
-    alias(libs.plugins.cityzouitel.android.koin)
+    alias(libs.plugins.cityzouitel.androidLibrary)
 }
 
 android {

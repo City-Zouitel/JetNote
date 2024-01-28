@@ -18,7 +18,7 @@ fun DependencyHandlerScope.androidTestDependencies(libs: VersionCatalog) {
     add("androidTestImplementation", libs.findLibrary("espresso-core").get())
 }
 
-fun DependencyHandlerScope.composeDependencies(libs: VersionCatalog) {
+fun DependencyHandlerScope.androidComposeDependencies(libs: VersionCatalog) {
     add("implementation", platform(libs.findLibrary("compose-bom").get()))
     add("implementation", libs.findLibrary("activity-compose").get())
     add("implementation", libs.findLibrary("ui").get())
@@ -26,15 +26,14 @@ fun DependencyHandlerScope.composeDependencies(libs: VersionCatalog) {
     add("implementation", libs.findLibrary("ui-tooling").get())
     add("implementation", libs.findLibrary("material3").get())
     add("implementation", libs.findLibrary("compose-navigation").get())
+    add("implementation", libs.findLibrary("compose-constraintlayout").get())
 }
 
 fun DependencyHandlerScope.androidKoinDependencies(libs: VersionCatalog) {
     add("implementation", libs.findLibrary("koin-core").get())
     add("implementation", libs.findLibrary("koin-android").get())
-    add("implementation", libs.findLibrary("koin-worker").get())
 }
 
-fun DependencyHandlerScope.androidKoinComposeDependencies(libs: VersionCatalog) {
-    androidKoinDependencies(libs)
+fun DependencyHandlerScope.androidComposeKoinDependencies(libs: VersionCatalog) {
     add("implementation", libs.findLibrary("koin-compose").get())
 }

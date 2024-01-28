@@ -21,10 +21,11 @@ gradlePlugin {
             implementationClass = "AndroidLibrary"
         }
     }
+
     plugins {
-        register("android-koin") {
-            id = "city.zouitel.android.koin"
-            implementationClass = "AndroidKoin"
+        register("android-compose") {
+            id = "city.zouitel.android.compose"
+            implementationClass = "AndroidCompose"
         }
     }
 }
