@@ -18,19 +18,6 @@ fun Project.configureAndroidLibrary(
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
-//        android {
-//            buildTypes {
-//                release {
-//                    isShrinkResources = true
-//                    isMinifyEnabled = true
-//                    proguardFiles(
-//                        getDefaultProguardFile("proguard-android-optimize.txt"),
-//                        "proguard-rules.pro"
-//                    )
-//                }
-//            }
-//        }
-
         packaging {
             resources {
                 excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -38,12 +25,12 @@ fun Project.configureAndroidLibrary(
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
 
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = "17"
         }
 
         dependencies {
