@@ -28,4 +28,11 @@ gradlePlugin {
             implementationClass = "AndroidCompose"
         }
     }
+
+    plugins {
+        register("android-application") {
+            id = "city.zouitel.android.application"
+            implementationClass = "AndroidApplication"
+        }
+    }
 }

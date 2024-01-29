@@ -18,6 +18,14 @@ fun DependencyHandlerScope.androidTestDependencies(libs: VersionCatalog) {
     add("androidTestImplementation", libs.findLibrary("espresso-core").get())
 }
 
+fun DependencyHandlerScope.androidUiTestDependencies(libs: VersionCatalog) {
+    val bom = libs.findLibrary("compose-bom").get()
+    add("androidTestImplementation", (platform(bom)))
+    add("androidTestImplementation", (libs.findLibrary("ui-test-junit4").get()))
+    add("debugImplementation", (libs.findLibrary("ui-tooling").get()))
+    add("debugImplementation", (libs.findLibrary("ui-test-manifest").get()))
+}
+
 fun DependencyHandlerScope.androidComposeDependencies(libs: VersionCatalog) {
     add("implementation", platform(libs.findLibrary("compose-bom").get()))
     add("implementation", libs.findLibrary("activity-compose").get())
@@ -27,6 +35,8 @@ fun DependencyHandlerScope.androidComposeDependencies(libs: VersionCatalog) {
     add("implementation", libs.findLibrary("material3").get())
     add("implementation", libs.findLibrary("compose-navigation").get())
     add("implementation", libs.findLibrary("compose-constraintlayout").get())
+
+    // TODO: add bundles.
 }
 
 fun DependencyHandlerScope.androidKoinDependencies(libs: VersionCatalog) {

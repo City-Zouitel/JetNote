@@ -179,3 +179,4 @@ licenses = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "license" 
 #Local.
 cityzouitel-androidLibrary = { id = "city.zouitel.android.library", version = "unspecified" }
 cityzouitel-androidCompose = { id = "city.zouitel.android.compose", version = "unspecified" }
+cityzouitel-androidApplication = { id = "city.zouitel.android.application", version = "unspecified" }
