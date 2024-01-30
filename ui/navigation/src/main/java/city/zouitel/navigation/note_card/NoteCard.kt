@@ -172,7 +172,7 @@ private fun Card(
                             homeSelectionState?.value = true
                         }
 
-                        TRASH_SCREEN -> {
+                        DELETED_SCREEN -> {
                             trashSelectionState?.value = true
                         }
 
@@ -196,7 +196,7 @@ private fun Card(
                                 note.reminding
                     )
 
-                } else if (screen == TRASH_SCREEN && !trashSelectionState?.value!!) {
+                } else if (screen == DELETED_SCREEN && !trashSelectionState?.value!!) {
                     /*do nothing.*/
                 } else {
                     when {
@@ -221,7 +221,7 @@ private fun Card(
             if(selectedNotes?.contains(note) == true) {
                 when(screen) {
                     HOME_SCREEN -> BorderStroke(3.dp, Color.Cyan)
-                    TRASH_SCREEN -> BorderStroke(3.dp, Color.Red)
+                    DELETED_SCREEN -> BorderStroke(3.dp, Color.Red)
                     else -> { throw Exception("") }
                 }
             } else {
@@ -236,7 +236,7 @@ private fun Card(
 
         // display the image.
         when (screen) {
-            HOME_SCREEN, TRASH_SCREEN -> {
+            HOME_SCREEN, DELETED_SCREEN -> {
                 ImageDisplayed(media = dataViewModel::imageDecoder.invoke(ctx, note.uid))
             }
             else -> { // Timber.tag(TAG).d("")
@@ -295,7 +295,7 @@ private fun Card(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (screen == TRASH_SCREEN) {
+            if (screen == DELETED_SCREEN) {
                 IconButton(onClick = {
                     dataViewModel.editData(
                         Data(

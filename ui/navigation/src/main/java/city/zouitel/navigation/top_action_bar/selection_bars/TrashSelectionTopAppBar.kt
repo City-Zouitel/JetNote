@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import city.zouitel.navigation.sound
 import city.zouitel.note.DataViewModel
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.AdaptingRow
@@ -22,7 +23,6 @@ import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.PopupTip
-import city.zouitel.navigation.sound
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

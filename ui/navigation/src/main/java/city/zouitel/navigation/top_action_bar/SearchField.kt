@@ -30,7 +30,7 @@ import city.zouitel.navigation.getMaterialColor
 import city.zouitel.navigation.sound
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SearchField(
     dataStoreVM: DataStoreVM = koinViewModel(),

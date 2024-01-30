@@ -55,7 +55,7 @@ fun Tags(
     val tagState = State.Tag(tagViewModel)
     val noteAndTagState = State.NoteTag(noteAndTagViewModel)
 
-    val allTags = tagState.rememberAllTags
+    val allTags = tagState.rememberAllTags.invoke()
     val allNoteAndTags = noteAndTagState.rememberAllNoteTags
 
     val idState = remember { mutableStateOf(-1L) }

@@ -23,13 +23,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import city.zouitel.navigation.getMaterialColor
 import city.zouitel.navigation.navigation_drawer.NavigationDrawer
+import city.zouitel.navigation.sound
 import city.zouitel.systemDesign.AdaptingRowBetween
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.MaterialColors.Companion.ON_SURFACE
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
-import city.zouitel.navigation.sound
 import city.zouitel.navigation.top_action_bar.CustomTopAppBar
+import city.zouitel.systemDesign.Cons.LICENSES_ROUTE
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint(
@@ -103,7 +104,7 @@ fun Settings(
                 item {
                     PreferenceItem(
                         title = "Sound Effect",
-                        description = "Make sound when any key is pressed.",
+                        description = "Make effectSound when any key is pressed.",
                         active = thereIsSoundEffect.value
                     ) {
                         sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
@@ -118,7 +119,10 @@ fun Settings(
                 item {
                     PreferenceItem(title = "Licenses", description = "Public repositories on GitHub are often used to share open source software.") {
                         sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
-                        navC.navigate("licenses")
+                        with(navC) {
+                            navigate(LICENSES_ROUTE)
+                            clearBackStack(LICENSES_ROUTE)
+                        }
                     }
                 }
 

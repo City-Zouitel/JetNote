@@ -23,7 +23,7 @@ import city.zouitel.systemDesign.Icons.CIRCLE_ICON
 internal fun PriorityList(
     isShow: MutableState<Boolean>,
     notePriority: MutableState<String>
-    ) {
+) {
     DropdownMenu(
         expanded = isShow.value,
         onDismissRequest = {
@@ -36,8 +36,9 @@ internal fun PriorityList(
     ) {
         DropdownMenuItem(
             text = { Text(text = "Urgent", fontSize = 18.sp) },
-            leadingIcon = { Icon(painterResource(CIRCLE_ICON), null,
-            tint = Color.Red) },
+            leadingIcon = {
+                Icon(painterResource(CIRCLE_ICON), null, tint = Color.Red)
+            },
             onClick = {
                 notePriority.value = URGENT
                 isShow.value = false
@@ -45,8 +46,9 @@ internal fun PriorityList(
         )
         DropdownMenuItem(
             text = { Text(text = "Important", fontSize = 18.sp) },
-            leadingIcon = { Icon(painterResource(CIRCLE_ICON), null,
-                tint = Color.Yellow) },
+            leadingIcon = {
+                Icon(painterResource(CIRCLE_ICON), null, tint = Color.Yellow)
+            },
             onClick = {
                 notePriority.value = IMPORTANT
                 isShow.value = false

@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import city.zouitel.navigation.sound
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Cons.BY_NAME
 import city.zouitel.systemDesign.Cons.DEFAULT_ORDER
@@ -38,7 +39,6 @@ import city.zouitel.systemDesign.Icons.SORT_AMOUNT_UP_ICON
 import city.zouitel.systemDesign.Icons.SORT_ICON
 import city.zouitel.systemDesign.Icons.SORT_NUMERIC_ICON
 import city.zouitel.systemDesign.PopupTip
-import city.zouitel.navigation.sound
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)

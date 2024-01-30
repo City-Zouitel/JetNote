@@ -1,7 +1,10 @@
 package city.zouitel.navigation.home_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -10,8 +13,24 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.contentColorFor
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -19,6 +38,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import city.zouitel.navigation.State.*
+import city.zouitel.navigation.getMaterialColor
+import city.zouitel.navigation.navigation_drawer.NavigationDrawer
+import city.zouitel.navigation.navigation_drawer.Screens
+import city.zouitel.navigation.note_card.NoteCard
+import city.zouitel.navigation.sound
+import city.zouitel.navigation.top_action_bar.NoteTopAppBar
+import city.zouitel.navigation.top_action_bar.selection_bars.HomeSelectionTopAppBar
 import city.zouitel.note.DataViewModel
 import city.zouitel.note.NoteViewModel
 import city.zouitel.note.model.Data
@@ -39,15 +66,9 @@ import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_VARIANT
 import city.zouitel.systemDesign.VerticalGrid
 import city.zouitel.tags.model.Tag
-import city.zouitel.navigation.getMaterialColor
-import city.zouitel.navigation.navigation_drawer.NavigationDrawer
-import city.zouitel.navigation.navigation_drawer.Screens
-import city.zouitel.navigation.note_card.NoteCard
-import city.zouitel.navigation.sound
-import city.zouitel.navigation.top_action_bar.NoteTopAppBar
-import city.zouitel.navigation.top_action_bar.selection_bars.HomeSelectionTopAppBar
+import okhttp3.internal.notify
 import org.koin.androidx.compose.koinViewModel
-import java.util.*
+import java.util.UUID
 
 @SuppressLint(
     "UnusedMaterial3ScaffoldPaddingParameter",
@@ -65,6 +86,9 @@ fun NoteHome(
     dataStoreVM: DataStoreVM = koinViewModel(),
     navController: NavController,
 ) {
+    val sldif = city.zouitel.navigation.State.Sound(dataStoreVM)
+    val sdo = sldif.soundState.invoke()
+
     val ctx = LocalContext.current
     //
     val searchTitleState = remember { mutableStateOf("") }
@@ -91,21 +115,24 @@ fun NoteHome(
         else -> remember(entityVM, entityVM::allNotesById).collectAsState()
     }
 
-    val uid = UUID.randomUUID().toString()
+    val uid by lazy { UUID.randomUUID().toString() }
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
     val lazyListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
     val trashedNotesState = remember(entityVM) { entityVM.allTrashedNotes }.collectAsState()
-    val isProcessing = remember(dataViewModel) { dataViewModel.isProcessing }
+    val isProcessing = remember(dataViewModel, dataViewModel::isProcessing)
 
     val expandedSortMenuState = remember { mutableStateOf(false) }
 
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = dataViewModel.isProcessing,
+        refreshing = isProcessing,
         onRefresh = {
-            navController.navigate(HOME_ROUTE)
+            navController.apply {
+                navigate(HOME_ROUTE)
+                popBackStack()
+            }
         }
     )
 
@@ -119,8 +146,6 @@ fun NoteHome(
         scope = coroutineScope,
         trashedNotesState = trashedNotesState
     )
-
-    //
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -173,14 +198,20 @@ fun NoteHome(
                     onClick = {
                         sound.makeSound.invoke(ctx, KEY_STANDARD, thereIsSoundEffect.value)
 
-                        navController.navigate("$ADD_ROUTE/$uid/$NUL")
+                        with(navController) {
+                            arrayOf(ADD_ROUTE, uid, NUL)
+                                .joinToString("/")
+                                .apply {
+                                    navigate(this)
+                                    clearBackStack(this)
+                                }
+                        }
                     },
                     expanded = scrollBehavior.state.collapsedFraction != 1f,
                     containerColor = getMaterialColor(SURFACE_VARIANT),
                     contentColor = contentColorFor(
                         backgroundColor = getMaterialColor(SURFACE_VARIANT)
-                    ),
-                    modifier = Modifier.navigationBarsPadding()
+                    )
                 )
             }
         ) {

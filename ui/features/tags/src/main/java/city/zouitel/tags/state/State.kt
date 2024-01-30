@@ -14,12 +14,12 @@ internal sealed class State {
         private val viewModel: TagViewModel
     ) : State() {
         val rememberAllTags
-            @Composable get() =
+            get() = @Composable {
                 remember(
                     viewModel,
                     viewModel::getAllLTags
                 ).collectAsState().value
-
+            }
     }
 
     @Stable

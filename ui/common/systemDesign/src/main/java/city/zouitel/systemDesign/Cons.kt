@@ -5,7 +5,7 @@ object Cons {
     const val TAG = "This"
     const val NUL = "null"
 
-    const val APP_VERSION = "4.0"
+    const val APP_VERSION = "4.0.2"
 
     const val ID = "Id"
     const val TITLE = "Title"
@@ -27,15 +27,19 @@ object Cons {
 
     const val BASE_URI = "app://city.zouitel.jetnote"
     const val HOME_ROUTE = "Home"
-    const val ADD_ROUTE = "add_screen"
-    const val EDIT_ROUTE = "Edit"
+    const val ADD_ROUTE = "add-screen"
+    const val EDIT_ROUTE = "edit-screen"
     const val DRAW_ROUTE = "Draw"
     const val REMINDING_ROUTE = "Reminding"
     const val CAMERA_ROUTE = "Camera"
     const val TRASH_ROUTE = "Trash"
-    const val SETTING_ROUTE = "Settings"
-    const val PROFILE_ROUTE = "Profile"
-    const val CLOUD_ROUTE = "Cloud"
+    const val SETTING_ROUTE = "settings-screen"
+    const val PROFILE_ROUTE = "profile-screen"
+    const val CLOUD_ROUTE = "cloud-screen"
+    const val ABOUT_ROUTE = "about-screen"
+    const val TASK_ROUTE = "task-screen"
+    const val TAG_ROUTE = "tags-screen"
+    const val LICENSES_ROUTE = "licenses-screen"
 
     const val MP3 = "mp3"
     const val JPEG = "jpeg"
@@ -55,7 +59,7 @@ object Cons {
     const val BY_ID = "ORDER_BY_ID"
 
     const val SEARCH_IN_LOCAL = "Search in local.."
-    const val SEARCH_IN_TRASH = "Search in trash.."
+    const val SEARCH_IN_DELETED = "Search in deleted.."
     const val SEARCH_IN_CLOUD = "Search in cloud.."
 
     const val URGENT = "URGENT"

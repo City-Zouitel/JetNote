@@ -57,7 +57,7 @@ fun EraseDialog(
             )
         },
         title = {
-            Text(text = "Empty Trash?")
+            Text(text = "Empty Notes?")
         },
         text = {
             Text(text = "All notes is trash will be permanently deleted.")

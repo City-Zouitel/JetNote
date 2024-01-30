@@ -1,4 +1,4 @@
-package city.zouitel.navigation.trash_screen
+package city.zouitel.navigation.deleted_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +28,7 @@ import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
 import city.zouitel.systemDesign.Cons.AUDIOS
 import city.zouitel.systemDesign.Cons.IMAGES
-import city.zouitel.systemDesign.Cons.SEARCH_IN_TRASH
+import city.zouitel.systemDesign.Cons.SEARCH_IN_DELETED
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.VerticalGrid
@@ -125,7 +125,7 @@ fun TrashScreen(
                         thisHomeScreen = false,
                         confirmationDialogState = confirmationDialogState,
                         expandedSortMenuState = null,
-                        searchScreen = SEARCH_IN_TRASH,
+                        searchScreen = SEARCH_IN_DELETED,
                         tagEntity = remember { mutableStateOf(Tag()) }
                     )
                 }
@@ -141,7 +141,7 @@ fun TrashScreen(
                         }
                     ) {entity ->
                         NoteCard(
-                            screen = TRASH_SCREEN,
+                            screen = DELETED_SCREEN,
                             noteEntity = entity,
                             navController = navController,
                             homeSelectionState = null,
@@ -167,7 +167,7 @@ fun TrashScreen(
                                 entity.dataEntity.title?.contains(searchTitleState.value, true) ?: true
                             }.forEach { entity ->
                                 NoteCard(
-                                    screen = TRASH_SCREEN,
+                                    screen = DELETED_SCREEN,
                                     noteEntity = entity,
                                     navController = navController,
                                     homeSelectionState = null,

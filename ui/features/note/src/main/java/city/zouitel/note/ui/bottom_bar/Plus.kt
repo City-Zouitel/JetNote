@@ -31,6 +31,8 @@ import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.Cons.DRAW_ROUTE
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
+import city.zouitel.systemDesign.Cons.TAG_ROUTE
+import city.zouitel.systemDesign.Cons.TASK_ROUTE
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.CAMERA_ICON
 import city.zouitel.systemDesign.Icons.GESTURE_ICON
@@ -61,7 +63,7 @@ internal fun Plus(
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    val sound = SoundEffect()
+    val sound by lazy { SoundEffect() }
 
     val permissionState = rememberMultiplePermissionsState(
         listOf(
@@ -86,8 +88,8 @@ internal fun Plus(
             text = { Text(text = "Add Image", fontSize = 18.sp) },
             leadingIcon = { Icon(painterResource(IMAGE_ICON), null) },
             onClick = {
-                imageLaunch.launch("image/*")
                 sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                imageLaunch.launch("image/*")
                 isShow.value = false
             }
         )
@@ -108,8 +110,9 @@ internal fun Plus(
             text = { Text(text = "Record", fontSize = 18.sp) },
             leadingIcon = { Icon(painterResource(MIC_ICON), null) },
             onClick = {
-                permissionState.launchMultiplePermissionRequest()
                 sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+
+                permissionState.launchMultiplePermissionRequest()
                 recordDialogState.value = permissionState.allPermissionsGranted
                 isShow.value = false
             }
@@ -143,18 +146,24 @@ internal fun Plus(
             text = { Text(text = "Tags", fontSize = 18.sp) },
             leadingIcon = { Icon(painterResource(TAGS_ICON), null) },
             onClick = {
-                navController.navigate("tagEntities/${note.uid}")
                 sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
+                with(navController) {
+                    navigate("$TAG_ROUTE/${note.uid}")
+                    clearBackStack("$TAG_ROUTE/${note.uid}")
+                }
             }
         )
         DropdownMenuItem(
             text = { Text(text = "Task List", fontSize = 18.sp) },
             leadingIcon = { Icon(painterResource(LIST_CHECK_ICON), null) },
             onClick = {
-                navController.navigate("todo/${note.uid}")
                 sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
+                with(navController) {
+                    navigate("$TASK_ROUTE/${note.uid}")
+                    clearBackStack("$TASK_ROUTE/${note.uid}")
+                }
             }
         )
         DropdownMenuItem(

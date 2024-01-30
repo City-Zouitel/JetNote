@@ -40,7 +40,7 @@ fun ColorsRow(
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
-            .height(55.dp)
+            .height(45.dp)
             .background(getMatColor(SURFACE)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
@@ -49,11 +49,11 @@ fun ColorsRow(
             Spacer(modifier = Modifier.width(5.dp))
             Canvas(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(27.dp)
                     .clickable {
+                        sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                         currentColor.value = it
                         colorState.value = it.toArgb()
-                        sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     }
             ){
                 drawArc(color = it,

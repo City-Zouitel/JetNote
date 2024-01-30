@@ -16,10 +16,13 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import city.zouitel.navigation.sound
+import city.zouitel.systemDesign.Cons.ABOUT_ROUTE
 import city.zouitel.systemDesign.Cons.APP_NAME
 import city.zouitel.systemDesign.Cons.HOME_ROUTE
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.SETTING_ROUTE
+import city.zouitel.systemDesign.Cons.TAG_ROUTE
 import city.zouitel.systemDesign.Cons.TRASH_ROUTE
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
@@ -28,11 +31,11 @@ import city.zouitel.systemDesign.Icons.HOME_ICON
 import city.zouitel.systemDesign.Icons.INTERROGATION_ICON
 import city.zouitel.systemDesign.Icons.SETTINGS_ICON
 import city.zouitel.systemDesign.Icons.SHARE_ICON
+import city.zouitel.systemDesign.Icons.TAGS_ICON
 import city.zouitel.systemDesign.Icons.TRASH_ICON
 import city.zouitel.systemDesign.sharApp
 import city.zouitel.tags.viewmodel.TagViewModel
 import city.zouitel.tags.model.Tag
-import city.zouitel.navigation.sound
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -75,8 +78,11 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(HOME_ICON), null) },
                     selected = false,
                     onClick = {
-                        navController.navigate(HOME_ROUTE)
                         sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                        with(navController) {
+                            navigate(HOME_ROUTE)
+                            clearBackStack(HOME_ROUTE)
+                        }
                     }
                 )
             }
@@ -103,8 +109,11 @@ fun NavigationDrawer(
                         modifier = Modifier
                             .padding(15.dp)
                             .clickable {
-                                navController.navigate("tagEntities/${null}")
                                 sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                                with(navController) {
+                                    navigate("$TAG_ROUTE/${null}")
+                                    clearBackStack("$TAG_ROUTE/${null}")
+                                }
                             }
                     )
                 }
@@ -152,21 +161,26 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(SETTINGS_ICON), null) },
                     selected = false,
                     onClick = {
-                        navController.navigate(SETTING_ROUTE)
                         sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
-
+                        with(navController) {
+                            navigate(SETTING_ROUTE)
+                            clearBackStack(SETTING_ROUTE)
+                        }
                     }
                 )
             }
 
             item {
                 NavigationDrawerItem(
-                    label = { Text("Trash") },
+                    label = { Text("Removed") },
                     icon = { Icon(painterResource(TRASH_ICON), null) },
                     selected = false,
                     onClick = {
-                        navController.navigate(TRASH_ROUTE)
                         sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        with(navController) {
+                            navigate(TRASH_ROUTE)
+                            clearBackStack(TRASH_ROUTE)
+                        }
                     }
                 )
             }
@@ -206,8 +220,11 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(INTERROGATION_ICON), null) },
                     selected = false,
                     onClick = {
-                        navController.navigate("about")
-                        sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                        with(navController) {
+                            navigate(ABOUT_ROUTE)
+                            clearBackStack(ABOUT_ROUTE)
+                        }
                     }
                 )
             }

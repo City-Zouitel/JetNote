@@ -11,9 +11,10 @@ import city.zouitel.navigation.draw_screen.DrawingNote
 import city.zouitel.navigation.home_screen.NoteHome
 import city.zouitel.navigation.settings_screen.Licenses
 import city.zouitel.navigation.settings_screen.Settings
-import city.zouitel.navigation.trash_screen.TrashScreen
+import city.zouitel.navigation.deleted_screen.TrashScreen
 import city.zouitel.note.ui.add_screen.NoteAdd
 import city.zouitel.note.ui.edit_screen.NoteEdit
+import city.zouitel.systemDesign.Cons.ABOUT_ROUTE
 import city.zouitel.systemDesign.Cons.ADD_ROUTE
 import city.zouitel.systemDesign.Cons.AUDIO_DURATION
 import city.zouitel.systemDesign.Cons.CAMERA_ROUTE
@@ -22,10 +23,13 @@ import city.zouitel.systemDesign.Cons.DESCRIPTION
 import city.zouitel.systemDesign.Cons.DRAW_ROUTE
 import city.zouitel.systemDesign.Cons.EDIT_ROUTE
 import city.zouitel.systemDesign.Cons.HOME_ROUTE
+import city.zouitel.systemDesign.Cons.LICENSES_ROUTE
 import city.zouitel.systemDesign.Cons.NON
 import city.zouitel.systemDesign.Cons.PRIORITY
 import city.zouitel.systemDesign.Cons.REMINDING
 import city.zouitel.systemDesign.Cons.SETTING_ROUTE
+import city.zouitel.systemDesign.Cons.TAG_ROUTE
+import city.zouitel.systemDesign.Cons.TASK_ROUTE
 import city.zouitel.systemDesign.Cons.TEXT_COLOR
 import city.zouitel.systemDesign.Cons.TITLE
 import city.zouitel.systemDesign.Cons.TRASH_ROUTE
@@ -37,7 +41,6 @@ import city.zouitel.tasks.TaskList
 fun Graph(
     navHostController: NavHostController
 ) {
-
     NavHost(navController = navHostController, startDestination = HOME_ROUTE) {
         composable(route = HOME_ROUTE) {
             NoteHome(navController = navHostController)
@@ -158,7 +161,7 @@ fun Graph(
         composable(SETTING_ROUTE){
             Settings(navC = navHostController)
         }
-        composable("tagEntities/{$UID}", arguments = listOf(
+        composable("$TAG_ROUTE/{$UID}", arguments = listOf(
             navArgument(UID) {
                 nullable = true
                 type = NavType.StringType
@@ -168,17 +171,17 @@ fun Graph(
                 noteUid = it.arguments?.getString(UID) ?: "",
             )
         }
-        composable("todo/{$UID}", arguments = listOf(
+        composable("$TASK_ROUTE/{$UID}", arguments = listOf(
             navArgument(UID) {
                 type = NavType.StringType
             }
         )) {
             TaskList(noteUid = it.arguments?.getString(UID) ?: "")
         }
-        composable("licenses") {
+        composable(LICENSES_ROUTE) {
             Licenses()
         }
-        composable("about") {
+        composable(ABOUT_ROUTE) {
             AppAbout(navC = navHostController)
         }
     }
