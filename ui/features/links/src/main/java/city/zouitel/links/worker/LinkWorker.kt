@@ -14,22 +14,20 @@ import city.zouitel.systemDesign.Cons
 import city.zouitel.links.model.Link as InLink
 import city.zouitel.links.model.NoteAndLink as InNoteAndLink
 import kotlinx.coroutines.*
+import org.koin.core.component.KoinComponent
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
 
-@OptIn(DelicateCoroutinesApi::class)
-//@HiltWorker
-class LinkWorker /*@AssistedInject*/ constructor(
-    /*@Assisted*/ private val context: Context,
-    /*@Assisted*/ workerParameters: WorkerParameters,
+class LinkWorker(
+    private val context: Context,
+    workerParameters: WorkerParameters,
     private val ioDeprecated: CoroutineDispatcher,
     private val addLink: LinkUseCase.AddLink,
     private val addNoteAndLink: NoteAndLinkUseCase.AddNoteAndLink,
     private val linkMapper: LinkMapper,
     private val noteAndLinkMapper: NoteAndLinkMapper,
-): CoroutineWorker(context, workerParameters) {
-
+): CoroutineWorker(context, workerParameters), KoinComponent {
     private val linkImgPath = context.filesDir.path + "/" + "links_img"
 
     override suspend fun doWork(): Result = withContext(ioDeprecated) {

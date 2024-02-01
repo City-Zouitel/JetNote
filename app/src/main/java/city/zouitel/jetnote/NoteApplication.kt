@@ -2,7 +2,9 @@ package city.zouitel.jetnote
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.startup.AppInitializer
+import androidx.work.Configuration
 import city.zouitel.audios.di.exoPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
@@ -24,10 +26,11 @@ import com.karacca.beetle.Beetle
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class NoteApplication: Application() {
+class NoteApplication: Application(), KoinComponent {
 
     override fun onCreate() {
         super.onCreate()
@@ -55,6 +58,7 @@ class NoteApplication: Application() {
                 datastoreVMKoinModule
             )
         }
+
 
         /**
          * Global Exception Handler.

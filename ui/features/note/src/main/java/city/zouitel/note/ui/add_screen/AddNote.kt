@@ -286,7 +286,6 @@ fun NoteAdd(
 
             // The Title.
             item {
-
                 OutlinedTextField(
                     value = titleState.value ?: "",
                     onValueChange = { titleState.value = it },
@@ -331,7 +330,6 @@ fun NoteAdd(
 
             // The Description.
             item {
-
                 OutlinedTextField(
                     value = descriptionState.value ?: "",
                     onValueChange = {
@@ -398,7 +396,7 @@ fun NoteAdd(
                 }
             }
 
-            // display all added tagEntities.
+            // display all added tags.
             item {
                 FlowRow {
                     observeLabels.filter {

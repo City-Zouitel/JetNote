@@ -1,7 +1,9 @@
 package city.zouitel.navigation.home_screen
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -103,7 +105,8 @@ fun NoteHome(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     //
     val scaffoldState = rememberScaffoldState()
-//     to observer notes while changing immediately.
+
+    // to observer notes while changing immediately.
     val observerLocalNotes: State<List<Note>> = when (
         remember(dataStoreVM, dataStoreVM::getOrdination).collectAsState().value
     ) {
@@ -228,9 +231,12 @@ fun NoteHome(
                             .fillMaxSize(),
                     ) {
                         items(
-                            observerLocalNotes.value.filter {
+                            items = observerLocalNotes.value.filter {
                                 it.dataEntity.title?.contains(searchTitleState.value, true) ?: true ||
                                         it.tagEntities.contains(searchTagEntityState.value)
+                            },
+                            key = {
+                                it.dataEntity.uid
                             }
                         ) { entity ->
                             NoteCard(
@@ -261,6 +267,7 @@ fun NoteHome(
                         state = lazyListState,
                         modifier = Modifier.fillMaxSize()
                     ) {
+
                         item {
                             VerticalGrid(
                                 maxColumnWidth = 220.dp
@@ -269,6 +276,7 @@ fun NoteHome(
                                     it.dataEntity.title?.contains(searchTitleState.value, true) ?: true ||
                                             it.tagEntities.contains(searchTagEntityState.value)
                                 }.forEach { entity ->
+
                                     NoteCard(
                                         screen = Screens.HOME_SCREEN,
                                         noteEntity = entity,

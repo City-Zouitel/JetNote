@@ -3,6 +3,7 @@ package city.zouitel.links.ui
 import android.app.Application
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -23,8 +24,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.net.URL
 
-//@HiltViewModel
-class LinkVM /*@Inject*/ constructor(
+class LinkVM(
     application: Application,
     getAll: LinkUseCase.GetAllLinks,
     private val delete: LinkUseCase.DeleteLink,
@@ -40,7 +40,6 @@ class LinkVM /*@Inject*/ constructor(
                 listOf()
             )
 
-    //
     private var workManager = WorkManager.getInstance(application)
 
     init {
@@ -58,6 +57,7 @@ class LinkVM /*@Inject*/ constructor(
     }
 
     fun urlPreview(
+        ctx: Context,
         res: String?,
         title: MutableState<String>?,
         host: MutableState<String>?,
@@ -76,7 +76,7 @@ class LinkVM /*@Inject*/ constructor(
                 }
 
                 override fun onFailed(throwable: Throwable) {
-//                    Toast.makeText(ctx, "Can't load link", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ctx, "Can't load link", Toast.LENGTH_SHORT).show()
                 }
             }).fetchUrlPreview()
         }
