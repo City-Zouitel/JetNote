@@ -1,8 +1,17 @@
 package city.zouitel.links.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.WorkManager
+import city.zouitel.links.worker.LinkWorker
 import java.util.*
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -10,7 +19,7 @@ import java.util.*
 fun CacheLinks(
     linkVM: LinkVM,
     noteAndLinkVM: NoteAndLinkVM,
-    noteUid: String,
+    noteId: String,
     url: String
 ) {
     val observeLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
@@ -25,7 +34,7 @@ fun CacheLinks(
 //    val description = remember { mutableStateOf("") }
     val host = remember { mutableStateOf("") }
     val img = remember { mutableStateOf("") }
-    val link_id = UUID.randomUUID().toString()
+    val id = UUID.randomUUID().toString()
 
     //
     linkVM.urlPreview(
@@ -40,8 +49,8 @@ fun CacheLinks(
     ) {
 
         linkVM.doWork(
-            linkId = link_id,
-            noteId = noteUid,
+            linkId = id,
+            noteId = noteId,
             url = url,
             image = img.value,
             title = title.value,

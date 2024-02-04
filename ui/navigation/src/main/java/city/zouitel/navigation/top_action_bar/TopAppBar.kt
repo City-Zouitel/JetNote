@@ -15,7 +15,7 @@ import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.tags.model.Tag
 import city.zouitel.navigation.getMaterialColor
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteTopAppBar(
     searchNoteTitle: MutableState<String>,

@@ -79,6 +79,6 @@ object Cons {
     const val FOCUS_NAVIGATION = 12
 
     const val GRID = "GRID_LAYOUT"
-    const val LIST = "LIST_LAYOUT"
+    const val LIST = "list-layout"
 
 }

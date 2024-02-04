@@ -1,15 +1,16 @@
 package city.zouitel.navigation.home_screen
 
 import android.annotation.SuppressLint
-import android.view.View
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -26,7 +27,6 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateListOf
@@ -38,9 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import city.zouitel.navigation.State.*
 import city.zouitel.navigation.getMaterialColor
 import city.zouitel.navigation.navigation_drawer.NavigationDrawer
 import city.zouitel.navigation.navigation_drawer.Screens
@@ -56,6 +54,7 @@ import city.zouitel.systemDesign.Cons.ADD_ROUTE
 import city.zouitel.systemDesign.Cons.BY_NAME
 import city.zouitel.systemDesign.Cons.HOME_ROUTE
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
+import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.Cons.NUL
 import city.zouitel.systemDesign.Cons.ORDER_BY_NEWEST
 import city.zouitel.systemDesign.Cons.ORDER_BY_OLDEST
@@ -66,9 +65,7 @@ import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.PLUS_ICON
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_VARIANT
-import city.zouitel.systemDesign.VerticalGrid
 import city.zouitel.tags.model.Tag
-import okhttp3.internal.notify
 import org.koin.androidx.compose.koinViewModel
 import java.util.UUID
 
@@ -121,7 +118,8 @@ fun NoteHome(
     val uid by lazy { UUID.randomUUID().toString() }
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
-    val lazyListState = rememberLazyListState()
+    val listLayoutState = rememberLazyListState()
+    val gridLayoutState = rememberLazyStaggeredGridState()
     val coroutineScope = rememberCoroutineScope()
 
     val trashedNotesState = remember(entityVM) { entityVM.allTrashedNotes }.collectAsState()
@@ -224,15 +222,18 @@ fun NoteHome(
                     .fillMaxSize()
                     .pullRefresh(state = pullRefreshState)
             ) {
-                if (currentLayout.value == "LIST") {
+                if (currentLayout.value == LIST) {
                     LazyColumn(
-                        state = lazyListState,
+                        state = listLayoutState,
                         modifier = Modifier
                             .fillMaxSize(),
                     ) {
                         items(
                             items = observerLocalNotes.value.filter {
-                                it.dataEntity.title?.contains(searchTitleState.value, true) ?: true ||
+                                it.dataEntity.title?.contains(
+                                    searchTitleState.value,
+                                    true
+                                ) ?: true ||
                                         it.tagEntities.contains(searchTagEntityState.value)
                             },
                             key = {
@@ -263,42 +264,41 @@ fun NoteHome(
                         }
                     }
                 } else {
-                    LazyColumn(
-                        state = lazyListState,
-                        modifier = Modifier.fillMaxSize()
+                    LazyVerticalStaggeredGrid(
+                        modifier = Modifier.fillMaxSize(),
+                        columns = StaggeredGridCells.Fixed(2),
+                        state = gridLayoutState
                     ) {
-
-                        item {
-                            VerticalGrid(
-                                maxColumnWidth = 220.dp
+                        items(
+                            key = { it.dataEntity.uid },
+                            items = observerLocalNotes.value.filter {
+                                it.dataEntity.title?.contains(
+                                    searchTitleState.value,
+                                    true
+                                ) ?: true ||
+                                        it.tagEntities.contains(searchTagEntityState.value)
+                            }
+                        ) { entity ->
+                            NoteCard(
+                                screen = Screens.HOME_SCREEN,
+                                noteEntity = entity,
+                                navController = navController,
+                                homeSelectionState = homeSelectionState,
+                                trashSelectionState = null,
+                                selectedNotes = selectedNotes
                             ) {
-                                observerLocalNotes.value.filter {
-                                    it.dataEntity.title?.contains(searchTitleState.value, true) ?: true ||
-                                            it.tagEntities.contains(searchTagEntityState.value)
-                                }.forEach { entity ->
-
-                                    NoteCard(
-                                        screen = Screens.HOME_SCREEN,
-                                        noteEntity = entity,
-                                        navController = navController,
-                                        homeSelectionState = homeSelectionState,
-                                        trashSelectionState = null,
-                                        selectedNotes = selectedNotes
-                                    ) {
-                                        dataViewModel.editData(
-                                            Data(
-                                                title = it.dataEntity.title,
-                                                description = it.dataEntity.description,
-                                                priority = it.dataEntity.priority,
-                                                uid = it.dataEntity.uid,
-                                                color = it.dataEntity.color,
-                                                textColor = it.dataEntity.textColor,
-                                                trashed = 1
-                                            )
-                                        )
-                                        undo.invoke(entity.dataEntity)
-                                    }
-                                }
+                                dataViewModel.editData(
+                                    Data(
+                                        title = it.dataEntity.title,
+                                        description = it.dataEntity.description,
+                                        priority = it.dataEntity.priority,
+                                        uid = it.dataEntity.uid,
+                                        color = it.dataEntity.color,
+                                        textColor = it.dataEntity.textColor,
+                                        trashed = 1
+                                    )
+                                )
+                                undo.invoke(entity.dataEntity)
                             }
                         }
                     }

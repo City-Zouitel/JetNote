@@ -9,8 +9,6 @@ import city.zouitel.audios.di.exoPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
 import city.zouitel.domain.di.useCasesKoinModule
-import city.zouitel.init.ComposeInitializer
-import city.zouitel.init.WorkManagerInitializer
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.note.di.noteKoinModule
 import city.zouitel.notifications.di.notificationKoinModule
@@ -38,7 +36,7 @@ class NoteApplication: Application(), KoinComponent {
         startKoin {
             androidLogger(Level.INFO)
             androidContext(this@NoteApplication)
-//            workManagerFactory()
+            workManagerFactory()
             modules(
                 databaseKoinModule,
                 datastoreKoinModule,
@@ -77,10 +75,10 @@ class NoteApplication: Application(), KoinComponent {
         /**
          * Initialize WorkManager.
          */
-        AppInitializer.getInstance(this).initializeComponent(WorkManagerInitializer::class.java)
+//        AppInitializer.getInstance(this).initializeComponent(WorkManagerInitializer::class.java)
         /**
          * Initialize ComposeView.
          */
-        AppInitializer.getInstance(this).initializeComponent(ComposeInitializer::class.java)
+//        AppInitializer.getInstance(this).initializeComponent(ComposeInitializer::class.java)
     }
 }

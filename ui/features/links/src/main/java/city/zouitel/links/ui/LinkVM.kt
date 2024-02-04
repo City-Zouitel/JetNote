@@ -68,9 +68,7 @@ class LinkVM(
                 override fun onComplete(urlInfo: UrlInfoItem) {
                         urlInfo.apply {
                             title?.value = this.title
-//                    description.value = this.description
                             host?.value = URL(this.url).host
-//                            url?.value = this.url
                             img?.value = this.image
                         }
                 }
@@ -81,15 +79,6 @@ class LinkVM(
             }).fetchUrlPreview()
         }
     }
-
-//    fun saveImageLocally(img:Bitmap?, path:String, name:String?) {
-//        FileOutputStream(
-//            name?.let { File(path, it) }
-//        ).use {
-//            img?.compress(Bitmap.CompressFormat.JPEG, 100, it)
-//            it.flush()
-//        }
-//    }
 
     fun imageDecoder(context: Context, id:String): ImageBitmap? {
         val path = File(context.filesDir.path + "/" + "links_img", "$id.$JPEG")

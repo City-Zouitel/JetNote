@@ -369,7 +369,7 @@ fun NoteEdit(
                     CacheLinks(
                         linkVM = linkVM,
                         noteAndLinkVM = noteAndLinkVM,
-                        noteUid = uid,
+                        noteId = uid,
                         url = url
                     )
                 }

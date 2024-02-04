@@ -16,4 +16,5 @@ dependencies {
     //AndroidX.
     implementation(libs.constraintlayout)
     implementation(libs.glance)
+    implementation(project(":ui:features:note"))
 }
