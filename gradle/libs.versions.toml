@@ -41,7 +41,7 @@ koin-core = "3.5.0"
 koin-compose = "3.5.0"
 koin-android = "3.5.0"
 koin-worker = "3.5.0"
-koin-test = "3.5.0"
+koin-test = "3.5.3"
 koin-gradle = "3.5.0"
 
 #Room.
