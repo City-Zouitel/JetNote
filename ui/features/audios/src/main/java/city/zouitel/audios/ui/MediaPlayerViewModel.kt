@@ -1,4 +1,4 @@
-package city.zouitel.audios
+package city.zouitel.audios.ui
 
 import android.content.Context
 import androidx.compose.runtime.mutableLongStateOf
@@ -11,11 +11,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MediaPlayerViewModel (
-    private val exoBuilder : ExoPlayerImpl,
+    private val exoBuilder : ExoPlayerImpl
 ): ViewModel() {
 
-    var getMediaDuration = mutableLongStateOf(0L)
-    private set
+    private var getMediaDuration = mutableLongStateOf(0L)
 
     fun playMedia(mediaUri: String) {
         viewModelScope.launch {

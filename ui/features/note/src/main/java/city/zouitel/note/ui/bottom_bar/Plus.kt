@@ -71,7 +71,11 @@ internal fun Plus(
             permission.WRITE_EXTERNAL_STORAGE,
         )
     ) {
-        recordDialogState.value = it.values.all { true }
+        if (it.values.all { true }) {
+            recordDialogState.value = true
+        } else {
+            Toast.makeText(ctx, "*********************", Toast.LENGTH_LONG).show()
+        }
     }
     val currentColor = remember { mutableStateOf(getColorOfPriority(priorityColorState.value)) }
 

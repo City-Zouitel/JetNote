@@ -67,7 +67,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
-import city.zouitel.audios.MediaPlayerViewModel
+import city.zouitel.audios.ui.MediaPlayerViewModel
+import city.zouitel.audios.ui.NormalMediaPlayer
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.CacheLinks
 import city.zouitel.links.ui.LinkPart
@@ -273,17 +274,6 @@ fun NoteAdd(
                 ImageDisplayed(media = img.value?.asImageBitmap())
             }
 
-            // display the media player.
-            item {
-                Spacer(modifier = Modifier.height(18.dp))
-                if (
-                    File(mediaFile).exists() && !recordDialogState.value
-                ) {
-                    city.zouitel.audios.NoteMediaPlayer(localMediaUid = uid)
-                    audioDurationState.intValue = exoVM.getMediaDuration(ctx, mediaFile).toInt()
-                }
-            }
-
             // The Title.
             item {
                 OutlinedTextField(
@@ -368,6 +358,17 @@ fun NoteAdd(
                         unfocusedBorderColor = Color.Transparent
                     )
                 )
+            }
+
+            // display the media player.
+            item {
+                Spacer(modifier = Modifier.height(18.dp))
+                if (
+                    File(mediaFile).exists() && !recordDialogState.value
+                ) {
+                    NormalMediaPlayer(localMediaUid = uid)
+                    audioDurationState.intValue = exoVM.getMediaDuration(ctx, mediaFile).toInt()
+                }
             }
 
             // Link display.

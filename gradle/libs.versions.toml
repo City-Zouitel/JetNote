@@ -1,12 +1,12 @@
 [versions]
 agp = "8.2.1"
-kotlin = "1.9.20"
+kotlin = "1.9.22"
 compileSdkVersion = "34"
 minSdkVersion = "26"
 targetSdkVersion = "34"
-codeVersion = "402"
-nameVersion = "4.0.2"
-composeVersion = "1.5.4"
+codeVersion = "403"
+nameVersion = "4.0.3"
+composeVersion = "1.5.8"
 
 #Android.
 core-ktx = "1.12.0"
@@ -22,26 +22,26 @@ startup = "1.1.1"
 
 #Compose.
 activity-compose = "1.8.2"
-compose-bom = "2023.10.01"
+compose-bom = "2024.01.00"
 appcompat = "1.6.1"
 material = "1.11.0"
 navigation-compose = "2.7.6"
 compose-constraintlayout = "1.1.0-alpha13"
 
 #Plugins.
-ksp = "1.9.21-1.0.16"
+ksp = "1.9.22-1.0.17"
 dependencyanalysis = "1.25.0"
 
 #KotlinX.
-serialization = "1.6.0"
+serialization = "1.6.2"
 coroutines = "1.7.3"
 
 #Koin.
-koin-core = "3.5.0"
-koin-compose = "3.5.0"
-koin-android = "3.5.0"
+koin-core = "3.5.3"
+koin-compose = "3.5.3"
+koin-android = "3.5.3"
 koin-worker = "3.5.0"
-koin-test = "3.5.0"
+koin-test = "3.5.3"
 koin-gradle = "3.5.0"
 
 #Room.
@@ -73,6 +73,8 @@ global-exception = "1.0.1"
 url-preview = "1.0.1"
 beetle = "2.0.1"
 sqlcipher = "4.5.4"
+waveslider = "0.0.3"
+audiowaveform = "1.1.1"
 
 [libraries]
 # Kotlin.
@@ -162,6 +164,8 @@ swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
 #globalexception = { module = "com.github.emirhankolver:GlobalExceptionHandler", version.ref = "global-exception" }
 sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
 sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "sqlcipher" }
+waveslider = { module = "com.github.galaxygoldfish:waveslider", version.ref = "waveslider" }
+audiowaveform = { module = "com.github.lincollincol:compose-audiowaveform", version.ref = "audiowaveform" }
 
 [bundles]
 compose = ["ui", "ui-tooling-preview", "material3"]

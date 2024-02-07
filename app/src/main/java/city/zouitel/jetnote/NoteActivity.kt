@@ -13,10 +13,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
+import city.zouitel.links.ui.LinkVM
 import city.zouitel.navigation.Graph
 import city.zouitel.navigation.checkShortcut
 import city.zouitel.navigation.intentHandler
-import city.zouitel.navigation.urlPreview
 import city.zouitel.systemDesign.Cons.AUDIOS
 import city.zouitel.systemDesign.Cons.IMAGES
 import city.zouitel.systemDesign.DataStoreVM
@@ -24,10 +24,14 @@ import city.zouitel.widget.WidgetReceiver
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.*
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 import java.util.*
 
-class NoteActivity : ComponentActivity() {
+class NoteActivity : ComponentActivity(), KoinComponent {
+
+    val linkViewModel: LinkVM by inject()
 
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +87,7 @@ class NoteActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        urlPreview(this, null, null, null, null, null, null)?.cleanUp()
+        linkViewModel.urlPreview(this, null, null, null, null)?.cleanUp()
     }
 
     override fun onStart() {

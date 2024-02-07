@@ -12,6 +12,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import city.zouitel.links.worker.LinkWorker
+import kotlinx.coroutines.job
 import java.util.*
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -23,8 +24,7 @@ fun CacheLinks(
     url: String
 ) {
     val observeLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
-    val observerNoteAndLinks =
-        remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
+    val observerNoteAndLinks = remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
     val ctx = LocalContext.current
     val linkImgPath = ctx.filesDir.path + "/" + "links_img"
@@ -39,7 +39,7 @@ fun CacheLinks(
     //
     linkVM.urlPreview(
         ctx, url, title, host, img
-    )
+    )?.fetchUrlPreview()
 
     if (
         observeLinks.value.none { it.image == img.value } &&
@@ -56,37 +56,5 @@ fun CacheLinks(
             title = title.value,
             host = host.value
         )
-
-//        linkVM.addLink(
-//            Link(
-//                id = link_id,
-//                url = url,
-//                image = img.value,
-//                title = title.value,
-//                host = host.value
-//            )
-//        )
-//        noteAndLinkVM.addNoteAndLink(
-//            NoteAndLink(
-//                noteUid = noteUid,
-//                linkId = link_id
-//            )
-//        )
-
-//        scope.launch(Dispatchers.IO) {
-//            // save link image in local link images file.
-//            val ss = ImageLoader(ctx)
-//            val cc = ImageRequest.Builder(ctx)
-//                .data(img.value)
-//                .target {
-//                    linkVM.saveImageLocally(
-//                        img = it.toBitmap(),
-//                        path = linkImgPath,
-//                        name = "$link_id.$JPEG"
-//                    )
-//                }
-//                .build()
-//            ss.enqueue(cc)
-//        }
     }
 }

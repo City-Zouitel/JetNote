@@ -102,7 +102,7 @@ fun HomeSelectionTopAppBar(
             AnimatedVisibility(visible = selectedNotes?.count() == 1) {
                 Row {
                     // share
-                    PopupTip(message = "Share Note") {
+                    PopupTip(message = "Share WidgetNote") {
                         Icon(painter = painterResource(id = SHARE_ICON), contentDescription = null,
                             modifier = Modifier
                                 .padding(7.dp)
@@ -129,7 +129,7 @@ fun HomeSelectionTopAppBar(
                     }
 
                     // copy the dataEntity.
-                    PopupTip(message = "Copy Note") {
+                    PopupTip(message = "Copy WidgetNote") {
                         Icon(painter = painterResource(id = COPY_ICON), contentDescription = null,
                             modifier = Modifier
                                 .padding(7.dp)

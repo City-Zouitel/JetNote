@@ -1,4 +1,4 @@
-package city.zouitel.widget.ui
+package city.zouitel.widget.viewmodel
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,9 +7,9 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import city.zouitel.domain.usecase.WidgetUseCase
-import city.zouitel.note.mapper.NoteMapper
-import city.zouitel.note.model.Note as InNote
 import city.zouitel.systemDesign.Cons
+import city.zouitel.widget.mapper.WidgetMapper
+import city.zouitel.widget.model.WidgetNote as InNote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,11 +21,8 @@ import org.koin.core.component.inject
 import java.io.File
 
 class WidgetViewModel: ViewModel(), KoinComponent {
-    private val getAll: WidgetUseCase.GetAllWidgetMainEntityById by inject()
-    private val mapper: NoteMapper by inject()
-
-//    @WorkerThread
-//    fun getAllEntities() = getAll
+    private val getAllNotes: WidgetUseCase.GetAllWidgetMainEntityById by inject()
+    private val mapper: WidgetMapper by inject()
 
     // for observing the dataEntity changes.
     private val _allNotesById = MutableStateFlow<List<InNote>>(emptyList())
@@ -34,7 +31,7 @@ class WidgetViewModel: ViewModel(), KoinComponent {
 
     init {
         viewModelScope.launch(context = Dispatchers.IO) {
-            getAll.invoke().collect { list ->
+            getAllNotes.invoke().collect { list ->
                 _allNotesById.value = list.map { note -> mapper.toView(note) }
             }
         }

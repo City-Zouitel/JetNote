@@ -2,10 +2,9 @@ package city.zouitel.audios.di
 
 import com.google.android.exoplayer2.ExoPlayer
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
-import city.zouitel.audios.MediaPlayerViewModel
+import city.zouitel.audios.ui.MediaPlayerViewModel
 import org.koin.core.module.dsl.singleOf
 import city.zouitel.domain.exoplayer.*
 import org.koin.dsl.bind

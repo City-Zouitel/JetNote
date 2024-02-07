@@ -40,7 +40,6 @@ import org.koin.androidx.compose.koinViewModel
 import kotlin.random.Random
 
 private val getMatColor = MaterialColors().getMaterialColor
-
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

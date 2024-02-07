@@ -62,22 +62,22 @@ class LinkVM(
         title: MutableState<String>?,
         host: MutableState<String>?,
         img: MutableState<String>?
-    ) = viewModelScope.launch(Dispatchers.IO) {
-        res?.let {
-            BahaUrlPreview(it, object : IUrlPreviewCallback {
-                override fun onComplete(urlInfo: UrlInfoItem) {
-                        urlInfo.apply {
-                            title?.value = this.title
-                            host?.value = URL(this.url).host
-                            img?.value = this.image
-                        }
+    ) = res?.let {
+        BahaUrlPreview(it, object : IUrlPreviewCallback {
+            override fun onComplete(urlInfo: UrlInfoItem) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    urlInfo.apply {
+                        title?.value = this.title
+                        host?.value = URL(this.url).host
+                        img?.value = this.image
+                    }
                 }
+            }
 
-                override fun onFailed(throwable: Throwable) {
-                    Toast.makeText(ctx, "Can't load link", Toast.LENGTH_SHORT).show()
-                }
-            }).fetchUrlPreview()
-        }
+            override fun onFailed(throwable: Throwable) {
+                Toast.makeText(ctx, "Can't load link", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun imageDecoder(context: Context, id:String): ImageBitmap? {
@@ -85,7 +85,6 @@ class LinkVM(
         val bitImg = BitmapFactory.decodeFile(path.absolutePath)
         return bitImg?.asImageBitmap()
     }
-
 
     fun doWork(
         linkId: String,

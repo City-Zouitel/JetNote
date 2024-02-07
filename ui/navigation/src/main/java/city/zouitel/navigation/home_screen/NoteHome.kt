@@ -29,6 +29,8 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -113,6 +115,17 @@ fun NoteHome(
         ORDER_BY_PRIORITY -> remember(entityVM, entityVM::allNotesByPriority).collectAsState()
         ORDER_BY_REMINDER -> remember(entityVM, entityVM::allRemindingNotes).collectAsState()
         else -> remember(entityVM, entityVM::allNotesById).collectAsState()
+    }
+
+    val filteredObserverLocalNotes by remember(observerLocalNotes.value) {
+        derivedStateOf {
+            observerLocalNotes.value.filter {
+                it.dataEntity.title?.contains(
+                    searchTitleState.value,
+                    true
+                ) ?: true || it.tagEntities.contains(searchTagEntityState.value)
+            }
+        }
     }
 
     val uid by lazy { UUID.randomUUID().toString() }
@@ -229,16 +242,8 @@ fun NoteHome(
                             .fillMaxSize(),
                     ) {
                         items(
-                            items = observerLocalNotes.value.filter {
-                                it.dataEntity.title?.contains(
-                                    searchTitleState.value,
-                                    true
-                                ) ?: true ||
-                                        it.tagEntities.contains(searchTagEntityState.value)
-                            },
-                            key = {
-                                it.dataEntity.uid
-                            }
+                            items = filteredObserverLocalNotes,
+                            key = { it.dataEntity.uid }
                         ) { entity ->
                             NoteCard(
                                 screen = Screens.HOME_SCREEN,
@@ -270,14 +275,8 @@ fun NoteHome(
                         state = gridLayoutState
                     ) {
                         items(
-                            key = { it.dataEntity.uid },
-                            items = observerLocalNotes.value.filter {
-                                it.dataEntity.title?.contains(
-                                    searchTitleState.value,
-                                    true
-                                ) ?: true ||
-                                        it.tagEntities.contains(searchTagEntityState.value)
-                            }
+                            items = filteredObserverLocalNotes,
+                            key = { it.dataEntity.uid }
                         ) { entity ->
                             NoteCard(
                                 screen = Screens.HOME_SCREEN,

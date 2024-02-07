@@ -17,7 +17,7 @@ class RecorderVM : ViewModel() {
     var seconds by mutableStateOf("00")
     var minutes by mutableStateOf("00")
     var hours by mutableStateOf("00")
-    var isPlaying by mutableStateOf(false)
+    private var isPlaying by mutableStateOf(false)
 
     fun start() {
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {

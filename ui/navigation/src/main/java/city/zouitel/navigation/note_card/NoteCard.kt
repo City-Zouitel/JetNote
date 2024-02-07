@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
+import city.zouitel.audios.ui.MiniMediaPlayer
+import city.zouitel.audios.ui.NormalMediaPlayer
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkPart
 import city.zouitel.links.ui.LinkVM
@@ -260,7 +262,7 @@ private fun Card(
                 if (
                     File(mediaPath).exists()
                 ) {
-                    city.zouitel.audios.NoteMediaPlayer(localMediaUid = note.uid)
+                    MiniMediaPlayer(localMediaUid = note.uid)
                 }
 
         // tagEntities.

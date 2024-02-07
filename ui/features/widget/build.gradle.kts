@@ -17,4 +17,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.glance)
     implementation(project(":ui:features:note"))
+    implementation(project(":ui:features:tags"))
+    implementation(project(":ui:features:tasks"))
+    implementation(project(":ui:features:links"))
 }

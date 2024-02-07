@@ -16,6 +16,7 @@ import androidx.glance.text.Text
 import androidx.glance.unit.ColorProvider
 import city.zouitel.domain.model.Note
 import city.zouitel.domain.usecase.WidgetUseCase
+import city.zouitel.widget.viewmodel.WidgetViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -25,13 +26,6 @@ class AppWidget: GlanceAppWidget(), KoinComponent {
     private val getAll: WidgetUseCase.GetAllWidgetMainEntityById by inject()
 
     override suspend fun provideGlance(context: Context, id: GlanceId) = provideContent {
-//        val viewModel = koinViewModel<WidgetViewModel>()
-//        val ctx = LocalContext.current.applicationContext
-
-//        val viewModel = EntryPoints.get(
-//            ctx,
-//            EntryPoint::class.java
-//        ).viewmodel()
 
         val getAllNotes by getAll().collectAsState(initial = null)
 

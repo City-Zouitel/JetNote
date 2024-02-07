@@ -16,4 +16,11 @@ dependencies {
 
     //AndroidX.
     implementation(libs.constraintlayout)
+
+    //Swipe.
+    implementation(libs.swipe)
+
+    //Sliders.
+    implementation(libs.waveslider)
+    implementation(libs.audiowaveform)
 }

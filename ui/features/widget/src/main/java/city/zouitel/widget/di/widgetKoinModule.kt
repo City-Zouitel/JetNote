@@ -1,7 +1,6 @@
 package city.zouitel.widget.di
 
-import city.zouitel.widget.ui.WidgetViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import city.zouitel.widget.viewmodel.WidgetViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
