@@ -12,7 +12,6 @@ import city.zouitel.notifications.Cons.UID
 import city.zouitel.notifications.reciver.Notification
 
 class NotificationVM: ViewModel() {
-
     fun scheduleNotification(
         context: Context,
         dateTime: MutableState<Long?>,

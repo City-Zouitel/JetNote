@@ -29,7 +29,7 @@ val datastoreKoinModule = module {
             )
         ) {
             EncryptedFile.Builder(
-                androidContext().preferencesDataStoreFile(Cons.DS_FILE),
+                androidContext().preferencesDataStoreFile(DS_FILE),
                 androidContext(),
                 MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
                 EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB

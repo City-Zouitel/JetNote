@@ -8,6 +8,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -58,9 +60,9 @@ fun Tags(
     val allTags = tagState.rememberAllTags.invoke()
     val allNoteAndTags = noteAndTagState.rememberAllNoteTags
 
-    val idState = remember { mutableStateOf(-1L) }
-    val labelState = remember { mutableStateOf("") }//.filterBadWords()
-    val colorState = remember { mutableStateOf(Color.Transparent.toArgb()) }
+    val idState = remember { mutableLongStateOf(-1L) }
+    val labelState = remember { mutableStateOf("") }
+    val colorState = remember { mutableIntStateOf(Color.Transparent.toArgb()) }
 
     val labelDialogState = remember { mutableStateOf(false) }
 

@@ -25,7 +25,7 @@ internal sealed class State {
     @Stable
     class NoteTag(
         private val viewModel: NoteAndTagViewModel
-    ): State() {
+    ) : State() {
 
         val rememberAllNoteTags
             @Composable get() =

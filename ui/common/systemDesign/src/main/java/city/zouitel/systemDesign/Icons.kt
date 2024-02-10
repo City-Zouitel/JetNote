@@ -15,8 +15,10 @@ object Icons {
     val MIC_ICON = R.drawable.microphone_24
     val MIC_ICON_36 = R.drawable.microphone_36
     val PAUSE_CIRCLE_FILLED_ICON = R.drawable.pause_20
+    val PAUSE_CIRCLE_FILLED_ICON_24 = R.drawable.pause_24
     val PAUSE_CIRCLE_FILLED_ICON_36 = R.drawable.pause_36
     val PLAY_CIRCLE_FILLED_ICON = R.drawable.play_20
+    val PLAY_CIRCLE_FILLED_ICON_24 = R.drawable.play_24
     val PLAY_CIRCLE_FILLED_ICON_36 = R.drawable.play_36
     val REDO_ICON = R.drawable.redo
     val UNDO_ICON = R.drawable.undo

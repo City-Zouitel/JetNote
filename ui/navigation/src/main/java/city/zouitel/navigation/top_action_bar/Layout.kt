@@ -12,7 +12,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import city.zouitel.navigation.sound
+import city.zouitel.systemDesign.Cons.GRID
 import city.zouitel.systemDesign.Cons.KEY_CLICK
+import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.DASHBOARD_ICON
 import city.zouitel.systemDesign.Icons.LIST_VIEW_ICON_1
@@ -30,9 +32,9 @@ internal fun Layout(
     val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    PopupTip(message = if (currentLayout.value == "LIST") "Grade Layout" else "List Layout") {
+    PopupTip(message = if (currentLayout.value == LIST) "Grade Layout" else "List Layout") {
         Icon(
-            painter = if (currentLayout.value == "LIST") painterResource(id = DASHBOARD_ICON)
+            painter = if (currentLayout.value == LIST) painterResource(id = DASHBOARD_ICON)
             else painterResource(
                 id = LIST_VIEW_ICON_1
             ),
@@ -46,7 +48,7 @@ internal fun Layout(
             ) {
                 sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                 dataStoreVM.setLayout(
-                    if (currentLayout.value == "GRID") "LIST" else "GRID"
+                    if (currentLayout.value == GRID) LIST else GRID
                 )
             }
         )

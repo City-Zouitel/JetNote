@@ -75,6 +75,7 @@ beetle = "2.0.1"
 sqlcipher = "4.5.4"
 waveslider = "0.0.3"
 audiowaveform = "1.1.1"
+amplituda = "2.2.2"
 
 [libraries]
 # Kotlin.
@@ -166,6 +167,7 @@ sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
 sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "sqlcipher" }
 waveslider = { module = "com.github.galaxygoldfish:waveslider", version.ref = "waveslider" }
 audiowaveform = { module = "com.github.lincollincol:compose-audiowaveform", version.ref = "audiowaveform" }
+amplituda = { module = "com.github.lincollincol:amplituda", version.ref = "amplituda" }
 
 [bundles]
 compose = ["ui", "ui-tooling-preview", "material3"]

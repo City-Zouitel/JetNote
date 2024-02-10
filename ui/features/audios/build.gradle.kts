@@ -23,4 +23,5 @@ dependencies {
     //Sliders.
     implementation(libs.waveslider)
     implementation(libs.audiowaveform)
+    implementation(libs.amplituda)
 }

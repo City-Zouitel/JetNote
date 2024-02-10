@@ -1,6 +1,9 @@
 package city.zouitel.audios.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -9,6 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,18 +22,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import city.zouitel.audios.utils.ControlButton
 import city.zouitel.systemDesign.AdaptingRow
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Icons
-import com.galaxygoldfish.waveslider.WaveSlider
 import com.linc.audiowaveform.AudioWaveform
 import com.linc.audiowaveform.model.AmplitudeType
 import com.linc.audiowaveform.model.WaveformAlignment
@@ -41,7 +44,7 @@ import me.saket.swipe.rememberSwipeableActionsState
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
-@SuppressLint("CoroutineCreationDuringComposition")
+@SuppressLint("CoroutineCreationDuringComposition", "MutableCollectionMutableState")
 @Composable
 fun NormalMediaPlayer(
     exoViewModule: MediaPlayerViewModel = koinViewModel(),
@@ -55,6 +58,8 @@ fun NormalMediaPlayer(
     val swipeState = rememberSwipeableActionsState()
 
     scope.launch {
+        exoViewModule.loadAudioAmplitudes(mediaFile)
+
         while(isPlaying.value && processState <= 1f) {
             delay(exoViewModule.getMediaDuration(context,mediaFile) / 100)
             processState += .011f
@@ -67,12 +72,14 @@ fun NormalMediaPlayer(
         }
     }
 
+    val amplitudes by remember { mutableStateOf(exoViewModule.audioAmplitudes) }
+
     if (isPlaying.value) exoViewModule.playMedia(mediaFile) else exoViewModule.pauseMedia(mediaFile)
 
     val swipeAction = SwipeAction(
         onSwipe = {
             File(
-                context.filesDir.path + "/" + Cons.AUDIOS,
+                context.filesDir.path + File.pathSeparator + Cons.AUDIOS,
                 "$localMediaUid.${Cons.MP3}"
             ).delete()
         },
@@ -83,6 +90,7 @@ fun NormalMediaPlayer(
     )
 
     SwipeableActionsBox(
+        modifier = Modifier.clip(ShapeDefaults.Medium),
         backgroundUntilSwipeThreshold = Color.Transparent,
         swipeThreshold = 100.dp,
         state = swipeState,
@@ -101,19 +109,30 @@ fun NormalMediaPlayer(
                         .padding(start = 5.dp, end = 5.dp)
                         .height(80.dp)
                 ) {
-                    ControlButton(isPlaying)
+                    Icon(
+                        painter = painterResource(
+                            id = if (isPlaying.value) Icons.PAUSE_CIRCLE_FILLED_ICON_24 else Icons.PLAY_CIRCLE_FILLED_ICON_24
+                        ),
+                        null,
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .clickable {
+                                isPlaying.value = !isPlaying.value
+                            },
+                        tint = Color.White
+                    )
 
                     AudioWaveform(
                         modifier = Modifier.weight(1f),
-                        amplitudes = listOf(1,2,3,4,5,6),
+                        amplitudes = amplitudes,
                         progress = processState,
                         onProgressChange = { processState = it },
                         waveformAlignment = WaveformAlignment.Center,
                         style = Fill,
                         amplitudeType = AmplitudeType.Avg,
-                        spikePadding = 2.dp,
-                        spikeRadius = 2.dp,
-                        spikeWidth = 2.dp
+                        spikePadding = 4.dp,
+                        spikeRadius = 4.dp,
+                        spikeWidth = 4.dp,
                     )
 
                     Text(
@@ -121,7 +140,7 @@ fun NormalMediaPlayer(
                         text = exoViewModule.formatLong(
                             exoViewModule.getMediaDuration(context,mediaFile)
                         ),
-                        color = MaterialTheme.colorScheme.surfaceVariant
+                        color = Color.White
                     )
                 }
             }
