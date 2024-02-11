@@ -37,6 +37,7 @@ import city.zouitel.tasks.viewmodel.NoteAndTaskViewModel
 import city.zouitel.tasks.viewmodel.TaskViewModel
 import city.zouitel.navigation.getMaterialColor
 import city.zouitel.systemDesign.Cons.JPEG
+import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.Cons.MP3
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
@@ -131,7 +132,7 @@ fun TrashScreen(
                 }
             }
         ) {
-            if (currentLayout.value == "LIST") {
+            if (currentLayout.value == LIST) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                 ) {

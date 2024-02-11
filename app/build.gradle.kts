@@ -36,6 +36,7 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.init)
     implementation(projects.services.notifications)
+    implementation(projects.services.shortcuts)
     implementation(projects.ui.common.systemDesign)
     api(projects.ui.navigation)
 

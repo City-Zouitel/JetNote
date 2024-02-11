@@ -73,7 +73,7 @@ internal fun SearchField(
             }
         },
         placeholder = {
-            Text(text = placeholder, fontSize = 17.sp)
+            Text(text = placeholder, fontSize = 17.sp, maxLines = 1)
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,

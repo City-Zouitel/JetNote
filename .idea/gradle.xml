@@ -29,6 +29,7 @@
             <option value="$PROJECT_DIR$/init" />
             <option value="$PROJECT_DIR$/services" />
             <option value="$PROJECT_DIR$/services/notifications" />
+            <option value="$PROJECT_DIR$/services/shortcuts" />
             <option value="$PROJECT_DIR$/source" />
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/ui/common" />

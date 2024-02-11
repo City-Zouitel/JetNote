@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import city.zouitel.audios.ui.MiniMediaPlayer
-import city.zouitel.audios.ui.NormalMediaPlayer
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkPart
 import city.zouitel.links.ui.LinkVM
@@ -54,15 +53,15 @@ import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.ANGLE_DOWN_ICON
 import city.zouitel.systemDesign.Icons.ANGLE_UP_ICON
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
-import city.zouitel.systemDesign.Icons.CLOCK_ICON
 import city.zouitel.systemDesign.Icons.RESET_ICON
 import city.zouitel.systemDesign.ImageDisplayed
 import city.zouitel.tasks.viewmodel.NoteAndTaskViewModel
 import city.zouitel.tasks.viewmodel.TaskViewModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
-import city.zouitel.navigation.codeUrl
 import city.zouitel.navigation.sound
+import city.zouitel.systemDesign.Cons.LIST
+import city.zouitel.systemDesign.Icons.BELL_RING_ICON
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -89,10 +88,10 @@ fun NoteCard(
             onSwipeNote.invoke(noteEntity)
         },
         icon = {},
-        background = Color.Transparent
+        background = Color.Red
     )
 
-    if (currentLayout.value == "LIST") {
+    if (currentLayout.value == LIST) {
         SwipeableActionsBox(
             modifier = Modifier,
             backgroundUntilSwipeThreshold = Color.Transparent,
@@ -121,7 +120,7 @@ fun NoteCard(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Card(
     taskViewModel: TaskViewModel = koinViewModel(),
@@ -189,8 +188,8 @@ private fun Card(
                     navController.navigate(
                         route = EDIT_ROUTE + "/" +
                                 note.uid + "/" +
-                                codeUrl.invoke(note.title) + "/" +
-                                codeUrl.invoke(note.description) + "/" +
+                                city.zouitel.logic.codeUrl.invoke(note.title) + "/" +
+                                city.zouitel.logic.codeUrl.invoke(note.description) + "/" +
                                 note.color + "/" +
                                 note.textColor + "/" +
                                 note.priority + "/" +
@@ -258,14 +257,14 @@ private fun Card(
             modifier = Modifier.padding(start = 3.dp, end = 3.dp, bottom = 7.dp)
         )
 
-        //media display.
-                if (
-                    File(mediaPath).exists()
-                ) {
-                    MiniMediaPlayer(localMediaUid = note.uid)
-                }
+        //display media player.
+        if (
+            File(mediaPath).exists()
+        ) {
+            MiniMediaPlayer(localMediaUid = note.uid)
+        }
 
-        // tagEntities.
+        //display tags.
         LazyRow {
             items(items = labels) { label ->
                 AssistChip(
@@ -318,11 +317,12 @@ private fun Card(
                 }
             }
 
-            //
-            if (screen==HOME_SCREEN && note.reminding != 0L) {
+            //display the reminding chip.
+            if (screen == HOME_SCREEN && note.reminding != 0L) {
                 note.reminding.let {
-                    kotlin.runCatching {
+                    runCatching {
                         ElevatedAssistChip(
+                            modifier = Modifier.padding(5.dp),
                             onClick = {},
                             label = {
                                 Text(
@@ -333,14 +333,23 @@ private fun Card(
                                         TextDecoration.LineThrough
                                     } else {
                                         TextDecoration.None
-                                    }
+                                    },
+                                    color = MaterialTheme.colorScheme.surfaceVariant
                                 )
                             },
                             leadingIcon = {
                                 if (it >= Calendar.getInstance().time.time) {
-                                    Icon(painterResource(CLOCK_ICON), null)
+                                    Icon(
+                                        painterResource(BELL_RING_ICON),
+                                        null,
+                                        tint = MaterialTheme.colorScheme.surfaceVariant
+                                    )
                                 }
-                            }
+                            },
+                            colors = AssistChipDefaults.assistChipColors(
+                                containerColor = Color(.6f, .6f, .6f, .5f)
+                            ),
+                            elevation = AssistChipDefaults.assistChipElevation()
                         )
                     }
                 }
@@ -435,6 +444,7 @@ private fun Card(
                 }
             }
         }
+        Spacer(modifier = Modifier.height(15.dp))
     }
 }
 

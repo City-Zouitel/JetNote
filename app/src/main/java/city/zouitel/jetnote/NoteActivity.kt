@@ -15,8 +15,8 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import city.zouitel.links.ui.LinkVM
 import city.zouitel.navigation.Graph
-import city.zouitel.navigation.checkShortcut
-import city.zouitel.navigation.intentHandler
+import city.zouitel.shortcuts.checkNoteActivityShortcut
+import city.zouitel.shortcuts.intentHandler
 import city.zouitel.systemDesign.Cons.AUDIOS
 import city.zouitel.systemDesign.Cons.IMAGES
 import city.zouitel.systemDesign.DataStoreVM
@@ -122,7 +122,7 @@ class NoteActivity : ComponentActivity(), KoinComponent {
 
     override fun onResume() {
         super.onResume()
-        checkShortcut(this)
+        checkNoteActivityShortcut(this)
     }
 
     override fun onPause() {

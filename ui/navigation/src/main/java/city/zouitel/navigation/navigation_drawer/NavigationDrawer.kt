@@ -1,6 +1,5 @@
 package city.zouitel.navigation.navigation_drawer
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -11,8 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -50,11 +47,9 @@ fun NavigationDrawer(
     searchTitle: MutableState<String>?,
     searchTagEntity: MutableState<Tag>?
 ) {
-    val ctx = LocalContext.current
+    val context = LocalContext.current
     val observeLabels = remember(tagViewModel,tagViewModel::getAllLTags).collectAsState()
-
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
-
     val scope = rememberCoroutineScope()
 
     DismissibleDrawerSheet(
@@ -78,7 +73,7 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(HOME_ICON), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                         with(navController) {
                             navigate(HOME_ROUTE)
                             clearBackStack(HOME_ROUTE)
@@ -91,32 +86,18 @@ fun NavigationDrawer(
             }
 
             item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Tags",
-                        fontSize = 12.sp,
-                        modifier = Modifier.padding(15.dp)
-                    )
-                    Text(
-                        text = "Edit",
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            textDecoration = TextDecoration.Underline
-                        ),
-                        modifier = Modifier
-                            .padding(15.dp)
-                            .clickable {
-                                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
-                                with(navController) {
-                                    navigate("$TAG_ROUTE/${null}")
-                                    clearBackStack("$TAG_ROUTE/${null}")
-                                }
-                            }
-                    )
-                }
+                NavigationDrawerItem(
+                    label = { Text("Tags") },
+                    icon = { Icon(painterResource(TAGS_ICON), null) },
+                    selected = false,
+                    onClick = {
+                        sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
+                        with(navController) {
+                            navigate("$TAG_ROUTE/${null}")
+                            clearBackStack("$TAG_ROUTE/${null}")
+                        }
+                    }
+                )
             }
 
             item {
@@ -129,7 +110,7 @@ fun NavigationDrawer(
                             onClick = {
                                 scope.launch {
                                     drawerState.close()
-                                    sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                                    sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
                                 }
                                 searchTitle?.value = label.label!!
                                 searchTagEntity?.value = label
@@ -161,7 +142,7 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(SETTINGS_ICON), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
                         with(navController) {
                             navigate(SETTING_ROUTE)
                             clearBackStack(SETTING_ROUTE)
@@ -176,7 +157,7 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(TRASH_ICON), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
                         with(navController) {
                             navigate(TRASH_ROUTE)
                             clearBackStack(TRASH_ROUTE)
@@ -192,8 +173,8 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(SHARE_ICON), null) },
                     selected = false,
                     onClick = {
-                        sharApp(ctx,"[COMING SOON.]")
-                        sound.makeSound(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sharApp(context,"[COMING SOON.]")
+                        sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
                     }
                 )
             }
@@ -204,7 +185,7 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(COMMENT_EXCLAMATION), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound.invoke(ctx, KEY_CLICK,thereIsSoundEffect.value)
+                        sound.makeSound.invoke(context, KEY_CLICK,thereIsSoundEffect.value)
                         scope.launch {
                             drawerState.close()
                         }
@@ -220,7 +201,7 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(INTERROGATION_ICON), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                         with(navController) {
                             navigate(ABOUT_ROUTE)
                             clearBackStack(ABOUT_ROUTE)

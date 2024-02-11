@@ -12,12 +12,13 @@ dependencies {
     //Koin.
     implementation(libs.koin.worker)
 
+    //App Startup.
     implementation(libs.startup)
 
     //Lifecycle.
     implementation(libs.lifecycle.process)
 
-    //
+    //Worker.
     implementation(libs.workmanager)
 
     //Sqlcipher.

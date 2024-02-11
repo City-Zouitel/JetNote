@@ -31,7 +31,6 @@ import city.zouitel.tasks.viewmodel.NoteAndTaskViewModel
 import city.zouitel.tasks.viewmodel.TaskViewModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
-import city.zouitel.navigation.copyNote
 import city.zouitel.navigation.sound
 import org.koin.androidx.compose.koinViewModel
 import java.util.*

@@ -1,4 +1,4 @@
-package city.zouitel.navigation
+package city.zouitel.logic
 
 //
 val codeUrl: (String?) -> String?

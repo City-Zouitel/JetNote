@@ -13,11 +13,12 @@ object Icons {
     val EDIT_ICON = R.drawable.pencil_24
     val GESTURE_ICON = R.drawable.ic_baseline_gesture_24
     val MIC_ICON = R.drawable.microphone_24
+    val MIC_ICON_18 = R.drawable.microphone_18
     val MIC_ICON_36 = R.drawable.microphone_36
-    val PAUSE_CIRCLE_FILLED_ICON = R.drawable.pause_20
+    val PAUSE_CIRCLE_FILLED_ICON = R.drawable.pause_18
     val PAUSE_CIRCLE_FILLED_ICON_24 = R.drawable.pause_24
     val PAUSE_CIRCLE_FILLED_ICON_36 = R.drawable.pause_36
-    val PLAY_CIRCLE_FILLED_ICON = R.drawable.play_20
+    val PLAY_CIRCLE_FILLED_ICON = R.drawable.play_18
     val PLAY_CIRCLE_FILLED_ICON_24 = R.drawable.play_24
     val PLAY_CIRCLE_FILLED_ICON_36 = R.drawable.play_36
     val REDO_ICON = R.drawable.redo
@@ -30,10 +31,11 @@ object Icons {
     val ERASER_BLACK_ICON = R.drawable.ic_eraser_black_24dp
     val IMAGE_ICON = R.drawable.picture_24
     val BELL_ICON = R.drawable.bell_24
-    val BELL_RING_ICON = R.drawable.bell_ring_24
+    val BELL_RING_ICON = R.drawable.bell_ring_18
     val DISK_ICON = R.drawable.disk_24
     val ADD_ICON = R.drawable.add_24
     val PLUS_ICON = R.drawable.plus_20
+    val PLUS_ICON_18 = R.drawable.plus_18
     val PLUS_ICON_24 = R.drawable.plus_24
     val LIGHT_ICON = R.drawable.sun_24
     val NIGHT_ICON = R.drawable.moon_24

@@ -43,9 +43,8 @@ import java.util.UUID
 fun Quick(
     quickDataViewModel: QuickDataViewModel = koinViewModel(),
     action:() -> (Unit)
-    ) {
+) {
     val descriptionState = remember { mutableStateOf("") }
-
     val materialColors = MaterialColors().getMaterialColor
     val backgroundColor = materialColors(SURFACE).toArgb()
     val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }

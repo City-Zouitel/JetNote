@@ -10,23 +10,23 @@ import kotlinx.coroutines.flow.Flow
 interface NoteDao {
 
     @Transaction
-    @Query("select * from NOTES_TABLE where Trashed = 0 order by Date asc")
+    @Query("select * from NOTES_TABLE where REMOVED = 0 order by Date asc")
     fun getAllNotesById():Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where Trashed = 0 order by Date desc")
+    @Query("select * from NOTES_TABLE where REMOVED = 0 order by Date desc")
     fun getAllNotesByNewest():Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where Trashed = 0 order by Date asc")
+    @Query("select * from NOTES_TABLE where REMOVED = 0 order by Date asc")
     fun getAllNotesByOldest():Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where Trashed = 0 order by TITLE asc")
+    @Query("select * from NOTES_TABLE where REMOVED = 0 order by TITLE asc")
     fun getAllNotesByName():Flow<List<NoteEntity>>
 
     @Transaction
-@Query("select * from NOTES_TABLE where Trashed = 0 order by case " +
+@Query("select * from NOTES_TABLE where REMOVED = 0 order by case " +
             "when Priority like 'URGENT' then 1 " +
             "when Priority like 'IMPORTANT' then 2 " +
             "when Priority like 'NORMAL' then 3 " +
@@ -36,11 +36,11 @@ interface NoteDao {
     fun getAllNotesByPriority():Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where Trashed = 1")
+    @Query("select * from NOTES_TABLE where REMOVED = 1")
     fun getAllTrashedNotes(): Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where Trashed = 0 order by Reminding desc")
+    @Query("select * from NOTES_TABLE where REMOVED = 0 order by Reminding desc")
     fun getAllRemindingNotes(): Flow<List<NoteEntity>>
 
 

@@ -17,7 +17,7 @@ internal object Constants {
     const val PRIORITY = "priority"
     const val DATE = "date"
     const val UUID = "unique_id"
-    const val TRASHED = "trashed"
+    const val REMOVED = "removed"
     const val URL = "url"
     const val HOST = "host"
     const val IMAGE_UIL = "image_url"

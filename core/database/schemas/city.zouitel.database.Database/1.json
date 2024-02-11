@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c5a4c217b4521dd1d3558c316d6fe3ca",
+    "identityHash": "db5056a70754850713de9991ac5db53a",
     "entities": [
       {
         "tableName": "notes_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_id` TEXT NOT NULL, `title` TEXT, `description` TEXT, `priority` TEXT NOT NULL, `color` INTEGER NOT NULL, `text_color` INTEGER NOT NULL, `date` TEXT NOT NULL, `trashed` INTEGER NOT NULL, `audio_duration` INTEGER NOT NULL, `reminding` INTEGER NOT NULL, `image_url` TEXT, `audio_url` TEXT, PRIMARY KEY(`unique_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_id` TEXT NOT NULL, `title` TEXT, `description` TEXT, `priority` TEXT NOT NULL, `color` INTEGER NOT NULL, `text_color` INTEGER NOT NULL, `date` TEXT NOT NULL, `removed` INTEGER NOT NULL, `audio_duration` INTEGER NOT NULL, `reminding` INTEGER NOT NULL, `image_url` TEXT, `audio_url` TEXT, PRIMARY KEY(`unique_id`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -51,8 +51,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "trashed",
-            "columnName": "trashed",
+            "fieldPath": "removed",
+            "columnName": "removed",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -290,7 +290,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c5a4c217b4521dd1d3558c316d6fe3ca')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'db5056a70754850713de9991ac5db53a')"
     ]
   }
 }

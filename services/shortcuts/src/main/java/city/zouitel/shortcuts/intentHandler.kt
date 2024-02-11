@@ -1,9 +1,10 @@
-package city.zouitel.navigation
+package city.zouitel.shortcuts
 
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.navigation.NavHostController
+import city.zouitel.logic.codeUrl
 import city.zouitel.systemDesign.Cons.ADD_ROUTE
 import city.zouitel.systemDesign.Cons.NUL
 import kotlinx.coroutines.CoroutineScope
@@ -26,14 +27,20 @@ fun intentHandler(
             }
         }
         if (action == Intent.ACTION_VIEW) {
-            if (extras?.containsKey("new_shortcut") == true) {
-                getBooleanExtra("new_shortcut", false)
+            if (extras?.containsKey("new_note_shortcut") == true) {
+                getBooleanExtra("new_note_shortcut", false)
                 scope.launch {
                     navHC.navigate("$ADD_ROUTE/${UUID.randomUUID()}/$NUL")
                 }
             }
             if (extras?.containsKey("quick_note") == true) {
                 getBooleanExtra("quick_note", false)
+                scope.launch {
+                    navHC.navigate("$ADD_ROUTE/${UUID.randomUUID()}/$NUL")
+                }
+            }
+            if (extras?.containsKey("new_record") == true) {
+                getBooleanExtra("new_record", false)
                 scope.launch {
                     navHC.navigate("$ADD_ROUTE/${UUID.randomUUID()}/$NUL")
                 }

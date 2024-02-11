@@ -8,11 +8,11 @@ import city.zouitel.quicknote.model.QuickData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-//@HiltViewModel
-class QuickDataViewModel /*@Inject*/ constructor(
+class QuickDataViewModel(
     private val add: DataUseCase.AddData,
     private val mapper: QuickDataMapper
 ): ViewModel() {
+
     fun addQuickData(data: QuickData) = viewModelScope.launch(Dispatchers.IO) {
         add.invoke(mapper.toDomain(data))
     }

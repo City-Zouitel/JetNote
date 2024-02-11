@@ -40,7 +40,7 @@ class QuickActivity: ComponentActivity() {
 
         val theme = when {
             isSystemInDarkTheme() -> darkColorScheme()
-            currentTheme.value == "GRID" -> darkColorScheme()
+            currentTheme.value == "DARK_THEME" -> darkColorScheme()
             else -> lightColorScheme()
         }
 
@@ -48,13 +48,17 @@ class QuickActivity: ComponentActivity() {
             systemUiController.apply {
                 setStatusBarColor(Color.Transparent, !isDarkUi)
                 setNavigationBarColor(
-                    if (currentTheme.value == "GRID"|| isDarkUi) Color(red = 28, green = 27, blue = 31)
+                    if (currentTheme.value == "DARK_THEME" || isDarkUi) Color(red = 28, green = 27, blue = 31)
                     else Color(red = 255, green = 251, blue = 254)
                 )
             }
         }
 
         MaterialTheme(colorScheme = theme, content = content)
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }
 

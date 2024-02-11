@@ -1,16 +1,20 @@
 package city.zouitel.reminder.ui
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TimePicker
-import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -63,98 +67,92 @@ fun RemindingNote(
 
     val timePickerState = rememberTimePickerState()
 
-    DatePickerDialog(onDismissRequest = { /*TODO*/ }, confirmButton = {  }) {
-//        DatePicker(state = datePickerState)
-        TimePicker(state = timePickerState, layoutType = TimePickerLayoutType.Horizontal)
-    }
+    AlertDialog(
+        onDismissRequest = {
+            dialogState.value = false
+        },
+        title = {
+            Row {
+                AdaptingRow(modifier = Modifier.fillMaxWidth()) {
+                    Text(text = "Add Reminding", fontSize = 25.sp)
+                }
+            }
+        },
+        text = {
+            Column {
+                OutlinedIconButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    onClick = {
+                        sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
+                        remindingViewModel.getDatePicker(ctx)
+                    }) {
+                    Row(
+                        horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp)
+                    ) {
+                        Icon(
+                            painterResource(CALENDAR_ICON), null,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(text = "Pick Date", fontSize = 17.sp)
+                    }
+                }
 
-//    AlertDialog(
-//        onDismissRequest = {
-//            dialogState.value = false
-//        },
-//        title = {
-//            Row {
-//                AdaptingRow(modifier = Modifier.fillMaxWidth()) {
-//                    Text(text = "Add Reminding", fontSize = 25.sp)
-//                }
-//            }
-//        },
-//        text = {
-//            Column {
-//                OutlinedIconButton(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(50.dp),
-//                    onClick = {
-//                        sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
-////                        remindingViewModel.getDatePicker(ctx)
-//                        datePickerState.displayMode
-//                    }) {
-//                    Row(
-//                        horizontalArrangement = Arrangement.Start,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(start = 20.dp)
-//                    ) {
-//                        Icon(
-//                            painterResource(CALENDAR_ICON), null,
-//                            modifier = Modifier.size(28.dp)
-//                        )
-//                        Spacer(modifier = Modifier.width(10.dp))
-//                        Text(text = "Pick Date", fontSize = 17.sp)
-//                    }
-//                }
-//
-//                Spacer(modifier = Modifier.height(20.dp))
-//
-//                OutlinedIconButton(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(50.dp),
-//                    onClick = {
-//                        remindingViewModel.getTimePicker(ctx)
-//                            sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
-//                    }) {
-//                    Row(
-//                        horizontalArrangement = Arrangement.Start,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(start = 20.dp)
-//                    ) {
-//                        Icon(
-//                            painterResource(CLOCK_ICON),null,
-//                            modifier = Modifier.size(28.dp)
-//                        )
-//                        Spacer(modifier = Modifier.width(10.dp))
-//                        Text(text = "Pick Time", fontSize = 17.sp)
-//                    }
-//                }
-//            }
-//        },
-//        confirmButton = {
-//            OutlinedIconButton(
-//                modifier = Modifier
-//                    .size(90.dp,35.dp),
-//                onClick = {
-//                    runCatching {
-//                        notifyVM.scheduleNotification(
-//                            context = ctx,
-//                            dateTime = remindingViewModel::getTimeReminder.invoke(),
-//                            title = title,
-//                            message = message,
-//                            uid = uid
-//                        )
-//                        sound.makeSound(ctx, KEY_STANDARD, soundEffect.value)
-//                    }.onSuccess {
-//                        remindingValue?.value = remindingViewModel::getDateTimeReminder.invoke().value.time
-//                    }
-//
-//                    dialogState.value = false
-//                }) {
-//                Text(text = "Save", fontSize = 17.sp)
-//            }
-//        },
-//        containerColor = getMatColor(SURFACE)
-//    )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                OutlinedIconButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    onClick = {
+                        remindingViewModel.getTimePicker(ctx)
+                        sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
+                    }) {
+                    Row(
+                        horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp)
+                    ) {
+                        Icon(
+                            painterResource(CLOCK_ICON),null,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(text = "Pick Time", fontSize = 17.sp)
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            OutlinedIconButton(
+                modifier = Modifier
+                    .size(90.dp,35.dp),
+                onClick = {
+                    runCatching {
+                        notifyVM.scheduleNotification(
+                            context = ctx,
+                            dateTime = remindingViewModel::getTimeReminder.invoke(),
+                            title = title,
+                            message = message,
+                            uid = uid
+                        )
+                        sound.makeSound(ctx, KEY_STANDARD, soundEffect.value)
+                    }.onSuccess {
+                        remindingValue?.value = remindingViewModel::getDateTimeReminder.invoke().value.time
+                    }
+
+                    dialogState.value = false
+                }) {
+                Text(text = "Save", fontSize = 17.sp)
+            }
+        },
+        containerColor = getMatColor(SURFACE)
+    )
 }
 

@@ -40,5 +40,8 @@ include(
     ":ui:common:systemDesign",
     ":ui:common:logic"
 )
-include(":services:notifications")
+include(
+    ":services:notifications",
+    ":services:shortcuts"
+)
 include(":init")

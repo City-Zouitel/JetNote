@@ -15,6 +15,7 @@ import androidx.core.view.inputmethod.InputConnectionCompat
 import city.zouitel.note.DataViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@Deprecated("ender developing!")
 @Composable
 fun NoteTextField(
     dataViewModel: DataViewModel = koinViewModel(),
@@ -73,5 +74,7 @@ fun NoteTextField(
                 setBackgroundResource(android.R.color.transparent)
 
             }
-        }) {}
+        }) {
+
+    }
 }

@@ -12,6 +12,6 @@ class DataMapper: Mapper.Base<InData, OutData> {
 
     override fun readOnly(data: InData): OutData = with(data){
         OutData(uid, title, description, priority, color, textColor, date,
-            trashed, audioDuration, reminding, imageUrl, audioUrl)
+            removed, audioDuration, reminding, imageUrl, audioUrl)
     }
 }

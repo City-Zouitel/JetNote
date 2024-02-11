@@ -41,8 +41,6 @@ class NoteApplication: Application(), KoinComponent {
                 databaseKoinModule,
                 datastoreKoinModule,
                 repositoryKoinModule,
-//                useCasesKoinModule,
-//                initializerKoinModule,
                 exoPlayerKoinModule,
                 linksKoinModule,
                 noteKoinModule,

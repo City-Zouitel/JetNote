@@ -1,4 +1,4 @@
-package city.zouitel.navigation
+package city.zouitel.navigation.top_action_bar.selection_bars
 
 import android.content.Context
 import city.zouitel.note.DataViewModel
@@ -10,7 +10,6 @@ import city.zouitel.systemDesign.Cons.MP3
 import java.io.File
 import java.util.*
 
-//
 fun copyNote(
     ctx: Context,
     dataViewModel: DataViewModel,

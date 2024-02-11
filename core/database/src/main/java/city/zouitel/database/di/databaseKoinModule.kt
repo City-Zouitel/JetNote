@@ -83,8 +83,9 @@ val databaseKoinModule = module {
             androidContext(),
             Database::class.java,
             Constants.DATABASE_NAME
+        ).openHelperFactory(
+            SupportFactory(Encryption(androidContext()).getCrypticPass())
         )
-//            .openHelperFactory(SupportFactory(Encryption(androidContext()).getCrypticPass()))
             .fallbackToDestructiveMigration()
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
