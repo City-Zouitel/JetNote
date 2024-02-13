@@ -16,7 +16,6 @@ import androidx.navigation.compose.rememberNavController
 import city.zouitel.links.ui.LinkVM
 import city.zouitel.navigation.Graph
 import city.zouitel.shortcuts.checkNoteActivityShortcut
-import city.zouitel.shortcuts.intentHandler
 import city.zouitel.systemDesign.Cons.AUDIOS
 import city.zouitel.systemDesign.Cons.IMAGES
 import city.zouitel.systemDesign.DataStoreVM
@@ -29,9 +28,9 @@ import org.koin.core.component.inject
 import java.io.File
 import java.util.*
 
-class NoteActivity : ComponentActivity(), KoinComponent {
+class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
-    val linkViewModel: LinkVM by inject()
+    private val linkViewModel: LinkVM by inject()
 
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {

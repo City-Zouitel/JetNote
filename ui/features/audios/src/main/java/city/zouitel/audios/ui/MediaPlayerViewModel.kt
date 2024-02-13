@@ -16,7 +16,7 @@ import java.util.*
 
 class MediaPlayerViewModel (
     private val exoBuilder : ExoPlayerImpl,
-    private val amplituda: Amplituda
+    private val repository: AudioRepository
 ): ViewModel() {
 
     private var getMediaDuration = mutableLongStateOf(0L)
@@ -61,7 +61,7 @@ class MediaPlayerViewModel (
 
     suspend fun loadAudioAmplitudes(localAudioPath: String) {
         runCatching {
-            val amplitudes = amplituda.processAudio(localAudioPath, Cache.withParams(Cache.REUSE)).get().amplitudesAsList()
+            val amplitudes = repository.loadAudioAmplitudes(localAudioPath)
             audioAmplitudes.addAll(amplitudes)
         }
     }

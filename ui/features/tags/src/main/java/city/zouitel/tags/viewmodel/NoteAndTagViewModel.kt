@@ -9,8 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-//@HiltViewModel
-class NoteAndTagViewModel /*@Inject*/ constructor(
+class NoteAndTagViewModel(
     private val getAll: NoteAndTagUseCase.GetAllNotesAndTags,
     private val add: NoteAndTagUseCase.AddNoteAndTag,
     private val delete: NoteAndTagUseCase.DeleteNoteAndTag,

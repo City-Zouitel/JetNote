@@ -57,7 +57,7 @@ fun Tags(
     val tagState = State.Tag(tagViewModel)
     val noteAndTagState = State.NoteTag(noteAndTagViewModel)
 
-    val allTags = tagState.rememberAllTags.invoke()
+    val allTags = tagState.rememberAllTags
     val allNoteAndTags = noteAndTagState.rememberAllNoteTags
 
     val idState = remember { mutableLongStateOf(-1L) }
@@ -85,7 +85,6 @@ fun Tags(
                 .background(getMatColor(SURFACE))
                 .padding(top = 25.dp)
         ) {
-
             item {
                 if (noteUid == NUL) {
                     HashTagLayout(
@@ -165,7 +164,7 @@ fun Tags(
                         Icon(
                             painter = painterResource(id = CIRCLE_ICON_18),
                             contentDescription = null,
-                            tint = Color(colorState.value)
+                            tint = Color(colorState.intValue)
                         )
                     },
                     maxLines = 1,
@@ -182,25 +181,25 @@ fun Tags(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            if (allTags.any { it.id == idState.value }) {
+                            if (allTags.any { it.id == idState.longValue }) {
                                 tagViewModel.updateTag(
                                     InTag(
-                                        id = idState.value,
+                                        id = idState.longValue,
                                         label = labelState.value,
-                                        color = colorState.value
+                                        color = colorState.intValue
                                     )
                                 )
                             } else {
                                 tagViewModel.addTag(
                                     InTag(
                                         label = labelState.value,
-                                        color = colorState.value
+                                        color = colorState.intValue
                                     )
                                 )
                             }.invokeOnCompletion {
                                 labelState.value = ""
-                                idState.value = -1
-                                colorState.value = 0x0000
+                                idState.longValue = -1
+                                colorState.intValue = 0x0000
                             }
                         }
                     ),

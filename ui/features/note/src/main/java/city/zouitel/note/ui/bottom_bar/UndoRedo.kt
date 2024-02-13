@@ -55,35 +55,34 @@ fun UndoRedo(
                 }
             ) {
                 sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
-
-                if (isTitleFieldSelected.value) {
-                    if (titleFieldState.value?.isNotEmpty() == true) {
-                        titleStack += titleFieldState.value!!
-                            .split(' ')
-                            .takeLast(1)
-                    }
-                    titleFieldState.value = if (!titleFieldState.value?.contains(' ')!!) {
-                        ""
-                    } else {
-                        titleFieldState.value!!.substringBeforeLast(' ')
-                    }
-
-                }
-
-                //
-                if (isDescriptionFieldSelected.value) {
-
-                    if (descriptionFieldState.value?.isNotEmpty() == true) {
-                        descriptionStack += descriptionFieldState.value!!
-                            .split(' ')
-                            .takeLast(1)
-                    }
-                    descriptionFieldState.value =
-                        if (!descriptionFieldState.value?.contains(' ')!!) {
+                runCatching {
+                    if (isTitleFieldSelected.value) {
+                        if (titleFieldState.value?.isNotEmpty() == true) {
+                            titleStack += titleFieldState.value!!
+                                .split(' ')
+                                .takeLast(1)
+                        }
+                        titleFieldState.value = if (!titleFieldState.value?.contains(' ')!!) {
                             ""
                         } else {
-                            descriptionFieldState.value!!.substringBeforeLast(' ')
+                            titleFieldState.value!!.substringBeforeLast(' ')
                         }
+
+                    }
+                    if (isDescriptionFieldSelected.value) {
+
+                        if (descriptionFieldState.value?.isNotEmpty() == true) {
+                            descriptionStack += descriptionFieldState.value!!
+                                .split(' ')
+                                .takeLast(1)
+                        }
+                        descriptionFieldState.value =
+                            if (!descriptionFieldState.value?.contains(' ')!!) {
+                                ""
+                            } else {
+                                descriptionFieldState.value!!.substringBeforeLast(' ')
+                            }
+                    }
                 }
             }
     )
@@ -101,18 +100,18 @@ fun UndoRedo(
                 }
             ) {
                 sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
-
-                if (isTitleFieldSelected.value) {
-                    if (titleStack.isNotEmpty()) {
-                        titleFieldState.value += " " + titleStack.last()
-                        titleStack -= titleStack.last()
+                runCatching {
+                    if (isTitleFieldSelected.value) {
+                        if (titleStack.isNotEmpty()) {
+                            titleFieldState.value += " " + titleStack.last()
+                            titleStack -= titleStack.last()
+                        }
                     }
-                }
-
-                if (isDescriptionFieldSelected.value) {
-                    if (descriptionStack.isNotEmpty()) {
-                        descriptionFieldState.value += " " + descriptionStack.last()
-                        descriptionStack -= descriptionStack.last()
+                    if (isDescriptionFieldSelected.value) {
+                        if (descriptionStack.isNotEmpty()) {
+                            descriptionFieldState.value += " " + descriptionStack.last()
+                            descriptionStack -= descriptionStack.last()
+                        }
                     }
                 }
             }

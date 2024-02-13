@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.ui.common.systemDesign)
     implementation(projects.core.datastore)
     implementation(projects.ui.features.note)
+    implementation(projects.ui.features.links)
 
     //AndroidX.
     implementation(libs.constraintlayout)

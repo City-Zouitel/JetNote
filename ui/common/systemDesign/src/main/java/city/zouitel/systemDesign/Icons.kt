@@ -57,7 +57,7 @@ object Icons {
     val CALENDAR_ICON = R.drawable.calendar_24
     val CLOCK_ICON = R.drawable.clock_24
     val OPACITY_ICON = R.drawable.opacity_24
-    val INBOX = R.drawable.inbox_48
+    val INBOX = R.drawable.inbox_18
     val TAGS_ICON = R.drawable.tags_24
     val OUTLINE_LABEL_ICON = R.drawable.no_label_18
     val FULL_LABEL_ICON = R.drawable.label_18

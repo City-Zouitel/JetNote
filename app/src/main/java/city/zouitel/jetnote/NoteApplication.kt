@@ -1,14 +1,9 @@
 package city.zouitel.jetnote
 
 import android.app.Application
-import android.content.Context
-import android.util.Log
-import androidx.startup.AppInitializer
-import androidx.work.Configuration
 import city.zouitel.audios.di.exoPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
-import city.zouitel.domain.di.useCasesKoinModule
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.note.di.noteKoinModule
 import city.zouitel.notifications.di.notificationKoinModule

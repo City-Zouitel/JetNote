@@ -18,7 +18,7 @@ class NotificationVM: ViewModel() {
         title: String?,
         message: String?,
         uid:String?
-        ) {
+    ) {
         val intent = Intent(context.applicationContext, Notification::class.java)
         intent.putExtra(TITLE, title)
         intent.putExtra(DESCRIPTION, message)

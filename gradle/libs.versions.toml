@@ -4,8 +4,8 @@ kotlin = "1.9.22"
 compileSdkVersion = "34"
 minSdkVersion = "26"
 targetSdkVersion = "34"
-codeVersion = "403"
-nameVersion = "4.0.3"
+codeVersion = "410"
+nameVersion = "4.1.0"
 composeVersion = "1.5.8"
 
 #Android.
@@ -22,10 +22,10 @@ startup = "1.1.1"
 
 #Compose.
 activity-compose = "1.8.2"
-compose-bom = "2024.01.00"
+compose-bom = "2024.02.00"
 appcompat = "1.6.1"
 material = "1.11.0"
-navigation-compose = "2.7.6"
+navigation-compose = "2.7.7"
 compose-constraintlayout = "1.1.0-alpha13"
 
 #Plugins.

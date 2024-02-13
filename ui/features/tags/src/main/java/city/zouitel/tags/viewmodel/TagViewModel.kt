@@ -12,8 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-//@HiltViewModel
-class TagViewModel /*@Inject*/ constructor(
+class TagViewModel(
     getAllTags: TagUseCase.GetAllTags,
     private val add: TagUseCase.AddTag,
     private val update: TagUseCase.UpdateTag,

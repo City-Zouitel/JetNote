@@ -1,4 +1,4 @@
-package city.zouitel.quicknote
+package city.zouitel.quicknote.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

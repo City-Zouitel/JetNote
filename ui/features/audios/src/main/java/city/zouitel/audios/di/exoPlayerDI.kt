@@ -23,7 +23,7 @@ val exoPlayerKoinModule = module {
     }
 
     singleOf(::ExoPlayerImpl) bind ExoRepo::class
-    singleOf(::Amplituda)
+    single { Amplituda(androidContext()) }
     single { AudioManager(get(), get()) }
     single { AudioRepository(get(), get()) }
 

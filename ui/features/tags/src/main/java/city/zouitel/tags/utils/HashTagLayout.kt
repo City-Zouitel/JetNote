@@ -58,12 +58,12 @@ internal fun HashTagLayout(
                             color = Color.Transparent,
                             modifier = Modifier.combinedClickable(
                                 onLongClick = {
-                                    labelState.value = label.label!!
+                                    labelState.value = label.label
                                     idState.value = label.id
                                     labelDialogState.value = true
                                 },
                             ){
-                                labelState.value = label.label!!
+                                labelState.value = label.label
                                 idState.value = label.id
                             }
                         ) {

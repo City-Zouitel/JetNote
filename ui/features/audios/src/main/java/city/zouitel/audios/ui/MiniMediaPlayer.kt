@@ -90,7 +90,11 @@ fun MiniMediaPlayer(
                             .animationOptions(
                                 reverseDirection = true
                             ),
-                        colors = WaveSliderDefaults.colors(activeTickColor = MaterialTheme.colorScheme.surfaceVariant)
+                        colors = WaveSliderDefaults.colors(
+                            activeTickColor = MaterialTheme.colorScheme.surfaceTint,
+                            thumbColor = MaterialTheme.colorScheme.inverseSurface,
+                            activeTrackColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
                 } else {
                     Box(

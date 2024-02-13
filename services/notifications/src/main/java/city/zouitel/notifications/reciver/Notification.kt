@@ -14,13 +14,14 @@ import city.zouitel.notifications.Cons.JPEG
 import city.zouitel.notifications.Cons.NOTIFICATION_ID
 import city.zouitel.notifications.Cons.TITLE
 import city.zouitel.notifications.Cons.UID
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.File
 
-//@AndroidEntryPoint
-class Notification : NotifyBroadcastReceiver() {
+class Notification : NotifyBroadcastReceiver(), KoinComponent {
 
-    /*@Inject*/ lateinit var notifyBuilder : NotificationCompat.Builder
-    /*@Inject*/ lateinit var notifyManager : NotificationManagerCompat
+    private val notifyBuilder : NotificationCompat.Builder by inject()
+    private val notifyManager : NotificationManagerCompat by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)

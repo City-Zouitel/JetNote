@@ -12,8 +12,7 @@ import city.zouitel.notifications.viewmodel.NotificationVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 
-val notificationKoinModule: Module
-    get() = module {
+val notificationKoinModule = module {
         viewModelOf(::NotificationVM)
 
         single {

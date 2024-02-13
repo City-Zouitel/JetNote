@@ -87,9 +87,6 @@ fun NoteHome(
     dataStoreVM: DataStoreVM = koinViewModel(),
     navController: NavController,
 ) {
-    val sldif = city.zouitel.navigation.State.Sound(dataStoreVM)
-    val sdo = sldif.soundState.invoke()
-
     val ctx = LocalContext.current
     //
     val searchTitleState = remember { mutableStateOf("") }

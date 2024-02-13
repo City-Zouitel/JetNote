@@ -269,7 +269,7 @@ private fun Card(
             items(items = labels) { label ->
                 AssistChip(
                     modifier = Modifier.alpha(.7f),
-                    border = AssistChipDefaults.assistChipBorder(borderColor = Color.Transparent),
+                    border = BorderStroke(0.dp, Color.Transparent),
                     onClick = { },
                     label = {
                         label.label?.let { Text(it, fontSize = 11.sp) }

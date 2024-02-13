@@ -38,20 +38,28 @@ import com.linc.audiowaveform.model.AmplitudeType
 import com.linc.audiowaveform.model.WaveformAlignment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import linc.com.amplituda.Amplituda
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
+import org.koin.java.KoinJavaComponent.inject
 import java.io.File
 
 @SuppressLint("CoroutineCreationDuringComposition", "MutableCollectionMutableState")
 @Composable
 fun NormalMediaPlayer(
     exoViewModule: MediaPlayerViewModel = koinViewModel(),
-    localMediaUid: String?
+    localMediaUid: String?,
 ) {
     val context = LocalContext.current
-    val mediaFile = arrayOf(context.filesDir.path, Cons.AUDIOS, localMediaUid + "." + Cons.MP3).joinToString("/")
+    val mediaFile = arrayOf(
+        context.filesDir.path,
+        Cons.AUDIOS,
+        localMediaUid + "." + Cons.MP3
+    ).joinToString("/")
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -60,11 +68,11 @@ fun NormalMediaPlayer(
     scope.launch {
         exoViewModule.loadAudioAmplitudes(mediaFile)
 
-        while(isPlaying.value && processState <= 1f) {
-            delay(exoViewModule.getMediaDuration(context,mediaFile) / 100)
+        while (isPlaying.value && processState <= 1f) {
+            delay(exoViewModule.getMediaDuration(context, mediaFile) / 100)
             processState += .011f
         }
-        when  {
+        when {
             processState >= 1f -> {
                 isPlaying.value = false
                 processState = 0f
@@ -130,15 +138,15 @@ fun NormalMediaPlayer(
                         waveformAlignment = WaveformAlignment.Center,
                         style = Fill,
                         amplitudeType = AmplitudeType.Avg,
-                        spikePadding = 4.dp,
-                        spikeRadius = 4.dp,
-                        spikeWidth = 4.dp,
+                        spikePadding = 2.dp,
+                        spikeRadius = 2.dp,
+                        spikeWidth = 2.dp,
                     )
 
                     Text(
                         modifier = Modifier.padding(end = 10.dp),
                         text = exoViewModule.formatLong(
-                            exoViewModule.getMediaDuration(context,mediaFile)
+                            exoViewModule.getMediaDuration(context, mediaFile)
                         ),
                         color = Color.White
                     )
