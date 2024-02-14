@@ -1,6 +1,7 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.cityzouitel.androidApplication)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.licenses)
 //    id ("com.chrisney.enigma")
 }
@@ -51,6 +52,10 @@ dependencies {
 
     //Accompanist.
     implementation(libs.accompanist.systemuicontroller)
+
+    //Destinations.
+    implementation(libs.destinations.core)
+    ksp(libs.destinations.ksp)
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)

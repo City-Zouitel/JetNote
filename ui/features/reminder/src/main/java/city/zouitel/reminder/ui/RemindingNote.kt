@@ -1,6 +1,7 @@
 package city.zouitel.reminder.ui
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,15 +12,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CalendarLocale
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,6 +46,12 @@ import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.SoundEffect
 import org.koin.androidx.compose.koinViewModel
+import java.text.DateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.temporal.TemporalAmount
+import java.util.Calendar
+import kotlin.time.Duration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint(
@@ -54,18 +67,37 @@ fun RemindingNote(
     uid: String?,
     remindingValue: MutableState<Long>?
 ) {
-    val ctx = LocalContext.current
-//    val thereIsSoundEffect = DataStore(ctx).thereIsSoundEffect.collectAsState(false)
+    val context = LocalContext.current
+    val dateTime = LocalDateTime.now()
+    val cal = Calendar.getInstance()
+
     val soundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val sound = SoundEffect()
     val getMatColor = MaterialColors().getMaterialColor
-    val remindingViewModel = viewModel(ReminderVM::class.java)
     val notifyVM = viewModel(NotificationVM::class.java)
+    val void = remember {
+        mutableStateOf<Long?>(null)
+    }
 
     val datePickerState = rememberDatePickerState()
 
-    val timePickerState = rememberTimePickerState()
+    DateFormat.getDateInstance().format(datePickerState.selectedDateMillis)
+
+    val timePickerState = rememberTimePickerState(
+        initialHour = dateTime.hour,
+        initialMinute = dateTime.minute
+    )
+    val datePickerDialog = remember { mutableStateOf(false) }
+    val timePickerDialog = remember { mutableStateOf(false) }
+
+    if(datePickerDialog.value) {
+        DateLayout(datePickerState = datePickerState, datePickerDialog = datePickerDialog)
+    }
+
+    if (timePickerDialog.value) {
+      TimeLayout(timePickerState = timePickerState, timePickerDialog = timePickerDialog)
+    }
 
     AlertDialog(
         onDismissRequest = {
@@ -85,8 +117,8 @@ fun RemindingNote(
                         .fillMaxWidth()
                         .height(50.dp),
                     onClick = {
-                        sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
-                        remindingViewModel.getDatePicker(ctx)
+                        sound.makeSound(context, KEY_CLICK, soundEffect.value)
+                        datePickerDialog.value = true
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
@@ -110,8 +142,8 @@ fun RemindingNote(
                         .fillMaxWidth()
                         .height(50.dp),
                     onClick = {
-                        remindingViewModel.getTimePicker(ctx)
-                        sound.makeSound(ctx, KEY_CLICK, soundEffect.value)
+                        sound.makeSound(context, KEY_CLICK, soundEffect.value)
+                        timePickerDialog.value = true
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
@@ -136,15 +168,15 @@ fun RemindingNote(
                 onClick = {
                     runCatching {
                         notifyVM.scheduleNotification(
-                            context = ctx,
-                            dateTime = remindingViewModel::getTimeReminder.invoke(),
+                            context = context,
+                            dateTime = void,
                             title = title,
                             message = message,
                             uid = uid
                         )
-                        sound.makeSound(ctx, KEY_STANDARD, soundEffect.value)
+                        sound.makeSound(context, KEY_STANDARD, soundEffect.value)
                     }.onSuccess {
-                        remindingValue?.value = remindingViewModel::getDateTimeReminder.invoke().value.time
+                        remindingValue?.value = 0L
                     }
 
                     dialogState.value = false
@@ -155,4 +187,3 @@ fun RemindingNote(
         containerColor = getMatColor(SURFACE)
     )
 }
-

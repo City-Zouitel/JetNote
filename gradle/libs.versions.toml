@@ -76,6 +76,7 @@ sqlcipher = "4.5.4"
 waveslider = "0.0.3"
 audiowaveform = "1.1.1"
 amplituda = "2.2.2"
+destinations = "1.10.0"
 
 [libraries]
 # Kotlin.
@@ -168,6 +169,8 @@ sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "
 waveslider = { module = "com.github.galaxygoldfish:waveslider", version.ref = "waveslider" }
 audiowaveform = { module = "com.github.lincollincol:compose-audiowaveform", version.ref = "audiowaveform" }
 amplituda = { module = "com.github.lincollincol:amplituda", version.ref = "amplituda" }
+destinations-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "destinations" }
+destinations-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "destinations" }
 
 [bundles]
 compose = ["ui", "ui-tooling-preview", "material3"]
