@@ -68,6 +68,9 @@ import city.zouitel.systemDesign.Icons.PLUS_ICON
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_VARIANT
 import city.zouitel.tags.model.Tag
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 import java.util.UUID
 
@@ -80,13 +83,17 @@ import java.util.UUID
     ExperimentalMaterial3Api::class,
     ExperimentalMaterialApi::class,
 )
+
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun NoteHome(
     dataViewModel: DataViewModel = koinViewModel(),
     entityVM: NoteViewModel = koinViewModel(),
     dataStoreVM: DataStoreVM = koinViewModel(),
     navController: NavController,
-) {
+    navigator: DestinationsNavigator
+    ) {
     val ctx = LocalContext.current
     //
     val searchTitleState = remember { mutableStateOf("") }
@@ -140,10 +147,10 @@ fun NoteHome(
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isProcessing,
         onRefresh = {
-            navController.apply {
-                navigate(HOME_ROUTE)
-                popBackStack()
-            }
+//            navController.apply {
+//                navigate(HOME_ROUTE)
+//                popBackStack()
+//            }
         }
     )
 
@@ -217,6 +224,7 @@ fun NoteHome(
                                     clearBackStack(this)
                                 }
                         }
+
                     },
                     expanded = scrollBehavior.state.collapsedFraction != 1f,
                     containerColor = getMaterialColor(SURFACE_VARIANT),

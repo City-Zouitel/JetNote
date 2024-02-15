@@ -26,6 +26,10 @@ android {
     }
 }
 
+ksp {
+    arg("compose-destinations.generateNavGraphs", "true")
+}
+
 //enigma.enabled = true
 //enigma.injectFakeKeys = true
 
