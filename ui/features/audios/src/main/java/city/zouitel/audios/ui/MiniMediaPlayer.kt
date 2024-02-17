@@ -80,22 +80,22 @@ fun MiniMediaPlayer(
                         tint = MaterialTheme.colorScheme.surfaceVariant
                     )
 
-                    WaveSlider(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(7.dp),
-                        value = processState,
-                        onValueChange = { processState = it },
-                        animationOptions = WaveSliderDefaults
-                            .animationOptions(
-                                reverseDirection = true
-                            ),
-                        colors = WaveSliderDefaults.colors(
-                            activeTickColor = MaterialTheme.colorScheme.surfaceTint,
-                            thumbColor = MaterialTheme.colorScheme.inverseSurface,
-                            activeTrackColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    )
+//                    WaveSlider(
+//                        modifier = Modifier
+//                            .weight(1f)
+//                            .padding(7.dp),
+//                        value = processState,
+//                        onValueChange = { processState = it },
+//                        animationOptions = WaveSliderDefaults
+//                            .animationOptions(
+//                                reverseDirection = true
+//                            ),
+//                        colors = WaveSliderDefaults.colors(
+//                            activeTickColor = MaterialTheme.colorScheme.surfaceTint,
+//                            thumbColor = MaterialTheme.colorScheme.inverseSurface,
+//                            activeTrackColor = MaterialTheme.colorScheme.onSurfaceVariant
+//                        )
+//                    )
                 } else {
                     Box(
                         contentAlignment = Alignment.Center

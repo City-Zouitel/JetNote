@@ -9,6 +9,10 @@ android {
     namespace = "city.zouitel.note"
 }
 
+ksp {
+    arg("compose-destinations.generateNavGraphs", "true")
+}
+
 dependencies {
     //Modules.
     implementation(projects.ui.common.systemDesign)
@@ -21,6 +25,7 @@ dependencies {
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.camera)
     implementation(projects.ui.features.links)
+    implementation(projects.services.notifications)
 
     //AndroidX.
     implementation(libs.constraintlayout)

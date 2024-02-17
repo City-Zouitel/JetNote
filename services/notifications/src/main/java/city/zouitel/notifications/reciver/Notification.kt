@@ -1,6 +1,7 @@
 package city.zouitel.notifications.reciver
 
 import android.Manifest
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -24,7 +25,6 @@ class Notification : NotifyBroadcastReceiver(), KoinComponent {
     private val notifyManager : NotificationManagerCompat by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
-        super.onReceive(context, intent)
 
         val path = context.filesDir.path
         val uid = intent.getStringExtra(UID)
@@ -47,7 +47,5 @@ class Notification : NotifyBroadcastReceiver(), KoinComponent {
                 .setLargeIcon(bitImg)
                 .build()
         )
-
     }
-
 }

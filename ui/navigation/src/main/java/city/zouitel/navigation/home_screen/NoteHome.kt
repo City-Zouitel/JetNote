@@ -84,15 +84,15 @@ import java.util.UUID
     ExperimentalMaterialApi::class,
 )
 
-@RootNavGraph(start = true)
-@Destination
+//@RootNavGraph(start = true)
+//@Destination
 @Composable
 fun NoteHome(
     dataViewModel: DataViewModel = koinViewModel(),
     entityVM: NoteViewModel = koinViewModel(),
     dataStoreVM: DataStoreVM = koinViewModel(),
     navController: NavController,
-    navigator: DestinationsNavigator
+//    navigator: DestinationsNavigator
     ) {
     val ctx = LocalContext.current
     //

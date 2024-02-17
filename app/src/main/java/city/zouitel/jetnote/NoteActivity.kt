@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import city.zouitel.links.ui.LinkVM
-import city.zouitel.navigation.home_screen.NavGraphs
+import city.zouitel.navigation.Graph
 import city.zouitel.shortcuts.checkNoteActivityShortcut
 import city.zouitel.systemDesign.Cons.AUDIOS
 import city.zouitel.systemDesign.Cons.IMAGES
@@ -48,8 +48,8 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
             intentHandler(intent, this@NoteActivity, navHostController, scope)
 
             AppTheme {
-//                Graph(navHostController)
-                DestinationsNavHost(navGraph = NavGraphs.root)
+                Graph(navHostController)
+//                DestinationsNavHost(navGraph = NavGraphs.root)
             }
         }
     }

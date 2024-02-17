@@ -43,7 +43,7 @@ fun Graph(
 ) {
     NavHost(navController = navHostController, startDestination = HOME_ROUTE) {
         composable(route = HOME_ROUTE) {
-//            NoteHome(navController = navHostController)
+            NoteHome(navController = navHostController)
         }
         composable(
             route = "$ADD_ROUTE/{$UID}/{$DESCRIPTION}",

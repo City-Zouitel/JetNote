@@ -1,7 +1,6 @@
 package city.zouitel.reminder.ui
 
 import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,20 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CalendarLocale
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TimePicker
-import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableLongState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -35,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import city.zouitel.notifications.viewmodel.NotificationVM
-import city.zouitel.reminder.viewmodel.ReminderVM
 import city.zouitel.systemDesign.AdaptingRow
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
@@ -46,12 +40,9 @@ import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.SoundEffect
 import org.koin.androidx.compose.koinViewModel
-import java.text.DateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.temporal.TemporalAmount
 import java.util.Calendar
-import kotlin.time.Duration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint(
@@ -61,42 +52,41 @@ import kotlin.time.Duration
 @Composable
 fun RemindingNote(
     dataStoreVM: DataStoreVM = koinViewModel(),
+    notificationVM: NotificationVM = koinViewModel(),
     dialogState: MutableState<Boolean>,
     title: String?,
     message: String?,
     uid: String?,
-    remindingValue: MutableState<Long>?
+    remindingValue: MutableLongState?
 ) {
     val context = LocalContext.current
-    val dateTime = LocalDateTime.now()
-    val cal = Calendar.getInstance()
+    val localDT = LocalDateTime.now()
 
     val soundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val sound = SoundEffect()
     val getMatColor = MaterialColors().getMaterialColor
-    val notifyVM = viewModel(NotificationVM::class.java)
-    val void = remember {
-        mutableStateOf<Long?>(null)
-    }
 
-    val datePickerState = rememberDatePickerState()
-
-    DateFormat.getDateInstance().format(datePickerState.selectedDateMillis)
-
-    val timePickerState = rememberTimePickerState(
-        initialHour = dateTime.hour,
-        initialMinute = dateTime.minute
+    val dateState = rememberDatePickerState()
+    val timeState = rememberTimePickerState(
+        initialHour = localDT.hour,
+        initialMinute = localDT.minute
     )
     val datePickerDialog = remember { mutableStateOf(false) }
     val timePickerDialog = remember { mutableStateOf(false) }
 
+    val dateTime = remember {
+        mutableStateOf<Long?>(
+            ((timeState.hour * 60 + timeState.minute) * 60 * 1000).toLong() + 1708128000000 /*+ (dateState.selectedDateMillis ?: 0L)*/
+        )
+    }
+
     if(datePickerDialog.value) {
-        DateLayout(datePickerState = datePickerState, datePickerDialog = datePickerDialog)
+        DateLayout(datePickerState = dateState, datePickerDialog = datePickerDialog)
     }
 
     if (timePickerDialog.value) {
-      TimeLayout(timePickerState = timePickerState, timePickerDialog = timePickerDialog)
+        TimeLayout(timePickerState = timeState, timePickerDialog = timePickerDialog)
     }
 
     AlertDialog(
@@ -167,16 +157,17 @@ fun RemindingNote(
                     .size(90.dp,35.dp),
                 onClick = {
                     runCatching {
-                        notifyVM.scheduleNotification(
+                        notificationVM.scheduleNotification(
                             context = context,
-                            dateTime = void,
+                            dateTime = dateTime,
                             title = title,
                             message = message,
                             uid = uid
                         )
                         sound.makeSound(context, KEY_STANDARD, soundEffect.value)
                     }.onSuccess {
-                        remindingValue?.value = 0L
+                        remindingValue?.longValue = dateTime.value ?: 0L
+
                     }
 
                     dialogState.value = false
