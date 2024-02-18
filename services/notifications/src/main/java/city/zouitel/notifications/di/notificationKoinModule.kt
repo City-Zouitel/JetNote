@@ -29,12 +29,13 @@ val notificationKoinModule = module {
 
     single {
         NotificationManagerCompat.from(androidContext())
-            .createNotificationChannel(
-                NotificationChannel(
-                    Cons.CHANNEL_ID,
-                    Cons.CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT
-                )
-            )
+    }
+
+    single {
+        NotificationChannel(
+            Cons.CHANNEL_ID,
+            Cons.CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
     }
 }

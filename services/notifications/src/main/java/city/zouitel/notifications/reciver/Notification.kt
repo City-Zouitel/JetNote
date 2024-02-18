@@ -1,6 +1,8 @@
 package city.zouitel.notifications.reciver
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -18,11 +20,16 @@ import city.zouitel.notifications.Cons.UID
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
+import android.graphics.Color
+import city.zouitel.notifications.Cons
+import org.koin.android.ext.koin.androidContext
+
 
 class Notification : NotifyBroadcastReceiver(), KoinComponent {
 
     private val notifyBuilder : NotificationCompat.Builder by inject()
     private val notifyManager : NotificationManagerCompat by inject()
+    private val notifyChannel : NotificationChannel by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
 
@@ -39,13 +46,17 @@ class Notification : NotifyBroadcastReceiver(), KoinComponent {
             return
         }
 
-        notifyManager.notify(
-            NOTIFICATION_ID,
-            notifyBuilder
-                .setContentTitle(intent.getStringExtra(TITLE))
-                .setContentText(intent.getStringExtra(DESCRIPTION))
-                .setLargeIcon(bitImg)
-                .build()
-        )
+        runCatching {
+            notifyChannel
+        }.onSuccess {
+            notifyManager.notify(
+                NOTIFICATION_ID,
+                notifyBuilder
+                    .setContentTitle(intent.getStringExtra(TITLE))
+                    .setContentText(intent.getStringExtra(DESCRIPTION))
+                    .setLargeIcon(bitImg)
+                    .build()
+            )
+        }
     }
 }

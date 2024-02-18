@@ -18,11 +18,11 @@ fun Project.configureAndroidLibrary(
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
-        packaging {
-            resources {
-                excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            }
-        }
+//        packaging {
+//            resources {
+//                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+//            }
+//        }
 
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17

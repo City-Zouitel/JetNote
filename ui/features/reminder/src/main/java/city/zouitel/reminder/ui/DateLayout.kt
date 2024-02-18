@@ -1,6 +1,7 @@
 package city.zouitel.reminder.ui
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,20 +36,34 @@ internal fun DateLayout(
                 onClick = {
                     Toast.makeText(context, "${datePickerState.selectedDateMillis}", Toast.LENGTH_SHORT).show()
                     datePickerDialog.value = false
-
                 }) {
-                Text(text = "Pick", fontSize = 17.sp)
+                Text(text = "Select", fontSize = 17.sp)
+            }
+
+        },
+        dismissButton = {
+            OutlinedIconButton(
+                modifier = Modifier
+                    .size(90.dp, 35.dp),
+                onClick = {
+                    datePickerDialog.value = false
+                }) {
+                Text(text = "Cansel", fontSize = 17.sp)
             }
 
         }
     ) {
+
         DatePicker(
             state = datePickerState,
             title = {
-                Text("Title.")
+                Text(
+                    modifier = Modifier.padding(5.dp),
+                    text = "Select date"
+                )
             },
             headline = {
-                Text("Headline!")
+                Text("")
             }
         )
     }

@@ -61,13 +61,16 @@ fun RemindingNote(
 ) {
     val context = LocalContext.current
     val localDT = LocalDateTime.now()
+    val cal = Calendar.getInstance()
 
     val soundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val sound = SoundEffect()
     val getMatColor = MaterialColors().getMaterialColor
 
-    val dateState = rememberDatePickerState()
+    val dateState = rememberDatePickerState(
+        initialSelectedDateMillis = cal.timeInMillis
+    )
     val timeState = rememberTimePickerState(
         initialHour = localDT.hour,
         initialMinute = localDT.minute
@@ -77,7 +80,8 @@ fun RemindingNote(
 
     val dateTime = remember {
         mutableStateOf<Long?>(
-            ((timeState.hour * 60 + timeState.minute) * 60 * 1000).toLong() + 1708128000000 /*+ (dateState.selectedDateMillis ?: 0L)*/
+            (((localDT.hour * 60 + localDT.minute) * 60 * 1000) + (dateState.selectedDateMillis
+                ?: 0L)) /*- 350_000_0*/
         )
     }
 
@@ -121,7 +125,7 @@ fun RemindingNote(
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "Pick Date", fontSize = 17.sp)
+                        Text(text = "Select Date", fontSize = 17.sp)
                     }
                 }
 
@@ -167,12 +171,20 @@ fun RemindingNote(
                         sound.makeSound(context, KEY_STANDARD, soundEffect.value)
                     }.onSuccess {
                         remindingValue?.longValue = dateTime.value ?: 0L
-
                     }
-
                     dialogState.value = false
                 }) {
                 Text(text = "Save", fontSize = 17.sp)
+            }
+        },
+        dismissButton = {
+            OutlinedIconButton(
+                modifier = Modifier
+                    .size(90.dp,35.dp),
+                onClick = {
+                    dialogState.value = false
+                }) {
+                Text(text = "Cansel", fontSize = 17.sp)
             }
         },
         containerColor = getMatColor(SURFACE)
