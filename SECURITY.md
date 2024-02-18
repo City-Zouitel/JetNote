@@ -17,5 +17,5 @@ Safely manage keys and encrypt files and sharedpreferences.
 ### [SQLCipher](https://github.com/sqlcipher/sqlcipher)
 SQLCipher is a standalone fork of the SQLite database library that adds 256 bit AES encryption of database files and other security features.
 
-### [security-crypto-datastore](https://github.com/osipxd/encrypted-datastore)
+### [Security Crypto Datastore](https://github.com/osipxd/encrypted-datastore)
 Extensions to store DataStore in EncryptedFile.
