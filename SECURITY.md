@@ -8,7 +8,7 @@ Patches will be released to the latest major version.
 
 Please report (suspected) security vulnerabilities to bourntivoli@gmail.com. If the issue is confirmed, we will release a patch as soon as possible depending on complexity.
 
-## Libraries
+## Security Libraries
 ### [Jetpack Security](https://developer.android.com/jetpack/androidx/releases/security)
 Safely manage keys and encrypt files and sharedpreferences.
 
