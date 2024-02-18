@@ -49,6 +49,7 @@ room = "2.6.1"
 
 #Datastore.
 datastore = "1.0.0"
+datastore-security = "1.0.0-beta01"
 
 #Exo.
 exoplayer = "2.19.1"
@@ -130,6 +131,7 @@ room_compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 #DataStore.
 datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+datastore-security = { module = "io.github.osipxd:security-crypto-datastore-preferences", version.ref = "datastore-security" }
 
 # Exo.
 exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer" }

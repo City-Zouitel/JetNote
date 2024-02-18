@@ -2,8 +2,8 @@
 JetNote is modern note android application written by kotlin language and [jetpack-compose](https://github.com/JetBrains/compose-jb) toolkit. The app dealing with Room for Database, Koin dependency injection, Coroutine the non-blocking programming, Navigation-Compose, DataStore, ExoPlayer to play the recorded media in the app, CameraX to take and save picture, And more to make it good app that inspired by google app **keep Notes**.
 
 [![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
-[![Kotlin Version](https://img.shields.io/badge/Kotlin-v1.9.20-blue.svg)](https://kotlinlang.org)
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.4-blueviolet)](https://developer.android.com/jetpack/androidx/releases/compose)
+[![Kotlin Version](https://img.shields.io/badge/Kotlin-v1.9.22-blue.svg)](https://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.8-blueviolet)](https://developer.android.com/jetpack/androidx/releases/compose)
 [![Kotlin Coroutines Version](https://img.shields.io/badge/Coroutines-v1.7.3-yellow.svg)](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 [![Gradle](https://img.shields.io/badge/Gradle-8.2.1-green)](https://gradle.org)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
@@ -81,15 +81,6 @@ Collects all dependency details including licenses at compile time, and offers s
 
 ### [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager)
 WorkManager is the recommended solution for persistent work. Work is persistent when it remains scheduled through app restarts and system reboots.
-
-## Security
-### [Jetpack Security](https://developer.android.com/jetpack/androidx/releases/security)
-Safely manage keys and encrypt files and sharedpreferences.
-
- [<img src="https://1.bp.blogspot.com/-GBGJnjPsAPU/XlCPTMZWc7I/AAAAAAAAOsc/swQjcH-BA2AYJ73SnpFSI97U3xZFWT9zgCLcBGAsYHQ/s1600/0_WefQBkBtLer3zIo6.png" alt="..." height="">](https://android-developers.googleblog.com/2020/02/data-encryption-on-android-with-jetpack.html)
-
-### [SQLCipher](https://github.com/sqlcipher/sqlcipher)
-SQLCipher is a standalone fork of the SQLite database library that adds 256 bit AES encryption of database files and other security features.
 
 ## The App Hierarchy
 
