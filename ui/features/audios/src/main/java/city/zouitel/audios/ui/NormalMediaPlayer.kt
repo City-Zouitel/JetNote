@@ -1,8 +1,6 @@
 package city.zouitel.audios.ui
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -11,7 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,8 +20,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalContext
@@ -38,14 +33,10 @@ import com.linc.audiowaveform.model.AmplitudeType
 import com.linc.audiowaveform.model.WaveformAlignment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import linc.com.amplituda.Amplituda
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
-import org.koin.core.component.KoinComponent
-import org.koin.java.KoinJavaComponent.inject
 import java.io.File
 
 @SuppressLint("CoroutineCreationDuringComposition", "MutableCollectionMutableState")
@@ -57,7 +48,7 @@ fun NormalMediaPlayer(
     val context = LocalContext.current
     val mediaFile = arrayOf(
         context.filesDir.path,
-        Cons.AUDIOS,
+        Cons.REC_DIR,
         localMediaUid + "." + Cons.MP3
     ).joinToString("/")
     var processState by remember { mutableFloatStateOf(0f) }
@@ -87,7 +78,7 @@ fun NormalMediaPlayer(
     val swipeAction = SwipeAction(
         onSwipe = {
             File(
-                context.filesDir.path + File.pathSeparator + Cons.AUDIOS,
+                context.filesDir.path + File.pathSeparator + Cons.REC_DIR,
                 "$localMediaUid.${Cons.MP3}"
             ).delete()
         },

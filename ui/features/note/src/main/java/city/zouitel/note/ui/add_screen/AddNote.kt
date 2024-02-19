@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.icu.util.Calendar
 import android.net.Uri
+import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -23,11 +24,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ElevatedAssistChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -63,6 +67,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
@@ -79,15 +84,16 @@ import city.zouitel.note.model.Data
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
 import city.zouitel.recoder.ui.RecordingNote
 import city.zouitel.reminder.ui.RemindingNote
-import city.zouitel.systemDesign.Cons.AUDIOS
+import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.HOME_ROUTE
-import city.zouitel.systemDesign.Cons.IMAGES
+import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.Cons.MP3
 import city.zouitel.systemDesign.Cons.NON
 import city.zouitel.systemDesign.Cons.NUL
 import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.DONE_ICON
 import city.zouitel.systemDesign.ImageDisplayed
@@ -105,9 +111,9 @@ import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.viewmodel.NoteAndTaskViewModel
 import city.zouitel.tasks.viewmodel.TaskViewModel
 import com.google.accompanist.flowlayout.FlowRow
-import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
+import java.util.Date
 
 @SuppressLint(
     "UnrememberedMutableState",
@@ -140,14 +146,15 @@ fun NoteAdd(
     val focusRequester by lazy { FocusRequester() }
     val getMatColor by lazy { MaterialColors().getMaterialColor }
     val sound by lazy { SoundEffect() }
-    val mediaFile by lazy { arrayOf(internalPath,'/',AUDIOS,'/',uid,'.',MP3).joinToString("") }
-    val imageFile by lazy { arrayOf(internalPath,'/',IMAGES,'/',uid,'.',JPEG).joinToString("") }
+    val mediaFile by lazy { arrayOf(internalPath,'/',REC_DIR,'/',uid,'.',MP3).joinToString("") }
+    val imageFile by lazy { arrayOf(internalPath,'/',IMG_DIR,'/',uid,'.',JPEG).joinToString("") }
     val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
     val bitImg by lazy { BitmapFactory.decodeFile(imageFile) }
 
+    val state = rememberBottomSheetScaffoldState()
+    val titleState = rememberSaveable { mutableStateOf<String?>(null) }
     val isTitleFieldFocused = remember { mutableStateOf(false) }
     val isDescriptionFieldFocused = remember { mutableStateOf(false) }
-    val titleState = rememberSaveable { mutableStateOf<String?>(null) }
     val backgroundColor = getMatColor(SURFACE).toArgb()
     val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
     val textColor = contentColorFor(getMatColor(SURFACE)).toArgb()
@@ -155,9 +162,8 @@ fun NoteAdd(
     val priorityState = remember { mutableStateOf(NON) }
     val photoState = remember { mutableStateOf<Bitmap?>(bitImg) }
     val remindingDialogState = remember { mutableStateOf(false) }
-    val recordDialogState = remember { mutableStateOf(false) }
-    val state = rememberBottomSheetScaffoldState()
     val remindingValue = remember { mutableLongStateOf(0L) }
+    val recordDialogState = remember { mutableStateOf(false) }
     val audioDurationState = remember { mutableIntStateOf(0) }
 
     var focusState by remember { mutableStateOf(false) }
@@ -183,7 +189,7 @@ fun NoteAdd(
             dataViewModel::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
             img.value = photoState.value
             dataViewModel::saveImageLocally.invoke(
-                img.value, "$internalPath/$IMAGES", "$uid.$JPEG"
+                img.value, "$internalPath/$IMG_DIR", "$uid.$JPEG"
             )
         }
 
@@ -238,13 +244,12 @@ fun NoteAdd(
                 backgroundColorState = backgroundColorState,
                 textColorState = textColorState,
                 priorityColorState = priorityState,
-                notePriority = priorityState,
                 imageLaunch = chooseImageLauncher,
                 titleFieldState = titleState,
                 descriptionFieldState = descriptionState,
                 isTitleFieldSelected = isTitleFieldFocused,
                 isDescriptionFieldSelected = isDescriptionFieldFocused,
-                isCollapsed = state
+                remindingValue = remindingValue
             )
         }
     ) {
@@ -395,6 +400,46 @@ fun NoteAdd(
                         swipeable = true,
                         link = _link
                     )
+                }
+            }
+
+            // display reminding chip.
+            if (remindingValue.longValue != 0L) {
+                item {
+                    remindingValue.longValue.let {
+                        runCatching {
+                            ElevatedAssistChip(
+                                modifier = Modifier.padding(start = 15.dp),
+                                onClick = {},
+                                label = {
+                                    Text(
+                                        DateFormat.format("yyyy-MM-dd HH:mm", Date(it)).toString(),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        textDecoration = if (it < java.util.Calendar.getInstance().time.time) {
+                                            TextDecoration.LineThrough
+                                        } else {
+                                            TextDecoration.None
+                                        },
+                                        color = MaterialTheme.colorScheme.surfaceVariant
+                                    )
+                                },
+                                leadingIcon = {
+                                    if (it >= java.util.Calendar.getInstance().time.time) {
+                                        Icon(
+                                            painterResource(Icons.BELL_RING_ICON),
+                                            null,
+                                            tint = MaterialTheme.colorScheme.surfaceVariant
+                                        )
+                                    }
+                                },
+                                colors = AssistChipDefaults.assistChipColors(
+                                    containerColor = Color(.6f, .6f, .6f, .5f)
+                                ),
+                                elevation = AssistChipDefaults.assistChipElevation()
+                            )
+                        }
+                    }
                 }
             }
 

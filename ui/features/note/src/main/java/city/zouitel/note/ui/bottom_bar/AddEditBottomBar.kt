@@ -1,14 +1,12 @@
 package city.zouitel.note.ui.bottom_bar
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomSheetScaffoldState
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
@@ -27,6 +25,7 @@ import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.ADD_CIRCLE_ICON
 import city.zouitel.systemDesign.Icons.BELL_ICON
+import city.zouitel.systemDesign.Icons.BELL_RING_ICON_24
 import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_VARIANT
@@ -35,30 +34,32 @@ import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.listOfBackgroundColors
 import city.zouitel.systemDesign.listOfTextColors
 import org.koin.androidx.compose.koinViewModel
+import java.text.SimpleDateFormat
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class
+@SuppressLint("SimpleDateFormat")
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalFoundationApi::class
 )
 @Composable
 fun AddEditBottomBar(
     dataStoreVM: DataStoreVM = koinViewModel(),
     note: Data,
     navController: NavController,
-    imageLaunch : ManagedActivityResultLauncher<String, Uri?>,
+    imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
     recordDialogState: MutableState<Boolean>,
     remindingDialogState: MutableState<Boolean>,
     backgroundColorState: MutableState<Int>,
     textColorState: MutableState<Int>,
     priorityColorState: MutableState<String>,
-    notePriority : MutableState<String>,
-    titleFieldState : MutableState<String?>,
-    descriptionFieldState : MutableState<String?>,
-    isTitleFieldSelected : MutableState<Boolean>,
-    isDescriptionFieldSelected : MutableState<Boolean>,
-    isCollapsed: BottomSheetScaffoldState?
+    titleFieldState: MutableState<String?>,
+    descriptionFieldState: MutableState<String?>,
+    isTitleFieldSelected: MutableState<Boolean>,
+    isDescriptionFieldSelected: MutableState<Boolean>,
+    remindingValue: MutableLongState,
 ) {
 
-    val ctx = LocalContext.current
+    val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
 
     val showOptionsMenu = remember { mutableStateOf(false) }
@@ -67,6 +68,8 @@ fun AddEditBottomBar(
     val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
 
+    val formatter = SimpleDateFormat("dd-MM-yyyy hh:mm")
+
     Column {
         Row {
             AdaptingRow(
@@ -74,7 +77,6 @@ fun AddEditBottomBar(
                     .fillMaxWidth()
                     .background(getMatColor(SURFACE))
                     .height(50.dp)
-//                    .padding(end = if (isCollapsed?.bottomSheetState?.isCollapsed == true) 80.dp else 0.dp)
             ) {
 
                 PopupTip(message = "More Options") {
@@ -92,7 +94,7 @@ fun AddEditBottomBar(
                             ) {
                                 showOptionsMenu.value = !showOptionsMenu.value
                                 sound.makeSound.invoke(
-                                    ctx,
+                                    context,
                                     FOCUS_NAVIGATION,
                                     thereIsSoundEffect.value
                                 )
@@ -100,9 +102,18 @@ fun AddEditBottomBar(
                     )
                 }
 
-                PopupTip(message = "Reminding") {
+                PopupTip(
+                    message = if (remindingValue.longValue != 0L) {
+                        formatter.format(remindingValue.longValue)
+                    } else {
+                        "Reminding"
+                    }
+                ) {
                     Icon(
-                        painterResource(BELL_ICON), contentDescription = null,
+                        painter = painterResource(
+                            if (remindingValue.longValue != 0L) BELL_RING_ICON_24 else BELL_ICON
+                        ),
+                        contentDescription = null,
                         tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
                         modifier = Modifier
                             .combinedClickable(
@@ -113,7 +124,7 @@ fun AddEditBottomBar(
                                 }
                             ) {
                                 remindingDialogState.value = !remindingDialogState.value
-                                sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                                sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
                             }
                     )
                 }
@@ -149,9 +160,7 @@ fun AddEditBottomBar(
             colorState = textColorState,
             colors = listOfTextColors
         )
-
     }
-
 }
 
 

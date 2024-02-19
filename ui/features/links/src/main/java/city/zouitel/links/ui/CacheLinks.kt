@@ -12,6 +12,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import city.zouitel.links.worker.LinkWorker
+import city.zouitel.systemDesign.Cons.LINK_DIR
 import kotlinx.coroutines.job
 import java.util.*
 
@@ -27,7 +28,7 @@ fun CacheLinks(
     val observerNoteAndLinks = remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
     val ctx = LocalContext.current
-    val linkImgPath = ctx.filesDir.path + "/" + "links_img"
+    val linkImgPath = ctx.filesDir.path + "/" + LINK_DIR
     val scope = rememberCoroutineScope()
 
     val title = remember { mutableStateOf("") }

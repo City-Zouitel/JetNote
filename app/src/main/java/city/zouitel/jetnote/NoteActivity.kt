@@ -5,26 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import city.zouitel.links.ui.LinkVM
 import city.zouitel.navigation.Graph
 import city.zouitel.shortcuts.checkNoteActivityShortcut
-import city.zouitel.systemDesign.Cons.AUDIOS
-import city.zouitel.systemDesign.Cons.IMAGES
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.Cons.REC_DIR
+import city.zouitel.systemDesign.Cons.IMG_DIR
+import city.zouitel.systemDesign.Cons.LINK_DIR
 import city.zouitel.widget.WidgetReceiver
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.spec.NavGraphSpec
 import kotlinx.coroutines.*
-import org.koin.androidx.compose.koinViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
@@ -47,39 +38,11 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
             intentHandler(intent, this@NoteActivity, navHostController, scope)
 
-            AppTheme {
+            MainTheme {
                 Graph(navHostController)
 //                DestinationsNavHost(navGraph = NavGraphs.root)
             }
         }
-    }
-
-    @Composable
-    private fun AppTheme(
-        dataStoreVM: DataStoreVM = koinViewModel(),
-        content: @Composable () -> Unit
-    ) {
-        val currentTheme = remember(dataStoreVM, dataStoreVM::getTheme).collectAsState()
-        val systemUiController = rememberSystemUiController()
-        val isDarkUi = isSystemInDarkTheme()
-
-        val theme = when {
-            isSystemInDarkTheme() -> darkColorScheme()
-            currentTheme.value == "DARK" -> darkColorScheme()
-            else -> lightColorScheme()
-        }
-
-        SideEffect {
-            systemUiController.apply {
-                setStatusBarColor(Color.Transparent, !isDarkUi)
-                setNavigationBarColor(
-                    if (currentTheme.value == "DARK" || isDarkUi) Color(red = 28, green = 27, blue = 31)
-                    else Color(red = 255, green = 251, blue = 254)
-                )
-            }
-        }
-
-        MaterialTheme(colorScheme = theme, content = content)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -90,14 +53,15 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
     override fun onDestroy() {
         super.onDestroy()
         linkViewModel.urlPreview(this, null, null, null, null)?.cleanUp()
+        WidgetReceiver.updateBroadcast(this)
     }
 
     override fun onStart() {
         super.onStart()
         // TODO: move it to init module as work manager.
-        File(this.filesDir.path + "/" + IMAGES).mkdirs()
-        File(this.filesDir.path + "/" + AUDIOS).mkdirs()
-        File(this.filesDir.path + "/" + "links_img").mkdirs()
+        File(this.filesDir.path + "/" + IMG_DIR).mkdirs()
+        File(this.filesDir.path + "/" + REC_DIR).mkdirs()
+        File(this.filesDir.path + "/" + LINK_DIR).mkdirs()
 
 //        mapOf(
 //            "Coffee" to "Prepare hot coffee for my self.",
@@ -126,12 +90,5 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
         super.onResume()
         checkNoteActivityShortcut(this)
     }
-
-    override fun onPause() {
-        super.onPause()
-        WidgetReceiver.updateBroadcast(this)
-    }
-
-
 }
 

@@ -20,8 +20,6 @@ import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons
-import com.galaxygoldfish.waveslider.WaveSlider
-import com.galaxygoldfish.waveslider.WaveSliderDefaults
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -34,7 +32,7 @@ fun MiniMediaPlayer(
     localMediaUid: String?
 ) {
     val context = LocalContext.current
-    val mediaFile = context.filesDir.path + "/${Cons.AUDIOS}/" + localMediaUid + "." + Cons.MP3
+    val mediaFile = context.filesDir.path + "/${Cons.REC_DIR}/" + localMediaUid + "." + Cons.MP3
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
     val currentLayout by datastoreVM.getLayout.collectAsState()

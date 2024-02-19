@@ -14,7 +14,7 @@ import city.zouitel.notifications.reciver.Notification
 class NotificationVM(): ViewModel() {
     fun scheduleNotification(
         context: Context,
-        dateTime: MutableState<Long?>,
+        dateTime: Long,
         title: String?,
         message: String?,
         uid:String?
@@ -32,7 +32,7 @@ class NotificationVM(): ViewModel() {
         )
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        dateTime.value?.let {
+        dateTime.let {
             alarmManager.setAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 it,

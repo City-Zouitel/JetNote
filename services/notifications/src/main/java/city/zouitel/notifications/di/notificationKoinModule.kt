@@ -1,19 +1,15 @@
 package city.zouitel.notifications.di
 
-import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
 import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import city.zouitel.notifications.Cons
-import city.zouitel.notifications.reciver.Notification
-import org.koin.androidx.viewmodel.dsl.viewModelOf
-import org.koin.dsl.module
 import city.zouitel.notifications.viewmodel.NotificationVM
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.Module
+import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.dsl.module
 
 val notificationKoinModule = module {
     viewModelOf(::NotificationVM)

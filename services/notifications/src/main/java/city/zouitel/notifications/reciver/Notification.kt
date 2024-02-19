@@ -2,8 +2,6 @@ package city.zouitel.notifications.reciver
 
 import android.Manifest
 import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,7 +10,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import city.zouitel.notifications.Cons.DESCRIPTION
-import city.zouitel.notifications.Cons.IMAGES
+import city.zouitel.notifications.Cons.IMG_DIR
 import city.zouitel.notifications.Cons.JPEG
 import city.zouitel.notifications.Cons.NOTIFICATION_ID
 import city.zouitel.notifications.Cons.TITLE
@@ -20,9 +18,6 @@ import city.zouitel.notifications.Cons.UID
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.File
-import android.graphics.Color
-import city.zouitel.notifications.Cons
-import org.koin.android.ext.koin.androidContext
 
 
 class Notification : NotifyBroadcastReceiver(), KoinComponent {
@@ -35,7 +30,7 @@ class Notification : NotifyBroadcastReceiver(), KoinComponent {
 
         val path = context.filesDir.path
         val uid = intent.getStringExtra(UID)
-        val imagePath = uid?.let { File("$path/$IMAGES", "$it.$JPEG") }
+        val imagePath = uid?.let { File("$path/$IMG_DIR", "$it.$JPEG") }
         val bitImg = BitmapFactory.decodeFile(imagePath?.absolutePath)
 
         if (ActivityCompat.checkSelfPermission(

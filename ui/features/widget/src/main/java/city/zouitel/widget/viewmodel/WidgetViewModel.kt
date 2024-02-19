@@ -40,7 +40,7 @@ class WidgetViewModel: ViewModel(), KoinComponent {
 
     @WorkerThread
     fun imageDecoder(context: Context, uid: String): Bitmap {
-        val path = File(context.filesDir.path + "/" + Cons.IMAGES, "$uid.${Cons.JPEG}")
+        val path = File(context.filesDir.path + "/" + Cons.IMG_DIR, "$uid.${Cons.JPEG}")
         val bitmapOptions = BitmapFactory.Options()
         bitmapOptions.inSampleSize = 4
         return BitmapFactory.decodeFile(path.absolutePath, bitmapOptions)

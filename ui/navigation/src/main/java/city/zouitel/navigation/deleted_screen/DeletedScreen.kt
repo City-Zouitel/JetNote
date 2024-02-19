@@ -26,8 +26,8 @@ import city.zouitel.note.NoteViewModel
 import city.zouitel.note.DataViewModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
-import city.zouitel.systemDesign.Cons.AUDIOS
-import city.zouitel.systemDesign.Cons.IMAGES
+import city.zouitel.systemDesign.Cons.REC_DIR
+import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.SEARCH_IN_DELETED
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
@@ -154,8 +154,8 @@ fun TrashScreen(
                                 linkVM.deleteLink(link)
                             }
                             entity.dataEntity.uid.let { _uid ->
-                                File(ctx.filesDir.path + File.pathSeparator + IMAGES, "$_uid.$JPEG").delete()
-                                File(ctx.filesDir.path + File.pathSeparator + AUDIOS, "$_uid$MP3").delete()
+                                File(ctx.filesDir.path + File.pathSeparator + IMG_DIR, "$_uid.$JPEG").delete()
+                                File(ctx.filesDir.path + File.pathSeparator + REC_DIR, "$_uid$MP3").delete()
                             }
                         }
                     }

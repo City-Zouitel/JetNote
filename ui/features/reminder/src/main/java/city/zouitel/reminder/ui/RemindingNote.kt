@@ -14,13 +14,14 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedIconButton
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableLongState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,8 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import city.zouitel.notifications.viewmodel.NotificationVM
+import city.zouitel.reminder.utils.Cons.SINGLE_DAY
 import city.zouitel.systemDesign.AdaptingRow
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
@@ -40,9 +41,11 @@ import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.SoundEffect
 import org.koin.androidx.compose.koinViewModel
+import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint(
@@ -60,38 +63,43 @@ fun RemindingNote(
     remindingValue: MutableLongState?
 ) {
     val context = LocalContext.current
-    val localDT = LocalDateTime.now()
-    val cal = Calendar.getInstance()
+    val calendar = Calendar.getInstance()
 
     val soundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
-
     val sound = SoundEffect()
+
     val getMatColor = MaterialColors().getMaterialColor
 
     val dateState = rememberDatePickerState(
-        initialSelectedDateMillis = cal.timeInMillis
+        initialSelectedDateMillis = calendar.timeInMillis,
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return utcTimeMillis >= System.currentTimeMillis() - SINGLE_DAY
+            }
+        }
     )
-    val timeState = rememberTimePickerState(
-        initialHour = localDT.hour,
-        initialMinute = localDT.minute
-    )
+
+    val selectedDate = remember { mutableLongStateOf(dateState.selectedDateMillis!!) }
+    val selectedTime = remember { mutableLongStateOf(0L) }
+
     val datePickerDialog = remember { mutableStateOf(false) }
     val timePickerDialog = remember { mutableStateOf(false) }
 
-    val dateTime = remember {
-        mutableStateOf<Long?>(
-            (((localDT.hour * 60 + localDT.minute) * 60 * 1000) + (dateState.selectedDateMillis
-                ?: 0L)) /*- 350_000_0*/
-        )
-    }
+    val dateTime = selectedTime.longValue + selectedDate.longValue
 
     if(datePickerDialog.value) {
-        DateLayout(datePickerState = dateState, datePickerDialog = datePickerDialog)
+        DateLayout(selectedDate = selectedDate, dateState = dateState, dateDialog = datePickerDialog) {
+            sound.makeSound(context, KEY_CLICK, soundEffect.value)
+        }
     }
 
     if (timePickerDialog.value) {
-        TimeLayout(timePickerState = timeState, timePickerDialog = timePickerDialog)
+        TimeLayout(selectedTime = selectedTime, timePickerDialog = timePickerDialog) {
+            sound.makeSound(context, KEY_CLICK, soundEffect.value)
+        }
     }
+
+    val formatter = SimpleDateFormat("dd MM yyyy", Locale.ROOT)
 
     AlertDialog(
         onDismissRequest = {
@@ -125,7 +133,7 @@ fun RemindingNote(
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "Select Date", fontSize = 17.sp)
+                        Text(text = "Today", fontSize = 17.sp)
                     }
                 }
 
@@ -170,7 +178,7 @@ fun RemindingNote(
                         )
                         sound.makeSound(context, KEY_STANDARD, soundEffect.value)
                     }.onSuccess {
-                        remindingValue?.longValue = dateTime.value ?: 0L
+                        remindingValue?.longValue = dateTime
                     }
                     dialogState.value = false
                 }) {
@@ -182,6 +190,7 @@ fun RemindingNote(
                 modifier = Modifier
                     .size(90.dp,35.dp),
                 onClick = {
+                    sound.makeSound(context, KEY_CLICK, soundEffect.value)
                     dialogState.value = false
                 }) {
                 Text(text = "Cansel", fontSize = 17.sp)

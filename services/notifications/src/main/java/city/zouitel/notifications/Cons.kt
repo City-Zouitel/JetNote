@@ -9,6 +9,6 @@ object Cons {
     const val TITLE = "title"
     const val DESCRIPTION = "description"
     const val UID = "uid"
-    const val IMAGES = "images_folder"
+    const val IMG_DIR = "images_directory"
 
 }

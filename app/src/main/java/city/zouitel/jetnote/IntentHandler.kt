@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-interface IntentHandler {
+internal interface IntentHandler {
     fun intentHandler(
         intent: Intent,
         context: Context,

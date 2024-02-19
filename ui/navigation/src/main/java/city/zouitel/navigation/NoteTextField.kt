@@ -60,7 +60,7 @@ fun NoteTextField(
 //                            val img = dataViewModel.decodeBitmapImage(bitImg,uri,ctx)
 
                             // png
-//                            dataViewModel.saveImageLocally(img,"$internalPath/$IMAGES", "$uid.$JPEG")
+//                            dataViewModel.saveImageLocally(img,"$internalPath/$IMG_DIR", "$uid.$JPEG")
 
                             true
                         }

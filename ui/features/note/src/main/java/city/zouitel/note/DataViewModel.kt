@@ -17,8 +17,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import city.zouitel.domain.usecase.DataUseCase
 import city.zouitel.note.mapper.DataMapper
-import city.zouitel.systemDesign.Cons
-import city.zouitel.systemDesign.Cons.IMAGES
+import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.note.model.Data as InData
 import kotlinx.coroutines.Dispatchers
@@ -97,7 +96,7 @@ class DataViewModel(
     }
 
     fun imageDecoder(context: Context, uid:String): ImageBitmap? {
-        val path = File(context.filesDir.path + "/" + IMAGES, "$uid.$JPEG")
+        val path = File(context.filesDir.path + "/" + IMG_DIR, "$uid.$JPEG")
         val bitImg = BitmapFactory.decodeFile(path.absolutePath)
         return bitImg?.asImageBitmap()
     }

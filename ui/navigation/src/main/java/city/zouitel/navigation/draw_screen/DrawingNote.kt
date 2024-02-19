@@ -27,7 +27,7 @@ import city.zouitel.note.DataViewModel
 import city.zouitel.systemDesign.AdaptingRow
 import city.zouitel.systemDesign.Cons.ADD_ROUTE
 import city.zouitel.systemDesign.Cons.EDIT_ROUTE
-import city.zouitel.systemDesign.Cons.IMAGES
+import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON
 import city.zouitel.systemDesign.Icons.DISK_ICON
@@ -66,11 +66,11 @@ fun DrawingNote(
     var eraseState by remember { mutableStateOf(false) }
 
     // TODO: move to viewmodel
-    val path = File(ctx.filesDir.path + "/" + IMAGES, "$uid.$JPEG")
+    val path = File(ctx.filesDir.path + "/" + IMG_DIR, "$uid.$JPEG")
     val bitImg = BitmapFactory.decodeFile(path.absolutePath)
 
     val bitmap = remember { mutableStateOf<Bitmap?>(bitImg) }
-    val imagesPath = ctx.filesDir.path + "/" + IMAGES
+    val imagesPath = ctx.filesDir.path + "/" + IMG_DIR
 
     val colorPickerDialogState = remember { mutableStateOf(false) }
     var currentBrushSize by remember { mutableStateOf(0f) }

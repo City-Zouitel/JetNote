@@ -163,8 +163,11 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(IMAGE_ICON), null) },
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                imageLaunch.launch("image/*")
-                isShow.value = false
+                runCatching {
+                    imageLaunch.launch("image/*")
+                }.onSuccess {
+                    isShow.value = false
+                }
             }
         )
         DropdownMenuItem(

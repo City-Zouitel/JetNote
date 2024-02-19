@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import city.zouitel.recoder.viewmodel.MediaRecordVM
 import city.zouitel.recoder.viewmodel.RecorderVM
-import city.zouitel.systemDesign.Cons.AUDIOS
+import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.MP3
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
@@ -35,7 +35,7 @@ fun RecordingNote(
     val recorderVm = viewModel(RecorderVM::class.java)
 
     val path = File(
-        ctx.filesDir.path + "/$AUDIOS/" + uid + "." + MP3
+        ctx.filesDir.path + "/$REC_DIR/" + uid + "." + MP3
     )
     val record = noteMediaRecordVM.buildMediaRecord(path.path)
 

@@ -32,6 +32,7 @@ object Icons {
     val IMAGE_ICON = R.drawable.picture_24
     val BELL_ICON = R.drawable.bell_24
     val BELL_RING_ICON = R.drawable.bell_ring_18
+    val BELL_RING_ICON_24 = R.drawable.bell_ring_24
     val DISK_ICON = R.drawable.disk_24
     val ADD_ICON = R.drawable.add_24
     val PLUS_ICON = R.drawable.plus_20

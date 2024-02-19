@@ -11,6 +11,7 @@ import city.zouitel.domain.usecase.NoteAndLinkUseCase
 import city.zouitel.links.mapper.LinkMapper
 import city.zouitel.links.mapper.NoteAndLinkMapper
 import city.zouitel.systemDesign.Cons
+import city.zouitel.systemDesign.Cons.LINK_DIR
 import city.zouitel.links.model.Link as InLink
 import city.zouitel.links.model.NoteAndLink as InNoteAndLink
 import kotlinx.coroutines.*
@@ -28,7 +29,7 @@ class LinkWorker(
     private val linkMapper: LinkMapper,
     private val noteAndLinkMapper: NoteAndLinkMapper,
 ): CoroutineWorker(context, workerParameters), KoinComponent {
-    private val linkImgPath = context.filesDir.path + "/" + "links_img"
+    private val linkImgPath = context.filesDir.path + "/" + LINK_DIR
 
     override suspend fun doWork(): Result = withContext(ioDeprecated) {
         return@withContext try {

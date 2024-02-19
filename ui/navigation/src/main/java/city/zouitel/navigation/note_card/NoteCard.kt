@@ -42,9 +42,9 @@ import city.zouitel.navigation.navigation_drawer.Screens.*
 import city.zouitel.note.DataViewModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
-import city.zouitel.systemDesign.Cons.AUDIOS
+import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.EDIT_ROUTE
-import city.zouitel.systemDesign.Cons.IMAGES
+import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.MP3
@@ -151,8 +151,8 @@ private fun Card(
     val observerNoteAndLink =
         remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
-    val mediaPath = ctx.filesDir.path + "/$AUDIOS/" + note.uid + "." + MP3
-    val imagePath = "$internalPath/$IMAGES/${note.uid}.$JPEG"
+    val mediaPath = ctx.filesDir.path + "/$REC_DIR/" + note.uid + "." + MP3
+    val imagePath = "$internalPath/$IMG_DIR/${note.uid}.$JPEG"
 
     var todoListState by remember { mutableStateOf(false) }
     val media = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }

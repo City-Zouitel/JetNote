@@ -18,6 +18,7 @@ import city.zouitel.links.mapper.LinkMapper
 import city.zouitel.links.model.Link as InLink
 import city.zouitel.links.worker.LinkWorker
 import city.zouitel.systemDesign.Cons.JPEG
+import city.zouitel.systemDesign.Cons.LINK_DIR
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -81,7 +82,7 @@ class LinkVM(
     }
 
     fun imageDecoder(context: Context, id:String): ImageBitmap? {
-        val path = File(context.filesDir.path + "/" + "links_img", "$id.$JPEG")
+        val path = File(context.filesDir.path + "/" + LINK_DIR, "$id.$JPEG")
         val bitImg = BitmapFactory.decodeFile(path.absolutePath)
         return bitImg?.asImageBitmap()
     }

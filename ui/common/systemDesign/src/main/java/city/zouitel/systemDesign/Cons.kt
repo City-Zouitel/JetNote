@@ -5,7 +5,7 @@ object Cons {
     const val TAG = "This"
     const val NUL = "null"
 
-    const val APP_VERSION = "4.1.0"
+    const val APP_VERSION = "4.1.2"
 
     const val ID = "Id"
     const val TITLE = "Title"
@@ -22,8 +22,9 @@ object Cons {
     const val AUDIO_DURATION = "AudioDuration"
     const val REMINDING = "Reminding"
 
-    const val IMAGES = "images_folder"
-    const val AUDIOS = "records_folder"
+    const val IMG_DIR = "images-directory"
+    const val REC_DIR = "records-directory"
+    const val LINK_DIR = "links-directory"
 
     const val BASE_URI = "app://city.zouitel.jetnote"
     const val HOME_ROUTE = "Home"
