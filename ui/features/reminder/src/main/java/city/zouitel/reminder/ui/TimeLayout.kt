@@ -48,7 +48,7 @@ fun TimeLayout(
                     timePickerDialog.value = false
                     selectedTime.longValue = (((timeState.hour - 1) * 60 + timeState.minute) * 60 * 1000L)
                 }) {
-                Text(text = "Pick", fontSize = 17.sp)
+                Text(text = "Pick", fontSize = 16.sp)
             }
         },
         dismissButton = {
@@ -59,7 +59,7 @@ fun TimeLayout(
                     onAction.invoke()
                     timePickerDialog.value = false
                 }) {
-                Text(text = "Cansel", fontSize = 17.sp)
+                Text(text = "Cansel", fontSize = 16.sp)
             }
         }
     ) {

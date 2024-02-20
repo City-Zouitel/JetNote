@@ -17,7 +17,7 @@ import city.zouitel.navigation.navigation_drawer.NavigationDrawer
 import city.zouitel.navigation.navigation_drawer.Screens.*
 import city.zouitel.navigation.note_card.NoteCard
 import city.zouitel.navigation.top_action_bar.NoteTopAppBar
-import city.zouitel.navigation.top_action_bar.selection_bars.TrashSelectionTopAppBar
+import city.zouitel.navigation.top_action_bar.selection_bars.RemoveSelectionTopAppBar
 import city.zouitel.navigation.top_action_bar.dialogs.EraseDialog
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkVM
@@ -114,7 +114,7 @@ fun TrashScreen(
             backgroundColor = getMaterialColor(SURFACE),
             topBar = {
                 if (trashSelectionState.value) {
-                    TrashSelectionTopAppBar(
+                    RemoveSelectionTopAppBar(
                         trashSelectionState = trashSelectionState,
                         selectedNotes = selectedNotes
                     )

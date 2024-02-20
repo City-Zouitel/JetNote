@@ -1,8 +1,11 @@
 package city.zouitel.note.ui.bottom_bar
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -33,13 +36,17 @@ import city.zouitel.systemDesign.PopupTip
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.listOfBackgroundColors
 import city.zouitel.systemDesign.listOfTextColors
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @SuppressLint("SimpleDateFormat")
 @OptIn(
     ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class
+    ExperimentalFoundationApi::class,
+    ExperimentalPermissionsApi::class
 )
 @Composable
 fun AddEditBottomBar(
@@ -69,6 +76,23 @@ fun AddEditBottomBar(
     val sound = SoundEffect()
 
     val formatter = SimpleDateFormat("dd-MM-yyyy hh:mm")
+
+    val permissionState = rememberMultiplePermissionsState(
+        permissions =  listOf(
+            Manifest.permission.POST_NOTIFICATIONS,
+        )
+    ) {
+        if (it.getValue(Manifest.permission.POST_NOTIFICATIONS)) {
+            recordDialogState.value = true
+        }
+    }
+    val showRationalDialog = remember { mutableStateOf(false) }
+
+    RationalDialog(
+        showRationalDialog = showRationalDialog,
+        permissionState = permissionState,
+        permissionName = "post notification"
+    )
 
     Column {
         Row {
@@ -123,8 +147,16 @@ fun AddEditBottomBar(
                                     it.showAlignTop()
                                 }
                             ) {
-                                remindingDialogState.value = !remindingDialogState.value
                                 sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                                if (!permissionState.allPermissionsGranted) {
+                                    if (permissionState.shouldShowRationale) {
+                                        showRationalDialog.value = true
+                                    } else {
+                                        permissionState.launchMultiplePermissionRequest()
+                                    }
+                                } else {
+                                    remindingDialogState.value = true
+                                }
                             }
                     )
                 }

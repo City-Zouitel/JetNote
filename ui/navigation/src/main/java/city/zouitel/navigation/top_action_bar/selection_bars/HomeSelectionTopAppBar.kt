@@ -21,7 +21,7 @@ import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.COPY_ICON
 import city.zouitel.systemDesign.Icons.SHARE_ICON
-import city.zouitel.systemDesign.Icons.TRASH_ICON
+import city.zouitel.systemDesign.Icons.REMOVE_ICON
 import city.zouitel.systemDesign.PopupTip
 import city.zouitel.systemDesign.sharNote
 import city.zouitel.tags.model.NoteAndTag
@@ -32,6 +32,7 @@ import city.zouitel.tasks.viewmodel.TaskViewModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.navigation.sound
+import city.zouitel.notifications.viewmodel.NotificationVM
 import org.koin.androidx.compose.koinViewModel
 import java.util.*
 import kotlin.random.Random.Default.nextLong
@@ -45,11 +46,12 @@ fun HomeSelectionTopAppBar(
     taskViewModel: TaskViewModel = koinViewModel(),
     noteAndTodoVM: NoteAndTaskViewModel = koinViewModel(),
     dataStoreVM: DataStoreVM = koinViewModel(),
+    notificationVM: NotificationVM = koinViewModel(),
     homeSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Data>?,
     undo: (Data) -> Unit
 ) {
-    val ctx = LocalContext.current
+    val context = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val observeNotesAndLabels =
@@ -65,10 +67,10 @@ fun HomeSelectionTopAppBar(
     TopAppBar(
         navigationIcon = {
             Row {
-            // delete
-            PopupTip(message = "Move To Trash") {
+            // remove.
+            PopupTip(message = "Remove") {
                 Icon(
-                    painter = painterResource(id = TRASH_ICON),
+                    painter = painterResource(id = REMOVE_ICON),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(7.dp)
@@ -77,7 +79,7 @@ fun HomeSelectionTopAppBar(
                                 it.showAlignBottom()
                             }
                         ) {
-                            sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
                             selectedNotes?.forEach {
                                 dataViewModel.editData(
                                     Data(
@@ -90,6 +92,17 @@ fun HomeSelectionTopAppBar(
                                         trashed = 1
                                     )
                                 )
+
+                                // to cancel the alarm manager reminding.
+                                notificationVM.scheduleNotification(
+                                    context = context,
+                                    dateTime = it.reminding,
+                                    title = it.title,
+                                    message = it.description,
+                                    uid = it.uid,
+                                    onReset = { true }
+                                )
+
                                 undo.invoke(it)
                             }
                             selectedNotes?.clear()
@@ -111,13 +124,13 @@ fun HomeSelectionTopAppBar(
                                     }
                                 ) {
                                     sound.makeSound.invoke(
-                                        ctx,
+                                        context,
                                         KEY_CLICK,
                                         thereIsSoundEffect.value
                                     )
 
                                     sharNote(
-                                        ctx,
+                                        context,
                                         selectedNotes?.single()?.title!!,
                                         selectedNotes.single().description!!
                                     ) {
@@ -138,13 +151,13 @@ fun HomeSelectionTopAppBar(
                                     }
                                 ) {
                                     sound.makeSound.invoke(
-                                        ctx,
+                                        context,
                                         KEY_CLICK,
                                         thereIsSoundEffect.value
                                     )
 
                                     copyNote(
-                                        ctx,
+                                        context,
                                         dataViewModel,
                                         selectedNotes?.single()!!,
                                         newUid

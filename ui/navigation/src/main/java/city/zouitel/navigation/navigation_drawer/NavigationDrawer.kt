@@ -29,7 +29,7 @@ import city.zouitel.systemDesign.Icons.INTERROGATION_ICON
 import city.zouitel.systemDesign.Icons.SETTINGS_ICON
 import city.zouitel.systemDesign.Icons.SHARE_ICON
 import city.zouitel.systemDesign.Icons.TAGS_ICON
-import city.zouitel.systemDesign.Icons.TRASH_ICON
+import city.zouitel.systemDesign.Icons.REMOVE_ICON
 import city.zouitel.systemDesign.sharApp
 import city.zouitel.tags.viewmodel.TagViewModel
 import city.zouitel.tags.model.Tag
@@ -154,7 +154,7 @@ fun NavigationDrawer(
             item {
                 NavigationDrawerItem(
                     label = { Text("Removed") },
-                    icon = { Icon(painterResource(TRASH_ICON), null) },
+                    icon = { Icon(painterResource(REMOVE_ICON), null) },
                     selected = false,
                     onClick = {
                         sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)

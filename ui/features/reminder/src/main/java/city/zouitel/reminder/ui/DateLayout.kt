@@ -38,14 +38,13 @@ internal fun DateLayout(
         },
         confirmButton = {
             OutlinedIconButton(
-                modifier = Modifier
-                    .size(90.dp, 35.dp),
+                modifier = Modifier.size(90.dp, 35.dp),
                 onClick = {
                     onAction.invoke()
                     dateDialog.value = false
                     selectedDate.value = dateState.selectedDateMillis!!
                 }) {
-                Text(text = "Select", fontSize = 17.sp)
+                Text(text = "Select", fontSize = 16.sp)
             }
 
         },
@@ -57,9 +56,8 @@ internal fun DateLayout(
                     onAction.invoke()
                     dateDialog.value = false
                 }) {
-                Text(text = "Cansel", fontSize = 17.sp)
+                Text(text = "Cansel", fontSize = 16.sp)
             }
-
         }
     ) {
 

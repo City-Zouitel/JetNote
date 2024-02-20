@@ -18,6 +18,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
@@ -88,66 +89,12 @@ internal fun Plus(
     val currentColor = remember { mutableStateOf(getColorOfPriority(priorityColorState.value)) }
 
     val showRationalDialog = remember { mutableStateOf(false) }
-    if (showRationalDialog.value) {
-        AlertDialog(
-            onDismissRequest = {
-                showRationalDialog.value = false
-            },
-            title = {
-                Text(
-                    text = "Permission",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-            },
-            text = {
-                Text(
-                    if (permissionState.revokedPermissions.size == 1) {
-                        "You need audio record and wright external storage permission to contourne"
-                    } else if (permissionState.revokedPermissions.first().permission == permission.RECORD_AUDIO) {
-                        "You need audio record permission. Please grant the permission."
-                    } else {
-                        throw Exception("...")
-                    },
-                    fontSize = 16.sp
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showRationalDialog.value = false
-                        val intent = Intent(
-                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.fromParts("package", context.packageName, null)
-                        )
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        ContextCompat.startActivity(context, intent, null)
-                    }) {
-                    Text(
-                        text = "Ok",
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.surfaceVariant
-                        )
-                    )
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        showRationalDialog.value = false
-                    }) {
-                    Text(
-                        text = "Cancel",
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.surfaceVariant
-                        )
-                    )
-                }
-            },
-        )
-    }
+
+    RationalDialog(
+        showRationalDialog = showRationalDialog,
+        permissionState = permissionState,
+        permissionName = "audio record"
+    )
 
     DropdownMenu(
         expanded = isShow.value,

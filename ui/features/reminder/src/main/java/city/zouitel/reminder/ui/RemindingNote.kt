@@ -37,6 +37,7 @@ import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.CALENDAR_ICON
 import city.zouitel.systemDesign.Icons.CLOCK_ICON
+import city.zouitel.systemDesign.Icons.RESET_ICON
 import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.SoundEffect
@@ -85,7 +86,7 @@ fun RemindingNote(
     val datePickerDialog = remember { mutableStateOf(false) }
     val timePickerDialog = remember { mutableStateOf(false) }
 
-    val dateTime = selectedTime.longValue + selectedDate.longValue
+    var dateTime = selectedTime.longValue + selectedDate.longValue
 
     if(datePickerDialog.value) {
         DateLayout(selectedDate = selectedDate, dateState = dateState, dateDialog = datePickerDialog) {
@@ -154,20 +155,45 @@ fun RemindingNote(
                             .padding(start = 20.dp)
                     ) {
                         Icon(
-                            painterResource(CLOCK_ICON),null,
+                            painterResource(CLOCK_ICON), null,
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(text = "Pick Time", fontSize = 17.sp)
                     }
                 }
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    OutlinedIconButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        onClick = {
+                            sound.makeSound(context, KEY_CLICK, soundEffect.value)
+                            dateTime = 0L
+                        }) {
+                        Row(
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 20.dp)
+                        ) {
+                            Icon(
+                                painterResource(RESET_ICON),null,
+                                modifier = Modifier.size(28.dp)
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(text = "Reset", fontSize = 17.sp)
+                        }
+                }
             }
-        },
+               },
         confirmButton = {
             OutlinedIconButton(
                 modifier = Modifier
                     .size(90.dp,35.dp),
                 onClick = {
+                    sound.makeSound(context, KEY_STANDARD, soundEffect.value)
                     runCatching {
                         notificationVM.scheduleNotification(
                             context = context,
@@ -175,14 +201,18 @@ fun RemindingNote(
                             title = title,
                             message = message,
                             uid = uid
-                        )
-                        sound.makeSound(context, KEY_STANDARD, soundEffect.value)
+                        ) {
+                            /**
+                             * if true the work manager should be canceled.
+                             */
+                            dateTime == 0L
+                        }
                     }.onSuccess {
                         remindingValue?.longValue = dateTime
                     }
                     dialogState.value = false
                 }) {
-                Text(text = "Save", fontSize = 17.sp)
+                Text(text = "Save", fontSize = 16.sp)
             }
         },
         dismissButton = {
@@ -193,7 +223,7 @@ fun RemindingNote(
                     sound.makeSound(context, KEY_CLICK, soundEffect.value)
                     dialogState.value = false
                 }) {
-                Text(text = "Cansel", fontSize = 17.sp)
+                Text(text = "Cansel", fontSize = 16.sp)
             }
         },
         containerColor = getMatColor(SURFACE)

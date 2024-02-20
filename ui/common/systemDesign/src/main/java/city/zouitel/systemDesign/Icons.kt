@@ -1,7 +1,5 @@
 package city.zouitel.systemDesign
 
-import city.zouitel.systemDesign.R
-
 
 object Icons {
 
@@ -44,7 +42,7 @@ object Icons {
     val SORT_ALPHA_DOWN_ICON = R.drawable.sort_alpha_down_24
     val SORT_AMOUNT_DOWN_ICON = R.drawable.sort_amount_down_alt_24
     val SORT_AMOUNT_UP_ICON = R.drawable.sort_amount_up_alt_24
-    val TRASH_ICON = R.drawable.trash_24
+    val REMOVE_ICON = R.drawable.trash_24
     val RESET_ICON = R.drawable.reset_24
     val MENU_BURGER_ICON = R.drawable.menu_burger_24
     val HOME_ICON = R.drawable.home_24

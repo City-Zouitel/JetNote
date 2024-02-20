@@ -17,7 +17,8 @@ class NotificationVM(): ViewModel() {
         dateTime: Long,
         title: String?,
         message: String?,
-        uid:String?
+        uid: String?,
+        onReset: () -> Boolean
     ) {
         val intent = Intent(context.applicationContext, Notification::class.java)
         intent.putExtra(TITLE, title)
@@ -30,6 +31,7 @@ class NotificationVM(): ViewModel() {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         dateTime.let {
@@ -39,5 +41,7 @@ class NotificationVM(): ViewModel() {
                 pendingInt
             )
         }
+
+        if (onReset.invoke()) alarmManager.cancel(pendingInt)
     }
 }

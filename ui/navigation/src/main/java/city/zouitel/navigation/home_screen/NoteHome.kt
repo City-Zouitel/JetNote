@@ -52,6 +52,7 @@ import city.zouitel.note.DataViewModel
 import city.zouitel.note.NoteViewModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
+import city.zouitel.notifications.viewmodel.NotificationVM
 import city.zouitel.systemDesign.Cons.ADD_ROUTE
 import city.zouitel.systemDesign.Cons.BY_NAME
 import city.zouitel.systemDesign.Cons.HOME_ROUTE
@@ -68,9 +69,6 @@ import city.zouitel.systemDesign.Icons.PLUS_ICON
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_VARIANT
 import city.zouitel.tags.model.Tag
-import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 import java.util.UUID
 
@@ -91,10 +89,11 @@ fun NoteHome(
     dataViewModel: DataViewModel = koinViewModel(),
     entityVM: NoteViewModel = koinViewModel(),
     dataStoreVM: DataStoreVM = koinViewModel(),
+    notificationVM: NotificationVM = koinViewModel(),
     navController: NavController,
 //    navigator: DestinationsNavigator
     ) {
-    val ctx = LocalContext.current
+    val context = LocalContext.current
     //
     val searchTitleState = remember { mutableStateOf("") }
     val searchTagEntityState = remember { mutableStateOf(Tag()) }
@@ -147,10 +146,10 @@ fun NoteHome(
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isProcessing,
         onRefresh = {
-//            navController.apply {
-//                navigate(HOME_ROUTE)
-//                popBackStack()
-//            }
+            navController.apply {
+                navigate(HOME_ROUTE)
+                popBackStack()
+            }
         }
     )
 
@@ -214,7 +213,7 @@ fun NoteHome(
                         )
                     },
                     onClick = {
-                        sound.makeSound.invoke(ctx, KEY_STANDARD, thereIsSoundEffect.value)
+                        sound.makeSound.invoke(context, KEY_STANDARD, thereIsSoundEffect.value)
 
                         with(navController) {
                             arrayOf(ADD_ROUTE, uid, NUL)
@@ -243,8 +242,7 @@ fun NoteHome(
                 if (currentLayout.value == LIST) {
                     LazyColumn(
                         state = listLayoutState,
-                        modifier = Modifier
-                            .fillMaxSize(),
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         items(
                             items = filteredObserverLocalNotes,
@@ -302,6 +300,17 @@ fun NoteHome(
                                         trashed = 1
                                     )
                                 )
+
+                                // to cancel the alarm manager reminding.
+                                notificationVM.scheduleNotification(
+                                    context = context,
+                                    dateTime = it.dataEntity.reminding,
+                                    title = it.dataEntity.title,
+                                    message = it.dataEntity.description,
+                                    uid = it.dataEntity.uid,
+                                    onReset = { true }
+                                )
+
                                 undo.invoke(entity.dataEntity)
                             }
                         }

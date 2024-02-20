@@ -15,7 +15,7 @@ class AndroidApplication: Plugin<Project> {
                 apply("org.jetbrains.kotlin.android")
             }
             extensions.configure<ApplicationExtension> {
-                defaultConfig.targetSdk = libs.findVersion("targetSdkVersion").get().requiredVersion.toInt()
+                defaultConfig.targetSdk = libs.findVersion("targetsdk-v").get().requiredVersion.toInt()
 
                 configureAndroidApplication(this)
                 configureAndroidCompose(this)

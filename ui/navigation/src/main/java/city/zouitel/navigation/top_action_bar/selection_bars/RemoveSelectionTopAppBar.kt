@@ -25,17 +25,18 @@ import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.PopupTip
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
-fun TrashSelectionTopAppBar(
+fun RemoveSelectionTopAppBar(
     dataStoreVM: DataStoreVM = koinViewModel(),
     dataViewModel: DataViewModel = koinViewModel(),
     trashSelectionState: MutableState<Boolean>?,
-    selectedNotes: SnapshotStateList<Data>?,
-
-    ) {
-    val ctx = LocalContext.current
-
+    selectedNotes: SnapshotStateList<Data>?
+) {
+    val context = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     TopAppBar(
@@ -43,7 +44,7 @@ fun TrashSelectionTopAppBar(
             // wipe notes.
             PopupTip(message = "Wipe Notes") {
                 Icon(
-                    painter = painterResource(id = Icons.TRASH_ICON),
+                    painter = painterResource(id = Icons.REMOVE_ICON),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(7.dp)
@@ -52,7 +53,7 @@ fun TrashSelectionTopAppBar(
                                 it.showAlignBottom()
                             }
                         ) {
-                            sound.makeSound.invoke(ctx, Cons.KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound.invoke(context, Cons.KEY_CLICK, thereIsSoundEffect.value)
                             selectedNotes?.forEach {
                                 dataViewModel.deleteData(it)
                             }

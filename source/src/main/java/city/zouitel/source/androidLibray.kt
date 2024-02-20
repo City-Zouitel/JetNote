@@ -11,18 +11,18 @@ fun Project.configureAndroidLibrary(
     common: CommonExtension<*, *, *, *, *>,
 ) {
     common.apply {
-        compileSdk = libs.findVersion("compileSdkVersion").get().requiredVersion.toInt()
+        compileSdk = libs.findVersion("compilesdk-v").get().requiredVersion.toInt()
 
         defaultConfig {
-            minSdk = libs.findVersion("minSdkVersion").get().requiredVersion.toInt()
+            minSdk = libs.findVersion("minsdk-v").get().requiredVersion.toInt()
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
-//        packaging {
-//            resources {
-//                excludes += "/META-INF/{AL2.0,LGPL2.1}"
-//            }
-//        }
+        packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
+        }
 
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17
