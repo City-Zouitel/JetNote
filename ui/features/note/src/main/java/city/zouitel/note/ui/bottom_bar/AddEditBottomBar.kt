@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -41,7 +42,6 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @SuppressLint("SimpleDateFormat")
 @OptIn(
     ExperimentalFoundationApi::class,
@@ -65,7 +65,6 @@ fun AddEditBottomBar(
     isDescriptionFieldSelected: MutableState<Boolean>,
     remindingValue: MutableLongState,
 ) {
-
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
 
@@ -77,12 +76,20 @@ fun AddEditBottomBar(
 
     val formatter = SimpleDateFormat("dd-MM-yyyy hh:mm")
 
-    val permissionState = rememberMultiplePermissionsState(
-        permissions =  listOf(
-            Manifest.permission.POST_NOTIFICATIONS,
-        )
-    ) {
-        if (it.getValue(Manifest.permission.POST_NOTIFICATIONS)) {
+    val permissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberMultiplePermissionsState(
+            permissions = listOf(
+                Manifest.permission.POST_NOTIFICATIONS,
+            )
+        ) {
+            if (it.getValue(Manifest.permission.POST_NOTIFICATIONS)) {
+                recordDialogState.value = true
+            }
+        }
+    } else {
+        rememberMultiplePermissionsState(
+            permissions = listOf()
+        ) {
             recordDialogState.value = true
         }
     }
