@@ -36,9 +36,11 @@ include(
     ":ui:features:tags",
     ":ui:features:tasks",
     ":ui:features:widget",
-    ":ui:navigation",
-    ":ui:common:systemDesign",
-    ":ui:common:logic"
+    ":ui:navigation"
+)
+include(
+    ":common:systemDesign",
+    ":common:logic"
 )
 include(
     ":services:notifications",

@@ -15,7 +15,7 @@ ksp {
 
 dependencies {
     //Modules.
-    implementation(projects.ui.common.systemDesign)
+    implementation(projects.common.systemDesign)
     implementation(projects.domain)
     implementation(projects.core.datastore)
     implementation(projects.ui.features.reminder)
@@ -36,7 +36,6 @@ dependencies {
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.accompanist.navigation.animation)
-    implementation(libs.accompanist.swiperefresh)
     implementation(libs.accompanist.flowlayout)
 
     //Destinations.

@@ -1,7 +1,9 @@
 package city.zouitel.audios.di
 
-import city.zouitel.audios.AudioManager
-import city.zouitel.audios.AudioRepository
+import city.zouitel.audios.media.LocalMediaDataSource
+import city.zouitel.audios.media.AudioListViewModel
+import city.zouitel.audios.media.AudioManager
+import city.zouitel.audios.media.AudioRepository
 import com.google.android.exoplayer2.ExoPlayer
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -11,6 +13,7 @@ import org.koin.core.module.dsl.singleOf
 import city.zouitel.domain.exoplayer.*
 import kotlinx.coroutines.Dispatchers
 import linc.com.amplituda.Amplituda
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.bind
 
 val exoPlayerKoinModule = module {
@@ -23,9 +26,12 @@ val exoPlayerKoinModule = module {
     }
 
     singleOf(::ExoPlayerImpl) bind ExoRepo::class
+
     single { Amplituda(androidContext()) }
     single { AudioManager(get(), get()) }
-    single { AudioRepository(get(), get()) }
+    single { AudioRepository(get(), get(), get()) }
+    single { LocalMediaDataSource(androidContext(), get()) }
 
-    viewModelOf(::MediaPlayerViewModel)
+    viewModel { MediaPlayerViewModel(get(), get()) }
+    viewModel { AudioListViewModel(get(), get()) }
 }

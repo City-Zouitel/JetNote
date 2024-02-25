@@ -56,8 +56,10 @@ fun NormalMediaPlayer(
     val scope = rememberCoroutineScope()
     val swipeState = rememberSwipeableActionsState()
 
+    val tempMedia = "/storage/emulated/0/Download/Vaults One Last Night.mp3"
+
     scope.launch {
-        exoViewModule.loadAudioAmplitudes(mediaFile)
+        exoViewModule.loadAudioAmplitudes(tempMedia)
 
         while (isPlaying.value && processState <= 1f) {
             delay(exoViewModule.getMediaDuration(context, mediaFile) / 100)
@@ -73,7 +75,7 @@ fun NormalMediaPlayer(
 
     val amplitudes by remember { mutableStateOf(exoViewModule.audioAmplitudes) }
 
-    if (isPlaying.value) exoViewModule.playMedia(mediaFile) else exoViewModule.pauseMedia(mediaFile)
+    if (isPlaying.value) exoViewModule.playMedia(tempMedia) else exoViewModule.pauseMedia(tempMedia)
 
     val swipeAction = SwipeAction(
         onSwipe = {

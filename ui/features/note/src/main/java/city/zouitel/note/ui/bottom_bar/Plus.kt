@@ -2,9 +2,7 @@ package city.zouitel.note.ui.bottom_bar
 
 import android.Manifest.permission
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.net.Uri
-import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.Canvas
@@ -13,16 +11,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
-import androidx.compose.runtime.internal.illegalDecoyCallException
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -30,27 +23,27 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import city.zouitel.audios.media.AudioListViewModel
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.Cons.DRAW_ROUTE
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
+import city.zouitel.systemDesign.Cons.MP3
 import city.zouitel.systemDesign.Cons.TAG_ROUTE
 import city.zouitel.systemDesign.Cons.TASK_ROUTE
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.CAMERA_ICON
+import city.zouitel.systemDesign.Icons.CASSETTE_ICON
 import city.zouitel.systemDesign.Icons.GESTURE_ICON
 import city.zouitel.systemDesign.Icons.IMAGE_ICON
-import city.zouitel.systemDesign.Icons.INBOX
 import city.zouitel.systemDesign.Icons.LIST_CHECK_ICON
 import city.zouitel.systemDesign.Icons.MIC_ICON
 import city.zouitel.systemDesign.Icons.TAGS_ICON
+import city.zouitel.systemDesign.RationalDialog
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.getColorOfPriority
 import city.zouitel.systemDesign.getPriorityOfColor
@@ -58,12 +51,14 @@ import city.zouitel.systemDesign.listOfPriorityColors
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.koin.androidx.compose.koinViewModel
+import java.io.File
 
 @OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("SuspiciousIndentation")
 @Composable
 internal fun Plus(
     dataStoreVM: DataStoreVM = koinViewModel(),
+    audioListViewModel: AudioListViewModel = koinViewModel(),
     isShow: MutableState<Boolean>,
     note: Data,
     navController: NavController,
@@ -86,6 +81,7 @@ internal fun Plus(
             recordDialogState.value = true
         }
     }
+
     val currentColor = remember { mutableStateOf(getColorOfPriority(priorityColorState.value)) }
 
     val showRationalDialog = remember { mutableStateOf(false) }
@@ -119,13 +115,14 @@ internal fun Plus(
         )
         DropdownMenuItem(
             text = { Text(text = "Add Audio", fontSize = 18.sp) },
-            leadingIcon = {  },
+            leadingIcon = { Icon(painterResource(CASSETTE_ICON), null) },
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                // TODO: ...
+                audioListViewModel.loadNotePath = context.filesDir.path + File.pathSeparator +
+                        note.uid + "." + MP3
+                navController.navigate("audio-list-screen")
                 isShow.value = false
-            },
-            enabled = false
+            }
         )
         DropdownMenuItem(
             text = { Text(text = "Take Photo", fontSize = 18.sp) },

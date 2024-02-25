@@ -12,10 +12,13 @@ dependencies {
     //Modules.
     implementation(projects.core.datastore)
     implementation(projects.domain)
-    implementation(projects.ui.common.systemDesign)
+    implementation(projects.common.systemDesign)
 
     //AndroidX.
     implementation(libs.constraintlayout)
+
+    //Accompanist.
+    implementation(libs.accompanist.permissions)
 
     //Swipe.
     implementation(libs.swipe)

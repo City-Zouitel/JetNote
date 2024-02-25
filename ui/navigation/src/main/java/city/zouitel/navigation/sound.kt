@@ -7,8 +7,6 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.SoundEffect
 

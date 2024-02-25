@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -34,6 +33,7 @@ import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_VARIANT
 import city.zouitel.systemDesign.PopupTip
+import city.zouitel.systemDesign.RationalDialog
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.listOfBackgroundColors
 import city.zouitel.systemDesign.listOfTextColors
@@ -82,9 +82,7 @@ fun AddEditBottomBar(
                 Manifest.permission.POST_NOTIFICATIONS,
             )
         ) {
-            if (it.getValue(Manifest.permission.POST_NOTIFICATIONS)) {
-                recordDialogState.value = true
-            }
+            Toast.makeText(context, "Notification permission granted.", Toast.LENGTH_SHORT).show()
         }
     } else {
         rememberMultiplePermissionsState(

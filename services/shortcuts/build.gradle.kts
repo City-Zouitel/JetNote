@@ -10,7 +10,7 @@ android {
 
 dependencies {
     //Modules.
-    implementation(projects.ui.common.systemDesign)
-    implementation(projects.ui.common.logic)
+    implementation(projects.common.systemDesign)
+    implementation(projects.common.logic)
     implementation(projects.ui.features.quickNote)
 }

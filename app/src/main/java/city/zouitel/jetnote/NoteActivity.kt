@@ -11,21 +11,16 @@ import androidx.navigation.compose.rememberNavController
 import city.zouitel.links.ui.LinkVM
 import city.zouitel.navigation.Graph
 import city.zouitel.shortcuts.checkNoteActivityShortcut
-import city.zouitel.systemDesign.Cons.REC_DIR
-import city.zouitel.systemDesign.Cons.IMG_DIR
-import city.zouitel.systemDesign.Cons.LINK_DIR
 import city.zouitel.widget.WidgetReceiver
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.io.File
 import java.util.*
 
 class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
     private val linkViewModel: LinkVM by inject()
 
-    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,7 +35,6 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
             MainTheme {
                 Graph(navHostController)
-//                DestinationsNavHost(navGraph = NavGraphs.root)
             }
         }
     }
@@ -58,11 +52,6 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
     override fun onStart() {
         super.onStart()
-        // TODO: move it to init module as work manager.
-        File(this.filesDir.path + "/" + IMG_DIR).mkdirs()
-        File(this.filesDir.path + "/" + REC_DIR).mkdirs()
-        File(this.filesDir.path + "/" + LINK_DIR).mkdirs()
-
 //        mapOf(
 //            "Coffee" to "Prepare hot coffee for my self.",
 //            "Certification" to "Call instructor for complete details.",

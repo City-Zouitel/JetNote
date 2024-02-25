@@ -42,8 +42,8 @@ dependencies {
     implementation(projects.init)
     implementation(projects.services.notifications)
     implementation(projects.services.shortcuts)
-    implementation(projects.ui.common.systemDesign)
-    implementation(projects.ui.common.logic)
+    implementation(projects.common.systemDesign)
+    implementation(projects.common.logic)
     api(projects.ui.navigation)
 
     //Lifecycle.

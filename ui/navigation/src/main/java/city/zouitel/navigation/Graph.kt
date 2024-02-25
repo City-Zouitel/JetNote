@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import city.zouitel.audios.media.AudioListRoute
 import city.zouitel.navigation.about_screen.AppAbout
 import city.zouitel.navigation.draw_screen.DrawingNote
 import city.zouitel.navigation.home_screen.NoteHome
@@ -183,6 +184,9 @@ fun Graph(
         }
         composable(ABOUT_ROUTE) {
             AppAbout(navC = navHostController)
+        }
+        composable("audio-list-screen") {
+            AudioListRoute()
         }
     }
 }

@@ -90,5 +90,4 @@ val databaseKoinModule = module {
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
     }
-
 }

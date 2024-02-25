@@ -1,9 +1,13 @@
 package city.zouitel.jetnote
 
 import android.app.Application
+import androidx.startup.AppInitializer
 import city.zouitel.audios.di.exoPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
+import city.zouitel.init.ComposeInitializer
+import city.zouitel.init.FilesInitializer
+import city.zouitel.init.SQLCipherDBInitializer
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.note.di.noteKoinModule
 import city.zouitel.notifications.di.notificationKoinModule
@@ -66,12 +70,17 @@ class NoteApplication: Application(), KoinComponent {
         Beetle.init(this, "City-Zouitel", "JetNote")
 
         /**
-         * Initialize WorkManager.
+         * Initialize SQL Cipher (For Security Database).
          */
-//        AppInitializer.getInstance(this).initializeComponent(WorkManagerInitializer::class.java)
+        AppInitializer.getInstance(this).initializeComponent(SQLCipherDBInitializer::class.java)
         /**
          * Initialize ComposeView.
          */
-//        AppInitializer.getInstance(this).initializeComponent(ComposeInitializer::class.java)
+        AppInitializer.getInstance(this).initializeComponent(ComposeInitializer::class.java)
+
+        /**
+         * Initialize Note Files.
+         */
+        AppInitializer.getInstance(this).initializeComponent(FilesInitializer::class.java)
     }
 }

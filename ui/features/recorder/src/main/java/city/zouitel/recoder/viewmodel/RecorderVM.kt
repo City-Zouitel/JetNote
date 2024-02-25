@@ -4,8 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import city.zouitel.systemDesign.Cons
-import java.io.File
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 import kotlin.time.Duration

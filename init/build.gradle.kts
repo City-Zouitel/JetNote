@@ -9,6 +9,9 @@ android {
 }
 
 dependencies {
+    //Modules.
+    implementation(projects.common.systemDesign)
+
     //Koin.
     implementation(libs.koin.worker)
 

@@ -6,7 +6,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 
-
 internal fun hideSystemUI(window: Window) {
 
     WindowCompat.setDecorFitsSystemWindows(window, false)
