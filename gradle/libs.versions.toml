@@ -75,7 +75,7 @@ url-preview = "1.0.1"
 beetle = "2.0.1"
 sqlcipher = "4.5.4"
 waveslider = "0.0.3"
-audiowaveform = "1.1.1"
+audiowaveform = "1.1.2"
 amplituda = "2.2.2"
 destinations = "1.10.0"
 
