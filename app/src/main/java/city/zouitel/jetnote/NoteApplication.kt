@@ -5,8 +5,6 @@ import androidx.startup.AppInitializer
 import city.zouitel.audios.di.exoPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
-import city.zouitel.init.FilesInitializer
-import city.zouitel.init.SQLCipherDBInitializer
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.note.di.noteKoinModule
 import city.zouitel.notifications.di.notificationKoinModule
@@ -71,7 +69,7 @@ class NoteApplication: Application(), KoinComponent {
         /**
          * Initialize SQL Cipher (For Security Database).
          */
-        AppInitializer.getInstance(this).initializeComponent(SQLCipherDBInitializer::class.java)
+//        AppInitializer.getInstance(this).initializeComponent(SQLCipherDBInitializer::class.java)
         /**
          * Initialize ComposeView.
          */
@@ -80,6 +78,6 @@ class NoteApplication: Application(), KoinComponent {
         /**
          * Initialize Note Files.
          */
-        AppInitializer.getInstance(this).initializeComponent(FilesInitializer::class.java)
+//        AppInitializer.getInstance(this).initializeComponent(FilesInitializer::class.java)
     }
 }
