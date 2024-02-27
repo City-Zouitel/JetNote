@@ -14,6 +14,7 @@ internal fun Project.configureAndroidApplication(
                 useSupportLibrary = true
             }
         }
+
         lint {
             abortOnError = false
         }
@@ -22,7 +23,6 @@ internal fun Project.configureAndroidApplication(
          * Configure the build for multiple APKs
          */
         splits {
-
             /**
              * Configure multiple APKs for screen densities.
              */

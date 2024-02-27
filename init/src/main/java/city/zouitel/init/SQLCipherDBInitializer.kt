@@ -8,7 +8,7 @@ import net.sqlcipher.database.SQLiteDatabase
 class SQLCipherDBInitializer: Initializer<Unit?> {
 
     override fun create(context: Context) {
-//        SQLiteDatabase.loadLibs(context)
+        SQLiteDatabase.loadLibs(context)
     }
 
     override fun dependencies(): MutableList<Class<ProcessLifecycleInitializer>> {
