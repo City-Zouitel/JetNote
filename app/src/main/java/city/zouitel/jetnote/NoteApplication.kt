@@ -5,7 +5,6 @@ import androidx.startup.AppInitializer
 import city.zouitel.audios.di.exoPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
-import city.zouitel.init.ComposeInitializer
 import city.zouitel.init.FilesInitializer
 import city.zouitel.init.SQLCipherDBInitializer
 import city.zouitel.links.di.linksKoinModule
@@ -76,7 +75,7 @@ class NoteApplication: Application(), KoinComponent {
         /**
          * Initialize ComposeView.
          */
-        AppInitializer.getInstance(this).initializeComponent(ComposeInitializer::class.java)
+//        AppInitializer.getInstance(this).initializeComponent(ComposeInitializer::class.java)
 
         /**
          * Initialize Note Files.

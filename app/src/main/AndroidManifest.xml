@@ -105,10 +105,10 @@
                 android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />
-             <meta-data
-                 android:name="city.zouitel.init.ComposeInitializer"
-                 android:value="androidx.startup"
-                 tools:node="remove"/>
+<!--             <meta-data-->
+<!--                 android:name="city.zouitel.init.ComposeInitializer"-->
+<!--                 android:value="androidx.startup"-->
+<!--                 tools:node="remove"/>-->
              <meta-data
                  android:name="city.zouitel.init.FilesInitializer"
                  android:value="androidx.startup"

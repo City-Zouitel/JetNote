@@ -122,7 +122,8 @@ internal fun Plus(
                         note.uid + "." + MP3
                 navController.navigate("audio-list-screen")
                 isShow.value = false
-            }
+            },
+            enabled = false
         )
         DropdownMenuItem(
             text = { Text(text = "Take Photo", fontSize = 18.sp) },
