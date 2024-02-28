@@ -9,6 +9,12 @@
             <meta-data
                 android:name="city.zouitel.init.ComposeInitializer"
                 android:value="android.startup"/>
+            <meta-data
+                android:name="city.zouitel.init.DirectoriesInitializer"
+                android:value="android.startup"/>
+            <meta-data
+                android:name="city.zouitel.init.SQLCipherDBInitializer"
+                android:value="android.startup"/>
         </provider>
     </application>
 </manifest>

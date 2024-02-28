@@ -110,7 +110,7 @@
 <!--                 android:value="androidx.startup"-->
 <!--                 tools:node="remove"/>-->
 <!--             <meta-data-->
-<!--                 android:name="city.zouitel.init.FilesInitializer"-->
+<!--                 android:name="city.zouitel.init.DirectoriesInitializeralizer"-->
 <!--                 android:value="androidx.startup"-->
 <!--                 tools:node="remove"/>-->
 <!--             <meta-data-->
