@@ -77,7 +77,7 @@ sqlcipher = "4.5.4"
 waveslider = "0.0.3"
 audiowaveform = "1.1.2"
 amplituda = "2.2.2"
-destinations = "1.10.0"
+destinations = "1.10.1"
 android-startup = "1.1.0"
 voyager = "1.0.0"
 
