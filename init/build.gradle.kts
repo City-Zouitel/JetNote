@@ -17,6 +17,7 @@ dependencies {
 
     //App Startup.
     implementation(libs.startup)
+    implementation(libs.android.startup)
 
     //Lifecycle.
     implementation(libs.lifecycle.process)

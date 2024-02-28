@@ -46,6 +46,9 @@ dependencies {
     implementation(projects.common.logic)
     api(projects.ui.navigation)
 
+    //Android Startup.
+    implementation(libs.android.startup)
+
     //Lifecycle.
     implementation(libs.lifecycle.compose.viewmodel)
     implementation(libs.lifecycle.runtime.ktx)

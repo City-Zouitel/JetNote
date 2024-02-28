@@ -5,6 +5,7 @@ import androidx.startup.AppInitializer
 import city.zouitel.audios.di.exoPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
+import city.zouitel.init.ComposeInitializer
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.note.di.noteKoinModule
 import city.zouitel.notifications.di.notificationKoinModule
@@ -17,6 +18,7 @@ import city.zouitel.tags.di.tagsKoinModule
 import city.zouitel.tasks.di.tasksKoinModule
 import city.zouitel.widget.di.widgetKoinModule
 import com.karacca.beetle.Beetle
+import com.rousetime.android_startup.StartupManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
@@ -28,7 +30,6 @@ class NoteApplication: Application(), KoinComponent {
 
     override fun onCreate() {
         super.onCreate()
-
         startKoin {
             androidLogger(Level.INFO)
             androidContext(this@NoteApplication)
@@ -50,7 +51,6 @@ class NoteApplication: Application(), KoinComponent {
                 datastoreVMKoinModule
             )
         }
-
 
         /**
          * Global Exception Handler.
@@ -79,5 +79,11 @@ class NoteApplication: Application(), KoinComponent {
          * Initialize Note Files.
          */
 //        AppInitializer.getInstance(this).initializeComponent(FilesInitializer::class.java)
+
+        StartupManager.Builder()
+            .addStartup(ComposeInitializer())
+            .build(this)
+            .start()
+            .await()
     }
 }
