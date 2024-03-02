@@ -35,4 +35,11 @@ gradlePlugin {
             implementationClass = "AndroidApplication"
         }
     }
+
+    plugins {
+        register("android-navigation") {
+            id = "city.zouitel.android.navigation"
+            implementationClass = "AndroidNavigation"
+        }
+    }
 }

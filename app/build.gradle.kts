@@ -10,24 +10,21 @@ android {
     namespace = "city.zouitel.jetnote"
     defaultConfig {
         applicationId = "city.zouitel.jetnote"
-        versionCode = 654//libs.versions.code.v.get().toInt()
-        versionName = "654"//libs.versions.name.v.get()
+        versionCode = libs.versions.code.v.get().toInt()
+        versionName = libs.versions.name.v.get()
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
-}
-
-ksp {
-    arg("compose-destinations.generateNavGraphs", "true")
 }
 
 //enigma.enabled = true
@@ -46,9 +43,6 @@ dependencies {
     implementation(projects.common.logic)
     api(projects.ui.navigation)
 
-    //Android Startup.
-    implementation(libs.android.startup)
-
     //Lifecycle.
     implementation(libs.lifecycle.compose.viewmodel)
     implementation(libs.lifecycle.runtime.ktx)
@@ -59,10 +53,6 @@ dependencies {
 
     //Accompanist.
     implementation(libs.accompanist.systemuicontroller)
-
-    //Destinations.
-    implementation(libs.destinations.core)
-    ksp(libs.destinations.ksp)
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)

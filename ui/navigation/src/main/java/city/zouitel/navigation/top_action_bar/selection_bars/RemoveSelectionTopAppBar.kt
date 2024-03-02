@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.navigation.sound
-import city.zouitel.note.DataViewModel
+import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.AdaptingRow
 import city.zouitel.systemDesign.Cons
@@ -32,7 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun RemoveSelectionTopAppBar(
     dataStoreVM: DataStoreVM = koinViewModel(),
-    dataViewModel: DataViewModel = koinViewModel(),
+    dataScreenModel: DataScreenModel,
     trashSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Data>?
 ) {
@@ -55,7 +55,7 @@ fun RemoveSelectionTopAppBar(
                         ) {
                             sound.makeSound.invoke(context, Cons.KEY_CLICK, thereIsSoundEffect.value)
                             selectedNotes?.forEach {
-                                dataViewModel.deleteData(it)
+                                dataScreenModel.deleteData(it)
                             }
                             selectedNotes?.clear()
                             trashSelectionState?.value = false

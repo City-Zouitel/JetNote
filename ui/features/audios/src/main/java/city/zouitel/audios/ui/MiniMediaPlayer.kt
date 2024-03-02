@@ -32,7 +32,7 @@ fun MiniMediaPlayer(
     localMediaUid: String?
 ) {
     val context = LocalContext.current
-    val mediaFile = context.filesDir.path + "/${Cons.REC_DIR}/" + localMediaUid + "." + Cons.MP3
+    val mediaFile = exoViewModule.rec_path.value + localMediaUid + "." + Cons.MP3
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
     val currentLayout by datastoreVM.getLayout.collectAsState()

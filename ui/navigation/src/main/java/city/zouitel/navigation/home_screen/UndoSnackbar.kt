@@ -3,7 +3,7 @@ package city.zouitel.navigation.home_screen
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.State
-import city.zouitel.note.DataViewModel
+import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
 import city.zouitel.systemDesign.Cons.TRASH_MESSAGE
@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 internal fun UndoSnackbar(
-    viewModule: DataViewModel,
+    viewModule: DataScreenModel,
     scaffoldState : ScaffoldState,
     scope : CoroutineScope,
     trashedNotesState : State<List<Note>>

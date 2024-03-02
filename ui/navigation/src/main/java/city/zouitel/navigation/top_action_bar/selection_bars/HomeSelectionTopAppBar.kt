@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import city.zouitel.note.DataViewModel
+import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.AdaptingRow
 import city.zouitel.systemDesign.Cons.KEY_CLICK
@@ -25,14 +25,14 @@ import city.zouitel.systemDesign.Icons.REMOVE_ICON
 import city.zouitel.systemDesign.PopupTip
 import city.zouitel.systemDesign.sharNote
 import city.zouitel.tags.model.NoteAndTag
-import city.zouitel.tags.viewmodel.NoteAndTagViewModel
-import city.zouitel.tags.viewmodel.TagViewModel
-import city.zouitel.tasks.viewmodel.NoteAndTaskViewModel
-import city.zouitel.tasks.viewmodel.TaskViewModel
+import city.zouitel.tags.viewmodel.TagScreenModel
+import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.navigation.sound
 import city.zouitel.notifications.viewmodel.NotificationVM
+import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
+import city.zouitel.tasks.viewmodel.TaskScreenModel
 import org.koin.androidx.compose.koinViewModel
 import java.util.*
 import kotlin.random.Random.Default.nextLong
@@ -40,13 +40,13 @@ import kotlin.random.Random.Default.nextLong
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeSelectionTopAppBar(
-    dataViewModel: DataViewModel = koinViewModel(),
-    noteAndTagViewModel: NoteAndTagViewModel = koinViewModel(),
-    tagViewModel: TagViewModel = koinViewModel(),
-    taskViewModel: TaskViewModel = koinViewModel(),
-    noteAndTodoVM: NoteAndTaskViewModel = koinViewModel(),
     dataStoreVM: DataStoreVM = koinViewModel(),
     notificationVM: NotificationVM = koinViewModel(),
+    dataModel: DataScreenModel,
+    tagModel: TagScreenModel,
+    noteAndTagModel: NoteAndTagScreenModel,
+    taskModel: TaskScreenModel,
+    noteAndTaskModel: NoteAndTaskScreenModel,
     homeSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Data>?,
     undo: (Data) -> Unit
@@ -55,175 +55,185 @@ fun HomeSelectionTopAppBar(
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val observeNotesAndLabels =
-        remember(noteAndTagViewModel, noteAndTagViewModel::getAllNotesAndTags).collectAsState()
-    val observeLabels = remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
+        remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
+    val observeLabels = remember(tagModel, tagModel::getAllLTags).collectAsState()
 
-    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
+    val observeTodoList =
+        remember(taskModel, taskModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
-        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
+        remember(noteAndTaskModel, noteAndTaskModel::getAllNotesAndTask).collectAsState()
 
     val newUid = UUID.randomUUID()
 
     TopAppBar(
         navigationIcon = {
             Row {
-            // remove.
-            PopupTip(message = "Remove") {
-                Icon(
-                    painter = painterResource(id = REMOVE_ICON),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(7.dp)
-                        .combinedClickable(
-                            onLongClick = {
-                                it.showAlignBottom()
-                            }
-                        ) {
-                            sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                            selectedNotes?.forEach {
-                                dataViewModel.editData(
-                                    Data(
+                // remove.
+                PopupTip(message = "Remove") {
+                    Icon(
+                        painter = painterResource(id = REMOVE_ICON),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(7.dp)
+                            .combinedClickable(
+                                onLongClick = {
+                                    it.showAlignBottom()
+                                }
+                            ) {
+                                sound.makeSound.invoke(
+                                    context,
+                                    KEY_CLICK,
+                                    thereIsSoundEffect.value
+                                )
+                                selectedNotes?.forEach {
+                                    dataModel.editData(
+                                        Data(
+                                            title = it.title,
+                                            description = it.description,
+                                            priority = it.priority,
+                                            uid = it.uid,
+                                            color = it.color,
+                                            textColor = it.textColor,
+                                            trashed = 1
+                                        )
+                                    )
+
+                                    // to cancel the alarm manager reminding.
+                                    notificationVM.scheduleNotification(
+                                        context = context,
+                                        dateTime = it.reminding,
                                         title = it.title,
-                                        description = it.description,
-                                        priority = it.priority,
+                                        message = it.description,
                                         uid = it.uid,
-                                        color = it.color,
-                                        textColor = it.textColor,
-                                        trashed = 1
+                                        onReset = { true }
                                     )
-                                )
 
-                                // to cancel the alarm manager reminding.
-                                notificationVM.scheduleNotification(
-                                    context = context,
-                                    dateTime = it.reminding,
-                                    title = it.title,
-                                    message = it.description,
-                                    uid = it.uid,
-                                    onReset = { true }
-                                )
-
-                                undo.invoke(it)
+                                    undo.invoke(it)
+                                }
+                                selectedNotes?.clear()
+                                homeSelectionState?.value = false
                             }
-                            selectedNotes?.clear()
-                            homeSelectionState?.value = false
+                    )
+                }
+
+                AnimatedVisibility(visible = selectedNotes?.count() == 1) {
+                    Row {
+                        // share
+                        PopupTip(message = "Share WidgetNote") {
+                            Icon(painter = painterResource(id = SHARE_ICON),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .padding(7.dp)
+                                    .combinedClickable(
+                                        onLongClick = {
+                                            it.showAlignBottom()
+                                        }
+                                    ) {
+                                        sound.makeSound.invoke(
+                                            context,
+                                            KEY_CLICK,
+                                            thereIsSoundEffect.value
+                                        )
+
+                                        sharNote(
+                                            context,
+                                            selectedNotes?.single()?.title!!,
+                                            selectedNotes.single().description!!
+                                        ) {
+                                            selectedNotes.clear()
+                                            homeSelectionState?.value = false
+                                        }
+                                    })
                         }
-                )
-            }
 
-            AnimatedVisibility(visible = selectedNotes?.count() == 1) {
-                Row {
-                    // share
-                    PopupTip(message = "Share WidgetNote") {
-                        Icon(painter = painterResource(id = SHARE_ICON), contentDescription = null,
-                            modifier = Modifier
-                                .padding(7.dp)
-                                .combinedClickable(
-                                    onLongClick = {
-                                        it.showAlignBottom()
-                                    }
-                                ) {
-                                    sound.makeSound.invoke(
-                                        context,
-                                        KEY_CLICK,
-                                        thereIsSoundEffect.value
-                                    )
-
-                                    sharNote(
-                                        context,
-                                        selectedNotes?.single()?.title!!,
-                                        selectedNotes.single().description!!
+                        // copy the dataEntity.
+                        PopupTip(message = "Copy WidgetNote") {
+                            Icon(painter = painterResource(id = COPY_ICON),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .padding(7.dp)
+                                    .combinedClickable(
+                                        onLongClick = {
+                                            it.showAlignBottom()
+                                        }
                                     ) {
-                                        selectedNotes.clear()
-                                        homeSelectionState?.value = false
-                                    }
-                                })
-                    }
+                                        sound.makeSound.invoke(
+                                            context,
+                                            KEY_CLICK,
+                                            thereIsSoundEffect.value
+                                        )
 
-                    // copy the dataEntity.
-                    PopupTip(message = "Copy WidgetNote") {
-                        Icon(painter = painterResource(id = COPY_ICON), contentDescription = null,
-                            modifier = Modifier
-                                .padding(7.dp)
-                                .combinedClickable(
-                                    onLongClick = {
-                                        it.showAlignBottom()
-                                    }
-                                ) {
-                                    sound.makeSound.invoke(
-                                        context,
-                                        KEY_CLICK,
-                                        thereIsSoundEffect.value
-                                    )
-
-                                    copyNote(
-                                        context,
-                                        dataViewModel,
-                                        selectedNotes?.single()!!,
-                                        newUid
-                                    ) {
-                                        // copy each label.
-                                        observeLabels.value
-                                            .filter {
-                                                observeNotesAndLabels.value.contains(
-                                                    NoteAndTag(
-                                                        selectedNotes.single().uid,
-                                                        it.id
-                                                    )
-                                                )
-                                            }
-                                            .forEach {
-                                                noteAndTagViewModel.addNoteAndTag(
-                                                    NoteAndTag(
-                                                        noteUid = newUid.toString(),
-                                                        labelId = it.id
-                                                    )
-                                                )
-                                            }
-
-                                        // copy each todo item.
-                                        observeTodoList.value
-                                            .filter {
-                                                observeNoteAndTodo.value.contains(
-                                                    NoteAndTask(
-                                                        selectedNotes.single().uid,
-                                                        it.id
-                                                    )
-                                                )
-                                            }
-                                            .forEach { todo ->
-                                                nextLong().let {
-                                                    taskViewModel.addTotoItem(
-                                                        Task(
-                                                            it,
-                                                            todo.item,
-                                                            todo.isDone
-                                                        )
-                                                    )
-                                                    noteAndTodoVM.addNoteAndTaskItem(
-                                                        NoteAndTask(
-                                                            newUid.toString(),
-                                                            it
+                                        copyNote(
+                                            context,
+                                            dataModel,
+                                            selectedNotes?.single()!!,
+                                            newUid
+                                        ) {
+                                            // copy each label.
+                                            observeLabels.value
+                                                .filter {
+                                                    observeNotesAndLabels.value.contains(
+                                                        NoteAndTag(
+                                                            selectedNotes.single().uid,
+                                                            it.id
                                                         )
                                                     )
                                                 }
-                                            }
+                                                .forEach {
+                                                    noteAndTagModel.addNoteAndTag(
+                                                        NoteAndTag(
+                                                            noteUid = newUid.toString(),
+                                                            labelId = it.id
+                                                        )
+                                                    )
+                                                }
+
+                                            // copy each todo item.
+                                            observeTodoList.value
+                                                .filter {
+                                                    observeNoteAndTodo.value.contains(
+                                                        NoteAndTask(
+                                                            selectedNotes.single().uid,
+                                                            it.id
+                                                        )
+                                                    )
+                                                }
+                                                .forEach { todo ->
+                                                    nextLong().let {
+                                                        taskModel.addTotoItem(
+                                                            Task(
+                                                                it,
+                                                                todo.item,
+                                                                todo.isDone
+                                                            )
+                                                        )
+                                                        noteAndTaskModel.addNoteAndTaskItem(
+                                                            NoteAndTask(
+                                                                newUid.toString(),
+                                                                it
+                                                            )
+                                                        )
+                                                    }
+                                                }
+                                        }
+                                        selectedNotes.clear()
+                                        homeSelectionState?.value = false
                                     }
-                                    selectedNotes.clear()
-                                    homeSelectionState?.value = false
-                                }
-                        )
+                            )
+                        }
                     }
                 }
             }
-        }
         },
         title = {},
         actions = {
             AdaptingRow(
                 Modifier.padding(start = 10.dp, end = 10.dp),
             ) {
-                SelectionCount(selectionState = homeSelectionState, selectedNotes = selectedNotes)
+                SelectionCount(
+                    selectionState = homeSelectionState,
+                    selectedNotes = selectedNotes
+                )
             }
         }
     )

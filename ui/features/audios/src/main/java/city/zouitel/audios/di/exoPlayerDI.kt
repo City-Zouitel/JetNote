@@ -11,9 +11,11 @@ import org.koin.dsl.module
 import city.zouitel.audios.ui.MediaPlayerViewModel
 import org.koin.core.module.dsl.singleOf
 import city.zouitel.domain.exoplayer.*
+import city.zouitel.systemDesign.Cons.REC_DIR
 import kotlinx.coroutines.Dispatchers
 import linc.com.amplituda.Amplituda
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 
 val exoPlayerKoinModule = module {
@@ -32,6 +34,6 @@ val exoPlayerKoinModule = module {
     single { AudioRepository(get(), get(), get()) }
     single { LocalMediaDataSource(androidContext(), get()) }
 
-    viewModel { MediaPlayerViewModel(get(), get()) }
+    viewModel { MediaPlayerViewModel(get(), get(), get(named(REC_DIR))) }
     viewModel { AudioListViewModel(get(), get()) }
 }

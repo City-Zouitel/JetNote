@@ -29,7 +29,8 @@ class LinkVM(
     application: Application,
     getAll: LinkUseCase.GetAllLinks,
     private val delete: LinkUseCase.DeleteLink,
-    private val mapper: LinkMapper
+    private val mapper: LinkMapper,
+    private val linkPath: String
 ): ViewModel() {
 
     private val _getAllLinks = MutableStateFlow<List<InLink>>(emptyList())
@@ -82,8 +83,8 @@ class LinkVM(
     }
 
     fun imageDecoder(context: Context, id:String): ImageBitmap? {
-        val path = File(context.filesDir.path + "/" + LINK_DIR, "$id.$JPEG")
-        val bitImg = BitmapFactory.decodeFile(path.absolutePath)
+        val path = "$linkPath$id.$JPEG"
+        val bitImg = BitmapFactory.decodeFile(path)
         return bitImg?.asImageBitmap()
     }
 

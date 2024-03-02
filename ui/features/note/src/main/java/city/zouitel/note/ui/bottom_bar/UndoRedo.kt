@@ -3,7 +3,9 @@ package city.zouitel.note.ui.bottom_bar
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -30,11 +32,12 @@ fun UndoRedo(
     descriptionFieldState: MutableState<String?>,
     isTitleFieldSelected : MutableState<Boolean>,
     isDescriptionFieldSelected : MutableState<Boolean>,
+    textState: TextFieldState
 ) {
     val titleStack = remember { mutableStateListOf<String>() }
     val descriptionStack = remember { mutableStateListOf<String>() }
 
-    val ctx = LocalContext.current
+    val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
 
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
@@ -42,10 +45,7 @@ fun UndoRedo(
     val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
 
-    Icon(
-        painter = painterResource(id = UNDO_ICON),
-        contentDescription = null,
-        tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
+    IconButton(
         modifier = Modifier
             .size(20.dp)
             .combinedClickable(
@@ -53,44 +53,21 @@ fun UndoRedo(
                     // To make vibration.
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 }
-            ) {
-                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
-                runCatching {
-                    if (isTitleFieldSelected.value) {
-                        if (titleFieldState.value?.isNotEmpty() == true) {
-                            titleStack += titleFieldState.value!!
-                                .split(' ')
-                                .takeLast(1)
-                        }
-                        titleFieldState.value = if (!titleFieldState.value?.contains(' ')!!) {
-                            ""
-                        } else {
-                            titleFieldState.value!!.substringBeforeLast(' ')
-                        }
+            ) {},
+        onClick = {
+            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+            textState.undoState.undo()
+        },
+        enabled = textState.undoState.canUndo
+    ) {
+        Icon(
+            painter = painterResource(id = UNDO_ICON),
+            contentDescription = null,
+            tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
+        )
+    }
 
-                    }
-                    if (isDescriptionFieldSelected.value) {
-
-                        if (descriptionFieldState.value?.isNotEmpty() == true) {
-                            descriptionStack += descriptionFieldState.value!!
-                                .split(' ')
-                                .takeLast(1)
-                        }
-                        descriptionFieldState.value =
-                            if (!descriptionFieldState.value?.contains(' ')!!) {
-                                ""
-                            } else {
-                                descriptionFieldState.value!!.substringBeforeLast(' ')
-                            }
-                    }
-                }
-            }
-    )
-
-    Icon(
-        painter = painterResource(id = REDO_ICON),
-        contentDescription = null,
-        tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
+    IconButton(
         modifier = Modifier
             .size(20.dp)
             .combinedClickable(
@@ -98,22 +75,17 @@ fun UndoRedo(
                     // To make vibration.
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 }
-            ) {
-                sound.makeSound(ctx, KEY_CLICK, thereIsSoundEffect.value)
-                runCatching {
-                    if (isTitleFieldSelected.value) {
-                        if (titleStack.isNotEmpty()) {
-                            titleFieldState.value += " " + titleStack.last()
-                            titleStack -= titleStack.last()
-                        }
-                    }
-                    if (isDescriptionFieldSelected.value) {
-                        if (descriptionStack.isNotEmpty()) {
-                            descriptionFieldState.value += " " + descriptionStack.last()
-                            descriptionStack -= descriptionStack.last()
-                        }
-                    }
-                }
-            }
-    )
+            ) {},
+        onClick = {
+            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+            textState.undoState.redo()
+        },
+        enabled = textState.undoState.canRedo
+    ) {
+        Icon(
+            painter = painterResource(id = REDO_ICON),
+            contentDescription = null,
+            tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
+        )
+    }
 }

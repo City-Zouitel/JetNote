@@ -12,20 +12,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.core.view.inputmethod.InputConnectionCompat
-import city.zouitel.note.DataViewModel
+import city.zouitel.note.DataScreenModel
 import org.koin.androidx.compose.koinViewModel
 
 @Deprecated("ender developing!")
 @Composable
 fun NoteTextField(
-    dataViewModel: DataViewModel = koinViewModel(),
+    dataScreenModel: DataScreenModel,
     uid: String,
     txtHint: String = "",
     txtSize: Float = 20f,
     forSingleLine: Boolean = false,
     gifUri: MutableState<Uri?>
 ) {
-
     val ctx = LocalContext.current
     val internalPath = ctx.filesDir.path
     AndroidView(
@@ -54,13 +53,13 @@ fun NoteTextField(
                             gifUri.value = uri
 
                             // gif
-//                                dataViewModel.saveGifLocally(ctx,uri,uid)
+//                                dataScreenModel.saveGifLocally(ctx,uri,id)
 
 //                            val bitImg = BitmapFactory.decodeFile(uri.path)
-//                            val img = dataViewModel.decodeBitmapImage(bitImg,uri,ctx)
+//                            val img = dataScreenModel.decodeBitmapImage(bitImg,uri,ctx)
 
                             // png
-//                            dataViewModel.saveImageLocally(img,"$internalPath/$IMG_DIR", "$uid.$JPEG")
+//                            dataScreenModel.saveImageLocally(img,"$internalPath/$IMG_DIR", "$id.$JPEG")
 
                             true
                         }
@@ -75,6 +74,5 @@ fun NoteTextField(
 
             }
         }) {
-
     }
 }

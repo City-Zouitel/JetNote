@@ -4,8 +4,9 @@ object Cons {
     const val APP_NAME = "JetNote"
     const val TAG = "This"
     const val NUL = "null"
+    const val NONE = "unspecified"
 
-    const val APP_VERSION = "4.1.4"
+    const val APP_VERSION = "5.0"
 
     const val ID = "Id"
     const val TITLE = "Title"

@@ -11,6 +11,6 @@ val tasksKoinModule = module {
     factoryOf(::TaskMapper)
     factoryOf(::NoteAndTaskMapper)
 
-    viewModelOf(::TaskViewModel)
-    viewModelOf(::NoteAndTaskViewModel)
+    factoryOf(::TaskScreenModel)
+    factoryOf(::NoteAndTaskScreenModel)
 }

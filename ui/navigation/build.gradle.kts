@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.cityzouitel.androidLibrary)
     alias(libs.plugins.cityzouitel.androidCompose)
+    alias(libs.plugins.cityzouitel.androidNavigation)
     alias(libs.plugins.ksp)
     alias(libs.plugins.licenses)
 }
@@ -44,10 +45,6 @@ dependencies {
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.accompanist.insets)
-
-    //Destinations.
-    implementation(libs.destinations.core)
-    ksp(libs.destinations.ksp)
 
     //Sketchbook.
     implementation (libs.sketchbook)

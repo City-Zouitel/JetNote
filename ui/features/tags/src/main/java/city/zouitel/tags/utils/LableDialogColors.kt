@@ -1,4 +1,4 @@
-package city.zouitel.tags.ui
+package city.zouitel.tags.utils
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -14,18 +14,18 @@ import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.listOfBackgroundColors
-import city.zouitel.tags.viewmodel.TagViewModel
+import city.zouitel.tags.viewmodel.TagScreenModel
 import org.koin.androidx.compose.koinViewModel
 import city.zouitel.tags.model.Tag as InTag
 
 @Composable
 internal fun DialogColors(
-    tagViewModel: TagViewModel = koinViewModel(),
+    tagModel: TagScreenModel,
     dialogState:MutableState<Boolean>,
     idState: MutableState<Long>,
     labelState: MutableState<String>,
     colorState: MutableState<Int>
-    ) {
+) {
     AlertDialog(
         onDismissRequest = { dialogState.value = false },
         confirmButton = {},
@@ -38,8 +38,8 @@ internal fun DialogColors(
                             .size(37.dp)
                             .padding(2.dp)
                             .clickable {
-//                                colorState.value = it.toArgb()
-                                tagViewModel
+                                /*colorState.value = it.toArgb()*/
+                                tagModel
                                     .updateTag(
                                         InTag(
                                             id = idState.value,

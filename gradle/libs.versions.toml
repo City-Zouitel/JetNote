@@ -4,8 +4,8 @@ kotlin = "1.9.22"
 compilesdk-v = "34"
 minsdk-v = "26"
 targetsdk-v = "34"
-code-v = "414"
-name-v = "4.1.4"
+code-v = "500"
+name-v = "5.0"
 compose-v = "1.5.8"
 
 #Android.
@@ -22,7 +22,7 @@ startup = "1.1.1"
 
 #Compose.
 activity-compose = "1.8.2"
-compose-bom = "2024.02.00"
+compose-bom = "2024.02.01"
 appcompat = "1.6.1"
 material = "1.11.0"
 navigation-compose = "2.7.7"
@@ -67,6 +67,9 @@ coil-svg = "2.5.0"
 #License.
 license = "10.9.2"
 
+#Voyager.
+voyager = "1.0.0"
+
 #Others.
 sketchbook = "1.0.4"
 swipe = "1.1.1"
@@ -77,9 +80,7 @@ sqlcipher = "4.5.4"
 waveslider = "0.0.3"
 audiowaveform = "1.1.2"
 amplituda = "2.2.2"
-destinations = "1.10.0"
-android-startup = "1.1.0"
-voyager = "1.0.0"
+#android-startup = "1.1.0"
 
 [libraries]
 # Kotlin.
@@ -163,6 +164,12 @@ coil_svg = { module = "io.coil-kt:coil-svg", version.ref = "coil-svg" }
 #License.
 licenses = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "license" }
 
+#Voyager.
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
+voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+
 #Others.
 url_preview = { module = "tw.com.oneup.www:Baha-UrlPreview", version.ref = "url-preview" }
 beetle = { module = "com.karacca:beetle", version.ref = "beetle" }
@@ -173,13 +180,7 @@ sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "
 waveslider = { module = "com.github.galaxygoldfish:waveslider", version.ref = "waveslider" }
 audiowaveform = { module = "com.github.lincollincol:compose-audiowaveform", version.ref = "audiowaveform" }
 amplituda = { module = "com.github.lincollincol:amplituda", version.ref = "amplituda" }
-destinations-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "destinations" }
-destinations-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "destinations" }
-android-startup = { module = "io.github.idisfkj:android-startup", version.ref = "android-startup" }
-voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
-voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
-voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
-voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+#android-startup = { module = "io.github.idisfkj:android-startup", version.ref = "android-startup" }
 
 [bundles]
 compose = ["ui", "ui-tooling-preview", "material3"]
@@ -198,3 +199,4 @@ licenses = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "license" 
 cityzouitel-androidLibrary = { id = "city.zouitel.android.library", version = "unspecified" }
 cityzouitel-androidCompose = { id = "city.zouitel.android.compose", version = "unspecified" }
 cityzouitel-androidApplication = { id = "city.zouitel.android.application", version = "unspecified" }
+cityzouitel-androidNavigation = { id = "city.zouitel.android.navigation", version = "unspecified" }

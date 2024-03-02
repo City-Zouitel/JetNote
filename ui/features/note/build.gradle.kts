@@ -2,15 +2,12 @@
 plugins {
     alias(libs.plugins.cityzouitel.androidLibrary)
     alias(libs.plugins.cityzouitel.androidCompose)
+    alias(libs.plugins.cityzouitel.androidNavigation)
     alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "city.zouitel.note"
-}
-
-ksp {
-    arg("compose-destinations.generateNavGraphs", "true")
 }
 
 dependencies {
@@ -37,10 +34,6 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.flowlayout)
-
-    //Destinations.
-    implementation(libs.destinations.core)
-    ksp(libs.destinations.ksp)
 
     //Sketchbook.
     implementation (libs.sketchbook)

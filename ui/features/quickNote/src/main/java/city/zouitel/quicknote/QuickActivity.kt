@@ -17,7 +17,6 @@ import city.zouitel.systemDesign.DataStoreVM
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.androidx.compose.koinViewModel
 
-//@AndroidEntryPoint
 class QuickActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -24,7 +24,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import city.zouitel.systemDesign.Cons.NUL
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.FULL_LABEL_ICON
 import city.zouitel.systemDesign.Icons.OUTLINE_LABEL_ICON
@@ -32,186 +33,169 @@ import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_TINT
 import city.zouitel.tags.state.State
-import city.zouitel.tags.viewmodel.NoteAndTagViewModel
-import city.zouitel.tags.viewmodel.TagViewModel
+import city.zouitel.tags.utils.DialogColors
+import city.zouitel.tags.utils.HashTagLayout
+import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
+import city.zouitel.tags.viewmodel.TagScreenModel
 import com.google.accompanist.flowlayout.FlowRow
-import org.koin.androidx.compose.koinViewModel
+import org.koin.core.component.KoinComponent
 import city.zouitel.tags.model.NoteAndTag as InNoteAndTag
 import city.zouitel.tags.model.Tag as InTag
 
-@SuppressLint(
-    "UnusedMaterial3ScaffoldPaddingParameter",
-    "StateFlowValueCalledInComposition",
-    "UnrememberedMutableState",
-    "UnusedMaterialScaffoldPaddingParameter"
-)
-@OptIn(
-    ExperimentalMaterial3Api::class,
-)
-@Composable
-fun Tags(
-    tagViewModel: TagViewModel = koinViewModel(),
-    noteAndTagViewModel: NoteAndTagViewModel = koinViewModel(),
-    noteUid: String?,
-) {
-    val tagState = State.Tag(tagViewModel)
-    val noteAndTagState = State.NoteTag(noteAndTagViewModel)
+data class TagsScreen(val id: String? = null): Screen, KoinComponent {
+    @OptIn(ExperimentalMaterial3Api::class)
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @Composable
+    override fun Content() {
+        val tagModel = getScreenModel<TagScreenModel>()
+        val noteAndTagModel = getScreenModel<NoteAndTagScreenModel>()
 
-    val allTags = tagState.rememberAllTags
-    val allNoteAndTags = noteAndTagState.rememberAllNoteTags
+        val tagState = State.Tag(tagModel)
+        val noteAndTagState = State.NoteTag(noteAndTagModel)
+        val getMatColor = MaterialColors().getMaterialColor
 
-    val idState = remember { mutableLongStateOf(-1L) }
-    val labelState = remember { mutableStateOf("") }
-    val colorState = remember { mutableIntStateOf(Color.Transparent.toArgb()) }
+        val allTags = tagState.rememberAllTags
+        val allNoteAndTags = noteAndTagState.rememberAllNoteTags
+        val idState = remember { mutableLongStateOf(-1L) }
+        val labelState = remember { mutableStateOf("") }
+        val colorState = remember { mutableIntStateOf(Color.Transparent.toArgb()) }
+        val labelDialogState = remember { mutableStateOf(false) }
 
-    val labelDialogState = remember { mutableStateOf(false) }
-
-    val getMatColor = MaterialColors().getMaterialColor
-    if (labelDialogState.value) {
+        if (labelDialogState.value) {
             DialogColors(
+                tagModel = tagModel,
                 dialogState = labelDialogState,
                 idState = idState,
                 labelState = labelState,
                 colorState = colorState
             )
-    }
-    Scaffold(
-        modifier = Modifier
-            .navigationBarsPadding(),
-    ) {
-        LazyColumn(
+        }
+
+        Scaffold(
             modifier = Modifier
-                .fillMaxSize()
-                .background(getMatColor(SURFACE))
-                .padding(top = 25.dp)
+                .navigationBarsPadding(),
         ) {
-            item {
-                if (noteUid == NUL) {
-                    HashTagLayout(
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(getMatColor(SURFACE))
+                    .padding(top = 25.dp)
+            ) {
+                item {
+                    id?.let {
+                        FlowRow(mainAxisSpacing = 3.dp) {
+                            allTags.forEach { label ->
+                                ElevatedFilterChip(
+                                    selected = true,
+                                    modifier = Modifier,
+                                    onClick = {
+                                        if (allNoteAndTags.contains(InNoteAndTag(id, label.id))) {
+                                            noteAndTagModel.deleteNoteAndTag(
+                                                InNoteAndTag(
+                                                    noteUid = id,
+                                                    labelId = label.id
+                                                )
+                                            )
+                                        } else {
+                                            noteAndTagModel.addNoteAndTag(
+                                                InNoteAndTag(
+                                                    noteUid = id,
+                                                    labelId = label.id
+                                                )
+                                            )
+                                        }
+                                    },
+                                    leadingIcon = {
+                                        if (allNoteAndTags.contains(InNoteAndTag(id, label.id))
+                                        ) {
+                                            Icon(
+                                                painterResource(FULL_LABEL_ICON), null,
+                                                tint = if (label.color == Color.Transparent.toArgb()) {
+                                                    getMatColor(SURFACE_TINT)
+                                                } else Color(label.color)
+                                            )
+                                        } else {
+                                            Icon(
+                                                painterResource(OUTLINE_LABEL_ICON), null,
+                                                tint = if (label.color == Color.Transparent.toArgb()) {
+                                                    getMatColor(SURFACE_TINT)
+                                                } else Color(label.color)
+                                            )
+                                        }
+                                    },
+                                    label = { label.label?.let { Text(it) } }
+                                )
+                            }
+                        }
+                    } ?: HashTagLayout(
+                        tagModel = tagModel,
                         labelDialogState = labelDialogState,
                         hashTags = allTags,
                         idState = idState,
                         labelState = labelState
                     )
-                } else {
-                    FlowRow(
-                        mainAxisSpacing = 3.dp
-                    ) {
-                        allTags.forEach { label ->
-                            ElevatedFilterChip(
-                                selected = true,
-                                modifier = Modifier,
-                                onClick = {
-                                    if (allNoteAndTags.contains(
-                                            InNoteAndTag(noteUid!!, label.id)
-                                        )
-                                    ) {
-                                        noteAndTagViewModel.deleteNoteAndTag(
-                                            InNoteAndTag(
-                                                noteUid = noteUid,
-                                                labelId = label.id
-                                            )
-                                        )
-                                    } else {
-                                        noteAndTagViewModel.addNoteAndTag(
-                                            InNoteAndTag(
-                                                noteUid = noteUid,
-                                                labelId = label.id
-                                            )
-                                        )
-                                    }
-                                },
-                                leadingIcon = {
-                                    if (
-                                        allNoteAndTags.contains(
-                                            InNoteAndTag(noteUid!!, label.id)
-                                        )
-                                    ) {
-                                        Icon(
-                                            painterResource(FULL_LABEL_ICON), null,
-                                            tint = if (label.color == Color.Transparent.toArgb()) {
-                                                getMatColor(SURFACE_TINT)
-                                            } else Color(label.color)
-                                        )
-                                    } else {
-                                        Icon(
-                                            painterResource(OUTLINE_LABEL_ICON), null,
-                                            tint = if (label.color == Color.Transparent.toArgb()) {
-                                                getMatColor(SURFACE_TINT)
-                                            } else Color(label.color)
-                                        )
-                                    }
-                                },
-                                label = {
-                                    label.label?.let { Text(it) }
-                                }
-                            )
-                        }
-                    }
                 }
-            }
-            item {
-                OutlinedTextField(
-                    value = labelState.value,
-                    onValueChange = { labelState.value = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(getMatColor(SURFACE)),
-                    placeholder = {
-                        Text("Tag..", color = Color.Gray, fontSize = 19.sp)
-                    },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = CIRCLE_ICON_18),
-                            contentDescription = null,
-                            tint = Color(colorState.intValue)
-                        )
-                    },
-                    maxLines = 1,
-                    textStyle = TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Normal,
-                        fontFamily = FontFamily.Default,
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Sentences,
-                        autoCorrect = false,
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            if (allTags.any { it.id == idState.longValue }) {
-                                tagViewModel.updateTag(
-                                    InTag(
-                                        id = idState.longValue,
-                                        label = labelState.value,
-                                        color = colorState.intValue
+
+                item {
+                    OutlinedTextField(
+                        value = labelState.value,
+                        onValueChange = { labelState.value = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(getMatColor(SURFACE)),
+                        placeholder = {
+                            Text("Tag..", color = Color.Gray, fontSize = 19.sp)
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(id = CIRCLE_ICON_18),
+                                contentDescription = null,
+                                tint = Color(colorState.intValue)
+                            )
+                        },
+                        maxLines = 1,
+                        textStyle = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = FontFamily.Default,
+                        ),
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences,
+                            autoCorrect = false,
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                if (allTags.any { it.id == idState.longValue }) {
+                                    tagModel.updateTag(
+                                        InTag(
+                                            id = idState.longValue,
+                                            label = labelState.value,
+                                            color = colorState.intValue
+                                        )
                                     )
-                                )
-                            } else {
-                                tagViewModel.addTag(
-                                    InTag(
-                                        label = labelState.value,
-                                        color = colorState.intValue
+                                } else {
+                                    tagModel.addTag(
+                                        InTag(
+                                            label = labelState.value,
+                                            color = colorState.intValue
+                                        )
                                     )
-                                )
-                            }.invokeOnCompletion {
-                                labelState.value = ""
-                                idState.longValue = -1
-                                colorState.intValue = 0x0000
+                                }.invokeOnCompletion {
+                                    labelState.value = ""
+                                    idState.longValue = -1
+                                    colorState.intValue = 0x0000
+                                }
                             }
-                        }
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
+                        ),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedBorderColor = Color.Transparent
+                        )
                     )
-                )
+                }
             }
         }
     }
 }
-
-
-

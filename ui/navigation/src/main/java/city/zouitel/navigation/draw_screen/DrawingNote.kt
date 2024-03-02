@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import city.zouitel.note.DataViewModel
+import city.zouitel.note.DataScreenModel
 import city.zouitel.systemDesign.AdaptingRow
 import city.zouitel.systemDesign.Cons.ADD_ROUTE
 import city.zouitel.systemDesign.Cons.EDIT_ROUTE
@@ -49,7 +49,7 @@ import java.io.File
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DrawingNote(
-    viewModule: DataViewModel = koinViewModel(),
+    viewModule: DataScreenModel,
     navController: NavController,
     title: String,
     description: String,

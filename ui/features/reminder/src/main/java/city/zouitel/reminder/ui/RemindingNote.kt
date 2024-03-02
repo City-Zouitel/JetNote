@@ -37,6 +37,7 @@ import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.CALENDAR_ICON
 import city.zouitel.systemDesign.Icons.CLOCK_ICON
+import city.zouitel.systemDesign.Icons.REFRESH_ICON
 import city.zouitel.systemDesign.Icons.RESET_ICON
 import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
@@ -163,6 +164,7 @@ fun RemindingNote(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     OutlinedIconButton(
+                        enabled = dateTime != 0L,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp),
@@ -177,7 +179,7 @@ fun RemindingNote(
                                 .padding(start = 20.dp)
                         ) {
                             Icon(
-                                painterResource(RESET_ICON),null,
+                                painterResource(REFRESH_ICON),null,
                                 modifier = Modifier.size(28.dp)
                             )
                             Spacer(modifier = Modifier.width(10.dp))

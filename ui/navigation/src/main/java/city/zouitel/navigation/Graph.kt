@@ -7,14 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import city.zouitel.audios.media.AudioListRoute
-import city.zouitel.navigation.about_screen.AppAbout
 import city.zouitel.navigation.draw_screen.DrawingNote
-import city.zouitel.navigation.home_screen.NoteHome
 import city.zouitel.navigation.settings_screen.Licenses
-import city.zouitel.navigation.settings_screen.Settings
-import city.zouitel.navigation.deleted_screen.TrashScreen
-import city.zouitel.note.ui.add_screen.NoteAdd
-import city.zouitel.note.ui.edit_screen.NoteEdit
 import city.zouitel.systemDesign.Cons.ABOUT_ROUTE
 import city.zouitel.systemDesign.Cons.ADD_ROUTE
 import city.zouitel.systemDesign.Cons.AUDIO_DURATION
@@ -35,8 +29,6 @@ import city.zouitel.systemDesign.Cons.TEXT_COLOR
 import city.zouitel.systemDesign.Cons.TITLE
 import city.zouitel.systemDesign.Cons.TRASH_ROUTE
 import city.zouitel.systemDesign.Cons.UID
-import city.zouitel.tags.ui.Tags
-import city.zouitel.tasks.TaskList
 
 @Composable
 fun Graph(
@@ -44,7 +36,7 @@ fun Graph(
 ) {
     NavHost(navController = navHostController, startDestination = HOME_ROUTE) {
         composable(route = HOME_ROUTE) {
-            NoteHome(navController = navHostController)
+//            HomeScreen(navController = navHostController)
         }
         composable(
             route = "$ADD_ROUTE/{$UID}/{$DESCRIPTION}",
@@ -57,11 +49,11 @@ fun Graph(
                 type = NavType.StringType
             }
         )) {
-            NoteAdd(
-                navController = navHostController,
-                uid = it.arguments?.getString(UID) ?:"",
-                description = it.arguments?.getString(DESCRIPTION) ?: ""
-            )
+//            NoteAdd(
+//                navController = navHostController,
+//                id = it.arguments?.getString(UID) ?:"",
+//                description = it.arguments?.getString(DESCRIPTION) ?: ""
+//            )
         }
         composable(
             route = "$EDIT_ROUTE/{$UID}/{$TITLE}/{$DESCRIPTION}/{$COLOR}/{$TEXT_COLOR}/" +
@@ -95,17 +87,17 @@ fun Graph(
                 }
             )
         ) {
-            NoteEdit(
-                navController = navHostController,
-                title = it.arguments?.getString(TITLE),
-                description = it.arguments?.getString(DESCRIPTION),
-                color = it.arguments?.getInt(COLOR) ?: 0,
-                textColor = it.arguments?.getInt(TEXT_COLOR) ?: 0x0000,
-                priority = it.arguments?.getString(PRIORITY) ?: NON,
-                uid = it.arguments?.getString(UID) ?: "",
-                audioDuration = it.arguments?.getInt(AUDIO_DURATION) ?: 0,
-                reminding = it.arguments?.getLong(REMINDING) ?: 0L
-            )
+//            NoteEdit(
+//                navController = navHostController,
+//                title = it.arguments?.getString(TITLE),
+//                description = it.arguments?.getString(DESCRIPTION),
+//                color = it.arguments?.getInt(COLOR) ?: 0,
+//                textColor = it.arguments?.getInt(TEXT_COLOR) ?: 0x0000,
+//                priority = it.arguments?.getString(PRIORITY) ?: NON,
+//                uid = it.arguments?.getString(UID) ?: "",
+//                audioDuration = it.arguments?.getInt(AUDIO_DURATION) ?: 0,
+//                reminding = it.arguments?.getLong(REMINDING) ?: 0L
+//            )
         }
         composable("$DRAW_ROUTE/{$TITLE}/{$DESCRIPTION}/{$COLOR}/{$TEXT_COLOR}/" +
                 "{$PRIORITY}/{$UID}/{$AUDIO_DURATION}/{$REMINDING}",
@@ -135,32 +127,32 @@ fun Graph(
                     type = NavType.LongType
                 }
             )) {
-            DrawingNote(
-                navController = navHostController,
-                title = it.arguments?.getString(TITLE) ?: "",
-                description = it.arguments?.getString(DESCRIPTION) ?: "",
-                color = it.arguments?.getInt(COLOR),
-                priority = it.arguments?.getString(PRIORITY) ?: NON,
-                textColor = it.arguments?.getInt(TEXT_COLOR) ?: 0x00000,
-                uid = it.arguments?.getString(UID) ?: "",
-                audioDuration = it.arguments?.getInt(AUDIO_DURATION) ?: 0,
-                reminding = it.arguments?.getLong(REMINDING) ?: 0L
-            )
+//            DrawingNote(
+//                navController = navHostController,
+//                title = it.arguments?.getString(TITLE) ?: "",
+//                description = it.arguments?.getString(DESCRIPTION) ?: "",
+//                color = it.arguments?.getInt(COLOR),
+//                priority = it.arguments?.getString(PRIORITY) ?: NON,
+//                textColor = it.arguments?.getInt(TEXT_COLOR) ?: 0x00000,
+//                uid = it.arguments?.getString(UID) ?: "",
+//                audioDuration = it.arguments?.getInt(AUDIO_DURATION) ?: 0,
+//                reminding = it.arguments?.getLong(REMINDING) ?: 0L
+//            )
         }
         composable(route = "$CAMERA_ROUTE/{$UID}", arguments = listOf(
             navArgument(UID){
                 type = NavType.StringType
             }
         )){
-//            LaunchCameraX(uid = it.arguments?.getString(UUID))
+//            LaunchCameraX(id = it.arguments?.getString(UUID))
         }
 
         composable(TRASH_ROUTE){
-            TrashScreen(navController = navHostController)
+//            TrashScreen(navController = navHostController)
         }
 
         composable(SETTING_ROUTE){
-            Settings(navC = navHostController)
+//            Settings(navC = navHostController)
         }
         composable("$TAG_ROUTE/{$UID}", arguments = listOf(
             navArgument(UID) {
@@ -168,22 +160,20 @@ fun Graph(
                 type = NavType.StringType
             }
         )) {
-            Tags(
-                noteUid = it.arguments?.getString(UID) ?: "",
-            )
+//            Tags(noteUid = it.arguments?.getString(UID) ?: "",)
         }
         composable("$TASK_ROUTE/{$UID}", arguments = listOf(
             navArgument(UID) {
                 type = NavType.StringType
             }
         )) {
-            TaskList(noteUid = it.arguments?.getString(UID) ?: "")
+//            TaskList(noteUid = it.arguments?.getString(UID) ?: "")
         }
         composable(LICENSES_ROUTE) {
             Licenses()
         }
         composable(ABOUT_ROUTE) {
-            AppAbout(navC = navHostController)
+//            AppAbout(navC = navHostController)
         }
         composable("audio-list-screen") {
             AudioListRoute()

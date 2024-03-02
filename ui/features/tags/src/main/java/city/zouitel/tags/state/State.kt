@@ -4,14 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import city.zouitel.tags.viewmodel.NoteAndTagViewModel
-import city.zouitel.tags.viewmodel.TagViewModel
+import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
+import city.zouitel.tags.viewmodel.TagScreenModel
 
 internal sealed class State {
 
     @Stable
     class Tag(
-        private val viewModel: TagViewModel
+        private val viewModel: TagScreenModel
     ) : State() {
         val rememberAllTags
         @Composable get() =
@@ -23,14 +23,14 @@ internal sealed class State {
 
     @Stable
     class NoteTag(
-        private val viewModel: NoteAndTagViewModel
+        private val screenModel: NoteAndTagScreenModel
     ) : State() {
 
         val rememberAllNoteTags
             @Composable get() =
                 remember(
-                    viewModel,
-                    viewModel::getAllNotesAndTags
+                    screenModel,
+                    screenModel::getAllNotesAndTags
                 ).collectAsState().value
     }
 }

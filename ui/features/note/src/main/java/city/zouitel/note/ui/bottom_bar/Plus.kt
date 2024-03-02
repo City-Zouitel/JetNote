@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavController
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.media.AudioListViewModel
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.Cons.DRAW_ROUTE
@@ -36,6 +38,7 @@ import city.zouitel.systemDesign.Cons.MP3
 import city.zouitel.systemDesign.Cons.TAG_ROUTE
 import city.zouitel.systemDesign.Cons.TASK_ROUTE
 import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.Icons.ADD_IMAGE_ICON
 import city.zouitel.systemDesign.Icons.CAMERA_ICON
 import city.zouitel.systemDesign.Icons.CASSETTE_ICON
 import city.zouitel.systemDesign.Icons.GESTURE_ICON
@@ -48,6 +51,8 @@ import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.getColorOfPriority
 import city.zouitel.systemDesign.getPriorityOfColor
 import city.zouitel.systemDesign.listOfPriorityColors
+import city.zouitel.tags.ui.TagsScreen
+import city.zouitel.tasks.ui.TasksScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.koin.androidx.compose.koinViewModel
@@ -67,6 +72,7 @@ internal fun Plus(
     priorityColorState: MutableState<String>,
 ) {
     val context = LocalContext.current
+    val navigator = LocalNavigator.currentOrThrow
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val sound by lazy { SoundEffect() }
@@ -103,7 +109,7 @@ internal fun Plus(
     ) {
         DropdownMenuItem(
             text = { Text(text = "Add Image", fontSize = 18.sp) },
-            leadingIcon = { Icon(painterResource(IMAGE_ICON), null) },
+            leadingIcon = { Icon(painterResource(ADD_IMAGE_ICON), null) },
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                 runCatching {
@@ -121,6 +127,7 @@ internal fun Plus(
                 audioListViewModel.loadNotePath = context.filesDir.path + File.pathSeparator +
                         note.uid + "." + MP3
                 navController.navigate("audio-list-screen")
+
                 isShow.value = false
             },
             enabled = false
@@ -131,7 +138,7 @@ internal fun Plus(
             onClick = {
 //                navController.navigate(
 //                    CAMERA_ROUTE + "/" +
-//                            dataEntity.uid
+//                            dataEntity.id
 //                )
 //                isShow.value = false
                 Toast.makeText(context, "Coming Soon.", Toast.LENGTH_SHORT).show()
@@ -187,10 +194,7 @@ internal fun Plus(
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
-                with(navController) {
-                    navigate("$TAG_ROUTE/${note.uid}")
-                    clearBackStack("$TAG_ROUTE/${note.uid}")
-                }
+                navigator.push(TagsScreen(id = note.uid))
             }
         )
         DropdownMenuItem(
@@ -199,10 +203,7 @@ internal fun Plus(
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
-                with(navController) {
-                    navigate("$TASK_ROUTE/${note.uid}")
-                    clearBackStack("$TASK_ROUTE/${note.uid}")
-                }
+                navigator.push(TasksScreen(id = note.uid))
             }
         )
         DropdownMenuItem(

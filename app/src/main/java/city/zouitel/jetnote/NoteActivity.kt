@@ -1,21 +1,22 @@
 package city.zouitel.jetnote
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.*
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.links.ui.LinkVM
-import city.zouitel.navigation.Graph
+import city.zouitel.navigation.home_screen.HomeScreen
 import city.zouitel.shortcuts.checkNoteActivityShortcut
 import city.zouitel.widget.WidgetReceiver
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
@@ -23,18 +24,15 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         WindowCompat.setDecorFitsSystemWindows(window,false)
-
         setContent {
-
             val navHostController = rememberNavController()
-            val scope = rememberCoroutineScope()
+            val navigator = LocalNavigator.currentOrThrow
 
-            intentHandler(intent, this@NoteActivity, navHostController, scope)
+            intentHandler(intent, this@NoteActivity, navHostController, navigator)
 
             MainTheme {
-                Graph(navHostController)
+                Navigator(HomeScreen())
             }
         }
     }
@@ -50,27 +48,6 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
         WidgetReceiver.updateBroadcast(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-//        mapOf(
-//            "Coffee" to "Prepare hot coffee for my self.",
-//            "Certification" to "Call instructor for complete details.",
-//            "Team Meeting" to "Planning sprint log for next product application update.",
-//            "Birthday Party" to "Tomorrow is my brother birthday there will be party at 7:00 pm.",
-//            "Vacation Tickets" to  "Buy tickets for the family vacation.",
-//            "Appointment" to "Health check up with physician."
-//
-//        ).forEach {
-//            viewmodel.value.addNote(
-//                Note(
-//                    uid = UUID.randomUUID().toString(),
-//                    title = it.key,
-//                    description = it.value
-//                )
-//            )
-//        }
-    }
-
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
     }
@@ -79,5 +56,9 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
         super.onResume()
         checkNoteActivityShortcut(this)
     }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    override val coroutineContext: CoroutineContext
+        get() = GlobalScope.coroutineContext
 }
 

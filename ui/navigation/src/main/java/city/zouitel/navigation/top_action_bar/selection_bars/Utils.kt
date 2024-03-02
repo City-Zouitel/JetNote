@@ -1,7 +1,7 @@
 package city.zouitel.navigation.top_action_bar.selection_bars
 
 import android.content.Context
-import city.zouitel.note.DataViewModel
+import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.IMG_DIR
@@ -12,12 +12,12 @@ import java.util.*
 
 fun copyNote(
     ctx: Context,
-    dataViewModel: DataViewModel,
+    dataScreenModel: DataScreenModel,
     note: Data,
     uid: UUID,
     cc : () -> Unit
 ) {
-    dataViewModel.addData(
+    dataScreenModel.addData(
         note.copy(uid = uid.toString())
     )
     //

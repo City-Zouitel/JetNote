@@ -10,6 +10,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
@@ -20,7 +21,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import city.zouitel.note.ColorsRow
+import city.zouitel.note.ui.ColorsRow
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.AdaptingRow
 import city.zouitel.systemDesign.Cons.FOCUS_NAVIGATION
@@ -64,6 +65,7 @@ fun AddEditBottomBar(
     isTitleFieldSelected: MutableState<Boolean>,
     isDescriptionFieldSelected: MutableState<Boolean>,
     remindingValue: MutableLongState,
+    textState: TextFieldState
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
@@ -172,6 +174,7 @@ fun AddEditBottomBar(
                     descriptionFieldState = descriptionFieldState,
                     isTitleFieldSelected = isTitleFieldSelected,
                     isDescriptionFieldSelected = isDescriptionFieldSelected,
+                    textState = textState
                 )
             }
         }

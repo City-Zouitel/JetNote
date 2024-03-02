@@ -1,6 +1,8 @@
 package city.zouitel.audios.ui
 
 import android.content.Context
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -14,12 +16,17 @@ import java.util.*
 
 class MediaPlayerViewModel (
     private val exoBuilder : ExoPlayerImpl,
-    private val repository: AudioRepository
+    private val repository: AudioRepository,
+    private val recPath: String
 ): ViewModel() {
 
-    private var getMediaDuration = mutableLongStateOf(0L)
+    var getMediaDuration = mutableLongStateOf(0L)
+        private set
 
     var audioAmplitudes = mutableStateListOf<Int>()
+        private set
+
+    var rec_path = derivedStateOf { recPath }
         private set
 
     fun playMedia(mediaUri: String) {
@@ -47,7 +54,7 @@ class MediaPlayerViewModel (
 
     fun getMediaDuration(context: Context, path: String):Long {
         viewModelScope.launch {
-            getMediaDuration.longValue = exoBuilder.getMediaDuration(context,path)
+            getMediaDuration.longValue = exoBuilder.getMediaDuration(context, path)
         }
         return getMediaDuration.longValue
     }

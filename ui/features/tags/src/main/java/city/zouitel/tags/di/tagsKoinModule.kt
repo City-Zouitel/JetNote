@@ -11,6 +11,6 @@ val tagsKoinModule = module {
     factoryOf(::TagMapper)
     factoryOf(::NoteAndTagMapper)
 
-    viewModelOf(::NoteAndTagViewModel)
-    viewModelOf(::TagViewModel)
+    factoryOf(::NoteAndTagScreenModel)
+    factoryOf(::TagScreenModel)
 }

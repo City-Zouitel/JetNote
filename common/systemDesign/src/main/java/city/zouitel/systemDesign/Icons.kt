@@ -28,6 +28,7 @@ object Icons {
     val CIRCLE_ICON_18 = R.drawable.circle_18
     val ERASER_BLACK_ICON = R.drawable.ic_eraser_black_24dp
     val IMAGE_ICON = R.drawable.picture_24
+    val ADD_IMAGE_ICON = R.drawable.add_image_24
     val BELL_ICON = R.drawable.bell_24
     val BELL_RING_ICON = R.drawable.bell_ring_18
     val BELL_RING_ICON_24 = R.drawable.bell_ring_24
@@ -44,6 +45,7 @@ object Icons {
     val SORT_AMOUNT_UP_ICON = R.drawable.sort_amount_up_alt_24
     val REMOVE_ICON = R.drawable.trash_24
     val RESET_ICON = R.drawable.reset_24
+    val REFRESH_ICON = R.drawable.refresh_24
     val MENU_BURGER_ICON = R.drawable.menu_burger_24
     val HOME_ICON = R.drawable.home_24
     val SETTINGS_ICON = R.drawable.settings_24
@@ -74,4 +76,5 @@ object Icons {
     val GITHUB_ICON = R.drawable.github_24
     val GLOBE_ICON = R.drawable.globe_48
     val CASSETTE_ICON = R.drawable.cassette_tape__24
+    val ADD_DOCUMENT_ICON = R.drawable.add_document_24
 }

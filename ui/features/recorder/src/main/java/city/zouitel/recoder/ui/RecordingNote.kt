@@ -34,10 +34,9 @@ fun RecordingNote(
 
     val recorderVm = viewModel(RecorderVM::class.java)
 
-    val path = File(
-        ctx.filesDir.path + "/$REC_DIR/" + uid + "." + MP3
-    )
-    val record = noteMediaRecordVM.buildMediaRecord(path.path)
+    val path = File(ctx.filesDir.path + "/$REC_DIR/" + uid + "." + MP3)
+
+    val record = noteMediaRecordVM.buildMediaRecord(uid)
 
     if (isRecording.value) {
         record.start()

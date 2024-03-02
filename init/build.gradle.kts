@@ -15,15 +15,14 @@ dependencies {
     //Koin.
     implementation(libs.koin.worker)
 
-    //App Startup.
-    implementation(libs.startup)
-    implementation(libs.android.startup)
-
     //Lifecycle.
     implementation(libs.lifecycle.process)
 
     //Worker.
     implementation(libs.workmanager)
+
+    //Koin.
+    implementation(libs.koin.worker)
 
     //Sqlcipher.
     implementation (libs.sqlcipher)

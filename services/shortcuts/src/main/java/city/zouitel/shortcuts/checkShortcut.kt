@@ -13,7 +13,7 @@ fun checkNoteActivityShortcut(context: Context) {
 
     runCatching {
         context.shortcutManage.dynamicShortcuts =
-            listOf(newNoteShortcut, newRecordShortcut, quickNoteShortcut)
+            listOf(newNoteShortcut, /*newRecordShortcut,*/ /*quickNoteShortcut*/)
     }.onFailure {
         Toast.makeText(context, "something wring!", Toast.LENGTH_SHORT).show()
     }

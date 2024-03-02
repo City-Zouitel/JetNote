@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import androidx.navigation.NavController
+import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.audios.ui.MiniMediaPlayer
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkPart
@@ -39,11 +39,10 @@ import city.zouitel.links.ui.LinkVM
 import city.zouitel.links.ui.NoteAndLinkVM
 import city.zouitel.navigation.navigation_drawer.Screens
 import city.zouitel.navigation.navigation_drawer.Screens.*
-import city.zouitel.note.DataViewModel
+import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
 import city.zouitel.systemDesign.Cons.REC_DIR
-import city.zouitel.systemDesign.Cons.EDIT_ROUTE
 import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Cons.KEY_CLICK
@@ -55,13 +54,14 @@ import city.zouitel.systemDesign.Icons.ANGLE_UP_ICON
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.RESET_ICON
 import city.zouitel.systemDesign.ImageDisplayed
-import city.zouitel.tasks.viewmodel.NoteAndTaskViewModel
-import city.zouitel.tasks.viewmodel.TaskViewModel
+import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.navigation.sound
+import city.zouitel.note.ui.edit_screen.EditScreen
 import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.Icons.BELL_RING_ICON
+import city.zouitel.tasks.viewmodel.TaskScreenModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -72,9 +72,11 @@ import java.util.*
 @Composable
 fun NoteCard(
     dataStoreVM: DataStoreVM = koinViewModel(),
+    taskModel: TaskScreenModel,
+    noteAndTaskModel: NoteAndTaskScreenModel,
+    dataModel: DataScreenModel,
     screen: Screens,
     noteEntity: Note,
-    navController: NavController,
     homeSelectionState: MutableState<Boolean>?,
     trashSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Data>?,
@@ -100,8 +102,10 @@ fun NoteCard(
             state = swipeState
         ) {
             Card(
+                taskModel = taskModel,
+                noteAndTodoModel = noteAndTaskModel,
+                dataModel = dataModel,
                 noteEntity = noteEntity,
-                navController = navController,
                 screen = screen,
                 homeSelectionState = homeSelectionState,
                 trashSelectionState = trashSelectionState,
@@ -110,8 +114,10 @@ fun NoteCard(
         }
     } else {
         Card(
+            taskModel = taskModel,
+            noteAndTodoModel = noteAndTaskModel,
+            dataModel = dataModel,
             noteEntity = noteEntity,
-            navController = navController,
             screen = screen,
             homeSelectionState = homeSelectionState,
             trashSelectionState = trashSelectionState,
@@ -123,35 +129,35 @@ fun NoteCard(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Card(
-    taskViewModel: TaskViewModel = koinViewModel(),
-    noteAndTodoVM: NoteAndTaskViewModel = koinViewModel(),
-    dataViewModel: DataViewModel = koinViewModel(),
+    taskModel: TaskScreenModel,
+    noteAndTodoModel: NoteAndTaskScreenModel,
+    dataModel: DataScreenModel,
     dataStoreVM: DataStoreVM = koinViewModel(),
     linkVM: LinkVM = koinViewModel(),
     noteAndLinkVM: NoteAndLinkVM = koinViewModel(),
     noteEntity: Note,
-    navController: NavController,
     screen: Screens,
     homeSelectionState: MutableState<Boolean>?,
     trashSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Data>?
 ) {
-    val ctx = LocalContext.current
+    val context = LocalContext.current
+    val navigator = LocalNavigator.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
     val note = noteEntity.dataEntity
     val labels = noteEntity.tagEntities
-    val internalPath = ctx.filesDir.path
+    val internalPath = context.filesDir.path
 
-    val observeTodoList = remember(taskViewModel, taskViewModel::getAllTaskList).collectAsState()
+    val observeTodoList = remember(taskModel, taskModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
-        remember(noteAndTodoVM, noteAndTodoVM::getAllNotesAndTask).collectAsState()
+        remember(noteAndTodoModel, noteAndTodoModel::getAllNotesAndTask).collectAsState()
 
     val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
     val observerNoteAndLink =
         remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
-    val mediaPath = ctx.filesDir.path + "/$REC_DIR/" + note.uid + "." + MP3
+    val mediaPath = context.filesDir.path + "/$REC_DIR/" + note.uid + "." + MP3
     val imagePath = "$internalPath/$IMG_DIR/${note.uid}.$JPEG"
 
     var todoListState by remember { mutableStateOf(false) }
@@ -182,21 +188,21 @@ private fun Card(
                     selectedNotes?.add(note)
                 }
             ) {
-                sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
+                sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
 
                 if (screen == HOME_SCREEN && !homeSelectionState?.value!!) {
-                    navController.navigate(
-                        route = EDIT_ROUTE + "/" +
-                                note.uid + "/" +
-                                city.zouitel.logic.codeUrl.invoke(note.title) + "/" +
-                                city.zouitel.logic.codeUrl.invoke(note.description) + "/" +
-                                note.color + "/" +
-                                note.textColor + "/" +
-                                note.priority + "/" +
-                                note.audioDuration + "/" +
-                                note.reminding
+                    navigator?.push(
+                        EditScreen(
+                            note.uid,
+                            city.zouitel.logic.codeUrl.invoke(note.title),
+                            city.zouitel.logic.codeUrl.invoke(note.description),
+                            note.color,
+                            note.textColor,
+                            note.priority,
+                            note.audioDuration,
+                            note.reminding
+                        )
                     )
-
                 } else if (screen == DELETED_SCREEN && !trashSelectionState?.value!!) {
                     /*do nothing.*/
                 } else {
@@ -238,7 +244,7 @@ private fun Card(
         // display the image.
         when (screen) {
             HOME_SCREEN, DELETED_SCREEN -> {
-                ImageDisplayed(media = dataViewModel::imageDecoder.invoke(ctx, note.uid))
+                ImageDisplayed(media = dataModel::imageDecoder.invoke(context, note.uid))
             }
             else -> { // Timber.tag(TAG).d("")
             }
@@ -298,7 +304,7 @@ private fun Card(
         ) {
             if (screen == DELETED_SCREEN) {
                 IconButton(onClick = {
-                    dataViewModel.editData(
+                    dataModel.editData(
                         Data(
                             title = note.title,
                             description = note.description,
@@ -406,7 +412,7 @@ private fun Card(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(selected = todo.isDone, onClick = {
-                                taskViewModel.updateTotoItem(
+                                taskModel.updateTotoItem(
                                     Task(
                                         id = todo.id,
                                         item = todo.item,

@@ -13,14 +13,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import city.zouitel.navigation.about_screen.AboutScreen
+import city.zouitel.navigation.deleted_screen.RemovedScreen
+import city.zouitel.navigation.home_screen.HomeScreen
+import city.zouitel.navigation.settings_screen.Settings
 import city.zouitel.navigation.sound
-import city.zouitel.systemDesign.Cons.ABOUT_ROUTE
 import city.zouitel.systemDesign.Cons.APP_NAME
-import city.zouitel.systemDesign.Cons.HOME_ROUTE
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.Cons.SETTING_ROUTE
-import city.zouitel.systemDesign.Cons.TAG_ROUTE
-import city.zouitel.systemDesign.Cons.TRASH_ROUTE
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.COMMENT_EXCLAMATION
@@ -31,24 +32,24 @@ import city.zouitel.systemDesign.Icons.SHARE_ICON
 import city.zouitel.systemDesign.Icons.TAGS_ICON
 import city.zouitel.systemDesign.Icons.REMOVE_ICON
 import city.zouitel.systemDesign.sharApp
-import city.zouitel.tags.viewmodel.TagViewModel
+import city.zouitel.tags.viewmodel.TagScreenModel
 import city.zouitel.tags.model.Tag
+import city.zouitel.tags.ui.TagsScreen
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationDrawer(
-    tagViewModel: TagViewModel = koinViewModel(),
+    tagModel: TagScreenModel,
     dataStoreVM: DataStoreVM = koinViewModel(),
     drawerState: DrawerState,
-    navController: NavController,
     searchTitle: MutableState<String>?,
     searchTagEntity: MutableState<Tag>?
 ) {
     val context = LocalContext.current
-    val observeLabels = remember(tagViewModel,tagViewModel::getAllLTags).collectAsState()
+    val navigator = LocalNavigator.currentOrThrow
+    val observeLabels = remember(tagModel,tagModel::getAllLTags).collectAsState()
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
     val scope = rememberCoroutineScope()
 
@@ -65,7 +66,7 @@ fun NavigationDrawer(
                     fontSize = 30.sp,
                     modifier = Modifier.padding(10.dp)
                 )
-                Divider()
+                HorizontalDivider()
             }
             item {
                 NavigationDrawerItem(
@@ -74,15 +75,12 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                        with(navController) {
-                            navigate(HOME_ROUTE)
-                            clearBackStack(HOME_ROUTE)
-                        }
+                        navigator.push(HomeScreen())
                     }
                 )
             }
             item {
-                Divider()
+                HorizontalDivider()
             }
 
             item {
@@ -92,10 +90,7 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                        with(navController) {
-                            navigate("$TAG_ROUTE/${null}")
-                            clearBackStack("$TAG_ROUTE/${null}")
-                        }
+                        navigator.push(TagsScreen())
                     }
                 )
             }
@@ -133,7 +128,7 @@ fun NavigationDrawer(
             }
 
             item {
-                Divider()
+                HorizontalDivider()
             }
 
             item {
@@ -143,10 +138,7 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                        with(navController) {
-                            navigate(SETTING_ROUTE)
-                            clearBackStack(SETTING_ROUTE)
-                        }
+                        navigator.push(Settings())
                     }
                 )
             }
@@ -158,16 +150,13 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                        with(navController) {
-                            navigate(TRASH_ROUTE)
-                            clearBackStack(TRASH_ROUTE)
-                        }
+                        navigator.push(RemovedScreen())
                     }
                 )
             }
 
             item {
-                Divider()
+                HorizontalDivider()
                 NavigationDrawerItem(
                     label = { Text("Share This App") },
                     icon = { Icon(painterResource(SHARE_ICON), null) },
@@ -202,10 +191,7 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                        with(navController) {
-                            navigate(ABOUT_ROUTE)
-                            clearBackStack(ABOUT_ROUTE)
-                        }
+                        navigator.push(AboutScreen())
                     }
                 )
             }
