@@ -38,7 +38,7 @@ internal fun Project.configureAndroidApplication(
                 isEnable = true
                 reset()
                 include("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
-                isUniversalApk = false
+                isUniversalApk = true
             }
         }
 

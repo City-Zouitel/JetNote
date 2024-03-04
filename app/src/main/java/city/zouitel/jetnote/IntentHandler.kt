@@ -17,14 +17,13 @@ internal interface IntentHandler: CoroutineScope {
         intent: Intent,
         context: Context,
         navHC: NavHostController,
-        navigator: Navigator,
+        navigator: Navigator?,
     ) {
         intent.apply {
             if (action == Intent.ACTION_SEND && type == "text/plain") {
                 getStringExtra(Intent.EXTRA_TEXT)?.let {
                     launch {
-//                        navHC.navigate("${Cons.ADD_ROUTE}/${UUID.randomUUID()}/${codeUrl(it)}")
-                        navigator.push(AddScreen(UUID.randomUUID().toString(), codeUrl(it)))
+                        navigator?.push(AddScreen(UUID.randomUUID().toString(), codeUrl(it)))
                     }
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 }
@@ -33,8 +32,7 @@ internal interface IntentHandler: CoroutineScope {
                 if (extras?.containsKey("new_note_shortcut") == true) {
                     getBooleanExtra("new_note_shortcut", false)
                     launch {
-//                        navHC.navigate("${Cons.ADD_ROUTE}/${UUID.randomUUID()}/${Cons.NUL}")
-                        navigator.push(AddScreen(UUID.randomUUID().toString()))
+                        navigator?.push(AddScreen(UUID.randomUUID().toString()))
                     }
                 }
                 if (extras?.containsKey("quick_note") == true) {

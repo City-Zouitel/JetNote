@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.icu.util.Calendar
 import android.net.Uri
 import android.text.format.DateFormat
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -21,9 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text2.BasicTextField2
-import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
@@ -36,10 +34,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,11 +61,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -91,13 +83,13 @@ import city.zouitel.note.model.Data
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
 import city.zouitel.recoder.ui.RecordingNote
 import city.zouitel.reminder.ui.RemindingNote
+import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.Cons.MP3
 import city.zouitel.systemDesign.Cons.NON
-import city.zouitel.systemDesign.Cons.NUL
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
@@ -107,7 +99,6 @@ import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.OUT_LINE_VARIANT
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.SoundEffect
-import city.zouitel.systemDesign.decodeUrl
 import city.zouitel.systemDesign.findUrlLink
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
@@ -166,9 +157,10 @@ data class AddScreen(
         val isTitleFieldFocused = remember { mutableStateOf(false) }
         val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
-        val textFieldState = rememberTextFieldState()
+        val titleState = rememberTextFieldState()
+        val descriptionState = rememberTextFieldState()
 
-        val titleState = rememberSaveable { mutableStateOf<String?>(null) }
+//        val titleState = rememberSaveable { mutableStateOf<String?>(null) }
         val backgroundColor = getMatColor(SURFACE).toArgb()
         val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
         val textColor = contentColorFor(getMatColor(SURFACE)).toArgb()
@@ -203,11 +195,11 @@ data class AddScreen(
         var imageUriState by remember { mutableStateOf<Uri?>(File(imageFile).toUri()) }
         val img by rememberSaveable { mutableStateOf(photoState) }
 
-        val descriptionState = rememberSaveable {
-            mutableStateOf(
-                if (description == NUL) null else decodeUrl(description)
-            )
-        }
+//        val descriptionState = rememberSaveable {
+//            mutableStateOf(
+//                if (description == NUL) null else decodeUrl(description)
+//            )
+//        }
 
         val chooseImageLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
@@ -240,8 +232,8 @@ data class AddScreen(
 
                         dataModel.addData(
                             Data(
-                                title = if (titleState.value.isNullOrBlank()) null else titleState.value,
-                                description = if (descriptionState.value.isNullOrBlank()) null else descriptionState.value,
+                                title = if (titleState.text.isBlank()) null else titleState.text.toString(),
+                                description = if (descriptionState.text.isBlank()) null else descriptionState.text.toString(),
                                 priority = priorityState.value,
                                 uid = id,
                                 reminding = remindingValue.longValue,
@@ -270,12 +262,14 @@ data class AddScreen(
                     backgroundColorState = backgroundColorState,
                     textColorState = textColorState,
                     priorityColorState = priorityState,
-                    titleFieldState = titleState,
-                    descriptionFieldState = descriptionState,
-                    isTitleFieldSelected = isTitleFieldFocused,
-                    isDescriptionFieldSelected = isDescriptionFieldFocused,
+//                    titleFieldState = titleState,
+//                    descriptionFieldState = descriptionState,
+//                    isTitleFieldSelected = isTitleFieldFocused,
+//                    isDescriptionFieldSelected = isDescriptionFieldFocused,
                     remindingValue = remindingValue,
-                    textState = textFieldState
+                    titleState = Pair(titleState, isTitleFieldFocused.value),
+                    descriptionState = descriptionState,
+//                    isTitleState = isTitleFieldFocused
                 )
             }
         ) {
@@ -289,8 +283,8 @@ data class AddScreen(
                 RemindingNote(
                     dialogState = remindingDialogState,
                     remindingValue = remindingValue,
-                    title = titleState.value,
-                    message = descriptionState.value,
+                    title = titleState.text.toString(),
+                    message = descriptionState.text.toString(),
                     uid = id
                 )
             }
@@ -308,91 +302,130 @@ data class AddScreen(
 
                 // The Title.
                 item {
-                    OutlinedTextField(
-                        value = titleState.value ?: "",
-                        onValueChange = { titleState.value = it },
+                    CommonTextField(
+                        state = titleState,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 20.dp)
+                            .padding(10.dp)
+                            .height(30.dp)
                             .focusRequester(focusRequester)
                             .onFocusEvent {
                                 isTitleFieldFocused.value = it.isFocused
                             },
-                        placeholder = {
-                            Text("Title", color = Color.Gray, fontSize = 24.sp)
-                        },
-                        textStyle = TextStyle(
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Normal,
-                            fontFamily = FontFamily.Default,
-                            color = Color(textColorState.intValue)
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Sentences,
-                            autoCorrect = false,
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Next
-                        ),
+
+                        placeholder = "Title",
+                        textSize = 24,
+                        textColor = textColorState.intValue,
+                        imeAction = ImeAction.Next,
                         keyboardActions = KeyboardActions(
-                            onNext = {
-                                keyboardManager.moveFocus(FocusDirection.Next)
-                            }
-                        ),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedTextColor = contentColorFor(
-                                backgroundColor = Color(
-                                    backgroundColorState.intValue
-                                )
-                            )
+                            onNext = { keyboardManager.moveFocus(FocusDirection.Next) }
                         )
                     )
+//                    OutlinedTextField(
+//                        value = titleState.value ?: "",
+//                        onValueChange = { titleState.value = it },
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(top = 20.dp)
+//                            .focusRequester(focusRequester)
+//                            .onFocusEvent {
+//                                isTitleFieldFocused.value = it.isFocused
+//                            },
+//                        placeholder = {
+//                            Text("Title", color = Color.Gray, fontSize = 24.sp)
+//                        },
+//                        textStyle = TextStyle(
+//                            fontSize = 24.sp,
+//                            fontWeight = FontWeight.Normal,
+//                            fontFamily = FontFamily.Default,
+//                            color = Color(textColorState.intValue)
+//                        ),
+//                        keyboardOptions = KeyboardOptions(
+//                            capitalization = KeyboardCapitalization.Sentences,
+//                            autoCorrect = false,
+//                            keyboardType = KeyboardType.Text,
+//                            imeAction = ImeAction.Next
+//                        ),
+//                        keyboardActions = KeyboardActions(
+//                            onNext = {
+//                                keyboardManager.moveFocus(FocusDirection.Next)
+//                            }
+//                        ),
+//                        colors = TextFieldDefaults.outlinedTextFieldColors(
+//                            focusedBorderColor = Color.Transparent,
+//                            unfocusedBorderColor = Color.Transparent,
+//                            focusedTextColor = contentColorFor(
+//                                backgroundColor = Color(
+//                                    backgroundColorState.intValue
+//                                )
+//                            )
+//                        )
+//                    )
                 }
 
                 // The Description.
                 item {
-                    OutlinedTextField(
-                        value = descriptionState.value ?: "",
-                        onValueChange = {
-                            descriptionState.value = it
-
-                        },
+                    CommonTextField(
+                        state = descriptionState,
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .padding(10.dp)
+                            .height(60.dp)
                             .onFocusEvent {
                                 isDescriptionFieldFocused.value = it.isFocused
                                 focusState = it.isFocused
                             },
-                        placeholder = {
-                            Text("Note", color = Color.Gray, fontSize = 19.sp)
-                        },
-                        textStyle = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Normal,
-                            fontFamily = FontFamily.Default,
-                            color = Color(textColorState.intValue)
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Sentences,
-                            autoCorrect = false,
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Default
-                        ),
+                        placeholder = "Note",
+                        textSize = 19,
+                        textColor = textColorState.intValue,
+                        imeAction = ImeAction.Done,
                         keyboardActions = KeyboardActions(
                             onDone = {
                                 keyboardController?.hide()
                                 keyboardManager.clearFocus()
                             }
-                        ),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent
                         )
                     )
+
+//                    OutlinedTextField(
+//                        value = descriptionState.value ?: "",
+//                        onValueChange = {
+//                            descriptionState.value = it
+//
+//                        },
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .onFocusEvent {
+//                                isDescriptionFieldFocused.value = it.isFocused
+//                                focusState = it.isFocused
+//                            },
+//                        placeholder = {
+//                            Text("Note", color = Color.Gray, fontSize = 19.sp)
+//                        },
+//                        textStyle = TextStyle(
+//                            fontSize = 18.sp,
+//                            fontWeight = FontWeight.Normal,
+//                            fontFamily = FontFamily.Default,
+//                            color = Color(textColorState.intValue)
+//                        ),
+//                        keyboardOptions = KeyboardOptions(
+//                            capitalization = KeyboardCapitalization.Sentences,
+//                            autoCorrect = false,
+//                            keyboardType = KeyboardType.Text,
+//                            imeAction = ImeAction.Default
+//                        ),
+//                        keyboardActions = KeyboardActions(
+//                            onDone = {
+//                                keyboardController?.hide()
+//                                keyboardManager.clearFocus()
+//                            }
+//                        ),
+//                        colors = TextFieldDefaults.outlinedTextFieldColors(
+//                            focusedBorderColor = Color.Transparent,
+//                            unfocusedBorderColor = Color.Transparent
+//                        )
+//                    )
                 }
 
-                // display the media player.
+//                 display the media player.
                 item {
                     Spacer(modifier = Modifier.height(18.dp))
                     if (
@@ -405,7 +438,7 @@ data class AddScreen(
 
                 // Link display.
                 item {
-                    findUrlLink(descriptionState.value)?.let { url ->
+                    findUrlLink(descriptionState.text.toString())?.let { url ->
                         CacheLinks(
                             linkVM = linkVM,
                             noteAndLinkVM = noteAndLinkVM,
@@ -547,16 +580,6 @@ data class AddScreen(
                             .fillMaxWidth()
                             .height(300.dp)
                     )
-                }
-
-                item {
-//                    BasicTextField2(
-//                        state = textFieldState,
-//                        modifier = Modifier
-//                            .padding(15.dp)
-//                            .fillMaxWidth()
-//                            .background(Color.LightGray)
-//                    )
                 }
             }
         }

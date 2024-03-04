@@ -60,12 +60,14 @@ fun AddEditBottomBar(
     backgroundColorState: MutableState<Int>,
     textColorState: MutableState<Int>,
     priorityColorState: MutableState<String>,
-    titleFieldState: MutableState<String?>,
-    descriptionFieldState: MutableState<String?>,
-    isTitleFieldSelected: MutableState<Boolean>,
-    isDescriptionFieldSelected: MutableState<Boolean>,
+//    titleFieldState: MutableState<String?>,
+//    descriptionFieldState: MutableState<String?>,
+//    isTitleFieldSelected: MutableState<Boolean>,
+//    isDescriptionFieldSelected: MutableState<Boolean>,
     remindingValue: MutableLongState,
-    textState: TextFieldState
+    titleState: Pair<TextFieldState?, Boolean>,
+    descriptionState: TextFieldState?,
+//    isTitleState: MutableState<Boolean>
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
@@ -170,11 +172,13 @@ fun AddEditBottomBar(
 
                 // undo
                 UndoRedo(
-                    titleFieldState = titleFieldState,
-                    descriptionFieldState = descriptionFieldState,
-                    isTitleFieldSelected = isTitleFieldSelected,
-                    isDescriptionFieldSelected = isDescriptionFieldSelected,
-                    textState = textState
+//                    titleFieldState = titleFieldState,
+//                    descriptionFieldState = descriptionFieldState,
+//                    isTitleFieldSelected = isTitleFieldSelected,
+//                    isDescriptionFieldSelected = isDescriptionFieldSelected,
+                    titleState = Pair(titleState.first, titleState.second),
+                    descriptionState = descriptionState,
+//                    isTitleState = isTitleState
                 )
             }
         }

@@ -27,7 +27,7 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
         WindowCompat.setDecorFitsSystemWindows(window,false)
         setContent {
             val navHostController = rememberNavController()
-            val navigator = LocalNavigator.currentOrThrow
+            val navigator = LocalNavigator.current
 
             intentHandler(intent, this@NoteActivity, navHostController, navigator)
 
