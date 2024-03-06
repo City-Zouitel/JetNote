@@ -66,7 +66,7 @@ fun Opensource(
         )
     ) {
         Row(
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 4.dp)

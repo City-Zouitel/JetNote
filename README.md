@@ -106,7 +106,7 @@ WorkManager is the recommended solution for persistent work. Work is persistent 
           *****************************      *****************************
 ```
 
-### Check it out [Project manager](https://github.com/orgs/City-Zouitel/projects/1/views/1) to see what's going on and what's comming in this project.
+### Check it out [Project manager](https://github.com/orgs/City-Zouitel/projects/1/views/1) to see what's going on and what's coming in this project.
 
 ## License
 ```text

@@ -45,7 +45,7 @@ fun EraseDialog(
         },
         dismissButton = {
             ClickableText(
-                text = AnnotatedString("Cansel"),
+                text = AnnotatedString("Cancel"),
                 style = TextStyle(
                     color = getMaterialColor(SURFACE_TINT),
                     fontSize = 17.sp
@@ -60,7 +60,7 @@ fun EraseDialog(
             Text(text = "Empty Notes?")
         },
         text = {
-            Text(text = "All notes is trash will be permanently deleted.")
+            Text(text = "All notes in trash will be permanently deleted.")
         }
     )
 }
