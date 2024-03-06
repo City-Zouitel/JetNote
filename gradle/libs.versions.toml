@@ -34,7 +34,7 @@ dependencyanalysis = "1.30.0"
 
 #KotlinX.
 serialization = "1.6.2"
-coroutines = "1.7.3"
+coroutines = "1.8.0"
 
 #Koin.
 koin-core = "3.5.3"
@@ -62,7 +62,7 @@ camerax = "1.3.1"
 
 #Coil
 coil-compose = "2.6.0"
-coil-svg = "2.5.0"
+coil-svg = "2.6.0"
 
 #License.
 license = "10.9.2"
