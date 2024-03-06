@@ -47,3 +47,4 @@ include(
     ":services:shortcuts"
 )
 include(":init")
+include(":root")

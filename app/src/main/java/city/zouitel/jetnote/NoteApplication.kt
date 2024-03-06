@@ -13,6 +13,7 @@ import city.zouitel.quicknote.di.quickNoteKoinModule
 import city.zouitel.recoder.di.recorderKoinModule
 import city.zouitel.reminder.di.reminderKoinModule
 import city.zouitel.repository.di.repositoryKoinModule
+import city.zouitel.root.rootKoinModule
 import city.zouitel.systemDesign.di.datastoreVMKoinModule
 import city.zouitel.tags.di.tagsKoinModule
 import city.zouitel.tasks.di.tasksKoinModule
@@ -24,6 +25,7 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+import kotlin.system.exitProcess
 
 class NoteApplication: Application(), KoinComponent {
 
@@ -49,7 +51,8 @@ class NoteApplication: Application(), KoinComponent {
                 notificationKoinModule,
                 datastoreVMKoinModule,
                 navigationKoinModule,
-                initializerKoinModule
+                initializerKoinModule,
+                rootKoinModule
             )
         }
 

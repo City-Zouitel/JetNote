@@ -18,6 +18,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -40,6 +41,7 @@ dependencies {
     implementation(projects.services.shortcuts)
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
+    implementation(projects.root)
     api(projects.ui.navigation)
 
     //Lifecycle.

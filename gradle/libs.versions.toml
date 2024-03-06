@@ -77,7 +77,7 @@ global-exception = "1.0.1"
 url-preview = "1.0.1"
 beetle = "2.0.1"
 sqlcipher = "4.5.4"
-waveslider = "0.0.3"
+#waveslider = "0.0.3"
 audiowaveform = "1.1.2"
 amplituda = "2.2.2"
 #android-startup = "1.1.0"
@@ -177,7 +177,7 @@ swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
 #globalexception = { module = "com.github.emirhankolver:GlobalExceptionHandler", version.ref = "global-exception" }
 sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
 sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "sqlcipher" }
-waveslider = { module = "com.github.galaxygoldfish:waveslider", version.ref = "waveslider" }
+#waveslider = { module = "com.github.galaxygoldfish:waveslider", version.ref = "waveslider" }
 audiowaveform = { module = "com.github.lincollincol:compose-audiowaveform", version.ref = "audiowaveform" }
 amplituda = { module = "com.github.lincollincol:amplituda", version.ref = "amplituda" }
 #android-startup = { module = "io.github.idisfkj:android-startup", version.ref = "android-startup" }

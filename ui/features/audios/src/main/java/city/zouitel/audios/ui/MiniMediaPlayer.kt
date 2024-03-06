@@ -20,11 +20,10 @@ import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons
-import com.galaxygoldfish.waveslider.WaveSlider
-import com.galaxygoldfish.waveslider.WaveSliderDefaults
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import java.io.File
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
@@ -34,7 +33,7 @@ fun MiniMediaPlayer(
     localMediaUid: String?
 ) {
     val context = LocalContext.current
-    val mediaFile = exoViewModule.rec_path.value + localMediaUid + "." + Cons.MP3
+    val mediaFile = exoViewModule.rec_path.value + File.separator +  localMediaUid + "." + Cons.MP3
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
     val currentLayout by datastoreVM.getLayout.collectAsState()
@@ -80,22 +79,16 @@ fun MiniMediaPlayer(
                         tint = MaterialTheme.colorScheme.surfaceVariant
                     )
 
-                    WaveSlider(
+                    LinearProgressIndicator(
+                        progress = { processState },
                         modifier = Modifier
                             .weight(1f)
                             .padding(7.dp),
-                        value = processState,
-                        onValueChange = { processState = it },
-                        animationOptions = WaveSliderDefaults
-                            .animationOptions(
-                                reverseDirection = true
-                            ),
-                        colors = WaveSliderDefaults.colors(
-                            activeTickColor = MaterialTheme.colorScheme.surfaceTint,
-                            thumbColor = MaterialTheme.colorScheme.inverseSurface,
-                            activeTrackColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        trackColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        strokeCap = StrokeCap.Round
                     )
+
                 } else {
                     Box(
                         contentAlignment = Alignment.Center
@@ -113,7 +106,7 @@ fun MiniMediaPlayer(
                         )
 
                         CircularProgressIndicator(
-                            progress = processState,
+                            progress = { processState },
                             color = MaterialTheme.colorScheme.surfaceVariant,
                             strokeCap = StrokeCap.Round
                         )

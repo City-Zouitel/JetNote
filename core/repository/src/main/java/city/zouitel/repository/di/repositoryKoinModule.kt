@@ -70,7 +70,7 @@ val repositoryKoinModule = module {
     singleOf(::TaskRepositoryImpl) bind TaskRepository::class
     singleOf(::WidgetRepositoryImpl) bind WidgetRepository::class
 
-    //
+    //UseCases.
     factoryOf(DataUseCase::AddData)
     factoryOf(DataUseCase::EditData)
     factoryOf(DataUseCase::DeleteData)

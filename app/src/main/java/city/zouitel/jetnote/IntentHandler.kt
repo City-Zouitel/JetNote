@@ -1,11 +1,14 @@
 package city.zouitel.jetnote
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import cafe.adriel.voyager.navigator.Navigator
 import city.zouitel.logic.codeUrl
+import city.zouitel.navigation.home_screen.HomeScreen
 import city.zouitel.note.ui.add_screen.AddScreen
 import city.zouitel.systemDesign.Cons
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +16,7 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 internal interface IntentHandler: CoroutineScope {
+
     fun intentHandler(
         intent: Intent,
         context: Context,
@@ -23,7 +27,7 @@ internal interface IntentHandler: CoroutineScope {
             if (action == Intent.ACTION_SEND && type == "text/plain") {
                 getStringExtra(Intent.EXTRA_TEXT)?.let {
                     launch {
-                        navigator?.push(AddScreen(UUID.randomUUID().toString(), codeUrl(it)))
+//                        navigator?.push(AddScreen(UUID.randomUUID().toString(), codeUrl(it)))
                     }
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 }

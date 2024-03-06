@@ -30,6 +30,7 @@
             <option value="$PROJECT_DIR$/core/repository" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/init" />
+            <option value="$PROJECT_DIR$/root" />
             <option value="$PROJECT_DIR$/services" />
             <option value="$PROJECT_DIR$/services/notifications" />
             <option value="$PROJECT_DIR$/services/shortcuts" />

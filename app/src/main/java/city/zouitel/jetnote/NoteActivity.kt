@@ -2,8 +2,10 @@ package city.zouitel.jetnote
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.collectAsState
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -11,16 +13,20 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.links.ui.LinkVM
 import city.zouitel.navigation.home_screen.HomeScreen
+import city.zouitel.note.ui.add_screen.AddScreen
+import city.zouitel.root.RootViewModel
 import city.zouitel.shortcuts.checkNoteActivityShortcut
 import city.zouitel.widget.WidgetReceiver
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.UUID
 import kotlin.coroutines.CoroutineContext
 
 class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
     private val linkViewModel: LinkVM by inject()
+    private val rootViewModel: RootViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +34,18 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
         setContent {
             val navHostController = rememberNavController()
             val navigator = LocalNavigator.current
+            val isDeviceRooted = rootViewModel.isDeviceRooted.collectAsState()
 
-            intentHandler(intent, this@NoteActivity, navHostController, navigator)
+            require(!isDeviceRooted.value) {
+                Toast.makeText(this, "Cannot run JetNote on rooted device!", Toast.LENGTH_SHORT).show()
+            }
+
+            intentHandler(
+                intent,
+                this@NoteActivity,
+                navHostController,
+                navigator
+            )
 
             MainTheme {
                 Navigator(HomeScreen())
