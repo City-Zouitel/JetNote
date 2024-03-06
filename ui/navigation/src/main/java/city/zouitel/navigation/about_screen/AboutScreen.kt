@@ -9,15 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.navigation.getMaterialColor
 import city.zouitel.navigation.navigation_drawer.NavigationDrawer
 import city.zouitel.navigation.top_action_bar.CustomTopAppBar
-import city.zouitel.note.DataScreenModel
 import city.zouitel.tags.viewmodel.TagScreenModel
 
 class AboutScreen: Screen {
@@ -25,7 +22,6 @@ class AboutScreen: Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        val navC: NavController = rememberNavController()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
         val lazyListState = rememberLazyListState()
