@@ -68,7 +68,7 @@ fun RationalDialog(
                     onClick = {
                         showRationalDialog.value = false
                     }) {
-                    Text(text = "Cansel", fontSize = 16.sp)
+                    Text(text = "Cancel", fontSize = 16.sp)
                 }
             },
         )
