@@ -1,6 +1,5 @@
 package city.zouitel.reminder.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,29 +10,21 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.TimePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableLongState
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimeLayout(
     selectedTime: MutableLongState,
+    timeState:TimePickerState,
     timePickerDialog: MutableState<Boolean>,
     onAction: () -> Unit
 ) {
-    val localDT = LocalDateTime.now()
-
-    val timeState = rememberTimePickerState(
-        initialHour = localDT.hour,
-        initialMinute = localDT.minute
-    )
 
     DatePickerDialog(
         onDismissRequest = {

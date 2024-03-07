@@ -17,6 +17,7 @@ import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableLongState
 import androidx.compose.runtime.MutableState
@@ -24,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -38,13 +40,14 @@ import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.CALENDAR_ICON
 import city.zouitel.systemDesign.Icons.CLOCK_ICON
 import city.zouitel.systemDesign.Icons.REFRESH_ICON
-import city.zouitel.systemDesign.Icons.RESET_ICON
 import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.SoundEffect
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,6 +82,12 @@ fun RemindingNote(
         }
     )
 
+    val localDT = LocalDateTime.now()
+    val timeState = rememberTimePickerState(
+        initialHour = localDT.hour,
+        initialMinute = localDT.minute
+    )
+
     val selectedDate = remember { mutableLongStateOf(dateState.selectedDateMillis!!) }
     val selectedTime = remember { mutableLongStateOf(0L) }
 
@@ -94,12 +103,13 @@ fun RemindingNote(
     }
 
     if (timePickerDialog.value) {
-        TimeLayout(selectedTime = selectedTime, timePickerDialog = timePickerDialog) {
+        TimeLayout(selectedTime = selectedTime,timeState=timeState, timePickerDialog = timePickerDialog) {
             sound.makeSound(context, KEY_CLICK, soundEffect.value)
         }
     }
 
-    val formatter = SimpleDateFormat("dd MM yyyy", Locale.ROOT)
+    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
+    val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
 
     AlertDialog(
         onDismissRequest = {
@@ -108,7 +118,7 @@ fun RemindingNote(
         title = {
             Row {
                 AdaptingRow(modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "Add Reminding", fontSize = 25.sp)
+                    Text(text = "Add Reminder", fontSize = 25.sp)
                 }
             }
         },
@@ -124,6 +134,7 @@ fun RemindingNote(
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 20.dp)
@@ -133,7 +144,7 @@ fun RemindingNote(
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "Today", fontSize = 17.sp)
+                        Text(text = dateFormat.format(Date(selectedDate.value)), fontSize = 17.sp)
                     }
                 }
 
@@ -149,6 +160,7 @@ fun RemindingNote(
                     }) {
                     Row(
                         horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 20.dp)
@@ -158,7 +170,7 @@ fun RemindingNote(
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "Pick Time", fontSize = 17.sp)
+                        Text(text = timeFormat.format(Date(selectedTime.value)), fontSize = 17.sp)
                     }
                 }
                     Spacer(modifier = Modifier.height(20.dp))
@@ -174,6 +186,7 @@ fun RemindingNote(
                         }) {
                         Row(
                             horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(start = 20.dp)
@@ -223,7 +236,7 @@ fun RemindingNote(
                     sound.makeSound(context, KEY_CLICK, soundEffect.value)
                     dialogState.value = false
                 }) {
-                Text(text = "Cansel", fontSize = 16.sp)
+                Text(text = "Cancel", fontSize = 16.sp)
             }
         },
         containerColor = getMatColor(SURFACE)

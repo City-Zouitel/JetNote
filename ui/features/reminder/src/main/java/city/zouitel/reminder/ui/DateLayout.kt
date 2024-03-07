@@ -7,17 +7,13 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedIconButton
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import city.zouitel.reminder.utils.Cons.SINGLE_DAY
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -29,7 +25,7 @@ internal fun DateLayout(
     dateDialog: MutableState<Boolean>,
     onAction: () -> Unit
 ) {
-    val formatter = SimpleDateFormat("dd MM yyyy", Locale.ROOT)
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
 
     DatePickerDialog(
         onDismissRequest = {
