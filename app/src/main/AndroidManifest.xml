@@ -36,6 +36,7 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.JetNote">
+
         <profileable
             android:shell="true"
             tools:targetApi="29" />
@@ -74,6 +75,7 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="city.zouitel.quicknote.QuickActivity"
             android:exported="true"
@@ -95,6 +97,7 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
+
         <provider
             android:authorities="${applicationId}.androidx-startup"
             android:name="androidx.startup.InitializationProvider"

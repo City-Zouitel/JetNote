@@ -4,8 +4,8 @@ kotlin = "1.9.22"
 compilesdk-v = "34"
 minsdk-v = "26"
 targetsdk-v = "34"
-code-v = "500"
-name-v = "5.0"
+code-v = "501"
+name-v = "5.0.1"
 compose-v = "1.5.8"
 
 #Android.
@@ -81,6 +81,7 @@ sqlcipher = "4.5.4"
 audiowaveform = "1.1.2"
 amplituda = "2.2.2"
 #android-startup = "1.1.0"
+enigma = "1.0.0.8"
 
 [libraries]
 # Kotlin.
@@ -181,6 +182,7 @@ sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "
 audiowaveform = { module = "com.github.lincollincol:compose-audiowaveform", version.ref = "audiowaveform" }
 amplituda = { module = "com.github.lincollincol:amplituda", version.ref = "amplituda" }
 #android-startup = { module = "io.github.idisfkj:android-startup", version.ref = "android-startup" }
+enigma = { module = "gradle.plugin.chrisney:enigma", version.ref = "enigma" }
 
 [bundles]
 compose = ["ui", "ui-tooling-preview", "material3"]
@@ -194,6 +196,7 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 licenses = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "license" }
+enigma = { id = "com.chrisney.enigma", version.ref = "enigma" }
 
 #Local.
 cityzouitel-androidLibrary = { id = "city.zouitel.android.library", version = "unspecified" }

@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.cityzouitel.androidApplication)
     alias(libs.plugins.ksp)
     alias(libs.plugins.licenses)
-//    id ("com.chrisney.enigma")
+    alias(libs.plugins.enigma)
 }
 
 android {
@@ -27,8 +27,8 @@ android {
     }
 }
 
-//enigma.enabled = true
-//enigma.injectFakeKeys = true
+enigma.enabled = true
+enigma.injectFakeKeys = true
 
 dependencies {
     //Modules.

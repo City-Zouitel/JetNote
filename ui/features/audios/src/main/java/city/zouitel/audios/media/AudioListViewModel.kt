@@ -70,22 +70,6 @@ class AudioListViewModel(
     private fun selectAudio(localAudio: LocalAudio) {
         viewModelScope.launch(Dispatchers.IO) {
             //  navDestination = NavDestination.AudioWaveform.createRoute(localAudio.id)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                runCatching {
-                    val currentPath = Path.of(localAudio.path)
-                    val destinationPath = Path.of("${context.filesDir}/${Cons.REC_DIR}")
-
-                    Files.copy(currentPath, destinationPath, StandardCopyOption.REPLACE_EXISTING)
-                }.onSuccess {
-                    println("""
-                        *************************************************************************
-                        ${File(context.filesDir, Cons.REC_DIR).list()}
-                        *************************************************************************
-                    """)
-                }
-
-            }
         }
     }
     fun clearNavDestination() {

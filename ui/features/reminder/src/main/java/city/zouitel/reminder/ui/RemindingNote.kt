@@ -103,7 +103,7 @@ fun RemindingNote(
     }
 
     if (timePickerDialog.value) {
-        TimeLayout(selectedTime = selectedTime,timeState=timeState, timePickerDialog = timePickerDialog) {
+        TimeLayout(selectedTime = selectedTime, timeState = timeState, timePickerDialog = timePickerDialog) {
             sound.makeSound(context, KEY_CLICK, soundEffect.value)
         }
     }
@@ -144,7 +144,7 @@ fun RemindingNote(
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = dateFormat.format(Date(selectedDate.value)), fontSize = 17.sp)
+                        Text(text = dateFormat.format(Date(selectedDate.longValue)), fontSize = 17.sp)
                     }
                 }
 
@@ -170,7 +170,7 @@ fun RemindingNote(
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = timeFormat.format(Date(selectedTime.value)), fontSize = 17.sp)
+                        Text(text = timeFormat.format(Date(selectedTime.longValue)), fontSize = 17.sp)
                     }
                 }
                     Spacer(modifier = Modifier.height(20.dp))
