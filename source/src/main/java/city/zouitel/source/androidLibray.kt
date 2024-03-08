@@ -1,5 +1,6 @@
 package city.zouitel.source
 
+import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -16,6 +17,15 @@ fun Project.configureAndroidLibrary(
         defaultConfig {
             minSdk = libs.findVersion("minsdk-v").get().requiredVersion.toInt()
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+
+        buildTypes {
+            getByName("release") {
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+            }
         }
 
         packaging {

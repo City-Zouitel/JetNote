@@ -30,7 +30,7 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window,false)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             val navHostController = rememberNavController()
             val navigator = LocalNavigator.current
