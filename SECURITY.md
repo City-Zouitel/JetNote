@@ -19,3 +19,7 @@ SQLCipher is a standalone fork of the SQLite database library that adds 256 bit 
 
 ### [Security Crypto Datastore](https://github.com/osipxd/encrypted-datastore)
 Extensions to store DataStore in EncryptedFile.
+
+### [Enigma](https://github.com/christopherney/Enigma)
+Gradle Plugin - Obfuscator Strings Encryption (Android/Java)
+This project is a simple Gradle plugin to help you to encrypt all String values of your Android Java code at the compilation time.
