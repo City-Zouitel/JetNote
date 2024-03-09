@@ -22,7 +22,8 @@ include(":app")
 include(
     ":core:database",
     ":core:repository",
-    ":core:datastore"
+    ":core:datastore",
+    ":core:security"
 )
 include(":domain")
 include(

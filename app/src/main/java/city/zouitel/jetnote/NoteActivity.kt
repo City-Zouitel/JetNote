@@ -15,6 +15,7 @@ import city.zouitel.links.ui.LinkVM
 import city.zouitel.navigation.home_screen.HomeScreen
 import city.zouitel.note.ui.add_screen.AddScreen
 import city.zouitel.root.RootViewModel
+import city.zouitel.root.model.Root
 import city.zouitel.shortcuts.checkNoteActivityShortcut
 import city.zouitel.widget.WidgetReceiver
 import kotlinx.coroutines.*
@@ -36,7 +37,7 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
             val navigator = LocalNavigator.current
             val isDeviceRooted = rootViewModel.isDeviceRooted.collectAsState()
 
-            require(!isDeviceRooted.value) {
+            require(!isDeviceRooted.value.getOrNull()?.isDeviceRooted!!) {
                 Toast.makeText(this, "Cannot run JetNote on rooted device!", Toast.LENGTH_SHORT).show()
             }
 

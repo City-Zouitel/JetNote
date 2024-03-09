@@ -127,7 +127,7 @@ data class EditScreen(
     val reminding: Long = 0
 ): Screen, KoinComponent {
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     override fun Content() {

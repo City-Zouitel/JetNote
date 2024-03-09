@@ -14,7 +14,7 @@ internal fun hideSystemUI(window: Window) {
         controller.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
-
+}
     /*
     fun showSystemUI() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
@@ -46,4 +46,3 @@ internal fun hideSystemUI(window: Window) {
         }
     }
     */
-}

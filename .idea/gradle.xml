@@ -28,6 +28,7 @@
             <option value="$PROJECT_DIR$/core/database" />
             <option value="$PROJECT_DIR$/core/datastore" />
             <option value="$PROJECT_DIR$/core/repository" />
+            <option value="$PROJECT_DIR$/core/security" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/init" />
             <option value="$PROJECT_DIR$/root" />

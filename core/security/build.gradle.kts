@@ -3,9 +3,9 @@ plugins {
 }
 
 android {
-    namespace = "city.zouitel.root"
+    namespace = "city.zouitel.security"
 }
 
 dependencies {
-    implementation(projects.domain)
+    implementation(projects.core.repository)
 }

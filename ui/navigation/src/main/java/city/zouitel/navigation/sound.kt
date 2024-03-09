@@ -11,19 +11,3 @@ import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.SoundEffect
 
 val sound = SoundEffect()
-
-internal sealed class State {
-
-    @Stable
-    class Sound(
-        private val viewModel: DataStoreVM
-    ): State() {
-        val soundState : @Composable () -> Unit get() = {
-
-            if (remember(viewModel, viewModel::getSound).collectAsState().value) {
-                (LocalContext.current.getSystemService(Context.AUDIO_SERVICE) as AudioManager)
-                    .playSoundEffect(AudioManager.FX_KEY_CLICK, 1f)
-            }
-        }
-    }
-}

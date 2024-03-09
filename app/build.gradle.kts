@@ -22,7 +22,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
         }
     }
 }
@@ -35,6 +34,7 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.datastore)
     implementation(projects.core.repository)
+    implementation(projects.core.security)
     implementation(projects.domain)
     implementation(projects.init)
     implementation(projects.services.notifications)

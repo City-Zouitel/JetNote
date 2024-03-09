@@ -6,6 +6,7 @@ import city.zouitel.domain.repository.NoteAndLinkRepository
 import city.zouitel.domain.repository.NoteAndTagRepository
 import city.zouitel.domain.repository.NoteAndTaskRepository
 import city.zouitel.domain.repository.NoteRepository
+import city.zouitel.domain.repository.RootRepository
 import city.zouitel.domain.repository.TagRepository
 import city.zouitel.domain.repository.TaskRepository
 import city.zouitel.domain.repository.WidgetRepository
@@ -15,6 +16,7 @@ import city.zouitel.domain.usecase.NoteAndLinkUseCase
 import city.zouitel.domain.usecase.NoteAndTagUseCase
 import city.zouitel.domain.usecase.NoteAndTaskUseCase
 import city.zouitel.domain.usecase.NoteUseCase
+import city.zouitel.domain.usecase.RootUseCase
 import city.zouitel.domain.usecase.TagUseCase
 import city.zouitel.domain.usecase.TaskUseCase
 import city.zouitel.domain.usecase.WidgetUseCase
@@ -24,6 +26,7 @@ import city.zouitel.repository.mapper.NoteAndLinkMapper
 import city.zouitel.repository.mapper.NoteAndTagMapper
 import city.zouitel.repository.mapper.NoteAndTaskMapper
 import city.zouitel.repository.mapper.NoteMapper
+import city.zouitel.repository.mapper.RootMapper
 import city.zouitel.repository.mapper.TagMapper
 import city.zouitel.repository.mapper.TaskMapper
 import city.zouitel.repository.mapper.WidgetMapper
@@ -33,6 +36,7 @@ import city.zouitel.repository.repositoryImpl.NoteAndLinkRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteAndTagRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteAndTaskRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteRepositoryImpl
+import city.zouitel.repository.repositoryImpl.RootRepositoryImpl
 import city.zouitel.repository.repositoryImpl.TagRepositoryImpl
 import city.zouitel.repository.repositoryImpl.TaskRepositoryImpl
 import city.zouitel.repository.repositoryImpl.WidgetRepositoryImpl
@@ -51,6 +55,7 @@ val repositoryKoinModule = module {
     factoryOf(::NoteAndLinkMapper)
     factoryOf(::NoteAndTagMapper)
     factoryOf(::NoteAndTaskMapper)
+    factoryOf(::RootMapper)
     factory {
         NoteMapper(get(), get(), get(), get())
     }
@@ -69,6 +74,7 @@ val repositoryKoinModule = module {
     singleOf(::TagRepositoryImpl) bind TagRepository::class
     singleOf(::TaskRepositoryImpl) bind TaskRepository::class
     singleOf(::WidgetRepositoryImpl) bind WidgetRepository::class
+    singleOf(::RootRepositoryImpl) bind RootRepository::class
 
     //UseCases.
     factoryOf(DataUseCase::AddData)
@@ -111,4 +117,6 @@ val repositoryKoinModule = module {
     factoryOf(TaskUseCase::GetAllTaskItems)
 
     factoryOf(WidgetUseCase::GetAllWidgetMainEntityById)
+
+    factoryOf(RootUseCase::RootUseCase)
 }
