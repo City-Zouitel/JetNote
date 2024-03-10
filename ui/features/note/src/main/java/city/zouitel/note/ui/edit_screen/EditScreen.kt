@@ -21,21 +21,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ElevatedAssistChip
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -59,11 +55,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -86,13 +78,13 @@ import city.zouitel.note.model.Data
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
 import city.zouitel.recoder.ui.RecordingNote
 import city.zouitel.reminder.ui.RemindingNote
+import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.Cons.MP3
 import city.zouitel.systemDesign.Cons.NON
-import city.zouitel.systemDesign.Cons.NUL
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
@@ -101,7 +93,6 @@ import city.zouitel.systemDesign.ImageDisplayed
 import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.OUT_LINE_VARIANT
 import city.zouitel.systemDesign.SoundEffect
-import city.zouitel.systemDesign.decodeUrl
 import city.zouitel.systemDesign.findUrlLink
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
@@ -139,14 +130,19 @@ data class EditScreen(
         val linkVM: LinkVM by inject()
         val noteAndLinkVM: NoteAndLinkVM by inject()
 
-        val titleState = (if (title == NUL || title.isNullOrEmpty()) null else decodeUrl.invoke(title))?.let { rememberTextFieldState(initialText = it) }
-        val descriptionState = (if (description == NUL) null else decodeUrl.invoke(description))?.let { rememberTextFieldState(initialText = it) }
+//        val titleState = (if (title == NUL || title.isNullOrEmpty()) null else decodeUrl.invoke(title))?.let { rememberTextFieldState(initialText = it) }
+        val titleState = rememberTextFieldState()
 
-        val ctx = LocalContext.current
+//        val descriptionState = (if (description == NUL) null else decodeUrl.invoke(description))?.let { rememberTextFieldState(initialText = it) }
+        val descriptionState = rememberTextFieldState()
+
+        var focusState by remember { mutableStateOf(false) }
+
+        val context = LocalContext.current
         val navigator = LocalNavigator.current
         val keyboardManager = LocalFocusManager.current
         val keyboardController = LocalSoftwareKeyboardController.current
-        val internalPath = ctx.filesDir.path
+        val internalPath = context.filesDir.path
 
         val focusRequester by lazy { FocusRequester() }
         val getMatColor by lazy { MaterialColors().getMaterialColor }
@@ -230,7 +226,7 @@ data class EditScreen(
         val chooseImageLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
                 imageUriState = it
-                dataModel::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
+                dataModel::decodeBitmapImage.invoke(img, photoState, it!!, context)
                 img.value = photoState.value
                 dataModel::saveImageLocally.invoke(
                     img.value, "$internalPath/$IMG_DIR", "$id.$JPEG"
@@ -247,11 +243,11 @@ data class EditScreen(
                     containerColor = getMatColor(OUT_LINE_VARIANT),
                     contentColor = contentColorFor(backgroundColor = getMatColor(OUT_LINE_VARIANT)),
                     onClick = {
-                        sound.makeSound.invoke(ctx, KEY_STANDARD, thereIsSoundEffect)
+                        sound.makeSound.invoke(context, KEY_STANDARD, thereIsSoundEffect)
                         dataModel.editData(
                             Data(
-                                title = if (titleState?.text.isNullOrBlank()) null else titleState?.text.toString(),
-                                description = if (descriptionState?.text.isNullOrBlank()) null else descriptionState?.text.toString(),
+                                title = if (titleState.text.isBlank()) null else titleState.text.toString(),
+                                description = if (descriptionState.text.isBlank()) null else descriptionState.text.toString(),
                                 priority = priorityState.value,
                                 uid = id,
                                 audioDuration = audioDuration,
@@ -320,6 +316,24 @@ data class EditScreen(
 
                 // The Title.
                 item {
+                    CommonTextField(
+                        state = titleState,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .height(30.dp)
+                            .focusRequester(focusRequester)
+                            .onFocusEvent {
+                                isTitleFieldFocused.value = it.isFocused
+                            },
+
+                        placeholder = "Title",
+                        textSize = 24,
+                        textColor = textColorState.intValue,
+                        imeAction = ImeAction.Next,
+                        keyboardActions = KeyboardActions(
+                            onNext = { keyboardManager.moveFocus(FocusDirection.Next) }
+                        )
+                    )
 //                    OutlinedTextField(
 //                        value = titleState.value ?: "",
 //                        onValueChange = { titleState.value = it },
@@ -364,6 +378,26 @@ data class EditScreen(
 
                 // The Description.
                 item {
+                    CommonTextField(
+                        state = descriptionState,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .height(60.dp)
+                            .onFocusEvent {
+                                isDescriptionFieldFocused.value = it.isFocused
+                                focusState = it.isFocused
+                            },
+                        placeholder = "Note",
+                        textSize = 19,
+                        textColor = textColorState.intValue,
+                        imeAction = ImeAction.Default,
+                        keyboardActions = KeyboardActions(
+                            /*onDone = {
+                                keyboardController?.hide()
+                                keyboardManager.clearFocus()
+                            }*/
+                        )
+                    )
 //                    OutlinedTextField(
 //                        value = descriptionState.value ?: "",
 //                        onValueChange = {
@@ -407,7 +441,7 @@ data class EditScreen(
                     ) {
                         NormalMediaPlayer(localMediaUid = id)
                         audioDurationState.intValue =
-                            exoViewModule.getMediaDuration(ctx, mediaFile).toInt()
+                            exoViewModule.getMediaDuration(context, mediaFile).toInt()
 
                     }
                 }

@@ -3,7 +3,7 @@ package city.zouitel.root
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import city.zouitel.domain.usecase.RootUseCase
-import city.zouitel.root.base.Mapper
+import city.zouitel.root.mapper.RootMapper
 import city.zouitel.root.model.Root as InRoot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
