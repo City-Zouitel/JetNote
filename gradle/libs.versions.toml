@@ -33,7 +33,7 @@ ksp = "1.9.22-1.0.18"
 dependencyanalysis = "1.30.0"
 
 #KotlinX.
-serialization = "1.6.2"
+serialization = "1.6.3"
 coroutines = "1.8.0"
 
 #Koin.
