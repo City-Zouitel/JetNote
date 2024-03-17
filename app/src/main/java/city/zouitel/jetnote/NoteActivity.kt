@@ -10,18 +10,14 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.links.ui.LinkVM
-import city.zouitel.navigation.home_screen.HomeScreen
-import city.zouitel.note.ui.add_screen.AddScreen
+import city.zouitel.screens.home_screen.HomeScreen
 import city.zouitel.root.RootViewModel
-import city.zouitel.root.model.Root
 import city.zouitel.shortcuts.checkNoteActivityShortcut
 import city.zouitel.widget.WidgetReceiver
 import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.UUID
 import kotlin.coroutines.CoroutineContext
 
 class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {

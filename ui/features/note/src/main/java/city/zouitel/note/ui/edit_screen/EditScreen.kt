@@ -93,6 +93,7 @@ import city.zouitel.systemDesign.ImageDisplayed
 import city.zouitel.systemDesign.MaterialColors
 import city.zouitel.systemDesign.MaterialColors.Companion.OUT_LINE_VARIANT
 import city.zouitel.systemDesign.SoundEffect
+import city.zouitel.systemDesign.decodeUrl
 import city.zouitel.systemDesign.findUrlLink
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
@@ -131,10 +132,10 @@ data class EditScreen(
         val noteAndLinkVM: NoteAndLinkVM by inject()
 
 //        val titleState = (if (title == NUL || title.isNullOrEmpty()) null else decodeUrl.invoke(title))?.let { rememberTextFieldState(initialText = it) }
-        val titleState = rememberTextFieldState()
+        val titleState = rememberTextFieldState(initialText = decodeUrl.invoke(title).orEmpty())
 
 //        val descriptionState = (if (description == NUL) null else decodeUrl.invoke(description))?.let { rememberTextFieldState(initialText = it) }
-        val descriptionState = rememberTextFieldState()
+        val descriptionState = rememberTextFieldState(initialText = decodeUrl.invoke(description).orEmpty())
 
         var focusState by remember { mutableStateOf(false) }
 
@@ -297,8 +298,8 @@ data class EditScreen(
                 RemindingNote(
                     dialogState = remindingDialogState,
                     remindingValue = remindingValue,
-                    title = titleState?.text.toString(),
-                    message = descriptionState?.text.toString(),
+                    title = titleState.text.toString(),
+                    message = descriptionState.text.toString(),
                     uid = id
                 )
             }

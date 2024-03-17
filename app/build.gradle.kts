@@ -42,7 +42,7 @@ dependencies {
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
     implementation(projects.root)
-    api(projects.ui.navigation)
+    api(projects.ui.screens)
 
     //Lifecycle.
     implementation(libs.lifecycle.compose.viewmodel)

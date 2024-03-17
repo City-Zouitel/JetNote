@@ -37,7 +37,7 @@ include(
     ":ui:features:tags",
     ":ui:features:tasks",
     ":ui:features:widget",
-    ":ui:navigation"
+    ":ui:screens"
 )
 include(
     ":common:systemDesign",

@@ -6,7 +6,7 @@ object Cons {
     const val NUL = "null"
     const val NONE = "unspecified"
 
-    const val APP_VERSION = "5.2.1"
+    const val APP_VERSION = "5.2.2"
 
     const val ID = "Id"
     const val TITLE = "Title"

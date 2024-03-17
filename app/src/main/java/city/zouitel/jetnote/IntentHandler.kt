@@ -1,16 +1,11 @@
 package city.zouitel.jetnote
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import cafe.adriel.voyager.navigator.Navigator
-import city.zouitel.logic.codeUrl
-import city.zouitel.navigation.home_screen.HomeScreen
 import city.zouitel.note.ui.add_screen.AddScreen
-import city.zouitel.systemDesign.Cons
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.UUID

@@ -48,7 +48,7 @@
             <option value="$PROJECT_DIR$/ui/features/tags" />
             <option value="$PROJECT_DIR$/ui/features/tasks" />
             <option value="$PROJECT_DIR$/ui/features/widget" />
-            <option value="$PROJECT_DIR$/ui/navigation" />
+            <option value="$PROJECT_DIR$/ui/screens" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

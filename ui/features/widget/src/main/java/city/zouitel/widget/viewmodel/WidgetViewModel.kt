@@ -35,7 +35,6 @@ class WidgetViewModel: ViewModel(), KoinComponent {
                 _allNotesById.value = list.map { note -> mapper.toView(note) }
             }
         }
-
     }
 
     @WorkerThread
