@@ -1,9 +1,16 @@
 package city.zouitel.widget.di
 
-import city.zouitel.widget.viewmodel.WidgetViewModel
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import city.zouitel.widget.mapper.WidgetMapper
+import city.zouitel.widget.viewmodel.WidgetScreenModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val widgetKoinModule = module {
-    viewModelOf(::WidgetViewModel)
+    factory {
+        WidgetMapper(get(), get(), get(), get())
+    }
+
+    factory {
+        WidgetScreenModel(get(), get())
+    }
 }

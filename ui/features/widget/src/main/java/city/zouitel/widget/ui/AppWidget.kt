@@ -14,31 +14,30 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.*
 import androidx.glance.text.Text
 import androidx.glance.unit.ColorProvider
+import cafe.adriel.voyager.core.lifecycle.LocalNavigatorScreenLifecycleProvider
+import cafe.adriel.voyager.core.model.rememberScreenModel
+import cafe.adriel.voyager.core.registry.screenModule
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.domain.model.Note
 import city.zouitel.domain.usecase.WidgetUseCase
-import city.zouitel.widget.viewmodel.WidgetViewModel
+import city.zouitel.widget.model.WidgetNote
+import city.zouitel.widget.viewmodel.WidgetScreenModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class AppWidget: GlanceAppWidget(), KoinComponent {
-
-    private val getAll: WidgetUseCase.GetAllWidgetMainEntityById by inject()
+class AppWidget: GlanceAppWidget(), Screen {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) = provideContent {
-
-        val getAllNotes by getAll().collectAsState(initial = null)
-
-        WidgetListNotes(notes = getAllNotes, context = context)
+        this.Content()
     }
-
     @Composable
-    fun WidgetListNotes(
-        notes: List<Note>?,
-        context: Context,
-        widgetViewModel: WidgetViewModel = koinViewModel(),
-    ) {
-        val getAllNotesById by remember(widgetViewModel, widgetViewModel::allNotesById).collectAsState()
+    override fun Content() {
+        val context = LocalContext.current
+        val widgetModel = getScreenModel<WidgetScreenModel>()
+        val notes: List<WidgetNote>? by remember(widgetModel, widgetModel::allNotesById).collectAsState()
 
         LazyColumn(
             modifier = GlanceModifier
@@ -56,7 +55,7 @@ class AppWidget: GlanceAppWidget(), KoinComponent {
                         kotlin.runCatching {
                             Image(
                                 ImageProvider(
-                                    bitmap = widgetViewModel::imageDecoder.invoke(context, entity.dataEntity.uid)
+                                    bitmap = widgetModel::imageDecoder.invoke(context, entity.dataEntity.uid)
                                 ),
                                 null,
                                 modifier = GlanceModifier

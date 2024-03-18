@@ -4,8 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.WidgetUseCase
 import city.zouitel.systemDesign.Cons
 import city.zouitel.widget.mapper.WidgetMapper
@@ -16,21 +16,20 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.io.File
 
-class WidgetViewModel: ViewModel(), KoinComponent {
-    private val getAllNotes: WidgetUseCase.GetAllWidgetMainEntityById by inject()
-    private val mapper: WidgetMapper by inject()
+class WidgetScreenModel(
+    private val getAllNotes: WidgetUseCase.GetAllWidgetMainEntityById,
+    private val mapper: WidgetMapper
+): ScreenModel {
 
     // for observing the dataEntity changes.
     private val _allNotesById = MutableStateFlow<List<InNote>>(emptyList())
     val allNotesById: StateFlow<List<InNote>>
-        get() = _allNotesById.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+        get() = _allNotesById.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     init {
-        viewModelScope.launch(context = Dispatchers.IO) {
+        screenModelScope.launch(context = Dispatchers.IO) {
             getAllNotes.invoke().collect { list ->
                 _allNotesById.value = list.map { note -> mapper.toView(note) }
             }

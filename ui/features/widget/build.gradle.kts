@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.cityzouitel.androidLibrary)
     alias(libs.plugins.cityzouitel.androidCompose)
+    alias(libs.plugins.cityzouitel.androidNavigation)
 }
 
 android {
@@ -16,8 +17,8 @@ dependencies {
     //AndroidX.
     implementation(libs.constraintlayout)
     implementation(libs.glance)
-    implementation(project(":ui:features:note"))
-    implementation(project(":ui:features:tags"))
-    implementation(project(":ui:features:tasks"))
-    implementation(project(":ui:features:links"))
+    implementation(projects.ui.features.note)
+    implementation(projects.ui.features.tags)
+    implementation(projects.ui.features.tasks)
+    implementation(projects.ui.features.links)
 }
