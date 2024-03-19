@@ -6,7 +6,7 @@ minsdk-v = "26"
 targetsdk-v = "34"
 code-v = "523"
 name-v = "5.2.3"
-compose-v = "1.5.8"
+compose-v = "1.5.10"
 
 #Android.
 core-ktx = "1.12.0"
