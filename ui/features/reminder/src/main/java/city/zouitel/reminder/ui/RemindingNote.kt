@@ -148,7 +148,7 @@ fun RemindingNote(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(15.dp))
 
                 OutlinedIconButton(
                     modifier = Modifier
@@ -170,10 +170,10 @@ fun RemindingNote(
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = timeFormat.format(Date(selectedTime.longValue)), fontSize = 17.sp)
+                        Text(text = "at " + timeFormat.format(Date(selectedTime.longValue)), fontSize = 17.sp)
                     }
                 }
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
 
                     OutlinedIconButton(
                         enabled = dateTime != 0L,
