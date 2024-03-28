@@ -37,7 +37,7 @@ fun TimeLayout(
                 onClick = {
                     onAction.invoke()
                     timePickerDialog.value = false
-                    selectedTime.longValue = (((timeState.hour) * 60 + timeState.minute) * 60 * 1000L)
+                    selectedTime.longValue = (((timeState.hour - 1) * 60 + timeState.minute) * 60 * 1000L)
                 }) {
                 Text(text = "Pick", fontSize = 16.sp)
             }

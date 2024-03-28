@@ -60,6 +60,8 @@ import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.screens.sound
 import city.zouitel.note.ui.edit_screen.EditScreen
+import city.zouitel.screens.normalNotePath
+import city.zouitel.screens.prioritizedNotePath
 import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.Icons.BELL_RING_ICON
 import city.zouitel.tasks.viewmodel.TaskScreenModel
@@ -221,7 +223,7 @@ private fun Card(
                 if (note.priority.equals(NON, true)) {
                     normalNotePath(note)
                 } else {
-                    clipNotePath(note)
+                    prioritizedNotePath(note)
                 }
             },
         shape = AbsoluteRoundedCornerShape(15.dp),

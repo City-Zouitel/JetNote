@@ -17,7 +17,7 @@ import city.zouitel.screens.sound
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons
-import city.zouitel.systemDesign.PopupTip
+import city.zouitel.systemDesign.CommonPopupTip
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -27,13 +27,13 @@ internal fun Open_Drawer(
     dataStoreVM: DataStoreVM = koinViewModel(),
     drawerState: DrawerState,
     ) {
-    val ctx = LocalContext.current
+    val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
 
     val scope = rememberCoroutineScope()
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    PopupTip(message = "Navigation Drawer") {
+    CommonPopupTip(message = "Navigation Drawer") {
         Icon(
             painterResource(Icons.MENU_BURGER_ICON),
             null,
@@ -45,7 +45,7 @@ internal fun Open_Drawer(
                 }
             ) {
                 scope.launch {
-                    sound.makeSound.invoke(ctx, Cons.KEY_CLICK, thereIsSoundEffect.value)
+                    sound.makeSound.invoke(context, Cons.KEY_CLICK, thereIsSoundEffect.value)
                     drawerState.open()
                 }
             }

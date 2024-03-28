@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.Icons
-import city.zouitel.systemDesign.PopupTip
+import city.zouitel.systemDesign.CommonPopupTip
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -21,7 +21,7 @@ fun BroomData(
     ) {
     val haptic = LocalHapticFeedback.current
 
-    PopupTip(message = "Wipe All Notes") { balloonWindow ->
+    CommonPopupTip(message = "Wipe All Notes") { balloonWindow ->
         Icon(
             painterResource(Icons.BROOM_ICON),
             null,

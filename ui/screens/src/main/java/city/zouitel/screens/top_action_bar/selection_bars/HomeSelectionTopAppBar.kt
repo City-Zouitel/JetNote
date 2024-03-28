@@ -16,13 +16,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
-import city.zouitel.systemDesign.AdaptingRow
+import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.COPY_ICON
 import city.zouitel.systemDesign.Icons.SHARE_ICON
 import city.zouitel.systemDesign.Icons.REMOVE_ICON
-import city.zouitel.systemDesign.PopupTip
+import city.zouitel.systemDesign.CommonPopupTip
 import city.zouitel.systemDesign.sharNote
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.viewmodel.TagScreenModel
@@ -69,7 +69,7 @@ fun HomeSelectionTopAppBar(
         navigationIcon = {
             Row {
                 // remove.
-                PopupTip(message = "Remove") {
+                CommonPopupTip(message = "Remove") {
                     Icon(
                         painter = painterResource(id = REMOVE_ICON),
                         contentDescription = null,
@@ -119,7 +119,7 @@ fun HomeSelectionTopAppBar(
                 AnimatedVisibility(visible = selectedNotes?.count() == 1) {
                     Row {
                         // share
-                        PopupTip(message = "Share WidgetNote") {
+                        CommonPopupTip(message = "Share WidgetNote") {
                             Icon(painter = painterResource(id = SHARE_ICON),
                                 contentDescription = null,
                                 modifier = Modifier
@@ -147,7 +147,7 @@ fun HomeSelectionTopAppBar(
                         }
 
                         // copy the dataEntity.
-                        PopupTip(message = "Copy WidgetNote") {
+                        CommonPopupTip(message = "Copy WidgetNote") {
                             Icon(painter = painterResource(id = COPY_ICON),
                                 contentDescription = null,
                                 modifier = Modifier
@@ -227,7 +227,7 @@ fun HomeSelectionTopAppBar(
         },
         title = {},
         actions = {
-            AdaptingRow(
+            CommonRow(
                 Modifier.padding(start = 10.dp, end = 10.dp),
             ) {
                 SelectionCount(

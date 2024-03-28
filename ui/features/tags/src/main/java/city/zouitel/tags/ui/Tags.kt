@@ -29,9 +29,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.FULL_LABEL_ICON
 import city.zouitel.systemDesign.Icons.OUTLINE_LABEL_ICON
-import city.zouitel.systemDesign.MaterialColors
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_TINT
 import city.zouitel.tags.state.State
 import city.zouitel.tags.utils.DialogColors
 import city.zouitel.tags.utils.HashTagLayout
@@ -52,7 +49,6 @@ data class TagsScreen(val id: String? = null): Screen, KoinComponent {
 
         val tagState = State.Tag(tagModel)
         val noteAndTagState = State.NoteTag(noteAndTagModel)
-        val getMatColor = MaterialColors().getMaterialColor
 
         val allTags = tagState.rememberAllTags
         val allNoteAndTags = noteAndTagState.rememberAllNoteTags
@@ -78,7 +74,7 @@ data class TagsScreen(val id: String? = null): Screen, KoinComponent {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(getMatColor(SURFACE))
+                    .background(MaterialTheme.colorScheme.surface)
                     .padding(top = 25.dp)
             ) {
                 item {
@@ -111,14 +107,14 @@ data class TagsScreen(val id: String? = null): Screen, KoinComponent {
                                             Icon(
                                                 painterResource(FULL_LABEL_ICON), null,
                                                 tint = if (label.color == Color.Transparent.toArgb()) {
-                                                    getMatColor(SURFACE_TINT)
+                                                    MaterialTheme.colorScheme.surfaceTint
                                                 } else Color(label.color)
                                             )
                                         } else {
                                             Icon(
                                                 painterResource(OUTLINE_LABEL_ICON), null,
                                                 tint = if (label.color == Color.Transparent.toArgb()) {
-                                                    getMatColor(SURFACE_TINT)
+                                                    MaterialTheme.colorScheme.surfaceTint
                                                 } else Color(label.color)
                                             )
                                         }
@@ -142,7 +138,7 @@ data class TagsScreen(val id: String? = null): Screen, KoinComponent {
                         onValueChange = { labelState.value = it },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(getMatColor(SURFACE)),
+                            .background(MaterialTheme.colorScheme.surface),
                         placeholder = {
                             Text("Tag..", color = Color.Gray, fontSize = 19.sp)
                         },

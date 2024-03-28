@@ -13,7 +13,6 @@ import city.zouitel.systemDesign.DataStoreVM
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.androidx.compose.koinViewModel
 
-
 @Composable
 fun MainTheme(
     dataStoreVM: DataStoreVM = koinViewModel(),
@@ -25,7 +24,7 @@ fun MainTheme(
 
     val theme = when {
         isSystemInDarkTheme() -> darkColorScheme()
-        currentTheme.value == "DARK" -> darkColorScheme()
+        currentTheme.value == "DARK_THEME" -> darkColorScheme()
         else -> lightColorScheme()
     }
 
@@ -33,7 +32,7 @@ fun MainTheme(
         systemUiController.apply {
             setStatusBarColor(Color.Transparent, !isDarkUi)
             setNavigationBarColor(
-                if (currentTheme.value == "DARK" || isDarkUi) Color(red = 28, green = 27, blue = 31)
+                if (currentTheme.value == "DARK_THEME" || isDarkUi) Color(red = 28, green = 27, blue = 31)
                 else Color(red = 255, green = 251, blue = 254)
             )
         }

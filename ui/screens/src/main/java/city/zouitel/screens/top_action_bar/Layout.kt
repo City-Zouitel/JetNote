@@ -18,7 +18,7 @@ import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.DASHBOARD_ICON
 import city.zouitel.systemDesign.Icons.LIST_VIEW_ICON_1
-import city.zouitel.systemDesign.PopupTip
+import city.zouitel.systemDesign.CommonPopupTip
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -32,7 +32,7 @@ internal fun Layout(
     val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    PopupTip(message = if (currentLayout.value == LIST) "Grade Layout" else "List Layout") {
+    CommonPopupTip(message = if (currentLayout.value == LIST) "Grade Layout" else "List Layout") {
         Icon(
             painter = if (currentLayout.value == LIST) painterResource(id = DASHBOARD_ICON)
             else painterResource(

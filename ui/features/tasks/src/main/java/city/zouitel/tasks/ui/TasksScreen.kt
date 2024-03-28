@@ -28,9 +28,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Icons.DELETE_OUTLINE_ICON
-import city.zouitel.systemDesign.MaterialColors
-import city.zouitel.systemDesign.MaterialColors.Companion.ON_SURFACE
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
 import city.zouitel.tasks.viewmodel.TaskScreenModel
 import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
@@ -41,8 +38,6 @@ import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
 import org.koin.core.component.KoinComponent
 import kotlin.random.Random
-
-private val getMatColor = MaterialColors().getMaterialColor
 
 data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -82,7 +77,7 @@ data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
                         onValueChange = { itemState.value = it },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(getMatColor(SURFACE)),
+                            .background(MaterialTheme.colorScheme.surface),
                         placeholder = {
                             Text("Task..", color = Color.Gray, fontSize = 19.sp)
                         },
@@ -191,9 +186,7 @@ data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
                             } else {
                                 TextDecoration.None
                             },
-                            color = if (task.isDone) Color.Gray else getMatColor(
-                                ON_SURFACE
-                            )
+                            color = if (task.isDone) Color.Gray else MaterialTheme.colorScheme.onSurface
                         )
                     ) {
                         itemState.value = task.item!!

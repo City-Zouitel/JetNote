@@ -22,6 +22,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -46,7 +47,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import city.zouitel.screens.getMaterialColor
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.Screens
 import city.zouitel.screens.note_card.NoteCard
@@ -68,8 +68,6 @@ import city.zouitel.systemDesign.Cons.ORDER_BY_REMINDER
 import city.zouitel.systemDesign.Cons.SEARCH_IN_LOCAL
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.PLUS_ICON
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_VARIANT
 import city.zouitel.tags.model.Tag
 import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
 import city.zouitel.tags.viewmodel.TagScreenModel
@@ -88,7 +86,7 @@ class HomeScreen: Screen, KoinComponent {
 
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
-        //
+
         val searchTitleState = remember { mutableStateOf("") }
         val searchTagEntityState = remember { mutableStateOf(Tag()) }
         val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
@@ -172,7 +170,7 @@ class HomeScreen: Screen, KoinComponent {
                     .navigationBarsPadding()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
                 scaffoldState = scaffoldState,
-                backgroundColor = getMaterialColor(SURFACE),
+                backgroundColor = MaterialTheme.colorScheme.surface,
                 topBar = {
                     if (homeSelectionState.value) {
                         HomeSelectionTopAppBar(
@@ -214,9 +212,9 @@ class HomeScreen: Screen, KoinComponent {
                             navigator.push(AddScreen(uid, null))
                         },
                         expanded = scrollBehavior.state.collapsedFraction != 1f,
-                        containerColor = getMaterialColor(SURFACE_VARIANT),
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
                         contentColor = contentColorFor(
-                            backgroundColor = getMaterialColor(SURFACE_VARIANT)
+                            backgroundColor = MaterialTheme.colorScheme.surfaceVariant
                         )
                     )
                 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,8 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreVM
-import city.zouitel.systemDesign.MaterialColors
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.SoundEffect
 import org.koin.androidx.compose.koinViewModel
 
@@ -34,14 +33,13 @@ fun ColorsRow(
     val ctx = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
 
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
             .height(45.dp)
-            .background(getMatColor(SURFACE)),
+            .background(MaterialTheme.colorScheme.surface),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {

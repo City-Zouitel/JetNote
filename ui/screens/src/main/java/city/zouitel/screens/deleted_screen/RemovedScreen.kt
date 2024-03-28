@@ -24,10 +24,8 @@ import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.SEARCH_IN_DELETED
 import city.zouitel.systemDesign.DataStoreVM
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.VerticalGrid
 import city.zouitel.tags.model.Tag
-import city.zouitel.screens.getMaterialColor
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.Screens
 import city.zouitel.screens.note_card.NoteCard
@@ -110,7 +108,7 @@ class RemovedScreen : Screen, KoinComponent {
                     .nestedScroll(scrollBehavior.nestedScrollConnection)
                     .navigationBarsPadding(),
                 scaffoldState = scaffoldState,
-                backgroundColor = getMaterialColor(SURFACE),
+                backgroundColor = MaterialTheme.colorScheme.surface,
                 topBar = {
                     if (trashSelectionState.value) {
                         RemoveSelectionTopAppBar(

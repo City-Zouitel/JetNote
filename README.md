@@ -3,14 +3,14 @@ JetNote is modern note android application written by kotlin language and [jetpa
 
 [![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
 [![Kotlin Version](https://img.shields.io/badge/Kotlin-v1.9.22-blue.svg)](https://kotlinlang.org)
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.8-blueviolet)](https://developer.android.com/jetpack/androidx/releases/compose)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.10-blueviolet)](https://developer.android.com/jetpack/androidx/releases/compose)
 [![Kotlin Coroutines Version](https://img.shields.io/badge/Coroutines-v1.7.3-yellow.svg)](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 [![Gradle](https://img.shields.io/badge/Gradle-8.2.1-green)](https://gradle.org)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Android Platform](https://img.shields.io/badge/Platform-Android-green.svg?style=flat)](https://www.android.com/)
 [![Android CI](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml/badge.svg)](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/city-zouitel/jetnote/badge)](https://www.codefactor.io/repository/github/city-zouitel/jetnote)
-[![wakatime](https://wakatime.com/badge/user/218fee08-512f-4a26-b56d-104925a888b1/project/a2f2f997-6877-4090-9458-3ac93895d372.svg)](https://wakatime.com/badge/user/218fee08-512f-4a26-b56d-104925a888b1/project/a2f2f997-6877-4090-9458-3ac93895d372)
+[![Wakatime](https://wakatime.com/badge/user/218fee08-512f-4a26-b56d-104925a888b1/project/a2f2f997-6877-4090-9458-3ac93895d372.svg)](https://wakatime.com/badge/user/218fee08-512f-4a26-b56d-104925a888b1/project/a2f2f997-6877-4090-9458-3ac93895d372)
 
 ## Screenshots
 

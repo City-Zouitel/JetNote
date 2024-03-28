@@ -1,10 +1,10 @@
 package city.zouitel.recoder.viewmodel
 
 import android.media.MediaRecorder
-import androidx.lifecycle.ViewModel
+import cafe.adriel.voyager.core.model.ScreenModel
 import city.zouitel.systemDesign.Cons
 
-class MediaRecordVM(private val recPath: String) : ViewModel() {
+class MediaRecordScreenModel(private val recPath: String) : ScreenModel {
 
     fun buildMediaRecord(uid: String?): MediaRecorder {
         /**

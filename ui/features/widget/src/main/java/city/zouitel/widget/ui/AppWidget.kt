@@ -58,8 +58,7 @@ class AppWidget: GlanceAppWidget(), Screen {
                                     bitmap = widgetModel::imageDecoder.invoke(context, entity.dataEntity.uid)
                                 ),
                                 null,
-                                modifier = GlanceModifier
-                                    .cornerRadius(15.dp)
+                                modifier = GlanceModifier.cornerRadius(15.dp)
                             )
                         }
 
@@ -72,8 +71,7 @@ class AppWidget: GlanceAppWidget(), Screen {
                                     fontSize = 19.sp,
                                     color = ColorProvider(Color(entity.dataEntity.textColor))
                                 ),
-                                modifier = GlanceModifier
-                                    .padding(3.dp)
+                                modifier = GlanceModifier.padding(3.dp)
                             )
 
                             Text(

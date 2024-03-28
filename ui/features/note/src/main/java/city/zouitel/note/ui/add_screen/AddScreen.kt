@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.icu.util.Calendar
 import android.net.Uri
 import android.text.format.DateFormat
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -24,13 +23,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ElevatedAssistChip
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -81,7 +78,7 @@ import city.zouitel.links.ui.NoteAndLinkVM
 import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
-import city.zouitel.recoder.ui.RecordingNote
+import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.RemindingNote
 import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.Cons.REC_DIR
@@ -95,9 +92,6 @@ import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.DONE_ICON
 import city.zouitel.systemDesign.ImageDisplayed
-import city.zouitel.systemDesign.MaterialColors
-import city.zouitel.systemDesign.MaterialColors.Companion.OUT_LINE_VARIANT
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.findUrlLink
 import city.zouitel.tags.model.NoteAndTag
@@ -118,7 +112,7 @@ data class AddScreen(
     val description: String? = null
 ): Screen, KoinComponent {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class,
+    @OptIn(ExperimentalMaterialApi::class,
         ExperimentalFoundationApi::class
     )
     @Composable
@@ -130,13 +124,12 @@ data class AddScreen(
 
         val navController = rememberNavController()
         val navigator = LocalNavigator.current
-        val ctx = LocalContext.current
+        val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
         val keyboardController = LocalSoftwareKeyboardController.current
-        val internalPath = ctx.filesDir.path
+        val internalPath = context.filesDir.path
 
         val focusRequester by lazy { FocusRequester() }
-        val getMatColor by lazy { MaterialColors().getMaterialColor }
         val sound by lazy { SoundEffect() }
         val mediaFile by lazy {
             arrayOf(internalPath, '/', REC_DIR, '/', id, '.', MP3).joinToString("")
@@ -153,17 +146,13 @@ data class AddScreen(
         val taskModel = getScreenModel<TaskScreenModel>()
         val noteAndTodoModel = getScreenModel<NoteAndTaskScreenModel>()
 
-        val state = rememberBottomSheetScaffoldState()
         val isTitleFieldFocused = remember { mutableStateOf(false) }
         val isDescriptionFieldFocused = remember { mutableStateOf(false) }
-
         val titleState = rememberTextFieldState()
         val descriptionState = rememberTextFieldState()
-
-//        val titleState = rememberSaveable { mutableStateOf<String?>(null) }
-        val backgroundColor = getMatColor(SURFACE).toArgb()
+        val backgroundColor = MaterialTheme.colorScheme.surface.toArgb()
         val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
-        val textColor = contentColorFor(getMatColor(SURFACE)).toArgb()
+        val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
         val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
         val priorityState = remember { mutableStateOf(NON) }
         val photoState = remember { mutableStateOf<Bitmap?>(bitImg) }
@@ -195,16 +184,10 @@ data class AddScreen(
         var imageUriState by remember { mutableStateOf<Uri?>(File(imageFile).toUri()) }
         val img by rememberSaveable { mutableStateOf(photoState) }
 
-//        val descriptionState = rememberSaveable {
-//            mutableStateOf(
-//                if (description == NUL) null else decodeUrl(description)
-//            )
-//        }
-
         val chooseImageLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
                 imageUriState = it
-                dataModel::decodeBitmapImage.invoke(img, photoState, it!!, ctx)
+                dataModel::decodeBitmapImage.invoke(img, photoState, it!!, context)
                 img.value = photoState.value
                 dataModel::saveImageLocally.invoke(
                     img.value, "$internalPath/$IMG_DIR", "$id.$JPEG"
@@ -221,18 +204,16 @@ data class AddScreen(
             modifier = Modifier.navigationBarsPadding(),
             floatingActionButton = {
                 FloatingActionButton(
-                    containerColor = getMatColor(OUT_LINE_VARIANT),
+                    containerColor = MaterialTheme.colorScheme.outlineVariant,
                     contentColor = contentColorFor(
-                        backgroundColor = getMatColor(
-                            OUT_LINE_VARIANT
-                        )
+                        backgroundColor = MaterialTheme.colorScheme.outlineVariant
                     ),
                     onClick = {
-                        sound.makeSound.invoke(ctx, KEY_STANDARD, thereIsSoundEffect)
+                        sound.makeSound.invoke(context, KEY_STANDARD, thereIsSoundEffect)
 
                         dataModel.addData(
                             Data(
-                                title = if (titleState.text.isBlank()) null else titleState.text.toString(),
+                                title = titleState.text.toString(),
                                 description = if (descriptionState.text.isBlank()) null else descriptionState.text.toString(),
                                 priority = priorityState.value,
                                 uid = id,
@@ -262,20 +243,15 @@ data class AddScreen(
                     backgroundColorState = backgroundColorState,
                     textColorState = textColorState,
                     priorityColorState = priorityState,
-//                    titleFieldState = titleState,
-//                    descriptionFieldState = descriptionState,
-//                    isTitleFieldSelected = isTitleFieldFocused,
-//                    isDescriptionFieldSelected = isDescriptionFieldFocused,
                     remindingValue = remindingValue,
                     titleState = Pair(titleState, isTitleFieldFocused.value),
                     descriptionState = descriptionState,
-//                    isTitleState = isTitleFieldFocused
                 )
             }
         ) {
             // recording dialog visibility.
             if (recordDialogState.value) {
-                RecordingNote(uid = id, dialogState = recordDialogState)
+                RecorderScreen(id = id, dialogState = recordDialogState)
             }
 
             // reminding dialog visibility.
@@ -320,46 +296,6 @@ data class AddScreen(
                             onNext = { keyboardManager.moveFocus(FocusDirection.Next) }
                         )
                     )
-//                    OutlinedTextField(
-//                        value = titleState.value ?: "",
-//                        onValueChange = { titleState.value = it },
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(top = 20.dp)
-//                            .focusRequester(focusRequester)
-//                            .onFocusEvent {
-//                                isTitleFieldFocused.value = it.isFocused
-//                            },
-//                        placeholder = {
-//                            Text("Title", color = Color.Gray, fontSize = 24.sp)
-//                        },
-//                        textStyle = TextStyle(
-//                            fontSize = 24.sp,
-//                            fontWeight = FontWeight.Normal,
-//                            fontFamily = FontFamily.Default,
-//                            color = Color(textColorState.intValue)
-//                        ),
-//                        keyboardOptions = KeyboardOptions(
-//                            capitalization = KeyboardCapitalization.Sentences,
-//                            autoCorrect = false,
-//                            keyboardType = KeyboardType.Text,
-//                            imeAction = ImeAction.Next
-//                        ),
-//                        keyboardActions = KeyboardActions(
-//                            onNext = {
-//                                keyboardManager.moveFocus(FocusDirection.Next)
-//                            }
-//                        ),
-//                        colors = TextFieldDefaults.outlinedTextFieldColors(
-//                            focusedBorderColor = Color.Transparent,
-//                            unfocusedBorderColor = Color.Transparent,
-//                            focusedTextColor = contentColorFor(
-//                                backgroundColor = Color(
-//                                    backgroundColorState.intValue
-//                                )
-//                            )
-//                        )
-//                    )
                 }
 
                 // The Description.
@@ -384,45 +320,6 @@ data class AddScreen(
                             }
                         )
                     )
-
-//                    OutlinedTextField(
-//                        value = descriptionState.value ?: "",
-//                        onValueChange = {
-//                            descriptionState.value = it
-//
-//                        },
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .onFocusEvent {
-//                                isDescriptionFieldFocused.value = it.isFocused
-//                                focusState = it.isFocused
-//                            },
-//                        placeholder = {
-//                            Text("Note", color = Color.Gray, fontSize = 19.sp)
-//                        },
-//                        textStyle = TextStyle(
-//                            fontSize = 18.sp,
-//                            fontWeight = FontWeight.Normal,
-//                            fontFamily = FontFamily.Default,
-//                            color = Color(textColorState.intValue)
-//                        ),
-//                        keyboardOptions = KeyboardOptions(
-//                            capitalization = KeyboardCapitalization.Sentences,
-//                            autoCorrect = false,
-//                            keyboardType = KeyboardType.Text,
-//                            imeAction = ImeAction.Default
-//                        ),
-//                        keyboardActions = KeyboardActions(
-//                            onDone = {
-//                                keyboardController?.hide()
-//                                keyboardManager.clearFocus()
-//                            }
-//                        ),
-//                        colors = TextFieldDefaults.outlinedTextFieldColors(
-//                            focusedBorderColor = Color.Transparent,
-//                            unfocusedBorderColor = Color.Transparent
-//                        )
-//                    )
                 }
 
 //                 display the media player.
@@ -432,7 +329,7 @@ data class AddScreen(
                         File(mediaFile).exists() && !recordDialogState.value
                     ) {
                         NormalMediaPlayer(localMediaUid = id)
-                        audioDurationState.intValue = exoVM.getMediaDuration(ctx, mediaFile).toInt()
+                        audioDurationState.intValue = exoVM.getMediaDuration(context, mediaFile).toInt()
                     }
                 }
 

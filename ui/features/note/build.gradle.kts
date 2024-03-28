@@ -13,6 +13,7 @@ android {
 dependencies {
     //Modules.
     implementation(projects.common.systemDesign)
+    implementation(projects.common.logic)
     implementation(projects.domain)
     implementation(projects.core.datastore)
     implementation(projects.ui.features.reminder)

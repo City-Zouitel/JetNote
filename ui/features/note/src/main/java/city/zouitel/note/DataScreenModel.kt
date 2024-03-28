@@ -97,7 +97,7 @@ class DataScreenModel(
     }
 
     fun imageDecoder(context: Context, uid:String): ImageBitmap? {
-        val path = File(context.filesDir.path + "/" + IMG_DIR, "$uid.$JPEG")
+        val path = File(imgPath, "$uid.$JPEG")
         val bitImg = BitmapFactory.decodeFile(path.absolutePath)
         return bitImg?.asImageBitmap()
     }

@@ -23,15 +23,12 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import city.zouitel.screens.getMaterialColor
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.sound
 import city.zouitel.screens.top_action_bar.CustomTopAppBar
 import city.zouitel.systemDesign.AdaptingRowBetween
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreVM
-import city.zouitel.systemDesign.MaterialColors.Companion.ON_SURFACE
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.tags.viewmodel.TagScreenModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -71,7 +68,7 @@ class Settings: Screen,  KoinComponent {
         ) {
             androidx.compose.material.Scaffold(
                 scaffoldState = scaffoldState,
-                backgroundColor = getMaterialColor(SURFACE),
+                backgroundColor = MaterialTheme.colorScheme.surface,
                 topBar = {
                     CustomTopAppBar(
                         drawerState = drawerState,
@@ -153,7 +150,7 @@ class Settings: Screen,  KoinComponent {
                 Text(
                     text = title,
                     fontSize = 20.sp,
-                    color = getMaterialColor(ON_SURFACE)
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Canvas(
@@ -173,7 +170,7 @@ class Settings: Screen,  KoinComponent {
                 Text(
                     text = description,
                     Modifier.alpha(.5f),
-                    color = getMaterialColor(ON_SURFACE)
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }

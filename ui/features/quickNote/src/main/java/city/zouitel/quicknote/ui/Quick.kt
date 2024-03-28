@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -40,9 +41,6 @@ import city.zouitel.links.ui.NoteAndLinkVM
 import city.zouitel.quicknote.model.QuickData
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Icons
-import city.zouitel.systemDesign.MaterialColors
-import city.zouitel.systemDesign.MaterialColors.Companion.OUT_LINE_VARIANT
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.findUrlLink
 import org.koin.androidx.compose.koinViewModel
 import java.util.UUID
@@ -57,11 +55,10 @@ fun Quick(
 ) {
     val uid = UUID.randomUUID().toString()
     val descriptionState = remember { mutableStateOf("") }
-    val materialColors = MaterialColors().getMaterialColor
-    val backgroundColor = materialColors(SURFACE).toArgb()
-    val backgroundColorState = rememberSaveable { mutableStateOf(backgroundColor) }
-    val textColor = contentColorFor(materialColors(SURFACE)).toArgb()
-    val textColorState = rememberSaveable { mutableStateOf(textColor) }
+    val backgroundColor = MaterialTheme.colorScheme.surface.toArgb()
+    val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
+    val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
+    val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
     val priorityState = remember { mutableStateOf(Cons.URGENT) }
     val focusRequester = FocusRequester()
     val observerLinks by remember(linkVM, linkVM::getAllLinks).collectAsState()
@@ -89,12 +86,11 @@ fun Quick(
 
             Surface(
                 shape = RoundedCornerShape(18.dp),
-                color = materialColors(SURFACE)
+                color = MaterialTheme.colorScheme.surface
             ) {
                 LazyColumn(
                     modifier = Modifier
                         .background(Color.Transparent)
-//                    .border(border = BorderStroke(0.dp, Color.Transparent), shape = CircleShape)
                 ) {
                     item {
                         OutlinedTextField(
@@ -113,7 +109,7 @@ fun Quick(
                                 fontSize = 21.sp,
                                 fontWeight = FontWeight.Normal,
                                 fontFamily = FontFamily.Default,
-                                color = Color(textColorState.value)
+                                color = Color(textColorState.intValue)
                             ),
                             keyboardOptions = KeyboardOptions(
                                 capitalization = KeyboardCapitalization.Sentences,
@@ -169,19 +165,17 @@ fun Quick(
                                         QuickData(
                                             description = descriptionState.value,
                                             uid = uid,
-                                            color = backgroundColorState.value,
-                                            textColor = textColorState.value,
+                                            color = backgroundColorState.intValue,
+                                            textColor = textColorState.intValue,
                                             priority = priorityState.value
                                         )
                                     ).invokeOnCompletion {
                                         action.invoke()
                                     }
 
-                                }, containerColor = materialColors(OUT_LINE_VARIANT),
+                                }, containerColor = MaterialTheme.colorScheme.outlineVariant,
                                 contentColor = contentColorFor(
-                                    backgroundColor = materialColors(
-                                        OUT_LINE_VARIANT
-                                    )
+                                    backgroundColor = MaterialTheme.colorScheme.outlineVariant
                                 )
                             ) {
                                 Icon(painterResource(Icons.DONE_ICON), null)

@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import city.zouitel.screens.sound
 import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
-import city.zouitel.systemDesign.AdaptingRow
+import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons
-import city.zouitel.systemDesign.PopupTip
+import city.zouitel.systemDesign.CommonPopupTip
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(
@@ -42,7 +42,7 @@ fun RemoveSelectionTopAppBar(
     TopAppBar(
         navigationIcon = {
             // wipe notes.
-            PopupTip(message = "Wipe Notes") {
+            CommonPopupTip(message = "Wipe Notes") {
                 Icon(
                     painter = painterResource(id = Icons.REMOVE_ICON),
                     contentDescription = null,
@@ -66,7 +66,7 @@ fun RemoveSelectionTopAppBar(
         },
         title = {},
         actions = {
-            AdaptingRow(
+            CommonRow(
                 modifier = Modifier.padding(start = 10.dp, end = 10.dp)
             ) {
                 SelectionCount(selectionState = trashSelectionState, selectedNotes = selectedNotes)

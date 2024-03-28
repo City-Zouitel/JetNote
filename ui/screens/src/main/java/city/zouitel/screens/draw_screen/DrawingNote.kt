@@ -24,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import city.zouitel.note.DataScreenModel
-import city.zouitel.systemDesign.AdaptingRow
+import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.ADD_ROUTE
 import city.zouitel.systemDesign.Cons.EDIT_ROUTE
 import city.zouitel.systemDesign.Cons.IMG_DIR
@@ -34,10 +34,6 @@ import city.zouitel.systemDesign.Icons.DISK_ICON
 import city.zouitel.systemDesign.Icons.ERASER_BLACK_ICON
 import city.zouitel.systemDesign.Icons.REDO_ICON
 import city.zouitel.systemDesign.Icons.UNDO_ICON
-import city.zouitel.systemDesign.MaterialColors.Companion.ON_SURFACE
-import city.zouitel.systemDesign.MaterialColors.Companion.OUTLINE
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
-import city.zouitel.screens.getMaterialColor
 import io.getstream.sketchbook.ColorPickerDialog
 import io.getstream.sketchbook.PaintColorPalette
 import io.getstream.sketchbook.Sketchbook
@@ -59,20 +55,20 @@ fun DrawingNote(
     audioDuration: Int?,
     reminding: Long?
 ) {
-    val ctx = LocalContext.current
+    val context = LocalContext.current
     val sheetState = rememberBottomSheetScaffoldState()
     val controller = rememberSketchbookController()
     var eraseState by remember { mutableStateOf(false) }
 
     // TODO: move to viewmodel
-    val path = File(ctx.filesDir.path + "/" + IMG_DIR, "$uid.$JPEG")
+    val path = File(context.filesDir.path + "/" + IMG_DIR, "$uid.$JPEG")
     val bitImg = BitmapFactory.decodeFile(path.absolutePath)
 
     val bitmap = remember { mutableStateOf<Bitmap?>(bitImg) }
-    val imagesPath = ctx.filesDir.path + "/" + IMG_DIR
+    val imagesPath = context.filesDir.path + "/" + IMG_DIR
 
     val colorPickerDialogState = remember { mutableStateOf(false) }
-    var currentBrushSize by remember { mutableStateOf(0f) }
+    var currentBrushSize by remember { mutableFloatStateOf(0f) }
 
     BottomSheetScaffold(
         scaffoldState = sheetState,
@@ -82,10 +78,10 @@ fun DrawingNote(
         sheetContent = {
             // icons row.
             Row {
-                AdaptingRow(
+                CommonRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(getMaterialColor(SURFACE))
+                        .background(MaterialTheme.colorScheme.surface)
                         .height(60.dp)
                 ) {
                     //
@@ -97,13 +93,13 @@ fun DrawingNote(
                             .clickable {
                                 controller.undo()
                             },
-                        tint = if (controller.canUndo.value) getMaterialColor(ON_SURFACE) else getMaterialColor(OUTLINE),
+                        tint = if (controller.canUndo.value) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outline,
                     )
                     //
                     Icon(
                         painter = painterResource(id = REDO_ICON),
                         contentDescription = null,
-                        tint = if (controller.canRedo.value) getMaterialColor(ON_SURFACE) else getMaterialColor(OUTLINE),
+                        tint = if (controller.canRedo.value) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outline,
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
@@ -137,7 +133,7 @@ fun DrawingNote(
                     Icon(
                         painter = painterResource(id = ERASER_BLACK_ICON),
                         contentDescription = null,
-                        tint = if (eraseState) getMaterialColor(ON_SURFACE) else getMaterialColor(OUTLINE),
+                        tint = if (eraseState) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outline,
                         modifier = Modifier.clickable {
                             eraseState = !eraseState
                             controller.setEraseMode(eraseState)
@@ -147,7 +143,7 @@ fun DrawingNote(
                     Icon(
                         painter = painterResource(id = DISK_ICON),
                         contentDescription = null,
-                        tint = getMaterialColor(ON_SURFACE),
+                        tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.clickable {
 
                             bitmap.value = controller.getSketchbookBitmap().asAndroidBitmap()
@@ -224,7 +220,6 @@ fun DrawingNote(
         Sketchbook(
             modifier = Modifier.fillMaxSize(),
             controller = controller,
-//            backgroundColor = Color.Cyan,
             imageBitmap = bitmap.value?.asImageBitmap()
         )
         ColorPickerDialog(expanded = colorPickerDialogState, controller = controller)

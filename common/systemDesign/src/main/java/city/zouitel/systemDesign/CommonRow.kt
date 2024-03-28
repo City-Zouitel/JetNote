@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun RowScope.AdaptingRow(
+fun RowScope.CommonRow(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {

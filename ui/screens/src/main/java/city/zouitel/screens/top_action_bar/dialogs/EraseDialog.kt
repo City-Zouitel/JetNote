@@ -2,6 +2,7 @@ package city.zouitel.screens.top_action_bar.dialogs
 
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -13,8 +14,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreVM
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_TINT
-import city.zouitel.screens.getMaterialColor
 import city.zouitel.screens.sound
 import org.koin.androidx.compose.koinViewModel
 
@@ -33,7 +32,7 @@ fun EraseDialog(
             ClickableText(
                 text = AnnotatedString("Confirm"),
                 style = TextStyle(
-                    color = getMaterialColor(SURFACE_TINT),
+                    color = MaterialTheme.colorScheme.surfaceTint,
                     fontSize = 17.sp
                 ),
                 onClick = {
@@ -47,7 +46,7 @@ fun EraseDialog(
             ClickableText(
                 text = AnnotatedString("Cancel"),
                 style = TextStyle(
-                    color = getMaterialColor(SURFACE_TINT),
+                    color = MaterialTheme.colorScheme.surfaceTint,
                     fontSize = 17.sp
                 ),
                 onClick = {

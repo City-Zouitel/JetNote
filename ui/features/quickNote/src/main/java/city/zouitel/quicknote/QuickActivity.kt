@@ -56,9 +56,5 @@ class QuickActivity: ComponentActivity() {
 
         MaterialTheme(colorScheme = theme, content = content)
     }
-
-    override fun onResume() {
-        super.onResume()
-    }
 }
 

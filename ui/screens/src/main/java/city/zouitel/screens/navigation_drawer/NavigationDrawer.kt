@@ -18,6 +18,7 @@ import city.zouitel.screens.about_screen.AboutScreen
 import city.zouitel.screens.deleted_screen.RemovedScreen
 import city.zouitel.screens.home_screen.HomeScreen
 import city.zouitel.screens.settings_screen.Settings
+import city.zouitel.screens.sharApp
 import city.zouitel.screens.sound
 import city.zouitel.systemDesign.Cons.APP_NAME
 import city.zouitel.systemDesign.Cons.KEY_CLICK
@@ -30,7 +31,6 @@ import city.zouitel.systemDesign.Icons.SETTINGS_ICON
 import city.zouitel.systemDesign.Icons.SHARE_ICON
 import city.zouitel.systemDesign.Icons.TAGS_ICON
 import city.zouitel.systemDesign.Icons.REMOVE_ICON
-import city.zouitel.systemDesign.sharApp
 import city.zouitel.tags.viewmodel.TagScreenModel
 import city.zouitel.tags.model.Tag
 import city.zouitel.tags.ui.TagsScreen

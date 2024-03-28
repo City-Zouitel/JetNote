@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import city.zouitel.systemDesign.AdaptingRow
+import city.zouitel.systemDesign.CommonRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,7 +19,7 @@ fun CustomTopAppBar(
     TopAppBar(
         navigationIcon = {
             Row {
-                AdaptingRow(
+                CommonRow(
                     Modifier.padding(start = 10.dp, end = 10.dp),
                 ) {
                     Open_Drawer(drawerState = drawerState)

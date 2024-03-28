@@ -136,11 +136,6 @@ internal fun Plus(
             text = { Text(text = "Take Photo", fontSize = 18.sp) },
             leadingIcon = { Icon(painterResource(CAMERA_ICON), null) },
             onClick = {
-//                navController.navigate(
-//                    CAMERA_ROUTE + "/" +
-//                            dataEntity.id
-//                )
-//                isShow.value = false
                 Toast.makeText(context, "Coming Soon.", Toast.LENGTH_SHORT).show()
             },
             enabled = false

@@ -23,9 +23,7 @@ import city.zouitel.systemDesign.Cons.KEY_INVALID
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.CROSS_ICON
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.tags.model.Tag
-import city.zouitel.screens.getMaterialColor
 import city.zouitel.screens.sound
 import org.koin.androidx.compose.koinViewModel
 
@@ -49,7 +47,7 @@ internal fun SearchField(
         singleLine = true,
         textStyle = TextStyle(
             fontSize = 17.sp,
-            color = contentColorFor(backgroundColor = getMaterialColor(SURFACE))
+            color = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface)
         ),
         leadingIcon = {
                     Icon(

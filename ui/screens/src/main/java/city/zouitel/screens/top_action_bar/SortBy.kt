@@ -38,7 +38,7 @@ import city.zouitel.systemDesign.Icons.SORT_AMOUNT_DOWN_ICON
 import city.zouitel.systemDesign.Icons.SORT_AMOUNT_UP_ICON
 import city.zouitel.systemDesign.Icons.SORT_ICON
 import city.zouitel.systemDesign.Icons.SORT_NUMERIC_ICON
-import city.zouitel.systemDesign.PopupTip
+import city.zouitel.systemDesign.CommonPopupTip
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -62,7 +62,7 @@ internal fun SortBy(
         else -> SORT_ICON
     }
 
-        PopupTip(message = "Sorting") {
+        CommonPopupTip(message = "Sorting") {
             Icon(
                 painterResource(currentSortIcon),
                 contentDescription = null,

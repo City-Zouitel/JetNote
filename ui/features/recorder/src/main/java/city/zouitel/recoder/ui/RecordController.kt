@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import city.zouitel.systemDesign.AdaptingRow
+import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Icons.MIC_ICON_36
 import city.zouitel.systemDesign.Icons.PAUSE_CIRCLE_FILLED_ICON_36
 import city.zouitel.systemDesign.Icons.PLAY_CIRCLE_FILLED_ICON_36
@@ -43,7 +43,7 @@ fun RecordController(
         RecordTimer(seconds,minutes,hours)
 
         Row {
-            AdaptingRow(
+            CommonRow(
                 modifier = Modifier.fillMaxWidth()
             ) {
 

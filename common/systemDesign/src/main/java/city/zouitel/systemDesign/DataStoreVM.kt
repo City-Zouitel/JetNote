@@ -17,8 +17,7 @@ class DataStoreVM(
 
     val getLayout: StateFlow<String> = dataStoreRepo.getLayout.filter {
         it.isNotEmpty()
-    }
-        .stateIn(
+    }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(),
             Cons.GRID
@@ -44,8 +43,6 @@ class DataStoreVM(
             SharingStarted.WhileSubscribed(),
             Cons.DARK
         )
-
-
 
     fun setSound(sound: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {

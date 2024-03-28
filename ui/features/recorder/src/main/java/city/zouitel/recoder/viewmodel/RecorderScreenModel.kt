@@ -3,13 +3,13 @@ package city.zouitel.recoder.viewmodel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import cafe.adriel.voyager.core.model.ScreenModel
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-class RecorderVM : ViewModel() {
+class RecorderScreenModel : ScreenModel {
 
     private var time: Duration = Duration.ZERO
     private lateinit var timer: Timer
@@ -29,9 +29,9 @@ class RecorderVM : ViewModel() {
 
     private fun updateTimeStates() {
         time.toComponents { hours, minutes, seconds, _ ->
-            this@RecorderVM.seconds = seconds.pad()
-            this@RecorderVM.minutes = minutes.pad()
-            this@RecorderVM.hours = hours.toInt().pad()
+            this@RecorderScreenModel.seconds = seconds.pad()
+            this@RecorderScreenModel.minutes = minutes.pad()
+            this@RecorderScreenModel.hours = hours.toInt().pad()
         }
     }
 

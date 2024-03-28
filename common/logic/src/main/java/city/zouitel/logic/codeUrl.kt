@@ -12,3 +12,15 @@ val codeUrl: (String?) -> String?
                 '\u2203' // -> 	∃
             )
     }
+
+val decodeUrl: (String?) -> String?
+    get() = {
+        it?.replace(
+            '\u2204', // -> ∄
+            '\u002f' // -> /
+        )
+            ?.replace(
+                '\u2203', // -> 	∃
+                '\u003f' // -> ?
+            )
+    }

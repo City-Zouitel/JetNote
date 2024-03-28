@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
@@ -33,15 +34,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import city.zouitel.notifications.viewmodel.NotificationVM
 import city.zouitel.reminder.utils.Cons.SINGLE_DAY
-import city.zouitel.systemDesign.AdaptingRow
+import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.CALENDAR_ICON
 import city.zouitel.systemDesign.Icons.CLOCK_ICON
 import city.zouitel.systemDesign.Icons.REFRESH_ICON
-import city.zouitel.systemDesign.MaterialColors
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
 import city.zouitel.systemDesign.SoundEffect
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
@@ -70,8 +69,6 @@ fun RemindingNote(
 
     val soundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
     val sound = SoundEffect()
-
-    val getMatColor = MaterialColors().getMaterialColor
 
     val dateState = rememberDatePickerState(
         initialSelectedDateMillis = calendar.timeInMillis,
@@ -117,7 +114,7 @@ fun RemindingNote(
         },
         title = {
             Row {
-                AdaptingRow(modifier = Modifier.fillMaxWidth()) {
+                CommonRow(modifier = Modifier.fillMaxWidth()) {
                     Text(text = "Add Reminder", fontSize = 25.sp)
                 }
             }
@@ -239,6 +236,6 @@ fun RemindingNote(
                 Text(text = "Cancel", fontSize = 16.sp)
             }
         },
-        containerColor = getMatColor(SURFACE)
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }

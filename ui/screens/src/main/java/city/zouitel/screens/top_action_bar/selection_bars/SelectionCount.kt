@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.Icons
-import city.zouitel.systemDesign.PopupTip
+import city.zouitel.systemDesign.CommonPopupTip
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -22,7 +22,7 @@ fun SelectionCount(
     selectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Data>?
 ) {
-    PopupTip(message = "Cancel") {
+    CommonPopupTip(message = "Cancel") {
         Icon(
             painter = painterResource(id = Icons.CROSS_ICON),
             contentDescription = null,

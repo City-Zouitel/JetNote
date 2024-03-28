@@ -12,6 +12,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -23,17 +24,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import city.zouitel.note.ui.ColorsRow
 import city.zouitel.note.model.Data
-import city.zouitel.systemDesign.AdaptingRow
+import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.FOCUS_NAVIGATION
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.ADD_CIRCLE_ICON
 import city.zouitel.systemDesign.Icons.BELL_ICON
 import city.zouitel.systemDesign.Icons.BELL_RING_ICON_24
-import city.zouitel.systemDesign.MaterialColors
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE_VARIANT
-import city.zouitel.systemDesign.PopupTip
+import city.zouitel.systemDesign.CommonPopupTip
 import city.zouitel.systemDesign.RationalDialog
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.listOfBackgroundColors
@@ -60,14 +58,9 @@ fun AddEditBottomBar(
     backgroundColorState: MutableState<Int>,
     textColorState: MutableState<Int>,
     priorityColorState: MutableState<String>,
-//    titleFieldState: MutableState<String?>,
-//    descriptionFieldState: MutableState<String?>,
-//    isTitleFieldSelected: MutableState<Boolean>,
-//    isDescriptionFieldSelected: MutableState<Boolean>,
     remindingValue: MutableLongState,
     titleState: Pair<TextFieldState?, Boolean>,
     descriptionState: TextFieldState?,
-//    isTitleState: MutableState<Boolean>
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
@@ -75,7 +68,6 @@ fun AddEditBottomBar(
     val showOptionsMenu = remember { mutableStateOf(false) }
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
 
-    val getMatColor = MaterialColors().getMaterialColor
     val sound = SoundEffect()
 
     val formatter = SimpleDateFormat("dd-MM-yyyy hh:mm")
@@ -105,18 +97,18 @@ fun AddEditBottomBar(
 
     Column {
         Row {
-            AdaptingRow(
+            CommonRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(getMatColor(SURFACE))
+                    .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
             ) {
 
-                PopupTip(message = "More Options") {
+                CommonPopupTip(message = "More Options") {
                     Icon(
                         painter = painterResource(id = ADD_CIRCLE_ICON),
                         contentDescription = null,
-                        tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
+                        tint = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surfaceVariant),
                         modifier = Modifier
                             .combinedClickable(
                                 onLongClick = {
@@ -135,7 +127,7 @@ fun AddEditBottomBar(
                     )
                 }
 
-                PopupTip(
+                CommonPopupTip(
                     message = if (remindingValue.longValue != 0L) {
                         formatter.format(remindingValue.longValue)
                     } else {
@@ -147,7 +139,7 @@ fun AddEditBottomBar(
                             if (remindingValue.longValue != 0L) BELL_RING_ICON_24 else BELL_ICON
                         ),
                         contentDescription = null,
-                        tint = contentColorFor(backgroundColor = getMatColor(SURFACE_VARIANT)),
+                        tint = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surfaceVariant),
                         modifier = Modifier
                             .combinedClickable(
                                 onLongClick = {
@@ -172,13 +164,8 @@ fun AddEditBottomBar(
 
                 // undo
                 UndoRedo(
-//                    titleFieldState = titleFieldState,
-//                    descriptionFieldState = descriptionFieldState,
-//                    isTitleFieldSelected = isTitleFieldSelected,
-//                    isDescriptionFieldSelected = isDescriptionFieldSelected,
                     titleState = Pair(titleState.first, titleState.second),
                     descriptionState = descriptionState,
-//                    isTitleState = isTitleState
                 )
             }
         }

@@ -9,10 +9,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import city.zouitel.systemDesign.AdaptingRow
-import city.zouitel.systemDesign.MaterialColors.Companion.SURFACE
+import city.zouitel.systemDesign.CommonRow
 import city.zouitel.tags.model.Tag
-import city.zouitel.screens.getMaterialColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +29,7 @@ fun NoteTopAppBar(
         navigationIcon = {
             Row {
                 AnimatedVisibility(searchNoteTitle.value.isEmpty() && tagEntity?.value == Tag()) {
-                    AdaptingRow(
+                    CommonRow(
                         Modifier.padding(start = 10.dp, end = 10.dp),
                     ) {
                         Open_Drawer(drawerState = drawerState)
@@ -48,7 +46,7 @@ fun NoteTopAppBar(
         },
         actions = {
             AnimatedVisibility(visible = searchNoteTitle.value.isEmpty() && tagEntity?.value == Tag()) {
-                AdaptingRow(
+                CommonRow(
                     Modifier.padding(start = 10.dp, end = 10.dp),
                 ) {
                     thisHomeScreen.let {
@@ -68,7 +66,7 @@ fun NoteTopAppBar(
             }
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = getMaterialColor(SURFACE)
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         scrollBehavior = scrollBehavior
     )

@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import city.zouitel.systemDesign.AdaptingRow
+import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.DataStoreVM
@@ -62,7 +62,7 @@ fun MiniMediaPlayer(
         )
     ) {
         Row {
-            AdaptingRow(
+            CommonRow(
                 modifier = Modifier
                     .padding(start = 5.dp, end = 5.dp)
             ) {

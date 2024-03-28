@@ -1,12 +1,10 @@
 package city.zouitel.links.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -76,9 +74,6 @@ fun LinkPart(
     }
 }
 
-@OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-)
 @Composable
 private fun LinkCard(
     linkVM: LinkVM,
@@ -88,7 +83,7 @@ private fun LinkCard(
     id: String,
     onClick: () -> Unit
 ) {
-    val ctx = LocalContext.current
+    val context = LocalContext.current
 
     Card(
         modifier = Modifier
@@ -103,7 +98,7 @@ private fun LinkCard(
         )
     ) {
         Row {
-            linkVM::imageDecoder.invoke(ctx, id)?.let {
+            linkVM::imageDecoder.invoke(context, id)?.let {
                 Image(
                     modifier = Modifier.size(70.dp),
                     contentScale = ContentScale.Crop,
@@ -137,6 +132,4 @@ private fun LinkCard(
         }
     }
 }
-
-private val roundedForCard = RoundedCornerShape(0.dp, 0.dp, 15.dp, 15.dp)
 

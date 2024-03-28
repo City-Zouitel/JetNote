@@ -3,7 +3,6 @@ package city.zouitel.links.ui
 import android.annotation.SuppressLint
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
-import city.zouitel.systemDesign.Cons.LINK_DIR
 import java.util.*
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -17,9 +16,7 @@ fun CacheLinks(
     val observeLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
     val observerNoteAndLinks = remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
-    val ctx = LocalContext.current
-    val linkImgPath = ctx.filesDir.path + "/" + LINK_DIR
-    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val title = remember { mutableStateOf("") }
 //    val description = remember { mutableStateOf("") }
@@ -27,10 +24,7 @@ fun CacheLinks(
     val img = remember { mutableStateOf("") }
     val id = UUID.randomUUID().toString()
 
-    //
-    linkVM.urlPreview(
-        ctx, url, title, host, img
-    )?.fetchUrlPreview()
+    linkVM.urlPreview(context, url, title, host, img)?.fetchUrlPreview()
 
     if (
         observeLinks.value.none { it.image == img.value } &&
@@ -38,7 +32,6 @@ fun CacheLinks(
         host.value.isNotBlank() &&
         img.value.isNotBlank()
     ) {
-
         linkVM.doWork(
             linkId = id,
             noteId = noteId,

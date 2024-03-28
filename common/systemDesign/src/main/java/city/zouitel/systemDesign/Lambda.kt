@@ -12,20 +12,6 @@ import city.zouitel.systemDesign.Cons.NORMAL
 import city.zouitel.systemDesign.Cons.URGENT
 
 //
-val sharApp: (Context, String) -> Unit = { ctx, txt ->
-    ctx.startActivity(
-        Intent.createChooser(
-            Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, txt)
-                type = "text/plain"
-            },
-            null
-        )
-    )
-}
-
-//
 val sharNote: (Context, String, String, then: () -> Unit) -> Unit = { ctx, title, description ,then ->
     ctx.startActivity(
         Intent.createChooser(
@@ -153,31 +139,5 @@ val getColorOfPriority: (String) -> Color = {
         }
     }
 }
-
-//
-val codeUrl: (String?) -> String?
-    get() = {
-        it?.replace(
-            '\u002f',// -> /
-            '\u2204' // -> ∄
-        )
-            ?.replace(
-                '\u003f',// -> ?
-                '\u2203' // -> 	∃
-            )
-    }
-
-val decodeUrl: (String?) -> String?
-    get() = {
-        it?.replace(
-            '\u2204', // -> ∄
-            '\u002f' // -> /
-        )
-            ?.replace(
-                '\u2203', // -> 	∃
-                '\u003f' // -> ?
-            )
-    }
-
 
 
