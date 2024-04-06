@@ -38,7 +38,7 @@ coroutines = "1.8.0"
 
 #Koin.
 koin-core = "3.5.3"
-koin-compose = "3.5.3"
+koin-compose = "3.5.4"
 koin-android = "3.5.4"
 koin-worker = "3.5.0"
 koin-test = "3.5.3"
