@@ -250,9 +250,9 @@ data class AddScreen(
             }
         ) {
             // recording dialog visibility.
-            if (recordDialogState.value) {
-                RecorderScreen(id = id, dialogState = recordDialogState)
-            }
+//            if (recordDialogState.value) {
+//                RecorderScreen(id = id/*, dialogState = recordDialogState*/)
+//            }
 
             // reminding dialog visibility.
             if (remindingDialogState.value) {

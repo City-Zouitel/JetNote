@@ -2,6 +2,7 @@ package city.zouitel.note.ui.bottom_bar
 
 import android.Manifest.permission
 import android.annotation.SuppressLint
+import android.health.connect.datatypes.Record
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -31,6 +32,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.media.AudioListViewModel
 import city.zouitel.note.model.Data
+import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.systemDesign.Cons.DRAW_ROUTE
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
@@ -84,7 +86,8 @@ internal fun Plus(
         )
     ) {
         if (it.getValue(permission.RECORD_AUDIO)) {
-            recordDialogState.value = true
+//            recordDialogState.value = true
+            navigator.push(RecorderScreen(note.uid))
         }
     }
 
@@ -152,7 +155,8 @@ internal fun Plus(
                         permissionState.launchMultiplePermissionRequest()
                     }
                 } else {
-                    recordDialogState.value = true
+//                    recordDialogState.value = true
+                    navigator.push(RecorderScreen(id = note.uid))
                 }
                 isShow.value = false
             }

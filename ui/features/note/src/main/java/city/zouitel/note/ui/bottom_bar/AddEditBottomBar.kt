@@ -22,8 +22,10 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.note.ui.ColorsRow
 import city.zouitel.note.model.Data
+import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.FOCUS_NAVIGATION
 import city.zouitel.systemDesign.Cons.KEY_CLICK
@@ -64,6 +66,7 @@ fun AddEditBottomBar(
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
+    val navigator = LocalNavigator.current
 
     val showOptionsMenu = remember { mutableStateOf(false) }
     val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
@@ -84,7 +87,8 @@ fun AddEditBottomBar(
         rememberMultiplePermissionsState(
             permissions = listOf()
         ) {
-            recordDialogState.value = true
+//            recordDialogState.value = true
+            navigator?.push(RecorderScreen(note.uid))
         }
     }
     val showRationalDialog = remember { mutableStateOf(false) }
@@ -156,7 +160,8 @@ fun AddEditBottomBar(
                                         permissionState.launchMultiplePermissionRequest()
                                     }
                                 } else {
-                                    remindingDialogState.value = true
+//                                    remindingDialogState.value = true
+                                    navigator?.push(RecorderScreen(note.uid))
                                 }
                             }
                     )

@@ -14,7 +14,7 @@ import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.MP3
 import java.io.File
 
-data class RecorderScreen(val id: String, val dialogState: MutableState<Boolean>): Screen {
+data class RecorderScreen(val id: String/*, val dialogState: MutableState<Boolean>*/): Screen {
     @Composable
     override fun Content() {
         val context = LocalContext.current
@@ -33,32 +33,47 @@ data class RecorderScreen(val id: String, val dialogState: MutableState<Boolean>
             record.start()
         }
 
-        AlertDialog(
-            onDismissRequest = {
-                runCatching {
-                    record.stop()
-                    record.reset()
-                    record.release()
-                    recorderModel.stop()
-                }
-                dialogState.value = false
-            },
-            confirmButton = {},
-            text = {
-                RecordController(
-                    isRecording = isRecording,
-                    isPause = isPause,
-                    dialogState = dialogState,
-                    mediaRecorder = record,
-                    seconds = recorderModel.seconds,
-                    minutes = recorderModel.minutes,
-                    hours = recorderModel.hours,
-                    onStart = { recorderModel.start() },
-                    onPause = { recorderModel.pause() },
-                    onStop = { recorderModel.stop() }
-                )
-            }
+        // TODO: optimization!
+        RecordController(
+            isRecording = isRecording,
+            isPause = isPause,
+//            dialogState = dialogState,
+            mediaRecorder = record,
+            recorderScreenModel = recorderModel,
+            seconds = recorderModel.seconds,
+            minutes = recorderModel.minutes,
+            hours = recorderModel.hours,
+            onStart = { recorderModel.start() },
+            onPause = { recorderModel.pause() },
+            onStop = { recorderModel.stop() }
         )
+
+//        AlertDialog(
+//            onDismissRequest = {
+//                runCatching {
+//                    record.stop()
+//                    record.reset()
+//                    record.release()
+//                    recorderModel.stop()
+//                }
+//                dialogState.value = false
+//            },
+//            confirmButton = {},
+//            text = {
+//                RecordController(
+//                    isRecording = isRecording,
+//                    isPause = isPause,
+//                    dialogState = dialogState,
+//                    mediaRecorder = record,
+//                    seconds = recorderModel.seconds,
+//                    minutes = recorderModel.minutes,
+//                    hours = recorderModel.hours,
+//                    onStart = { recorderModel.start() },
+//                    onPause = { recorderModel.pause() },
+//                    onStop = { recorderModel.stop() }
+//                )
+//            }
+//        )
     }
 }
 

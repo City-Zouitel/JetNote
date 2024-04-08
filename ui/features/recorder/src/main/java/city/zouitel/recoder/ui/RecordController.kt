@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import cafe.adriel.voyager.navigator.LocalNavigator
+import city.zouitel.recoder.viewmodel.RecorderScreenModel
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Icons.MIC_ICON_36
 import city.zouitel.systemDesign.Icons.PAUSE_CIRCLE_FILLED_ICON_36
@@ -25,8 +27,9 @@ import city.zouitel.systemDesign.Icons.STOP_CIRCLE_ICON_36
 fun RecordController(
     isRecording: MutableState<Boolean>,
     isPause: MutableState<Boolean>,
-    dialogState: MutableState<Boolean>,
-    mediaRecorder:MediaRecorder,
+//    dialogState: MutableState<Boolean>,
+    mediaRecorder: MediaRecorder,
+    recorderScreenModel: RecorderScreenModel,
     seconds: String,
     minutes: String,
     hours: String,
@@ -34,8 +37,10 @@ fun RecordController(
     onPause: () -> Unit = {},
     onStop: () -> Unit = {},
 ) {
+    val navigator = LocalNavigator.current
+
     Column(
-        Modifier,
+        Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -91,9 +96,11 @@ fun RecordController(
                                 mediaRecorder.stop()
                                 mediaRecorder.reset()
                                 mediaRecorder.release()
+                                recorderScreenModel.stop()
                                 isRecording.value = false
-                                dialogState.value = false
+//                                dialogState.value = false
                                 onStop()
+                                navigator?.pop()
                             },
                             tint = Color.Red
                         )
