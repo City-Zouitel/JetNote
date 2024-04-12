@@ -22,7 +22,7 @@
     # Upload to Play Store
     upload-to-play-store: # optional
     # Project path
-    project-path: 
+    project-path: 'https://github.com/City-Zouitel/JetNote'
     # Output path of the build
     output-path: # optional, default is output.apk
     # Boolean to tell the Action to upload the .ipa to Browserstack App Live after the build.
