@@ -1,0 +1,46 @@
+            - name: Build Android App
+  # You may pin to the exact commit or the version.
+  # uses: sparkfabrik/android-build-action@22a550b5d2dff5538ee6bbc39ba8517fdb3620b3
+  uses: sparkfabrik/android-build-action@v1.5.0
+  with:
+    # You can build an unsigned APK (assemble) or a signed AAB (bundle).
+    build-type: # optional, default is assemble
+    # Name of the gradle task to exec (eg. assembleDebug, assembleRelease, bundleRelease)
+    gradle-task: # optional, default is assembleDebug
+    # Increment build number
+    increment-build-number: # optional
+    # Package name
+    package-name: # optional
+    # Keystore file content as base64 encoded string
+    keystore-content: # optional
+    # Keystore password
+    keystore-password: # optional
+    # Keystore alias
+    keystore-alias: # optional
+    # JSON keystore file content
+    json-key-data: # optional
+    # Upload to Play Store
+    upload-to-play-store: # optional
+    # Project path
+    project-path: 
+    # Output path of the build
+    output-path: # optional, default is output.apk
+    # Boolean to tell the Action to upload the .ipa to Browserstack App Live after the build.
+    browserstack-upload: # optional
+    # Browserstack username (required if browserstack-upload == true)
+    browserstack-username: # optional, default is 
+    # Browserstack access key (required if browserstack-upload == true)
+    browserstack-access-key: # optional, default is 
+    # Name of the env file name to pass to fastlane --env
+    fastlane-env: # optional
+    # Specify the Ruby version you wish to use
+    ruby-version: # optional, default is head
+    # Specify the Bundler version you wish to use
+    bundler-version: # optional, default is 2.3
+    # Specify the Fastlane version you wish to use
+    fastlane-version: # optional, default is 2.213.0
+    # Release track to target
+    release-track: # optional, default is internal
+    # Status of the release
+    release-status: # optional, default is draft
+          
