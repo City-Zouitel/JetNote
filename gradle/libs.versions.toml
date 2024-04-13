@@ -37,7 +37,7 @@ serialization = "1.6.3"
 coroutines = "1.8.0"
 
 #Koin.
-koin-core = "3.5.4"
+koin-core = "3.5.6"
 koin-compose = "3.5.6"
 koin-android = "3.5.6"
 koin-worker = "3.5.0"
