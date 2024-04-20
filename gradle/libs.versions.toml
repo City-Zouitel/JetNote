@@ -22,7 +22,7 @@ startup = "1.1.1"
 
 #Compose.
 activity-compose = "1.8.2"
-compose-bom = "2024.04.00"
+compose-bom = "2024.04.01"
 appcompat = "1.6.1"
 material = "1.11.0"
 navigation-compose = "2.7.7"
@@ -37,11 +37,11 @@ serialization = "1.6.3"
 coroutines = "1.8.0"
 
 #Koin.
-koin-core = "3.5.4"
-koin-compose = "3.5.4"
-koin-android = "3.5.4"
+koin-core = "3.5.6"
+koin-compose = "3.5.6"
+koin-android = "3.5.6"
 koin-worker = "3.5.0"
-koin-test = "3.5.4"
+koin-test = "3.5.6"
 koin-gradle = "3.5.0"
 
 #Room.
