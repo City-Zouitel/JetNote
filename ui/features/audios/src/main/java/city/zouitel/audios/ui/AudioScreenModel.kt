@@ -2,23 +2,21 @@ package city.zouitel.audios.ui
 
 import android.content.Context
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.audios.media.AudioRepository
 import city.zouitel.domain.exoplayer.ExoPlayerImpl
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MediaPlayerViewModel (
+class AudioScreenModel (
     private val exoBuilder : ExoPlayerImpl,
     private val repository: AudioRepository,
     private val recPath: String
-): ViewModel() {
+): ScreenModel {
 
     var getMediaDuration = mutableLongStateOf(0L)
         private set
@@ -30,30 +28,30 @@ class MediaPlayerViewModel (
         private set
 
     fun playMedia(mediaUri: String) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             exoBuilder.prepareMediaPlayer(mediaUri).play()
         }
     }
 
     fun pauseMedia(mediaUri: String) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             exoBuilder.prepareMediaPlayer(mediaUri).pause()
         }
     }
 
     fun playStreamMedia(mediaUri: String) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             exoBuilder.prepareStreamMediaPlayer(mediaUri).play()
         }
     }
     fun pauseStreamMedia(mediaUri: String) {
-        viewModelScope.launch {
+        screenModelScope.launch {
             exoBuilder.prepareStreamMediaPlayer(mediaUri).pause()
         }
     }
 
     fun getMediaDuration(context: Context, path: String):Long {
-        viewModelScope.launch {
+        screenModelScope.launch {
             getMediaDuration.longValue = exoBuilder.getMediaDuration(context, path)
         }
         return getMediaDuration.longValue

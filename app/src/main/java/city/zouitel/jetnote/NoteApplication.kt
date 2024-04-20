@@ -1,7 +1,7 @@
 package city.zouitel.jetnote
 
 import android.app.Application
-import city.zouitel.audios.di.exoPlayerKoinModule
+import city.zouitel.audios.di.audioPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
 import city.zouitel.init.initializerKoinModule
@@ -39,7 +39,7 @@ class NoteApplication: Application(), KoinComponent {
                 datastoreKoinModule,
                 repositoryKoinModule,
                 securityKoinModule,
-                exoPlayerKoinModule,
+                audioPlayerKoinModule,
                 linksKoinModule,
                 noteKoinModule,
                 quickNoteKoinModule,

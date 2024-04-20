@@ -21,7 +21,7 @@ class RecorderScreenModel : ScreenModel {
 
     fun start() {
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
-            time = time.plus(1.seconds)
+            time += 1.seconds
             updateTimeStates()
         }
         isPlaying = true

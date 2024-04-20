@@ -28,12 +28,13 @@ import java.io.File
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MiniMediaPlayer(
-    exoViewModule: MediaPlayerViewModel = koinViewModel(),
+//    exoViewModule: AudioScreenModel = koinViewModel(),
     datastoreVM: DataStoreVM = koinViewModel(),
+    audioScreenModel: AudioScreenModel,
     localMediaUid: String?
 ) {
     val context = LocalContext.current
-    val mediaFile = exoViewModule.rec_path.value + File.separator +  localMediaUid + "." + Cons.MP3
+    val mediaFile = audioScreenModel.rec_path.value + File.separator +  localMediaUid + "." + Cons.MP3
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
     val currentLayout by datastoreVM.getLayout.collectAsState()
@@ -41,7 +42,7 @@ fun MiniMediaPlayer(
 
     scope.launch {
         while (isPlaying.value && processState <= 1f) {
-            delay(exoViewModule.getMediaDuration(context, mediaFile) / 100)
+            delay(audioScreenModel.getMediaDuration(context, mediaFile) / 100)
             processState += .011f
         }
         when {
@@ -52,7 +53,7 @@ fun MiniMediaPlayer(
         }
     }
 
-    if (isPlaying.value) exoViewModule.playMedia(mediaFile) else exoViewModule.pauseMedia(mediaFile)
+    if (isPlaying.value) audioScreenModel.playMedia(mediaFile) else audioScreenModel.pauseMedia(mediaFile)
 
     Card(
         modifier = Modifier.padding(10.dp),
@@ -115,8 +116,8 @@ fun MiniMediaPlayer(
 
                 Text(
                     modifier = Modifier.padding(end = 7.dp),
-                    text = exoViewModule.formatLong(
-                        exoViewModule.getMediaDuration(context, mediaFile)
+                    text = audioScreenModel.formatLong(
+                        audioScreenModel.getMediaDuration(context, mediaFile)
                     ),
                     color = MaterialTheme.colorScheme.surfaceVariant
                 )

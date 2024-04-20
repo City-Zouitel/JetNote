@@ -1,6 +1,5 @@
 package city.zouitel.screens.note_card
 
-import android.net.Uri
 import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
@@ -30,24 +29,22 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import cafe.adriel.voyager.navigator.LocalNavigator
+import city.zouitel.audios.ui.AudioScreenModel
 import city.zouitel.audios.ui.MiniMediaPlayer
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkPart
 import city.zouitel.links.ui.LinkVM
 import city.zouitel.links.ui.NoteAndLinkVM
 import city.zouitel.logic.codeUrl
+import city.zouitel.logic.getImgPath
+import city.zouitel.logic.getRecPath
 import city.zouitel.screens.navigation_drawer.Screens
 import city.zouitel.screens.navigation_drawer.Screens.*
 import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
-import city.zouitel.systemDesign.Cons.REC_DIR
-import city.zouitel.systemDesign.Cons.IMG_DIR
-import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.Cons.MP3
 import city.zouitel.systemDesign.Cons.NON
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.ANGLE_DOWN_ICON
@@ -78,12 +75,13 @@ fun NoteCard(
     taskModel: TaskScreenModel,
     noteAndTaskModel: NoteAndTaskScreenModel,
     dataModel: DataScreenModel,
+    audioModel: AudioScreenModel,
     screen: Screens,
     noteEntity: Note,
     homeSelectionState: MutableState<Boolean>?,
     trashSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Data>?,
-    onSwipeNote: (Note) -> Unit
+    onSwipeNote: (Note) -> Unit,
 ) {
     val swipeState = rememberSwipeableActionsState()
     val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
@@ -108,6 +106,7 @@ fun NoteCard(
                 taskModel = taskModel,
                 noteAndTodoModel = noteAndTaskModel,
                 dataModel = dataModel,
+                audioModel = audioModel,
                 noteEntity = noteEntity,
                 screen = screen,
                 homeSelectionState = homeSelectionState,
@@ -120,6 +119,7 @@ fun NoteCard(
             taskModel = taskModel,
             noteAndTodoModel = noteAndTaskModel,
             dataModel = dataModel,
+            audioModel = audioModel,
             noteEntity = noteEntity,
             screen = screen,
             homeSelectionState = homeSelectionState,
@@ -138,6 +138,7 @@ private fun Card(
     dataStoreVM: DataStoreVM = koinViewModel(),
     linkVM: LinkVM = koinViewModel(),
     noteAndLinkVM: NoteAndLinkVM = koinViewModel(),
+    audioModel: AudioScreenModel,
     noteEntity: Note,
     screen: Screens,
     homeSelectionState: MutableState<Boolean>?,
@@ -150,7 +151,7 @@ private fun Card(
 
     val note = noteEntity.dataEntity
     val labels = noteEntity.tagEntities
-    val internalPath = context.filesDir.path
+//    val internalPath = context.filesDir.path
 
     val observeTodoList = remember(taskModel, taskModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
@@ -160,11 +161,13 @@ private fun Card(
     val observerNoteAndLink =
         remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
 
-    val mediaPath = context.filesDir.path + "/$REC_DIR/" + note.uid + "." + MP3
-    val imagePath = "$internalPath/$IMG_DIR/${note.uid}.$JPEG"
+//    val mediaPath = context.filesDir.path + "/$REC_DIR/" + note.uid + "." + MP3
+//    val imagePath = "$internalPath/$IMG_DIR/${note.uid}.$JPEG"
+    val mediaPath = note.uid getRecPath context
+    val imagePath = note.uid getImgPath context
 
     var todoListState by remember { mutableStateOf(false) }
-    val media = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
+//    val media = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
 
     val haptic = LocalHapticFeedback.current
 
@@ -267,10 +270,8 @@ private fun Card(
         )
 
         //display media player.
-        if (
-            File(mediaPath).exists()
-        ) {
-            MiniMediaPlayer(localMediaUid = note.uid)
+        if (File(mediaPath).exists()) {
+            MiniMediaPlayer(audioScreenModel = audioModel, localMediaUid = note.uid)
         }
 
         //display tags.

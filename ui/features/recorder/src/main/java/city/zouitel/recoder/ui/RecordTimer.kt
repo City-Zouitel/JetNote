@@ -4,6 +4,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -33,7 +34,7 @@ fun RecordTimer(
             )
         }
 
-        CompositionLocalProvider(LocalTextStyle provides TextStyle(fontSize = 50.sp)) {
+        CompositionLocalProvider(LocalTextStyle provides TextStyle(fontSize = 50.sp, color = MaterialTheme.colorScheme.onSurface)) {
             AnimatedContent(targetState = hours, transitionSpec = numberTransitionSpec, label = "") {
                 Text(text = it)
             }
@@ -51,5 +52,4 @@ fun RecordTimer(
             }
         }
     }
-
 }

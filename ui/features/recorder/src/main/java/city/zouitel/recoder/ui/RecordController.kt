@@ -5,6 +5,7 @@ import android.media.MediaRecorder
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -27,7 +28,7 @@ import city.zouitel.systemDesign.Icons.STOP_CIRCLE_ICON_36
 fun RecordController(
     isRecording: MutableState<Boolean>,
     isPause: MutableState<Boolean>,
-//    dialogState: MutableState<Boolean>,
+    dialogState: MutableState<Boolean>,
     mediaRecorder: MediaRecorder,
     recorderScreenModel: RecorderScreenModel,
     seconds: String,
@@ -40,12 +41,11 @@ fun RecordController(
     val navigator = LocalNavigator.current
 
     Column(
-        Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        RecordTimer(seconds,minutes,hours)
+        RecordTimer(seconds, minutes, hours)
 
         Row {
             CommonRow(
@@ -57,8 +57,8 @@ fun RecordController(
                             painter = painterResource(id = MIC_ICON_36),
                             contentDescription = null,
                             modifier = Modifier.clickable {
-                                isRecording.value = true
                                 onStart()
+                                isRecording.value = true
                             }
                         )
                 }
@@ -98,11 +98,10 @@ fun RecordController(
                                 mediaRecorder.release()
                                 recorderScreenModel.stop()
                                 isRecording.value = false
-//                                dialogState.value = false
+                                dialogState.value = false
                                 onStop()
-                                navigator?.pop()
                             },
-                            tint = Color.Red
+                            tint = MaterialTheme.colorScheme.error
                         )
                 }
             }

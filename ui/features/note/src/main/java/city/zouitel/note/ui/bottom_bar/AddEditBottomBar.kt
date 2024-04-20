@@ -25,7 +25,6 @@ import androidx.navigation.NavController
 import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.note.ui.ColorsRow
 import city.zouitel.note.model.Data
-import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.FOCUS_NAVIGATION
 import city.zouitel.systemDesign.Cons.KEY_CLICK
@@ -87,8 +86,8 @@ fun AddEditBottomBar(
         rememberMultiplePermissionsState(
             permissions = listOf()
         ) {
-//            recordDialogState.value = true
-            navigator?.push(RecorderScreen(note.uid))
+            recordDialogState.value = true
+//            navigator?.push()
         }
     }
     val showRationalDialog = remember { mutableStateOf(false) }
@@ -160,8 +159,8 @@ fun AddEditBottomBar(
                                         permissionState.launchMultiplePermissionRequest()
                                     }
                                 } else {
-//                                    remindingDialogState.value = true
-                                    navigator?.push(RecorderScreen(note.uid))
+                                    remindingDialogState.value = true
+//                                    navigator?.push()
                                 }
                             }
                     )

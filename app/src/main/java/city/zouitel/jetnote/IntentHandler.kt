@@ -24,8 +24,12 @@ internal interface IntentHandler: CoroutineScope {
             if (action == Intent.ACTION_SEND && type == "text/plain") {
                 getStringExtra(Intent.EXTRA_TEXT)?.let {
                     launch {
-                        navigator?.push(listOf(HomeScreen(), AddScreen(UUID.randomUUID().toString(), codeUrl(it))))
-//                        navigator?.push(AddScreen(UUID.randomUUID().toString(), codeUrl(it)))
+//                        navigator?.push(listOf(HomeScreen(), AddScreen(UUID.randomUUID().toString(), codeUrl(it))))
+                        navigator?.push(
+                            listOf(
+                                AddScreen(UUID.randomUUID().toString(), codeUrl(it))
+                            )
+                        )
                     }
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 }
@@ -34,7 +38,13 @@ internal interface IntentHandler: CoroutineScope {
                 if (extras?.containsKey("new_note_shortcut") == true) {
                     getBooleanExtra("new_note_shortcut", false)
                     launch {
-                        navigator?.push(AddScreen(UUID.randomUUID().toString()))
+//                        navigator?.push(AddScreen(UUID.randomUUID().toString()))
+                        navigator?.push(
+                            listOf(
+                                HomeScreen(),
+                                AddScreen(UUID.randomUUID().toString())
+                            )
+                        )
                     }
                 }
                 if (extras?.containsKey("quick_note") == true) {

@@ -66,7 +66,7 @@ import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import city.zouitel.audios.ui.MediaPlayerViewModel
+import city.zouitel.audios.ui.AudioScreenModel
 import city.zouitel.audios.ui.NormalMediaPlayer
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.CacheLinks
@@ -77,7 +77,6 @@ import city.zouitel.logic.decodeUrl
 import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
-import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.RemindingNote
 import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.Cons.REC_DIR
@@ -122,7 +121,7 @@ data class EditScreen(
     @Composable
     override fun Content() {
         val navController: NavController = rememberNavController()
-        val exoViewModule: MediaPlayerViewModel by inject()
+        val exoViewModule: AudioScreenModel by inject()
         val tagViewModel: TagScreenModel by inject()
         val noteAndTodoVM: NoteAndTaskScreenModel by inject()
         val dataStoreVM: DataStoreVM by inject()
@@ -171,6 +170,7 @@ data class EditScreen(
         val noteAndTagModel = getScreenModel<NoteAndTagScreenModel>()
         val taskModel = getScreenModel<TaskScreenModel>()
         val noteAndTodoModel = getScreenModel<NoteAndTaskScreenModel>()
+        val audioModel = getScreenModel<AudioScreenModel>()
 
         val backgroundColorState = rememberSaveable { mutableIntStateOf(color) }
         val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
@@ -341,7 +341,7 @@ data class EditScreen(
                     if (
                         File(mediaFile).exists() && !recordDialogState.value
                     ) {
-                        NormalMediaPlayer(localMediaUid = id)
+                        NormalMediaPlayer(audioScreenModel = audioModel, localMediaUid = id)
                         audioDurationState.intValue =
                             exoViewModule.getMediaDuration(context, mediaFile).toInt()
 

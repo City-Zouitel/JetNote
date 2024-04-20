@@ -68,7 +68,7 @@ import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import city.zouitel.audios.ui.MediaPlayerViewModel
+import city.zouitel.audios.ui.AudioScreenModel
 import city.zouitel.audios.ui.NormalMediaPlayer
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.CacheLinks
@@ -78,7 +78,7 @@ import city.zouitel.links.ui.NoteAndLinkVM
 import city.zouitel.note.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
-import city.zouitel.recoder.ui.RecorderScreen
+import city.zouitel.recoder.ui.RecorderDialog
 import city.zouitel.reminder.ui.RemindingNote
 import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.Cons.REC_DIR
@@ -117,7 +117,7 @@ data class AddScreen(
     )
     @Composable
     override fun Content() {
-        val exoVM: MediaPlayerViewModel by inject()
+        val exoVM: AudioScreenModel by inject()
         val dataStoreVM: DataStoreVM by inject()
         val linkVM: LinkVM by inject()
         val noteAndLinkVM: NoteAndLinkVM by inject()
@@ -145,6 +145,7 @@ data class AddScreen(
         val noteAndTagModel = getScreenModel<NoteAndTagScreenModel>()
         val taskModel = getScreenModel<TaskScreenModel>()
         val noteAndTodoModel = getScreenModel<NoteAndTaskScreenModel>()
+        val audioModel = getScreenModel<AudioScreenModel>()
 
         val isTitleFieldFocused = remember { mutableStateOf(false) }
         val isDescriptionFieldFocused = remember { mutableStateOf(false) }
@@ -250,9 +251,9 @@ data class AddScreen(
             }
         ) {
             // recording dialog visibility.
-//            if (recordDialogState.value) {
-//                RecorderScreen(id = id/*, dialogState = recordDialogState*/)
-//            }
+            if (recordDialogState.value) {
+                RecorderDialog(id = id, dialogState = recordDialogState)
+            }
 
             // reminding dialog visibility.
             if (remindingDialogState.value) {
@@ -328,7 +329,7 @@ data class AddScreen(
                     if (
                         File(mediaFile).exists() && !recordDialogState.value
                     ) {
-                        NormalMediaPlayer(localMediaUid = id)
+                        NormalMediaPlayer(audioScreenModel = audioModel, localMediaUid = id)
                         audioDurationState.intValue = exoVM.getMediaDuration(context, mediaFile).toInt()
                     }
                 }

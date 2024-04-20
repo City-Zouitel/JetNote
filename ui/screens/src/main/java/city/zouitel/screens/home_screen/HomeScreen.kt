@@ -47,6 +47,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import city.zouitel.audios.ui.AudioScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.Screens
 import city.zouitel.screens.note_card.NoteCard
@@ -100,6 +101,7 @@ class HomeScreen: Screen, KoinComponent {
         val noteAndTaskModel = getScreenModel<NoteAndTaskScreenModel>()
         val homeModel = getScreenModel<HomeScreenModel>()
         val dataModel = getScreenModel<DataScreenModel>()
+        val audioModel = getScreenModel<AudioScreenModel>()
 
         // to observer notes while changing immediately.
         val observerLocalNotes: State<List<Note>> = when (
@@ -238,6 +240,7 @@ class HomeScreen: Screen, KoinComponent {
                                     taskModel = taskModel,
                                     noteAndTaskModel = noteAndTaskModel,
                                     dataModel = dataModel,
+                                    audioModel = audioModel,
                                     screen = Screens.HOME_SCREEN,
                                     noteEntity = entity,
                                     homeSelectionState = homeSelectionState,
@@ -273,36 +276,38 @@ class HomeScreen: Screen, KoinComponent {
                                     taskModel = taskModel,
                                     noteAndTaskModel = noteAndTaskModel,
                                     dataModel = dataModel,
+                                    audioModel = audioModel,
                                     screen = Screens.HOME_SCREEN,
                                     noteEntity = entity,
                                     homeSelectionState = homeSelectionState,
                                     trashSelectionState = null,
-                                    selectedNotes = selectedNotes
-                                ) {
-                                    dataModel.editData(
-                                        Data(
-                                            title = it.dataEntity.title,
-                                            description = it.dataEntity.description,
-                                            priority = it.dataEntity.priority,
-                                            uid = it.dataEntity.uid,
-                                            color = it.dataEntity.color,
-                                            textColor = it.dataEntity.textColor,
-                                            trashed = 1
+                                    selectedNotes = selectedNotes,
+                                    onSwipeNote = {
+                                        dataModel.editData(
+                                            Data(
+                                                title = it.dataEntity.title,
+                                                description = it.dataEntity.description,
+                                                priority = it.dataEntity.priority,
+                                                uid = it.dataEntity.uid,
+                                                color = it.dataEntity.color,
+                                                textColor = it.dataEntity.textColor,
+                                                trashed = 1
+                                            )
                                         )
-                                    )
 
-                                    // to cancel the alarm manager reminding.
-                                    notificationVM.scheduleNotification(
-                                        context = context,
-                                        dateTime = it.dataEntity.reminding,
-                                        title = it.dataEntity.title,
-                                        message = it.dataEntity.description,
-                                        uid = it.dataEntity.uid,
-                                        onReset = { true }
-                                    )
+                                        // to cancel the alarm manager reminding.
+                                        notificationVM.scheduleNotification(
+                                            context = context,
+                                            dateTime = it.dataEntity.reminding,
+                                            title = it.dataEntity.title,
+                                            message = it.dataEntity.description,
+                                            uid = it.dataEntity.uid,
+                                            onReset = { true }
+                                        )
 
-                                    undo.invoke(entity.dataEntity)
-                                }
+                                        undo.invoke(entity.dataEntity)
+                                    },
+                                )
                             }
                         }
                     }

@@ -2,10 +2,11 @@ package city.zouitel.note.ui.bottom_bar
 
 import android.Manifest.permission
 import android.annotation.SuppressLint
-import android.health.connect.datatypes.Record
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -32,19 +33,15 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.media.AudioListViewModel
 import city.zouitel.note.model.Data
-import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.systemDesign.Cons.DRAW_ROUTE
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.Cons.MP3
-import city.zouitel.systemDesign.Cons.TAG_ROUTE
-import city.zouitel.systemDesign.Cons.TASK_ROUTE
 import city.zouitel.systemDesign.DataStoreVM
 import city.zouitel.systemDesign.Icons.ADD_IMAGE_ICON
 import city.zouitel.systemDesign.Icons.CAMERA_ICON
 import city.zouitel.systemDesign.Icons.CASSETTE_ICON
 import city.zouitel.systemDesign.Icons.GESTURE_ICON
-import city.zouitel.systemDesign.Icons.IMAGE_ICON
 import city.zouitel.systemDesign.Icons.LIST_CHECK_ICON
 import city.zouitel.systemDesign.Icons.MIC_ICON
 import city.zouitel.systemDesign.Icons.TAGS_ICON
@@ -60,6 +57,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("SuspiciousIndentation")
 @Composable
@@ -82,12 +80,12 @@ internal fun Plus(
     val permissionState = rememberMultiplePermissionsState(
         permissions =  listOf(
             permission.RECORD_AUDIO,
-            /*permission.WRITE_EXTERNAL_STORAGE*/
+            permission.READ_MEDIA_AUDIO
         )
     ) {
-        if (it.getValue(permission.RECORD_AUDIO)) {
-//            recordDialogState.value = true
-            navigator.push(RecorderScreen(note.uid))
+        if (it.all { true }) {
+            recordDialogState.value = true
+//            navigator.push(RecorderScreen(note.uid))
         }
     }
 
@@ -155,8 +153,8 @@ internal fun Plus(
                         permissionState.launchMultiplePermissionRequest()
                     }
                 } else {
-//                    recordDialogState.value = true
-                    navigator.push(RecorderScreen(id = note.uid))
+                    recordDialogState.value = true
+//                    navigator.push(RecorderScreen(id = note.uid))
                 }
                 isShow.value = false
             }

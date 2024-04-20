@@ -41,6 +41,7 @@ fun Project.configureAndroidLibrary(
 
         kotlinOptions {
             jvmTarget = "17"
+            freeCompilerArgs += "-Xcontext-receivers"
         }
 
         dependencies {

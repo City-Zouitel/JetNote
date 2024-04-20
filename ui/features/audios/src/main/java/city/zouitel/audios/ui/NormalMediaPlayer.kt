@@ -36,33 +36,30 @@ import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
-import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
 @SuppressLint("CoroutineCreationDuringComposition", "MutableCollectionMutableState")
 @Composable
 fun NormalMediaPlayer(
-    exoViewModule: MediaPlayerViewModel = koinViewModel(),
+//    exoViewModule: AudioScreenModel = koinViewModel(),
+    audioScreenModel: AudioScreenModel,
     localMediaUid: String?,
 ) {
     val context = LocalContext.current
-    val mediaFile = arrayOf(
-        context.filesDir.path,
-        Cons.REC_DIR,
-        localMediaUid + "." + Cons.MP3
-    ).joinToString("/")
+    val mediaFile = audioScreenModel.rec_path.value + File.separator +  localMediaUid + "." + Cons.MP3
+
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val swipeState = rememberSwipeableActionsState()
 
-    val tempMedia = "/storage/emulated/0/Download/Vaults One Last Night.mp3"
+    val tempMedia = "/storage/emulated/0/Download/Vaults One Last Night.wav"
 
     scope.launch {
-        exoViewModule.loadAudioAmplitudes(tempMedia)
+        audioScreenModel.loadAudioAmplitudes(tempMedia)
 
         while (isPlaying.value && processState <= 1f) {
-            delay(exoViewModule.getMediaDuration(context, mediaFile) / 100)
+            delay(audioScreenModel.getMediaDuration(context, mediaFile) / 100)
             processState += .011f
         }
         when {
@@ -73,16 +70,13 @@ fun NormalMediaPlayer(
         }
     }
 
-    val amplitudes by remember { mutableStateOf(exoViewModule.audioAmplitudes) }
+    val amplitudes by remember { mutableStateOf(audioScreenModel.audioAmplitudes) }
 
-    if (isPlaying.value) exoViewModule.playMedia(tempMedia) else exoViewModule.pauseMedia(tempMedia)
+    if (isPlaying.value) audioScreenModel.playMedia(mediaFile) else audioScreenModel.pauseMedia(mediaFile)
 
     val swipeAction = SwipeAction(
         onSwipe = {
-            File(
-                context.filesDir.path + File.pathSeparator + Cons.REC_DIR,
-                "$localMediaUid.${Cons.MP3}"
-            ).delete()
+            File(mediaFile).delete()
         },
         icon = {
             Icon(painterResource(Icons.DELETE_OUTLINE_ICON), null)
@@ -138,8 +132,8 @@ fun NormalMediaPlayer(
 
                     Text(
                         modifier = Modifier.padding(end = 10.dp),
-                        text = exoViewModule.formatLong(
-                            exoViewModule.getMediaDuration(context, mediaFile)
+                        text = audioScreenModel.formatLong(
+                            audioScreenModel.getMediaDuration(context, mediaFile)
                         ),
                         color = Color.White
                     )

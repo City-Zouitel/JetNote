@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import city.zouitel.audios.ui.AudioScreenModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkVM
 import city.zouitel.links.ui.NoteAndLinkVM
@@ -55,6 +56,7 @@ class RemovedScreen : Screen, KoinComponent {
         val tagModel = getScreenModel<TagScreenModel>()
         val taskModel = getScreenModel<TaskScreenModel>()
         val noteAndTaskModel = getScreenModel<NoteAndTaskScreenModel>()
+        val audioModel = getScreenModel<AudioScreenModel>()
         val observerRemovedNotes = getScreenModel<HomeScreenModel>().allTrashedNotes.collectAsState()
 
         val context = LocalContext.current
@@ -144,27 +146,29 @@ class RemovedScreen : Screen, KoinComponent {
                                 taskModel = taskModel,
                                 noteAndTaskModel = noteAndTaskModel,
                                 dataModel = dataModel,
+                                audioModel = audioModel,
                                 screen = Screens.DELETED_SCREEN,
                                 noteEntity = entity,
                                 homeSelectionState = null,
                                 trashSelectionState = trashSelectionState,
-                                selectedNotes = selectedNotes
-                            ) {
-                                dataModel.deleteData(Data(uid = entity.dataEntity.uid))
-                                entity.linkEntities.forEach { link ->
-                                    linkVM.deleteLink(link)
-                                }
-                                entity.dataEntity.uid.let { _uid ->
-                                    File(
-                                        context.filesDir.path + File.pathSeparator + IMG_DIR,
-                                        "$_uid.$JPEG"
-                                    ).delete()
-                                    File(
-                                        context.filesDir.path + File.pathSeparator + REC_DIR,
-                                        "$_uid$MP3"
-                                    ).delete()
-                                }
-                            }
+                                selectedNotes = selectedNotes,
+                                onSwipeNote = {
+                                    dataModel.deleteData(Data(uid = entity.dataEntity.uid))
+                                    entity.linkEntities.forEach { link ->
+                                        linkVM.deleteLink(link)
+                                    }
+                                    entity.dataEntity.uid.let { _uid ->
+                                        File(
+                                            context.filesDir.path + File.pathSeparator + IMG_DIR,
+                                            "$_uid.$JPEG"
+                                        ).delete()
+                                        File(
+                                            context.filesDir.path + File.pathSeparator + REC_DIR,
+                                            "$_uid$MP3"
+                                        ).delete()
+                                    }
+                                },
+                            )
                         }
                     }
                 } else {
@@ -179,14 +183,16 @@ class RemovedScreen : Screen, KoinComponent {
                                         taskModel = taskModel,
                                         noteAndTaskModel = noteAndTaskModel,
                                         dataModel = dataModel,
+                                        audioModel = audioModel,
                                         screen = Screens.DELETED_SCREEN,
                                         noteEntity = entity,
                                         homeSelectionState = null,
                                         trashSelectionState = trashSelectionState,
-                                        selectedNotes = selectedNotes
-                                    ) {
+                                        selectedNotes = selectedNotes,
+                                        onSwipeNote = {
 
-                                    }
+                                        },
+                                    )
                                 }
                             }
                         }
