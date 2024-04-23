@@ -21,7 +21,7 @@ workmanager = "2.9.0"
 startup = "1.1.1"
 
 #Compose.
-activity-compose = "1.9.0"
+activity-compose = "1.8.2"
 compose-bom = "2024.04.01"
 appcompat = "1.6.1"
 material = "1.11.0"
