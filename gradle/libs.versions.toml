@@ -49,7 +49,7 @@ room = "2.6.1"
 
 #Datastore.
 datastore = "1.0.0"
-datastore-security = "1.0.0-beta01"
+datastore-security = "1.0.0"
 
 #Exo.
 exoplayer = "2.19.1"
