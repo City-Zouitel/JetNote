@@ -57,7 +57,6 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("SuspiciousIndentation")
 @Composable
@@ -77,15 +76,26 @@ internal fun Plus(
 
     val sound by lazy { SoundEffect() }
 
-    val permissionState = rememberMultiplePermissionsState(
-        permissions =  listOf(
-            permission.RECORD_AUDIO,
-            permission.READ_MEDIA_AUDIO
-        )
-    ) {
-        if (it.all { true }) {
-            recordDialogState.value = true
-//            navigator.push(RecorderScreen(note.uid))
+    val permissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberMultiplePermissionsState(
+            permissions =  listOf(
+                permission.RECORD_AUDIO,
+                permission.READ_MEDIA_AUDIO
+            )
+        ) {
+            if (it.all { true }) {
+                recordDialogState.value = true
+            }
+        }
+    } else {
+        rememberMultiplePermissionsState(
+            permissions =  listOf(
+                permission.RECORD_AUDIO,
+            )
+        ) {
+            if (it.all { true }) {
+                recordDialogState.value = true
+            }
         }
     }
 
