@@ -16,14 +16,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.screens.sound
-import city.zouitel.note.DataScreenModel
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.CommonPopupTip
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -31,13 +30,13 @@ import org.koin.androidx.compose.koinViewModel
 )
 @Composable
 fun RemoveSelectionTopAppBar(
-    dataStoreVM: DataStoreVM = koinViewModel(),
-    dataScreenModel: DataScreenModel,
+    dataStoreModel: DataStoreScreenModel,
+    dataModel: DataScreenModel,
     trashSelectionState: MutableState<Boolean>?,
     selectedNotes: SnapshotStateList<Data>?
 ) {
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     TopAppBar(
         navigationIcon = {
@@ -55,7 +54,7 @@ fun RemoveSelectionTopAppBar(
                         ) {
                             sound.makeSound.invoke(context, Cons.KEY_CLICK, thereIsSoundEffect.value)
                             selectedNotes?.forEach {
-                                dataScreenModel.deleteData(it)
+                                dataModel.deleteData(it)
                             }
                             selectedNotes?.clear()
                             trashSelectionState?.value = false

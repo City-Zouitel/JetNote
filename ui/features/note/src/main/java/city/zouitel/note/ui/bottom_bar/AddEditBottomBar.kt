@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
-import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -21,14 +20,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import cafe.adriel.voyager.navigator.LocalNavigator
+import city.zouitel.logic.asShortToast
 import city.zouitel.note.ui.ColorsRow
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.FOCUS_NAVIGATION
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.ADD_CIRCLE_ICON
 import city.zouitel.systemDesign.Icons.BELL_ICON
 import city.zouitel.systemDesign.Icons.BELL_RING_ICON_24
@@ -39,7 +38,6 @@ import city.zouitel.systemDesign.listOfBackgroundColors
 import city.zouitel.systemDesign.listOfTextColors
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 
 @SuppressLint("SimpleDateFormat")
@@ -50,9 +48,9 @@ import java.text.SimpleDateFormat
 )
 @Composable
 fun AddEditBottomBar(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     note: Data,
-    navController: NavController,
+//    navController: NavController,
     imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
     recordDialogState: MutableState<Boolean>,
     remindingDialogState: MutableState<Boolean>,
@@ -68,7 +66,7 @@ fun AddEditBottomBar(
     val navigator = LocalNavigator.current
 
     val showOptionsMenu = remember { mutableStateOf(false) }
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     val sound = SoundEffect()
 
@@ -80,7 +78,9 @@ fun AddEditBottomBar(
                 Manifest.permission.POST_NOTIFICATIONS,
             )
         ) {
-            Toast.makeText(context, "Notification permission granted.", Toast.LENGTH_SHORT).show()
+            context.run {
+                "Notification permission granted.".asShortToast()
+            }
         }
     } else {
         rememberMultiplePermissionsState(
@@ -168,6 +168,7 @@ fun AddEditBottomBar(
 
                 // undo
                 UndoRedo(
+                    dataStoreModel = dataStoreModel,
                     titleState = Pair(titleState.first, titleState.second),
                     descriptionState = descriptionState,
                 )
@@ -176,9 +177,10 @@ fun AddEditBottomBar(
 
         // more options menu.
         Plus(
+            dataStoreModel = dataStoreModel,
             isShow = showOptionsMenu,
             note = note,
-            navController = navController,
+//            navController = navController,
             imageLaunch = imageLaunch,
             recordDialogState = recordDialogState,
             priorityColorState = priorityColorState
@@ -186,12 +188,14 @@ fun AddEditBottomBar(
 
         // row of background colors.
         ColorsRow(
+            dataStoreModel = dataStoreModel,
             colorState = backgroundColorState,
             colors = listOfBackgroundColors
         )
 
         // row of text colors.
         ColorsRow(
+            dataStoreModel = dataStoreModel,
             colorState = textColorState,
             colors = listOfTextColors
         )

@@ -2,6 +2,7 @@ package city.zouitel.shortcuts
 
 import android.content.Context
 import android.widget.Toast
+import city.zouitel.logic.asShortToast
 import city.zouitel.shortcuts.shorts.newNote
 import city.zouitel.shortcuts.shorts.newRecord
 import city.zouitel.shortcuts.shorts.quickNote
@@ -15,7 +16,9 @@ fun checkNoteActivityShortcut(context: Context) {
         context.shortcutManage.dynamicShortcuts =
             listOf(newNoteShortcut, /*newRecordShortcut,*/ /*quickNoteShortcut*/)
     }.onFailure {
-        Toast.makeText(context, "something wring!", Toast.LENGTH_SHORT).show()
+        context.run {
+            "something wring!".asShortToast()
+        }
     }
 }
 
@@ -26,6 +29,8 @@ fun checkQuickActivityShortcut(context: Context) {
         context.shortcutManage.dynamicShortcuts =
             listOf(quickNoteShortcut)
     }.onFailure {
-        Toast.makeText(context, "something wring!", Toast.LENGTH_SHORT).show()
+        context.run {
+            "something wring!".asShortToast()
+        }
     }
 }

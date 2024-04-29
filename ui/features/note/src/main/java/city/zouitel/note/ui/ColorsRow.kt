@@ -18,20 +18,19 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.SoundEffect
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ColorsRow(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     colorState: MutableState<Int>,
     colors: Array<Color>
     ) {
 
     val currentColor = remember { mutableStateOf(Color.White) }
     val ctx = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     val sound = SoundEffect()
 

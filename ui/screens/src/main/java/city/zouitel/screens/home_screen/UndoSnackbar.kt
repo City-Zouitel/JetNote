@@ -3,7 +3,7 @@ package city.zouitel.screens.home_screen
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.State
-import city.zouitel.note.DataScreenModel
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
 import city.zouitel.systemDesign.Cons.TRASH_MESSAGE

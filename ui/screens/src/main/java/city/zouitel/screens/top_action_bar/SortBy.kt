@@ -31,7 +31,7 @@ import city.zouitel.systemDesign.Cons.ORDER_BY_PRIORITY
 import city.zouitel.systemDesign.Cons.ORDER_BY_REMINDER
 import city.zouitel.systemDesign.Cons.PRIORITY_ORDER
 import city.zouitel.systemDesign.Cons.REMINDING_ORDER
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.INTERLINING_ICON
 import city.zouitel.systemDesign.Icons.SORT_ALPHA_DOWN_ICON
 import city.zouitel.systemDesign.Icons.SORT_AMOUNT_DOWN_ICON
@@ -39,20 +39,19 @@ import city.zouitel.systemDesign.Icons.SORT_AMOUNT_UP_ICON
 import city.zouitel.systemDesign.Icons.SORT_ICON
 import city.zouitel.systemDesign.Icons.SORT_NUMERIC_ICON
 import city.zouitel.systemDesign.CommonPopupTip
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SortBy(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     isShow: MutableState<Boolean>?
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val haptic = LocalHapticFeedback.current
 
     val currentSortIcon = when(
-        remember(dataStoreVM, dataStoreVM::getOrdination).collectAsState().value
+        remember(dataStoreModel, dataStoreModel::getOrdination).collectAsState().value
     ) {
         BY_NAME -> SORT_ALPHA_DOWN_ICON
         ORDER_BY_OLDEST -> SORT_AMOUNT_UP_ICON
@@ -101,7 +100,7 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-                    dataStoreVM.setOrdination(Cons.BY_ID)
+                    dataStoreModel.setOrdination(Cons.BY_ID)
                 }
             )
             DropdownMenuItem(
@@ -110,7 +109,7 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-                    dataStoreVM.setOrdination(Cons.ORDER_BY_NEWEST)
+                    dataStoreModel.setOrdination(Cons.ORDER_BY_NEWEST)
                 }
             )
             DropdownMenuItem(
@@ -119,7 +118,7 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-                    dataStoreVM.setOrdination(ORDER_BY_OLDEST)
+                    dataStoreModel.setOrdination(ORDER_BY_OLDEST)
                 }
             )
             DropdownMenuItem(
@@ -128,7 +127,7 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-                    dataStoreVM.setOrdination(BY_NAME)
+                    dataStoreModel.setOrdination(BY_NAME)
                 }
             )
             DropdownMenuItem(
@@ -137,7 +136,7 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-                    dataStoreVM.setOrdination(ORDER_BY_REMINDER)
+                    dataStoreModel.setOrdination(ORDER_BY_REMINDER)
                 }
             )
             DropdownMenuItem(
@@ -146,7 +145,7 @@ internal fun SortBy(
                 onClick = {
                     sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                     isShow.value = false
-                    dataStoreVM.setOrdination(ORDER_BY_PRIORITY)
+                    dataStoreModel.setOrdination(ORDER_BY_PRIORITY)
                 }
             )
         }

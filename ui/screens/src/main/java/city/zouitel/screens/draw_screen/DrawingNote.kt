@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import city.zouitel.note.DataScreenModel
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.ADD_ROUTE
 import city.zouitel.systemDesign.Cons.EDIT_ROUTE

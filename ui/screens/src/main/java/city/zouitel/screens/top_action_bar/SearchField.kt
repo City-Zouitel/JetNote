@@ -20,23 +20,22 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import city.zouitel.systemDesign.Cons.KEY_INVALID
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.CROSS_ICON
 import city.zouitel.tags.model.Tag
 import city.zouitel.screens.sound
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SearchField(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     title: MutableState<String>,
     placeholder: String,
     tagEntity: MutableState<Tag>?
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     val keyboardController = LocalSoftwareKeyboardController.current
 

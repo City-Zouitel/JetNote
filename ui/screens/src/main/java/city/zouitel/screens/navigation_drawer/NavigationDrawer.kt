@@ -22,7 +22,7 @@ import city.zouitel.screens.sharApp
 import city.zouitel.screens.sound
 import city.zouitel.systemDesign.Cons.APP_NAME
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.COMMENT_EXCLAMATION
 import city.zouitel.systemDesign.Icons.HOME_ICON
@@ -36,12 +36,11 @@ import city.zouitel.tags.model.Tag
 import city.zouitel.tags.ui.TagsScreen
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NavigationDrawer(
     tagModel: TagScreenModel,
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     drawerState: DrawerState,
     searchTitle: MutableState<String>?,
     searchTagEntity: MutableState<Tag>?
@@ -49,7 +48,7 @@ fun NavigationDrawer(
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
     val observeLabels = remember(tagModel,tagModel::getAllLTags).collectAsState()
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val scope = rememberCoroutineScope()
 
     DismissibleDrawerSheet(

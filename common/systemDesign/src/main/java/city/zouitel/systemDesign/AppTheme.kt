@@ -1,4 +1,4 @@
-package city.zouitel.jetnote
+package city.zouitel.systemDesign
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,13 +9,13 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import city.zouitel.systemDesign.DataStoreVM
+import cafe.adriel.voyager.koin.getNavigatorScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainTheme(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreVM: DataStoreScreenModel,
     content: @Composable () -> Unit
 ) {
     val currentTheme = remember(dataStoreVM, dataStoreVM::getTheme).collectAsState()

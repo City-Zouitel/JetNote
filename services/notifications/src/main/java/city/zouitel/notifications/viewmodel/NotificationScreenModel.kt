@@ -4,14 +4,13 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import androidx.compose.runtime.MutableState
-import androidx.lifecycle.ViewModel
+import cafe.adriel.voyager.core.model.ScreenModel
 import city.zouitel.notifications.Cons.DESCRIPTION
 import city.zouitel.notifications.Cons.TITLE
 import city.zouitel.notifications.Cons.UID
 import city.zouitel.notifications.reciver.Notification
 
-class NotificationVM(): ViewModel() {
+class NotificationScreenModel: ScreenModel {
     fun scheduleNotification(
         context: Context,
         dateTime: Long,

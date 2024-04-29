@@ -14,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import city.zouitel.note.DataScreenModel
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.COPY_ICON
 import city.zouitel.systemDesign.Icons.SHARE_ICON
 import city.zouitel.systemDesign.Icons.REMOVE_ICON
@@ -30,18 +30,17 @@ import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.screens.sound
-import city.zouitel.notifications.viewmodel.NotificationVM
+import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
 import city.zouitel.tasks.viewmodel.TaskScreenModel
-import org.koin.androidx.compose.koinViewModel
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeSelectionTopAppBar(
-    dataStoreVM: DataStoreVM = koinViewModel(),
-    notificationVM: NotificationVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
+    notificationModel: NotificationScreenModel,
     dataModel: DataScreenModel,
     tagModel: TagScreenModel,
     noteAndTagModel: NoteAndTagScreenModel,
@@ -52,7 +51,7 @@ fun HomeSelectionTopAppBar(
     undo: (Data) -> Unit
 ) {
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     val observeNotesAndLabels =
         remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
@@ -99,7 +98,7 @@ fun HomeSelectionTopAppBar(
                                     )
 
                                     // to cancel the alarm manager reminding.
-                                    notificationVM.scheduleNotification(
+                                    notificationModel.scheduleNotification(
                                         context = context,
                                         dateTime = it.reminding,
                                         title = it.title,

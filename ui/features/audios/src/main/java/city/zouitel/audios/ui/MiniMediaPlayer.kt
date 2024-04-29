@@ -18,18 +18,17 @@ import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Cons.LIST
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 import java.io.File
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun MiniMediaPlayer(
 //    exoViewModule: AudioScreenModel = koinViewModel(),
-    datastoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     audioScreenModel: AudioScreenModel,
     localMediaUid: String?
 ) {
@@ -37,7 +36,7 @@ fun MiniMediaPlayer(
     val mediaFile = audioScreenModel.rec_path.value + File.separator +  localMediaUid + "." + Cons.MP3
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
-    val currentLayout by datastoreVM.getLayout.collectAsState()
+    val currentLayout by dataStoreModel.getLayout.collectAsState()
     val scope = rememberCoroutineScope()
 
     scope.launch {

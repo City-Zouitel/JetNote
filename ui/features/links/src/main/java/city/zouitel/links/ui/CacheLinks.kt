@@ -3,18 +3,19 @@ package city.zouitel.links.ui
 import android.annotation.SuppressLint
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import city.zouitel.logic.asShortToast
 import java.util.*
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun CacheLinks(
-    linkVM: LinkVM,
-    noteAndLinkVM: NoteAndLinkVM,
+    linkScreenModel: LinkScreenModel,
+    noteAndLinkScreenModel: NoteAndLinkScreenModel,
     noteId: String,
     url: String
 ) {
-    val observeLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
-    val observerNoteAndLinks = remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
+    val observeLinks = remember(linkScreenModel, linkScreenModel::getAllLinks).collectAsState()
+    val observerNoteAndLinks = remember(noteAndLinkScreenModel, noteAndLinkScreenModel::getAllNotesAndLinks).collectAsState()
 
     val context = LocalContext.current
 
@@ -24,21 +25,27 @@ fun CacheLinks(
     val img = remember { mutableStateOf("") }
     val id = UUID.randomUUID().toString()
 
-    linkVM.urlPreview(context, url, title, host, img)?.fetchUrlPreview()
-
-    if (
-        observeLinks.value.none { it.image == img.value } &&
-        title.value.isNotBlank() &&
-        host.value.isNotBlank() &&
-        img.value.isNotBlank()
-    ) {
-        linkVM.doWork(
-            linkId = id,
-            noteId = noteId,
-            url = url,
-            image = img.value,
-            title = title.value,
-            host = host.value
-        )
+    runCatching {
+        linkScreenModel.urlPreview(context, url, title, host, img)?.fetchUrlPreview()
+    }.onSuccess {
+        if (
+            observeLinks.value.none { it.image == img.value } &&
+            title.value.isNotBlank() &&
+            host.value.isNotBlank() &&
+            img.value.isNotBlank()
+        ) {
+            linkScreenModel.doWork(
+                linkId = id,
+                noteId = noteId,
+                url = url,
+                image = img.value,
+                title = title.value,
+                host = host.value
+            )
+        }
+    }.onFailure {
+        context.apply {
+            it.message ?.asShortToast()
+        }
     }
 }

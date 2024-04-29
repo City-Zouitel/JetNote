@@ -8,10 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import city.zouitel.systemDesign.CommonRow
+import city.zouitel.systemDesign.DataStoreScreenModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBar(
+    dataStoreModel: DataStoreScreenModel,
     drawerState: DrawerState,
     topAppBarScrollBehavior: TopAppBarScrollBehavior,
     title: String
@@ -22,7 +24,7 @@ fun CustomTopAppBar(
                 CommonRow(
                     Modifier.padding(start = 10.dp, end = 10.dp),
                 ) {
-                    Open_Drawer(drawerState = drawerState)
+                    Open_Drawer(dataStoreModel = dataStoreModel, drawerState = drawerState)
                 }
             }
         },

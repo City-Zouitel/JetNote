@@ -33,36 +33,58 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.CacheLinks
-import city.zouitel.links.ui.LinkPart
-import city.zouitel.links.ui.LinkVM
-import city.zouitel.links.ui.NoteAndLinkVM
+import city.zouitel.links.ui.LinkCard
+import city.zouitel.links.ui.LinkScreenModel
+import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.quicknote.model.QuickData
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.findUrlLink
-import org.koin.androidx.compose.koinViewModel
 import java.util.UUID
+
+data class QuickScreen(
+    val action: () -> (Unit)
+): Screen {
+    @Composable
+    override fun Content() {
+        val dataModel = getScreenModel<QuickDataScreenModel>()
+        val linkModel = getScreenModel<LinkScreenModel>()
+        val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
+
+        Quick(dataModel, linkModel, noteAndLinkModel, action = action)
+    }
+
+}
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Quick(
-    quickDataViewModel: QuickDataViewModel = koinViewModel(),
-    linkVM: LinkVM = koinViewModel(),
-    noteAndLinkVM: NoteAndLinkVM = koinViewModel(),
+//    quickDataViewModel: QuickDataScreenModel = koinViewModel(),
+//    linkVM: LinkScreenModel = koinViewModel(),
+//    noteAndLinkModel: NoteAndLinkScreenModel = koinViewModel(),
+    dataModel: QuickDataScreenModel,
+    linkModel: LinkScreenModel,
+    noteAndLinkModel: NoteAndLinkScreenModel,
     action:() -> (Unit)
 ) {
     val uid = UUID.randomUUID().toString()
+
     val descriptionState = remember { mutableStateOf("") }
     val backgroundColor = MaterialTheme.colorScheme.surface.toArgb()
     val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
     val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
     val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
     val priorityState = remember { mutableStateOf(Cons.URGENT) }
+
     val focusRequester = FocusRequester()
-    val observerLinks by remember(linkVM, linkVM::getAllLinks).collectAsState()
-    val observerNoteAndLink by remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
+
+    val observerLinks by remember(linkModel, linkModel::getAllLinks).collectAsState()
+    val observerNoteAndLink by remember(noteAndLinkModel, noteAndLinkModel::getAllNotesAndLinks).collectAsState()
 
     LaunchedEffect(Unit) {
         kotlin.runCatching {
@@ -132,8 +154,8 @@ fun Quick(
                     item {
                         findUrlLink(descriptionState.value)?.let { url ->
                             CacheLinks(
-                                linkVM = linkVM,
-                                noteAndLinkVM = noteAndLinkVM,
+                                linkScreenModel = linkModel,
+                                noteAndLinkScreenModel = noteAndLinkModel,
                                 noteId = uid,
                                 url = url
                             )
@@ -144,9 +166,9 @@ fun Quick(
                                 NoteAndLink(uid, it.id)
                             )
                         }.forEach { _link ->
-                            LinkPart(
-                                linkVM = linkVM,
-                                noteAndLinkVM = noteAndLinkVM,
+                            LinkCard(
+                                linkScreenModel = linkModel,
+                                noteAndLinkScreenModel = noteAndLinkModel,
                                 noteUid = uid,
                                 swipeable = true,
                                 link = _link
@@ -161,7 +183,7 @@ fun Quick(
                         ) {
                             SmallFloatingActionButton(
                                 onClick = {
-                                    quickDataViewModel.addQuickData(
+                                    dataModel.addQuickData(
                                         QuickData(
                                             description = descriptionState.value,
                                             uid = uid,

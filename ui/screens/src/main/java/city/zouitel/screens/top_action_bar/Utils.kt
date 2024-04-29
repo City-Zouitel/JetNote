@@ -15,23 +15,22 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import city.zouitel.screens.sound
 import city.zouitel.systemDesign.Cons
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.CommonPopupTip
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun Open_Drawer(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     drawerState: DrawerState,
     ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
 
     val scope = rememberCoroutineScope()
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     CommonPopupTip(message = "Navigation Drawer") {
         Icon(

@@ -13,18 +13,17 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.screens.sound
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun EraseDialog(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     dialogState: MutableState<Boolean>,
     confirmation : () -> Unit,
 ) {
     val ctx = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     AlertDialog(
         onDismissRequest = { dialogState.value = false },

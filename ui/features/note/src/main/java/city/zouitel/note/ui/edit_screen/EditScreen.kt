@@ -61,8 +61,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -70,13 +68,14 @@ import city.zouitel.audios.ui.AudioScreenModel
 import city.zouitel.audios.ui.NormalMediaPlayer
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.CacheLinks
-import city.zouitel.links.ui.LinkPart
-import city.zouitel.links.ui.LinkVM
-import city.zouitel.links.ui.NoteAndLinkVM
+import city.zouitel.links.ui.LinkCard
+import city.zouitel.links.ui.LinkScreenModel
+import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.decodeUrl
-import city.zouitel.note.DataScreenModel
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
+import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.reminder.ui.RemindingNote
 import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.Cons.REC_DIR
@@ -85,7 +84,7 @@ import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.Cons.MP3
 import city.zouitel.systemDesign.Cons.NON
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.EDIT_ICON
@@ -101,7 +100,6 @@ import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
 import city.zouitel.tasks.viewmodel.TaskScreenModel
 import com.google.accompanist.flowlayout.FlowRow
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.io.File
 import java.util.Date
 
@@ -120,13 +118,13 @@ data class EditScreen(
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     override fun Content() {
-        val navController: NavController = rememberNavController()
-        val exoViewModule: AudioScreenModel by inject()
-        val tagViewModel: TagScreenModel by inject()
-        val noteAndTodoVM: NoteAndTaskScreenModel by inject()
-        val dataStoreVM: DataStoreVM by inject()
-        val linkVM: LinkVM by inject()
-        val noteAndLinkVM: NoteAndLinkVM by inject()
+//        val navController: NavController = rememberNavController()
+//        val exoViewModule: AudioScreenModel by inject()
+//        val tagViewModel: TagScreenModel by inject()
+//        val noteAndTodoVM: NoteAndTaskScreenModel by inject()
+//        val dataStoreVM: DataStoreScreenModel by inject()
+//        val linkVM: LinkScreenModel by inject()
+//        val noteAndLinkVM: NoteAndLinkScreenModel by inject()
 
         val titleState = rememberTextFieldState(initialText = decodeUrl.invoke(title).orEmpty())
         val descriptionState = rememberTextFieldState(initialText = decodeUrl.invoke(description).orEmpty())
@@ -165,12 +163,16 @@ data class EditScreen(
         val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
         val bitImg by lazy { BitmapFactory.decodeFile(imageFile) }
 
+        val notificationModel = getScreenModel<NotificationScreenModel>()
         val dataModel = getScreenModel<DataScreenModel>()
         val tagModel = getScreenModel<TagScreenModel>()
         val noteAndTagModel = getScreenModel<NoteAndTagScreenModel>()
         val taskModel = getScreenModel<TaskScreenModel>()
         val noteAndTodoModel = getScreenModel<NoteAndTaskScreenModel>()
         val audioModel = getScreenModel<AudioScreenModel>()
+        val linkModel = getScreenModel<LinkScreenModel>()
+        val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
+        val dataStoreModel = getScreenModel<DataStoreScreenModel>()
 
         val backgroundColorState = rememberSaveable { mutableIntStateOf(color) }
         val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
@@ -183,24 +185,24 @@ data class EditScreen(
         val isTitleFieldFocused = remember { mutableStateOf(false) }
         val isDescriptionFieldFocused = remember { mutableStateOf(false) }
 
-        val thereIsSoundEffect by remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+        val thereIsSoundEffect by remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
         val observeNotesAndLabels by remember(
             noteAndTagModel,
             noteAndTagModel::getAllNotesAndTags
         ).collectAsState()
-        val observeLabels by remember(tagViewModel, tagViewModel::getAllLTags).collectAsState()
-        val observerLinks by remember(linkVM, linkVM::getAllLinks).collectAsState()
+        val observeLabels by remember(tagModel, tagModel::getAllLTags).collectAsState()
+        val observerLinks by remember(linkModel, linkModel::getAllLinks).collectAsState()
         val observerNoteAndLink by remember(
-            noteAndLinkVM,
-            noteAndLinkVM::getAllNotesAndLinks
+            noteAndLinkModel,
+            noteAndLinkModel::getAllNotesAndLinks
         ).collectAsState()
         val observeTodoList by remember(
             taskModel,
             taskModel::getAllTaskList
         ).collectAsState()
         val observeNoteAndTodo by remember(
-            noteAndTodoVM,
-            noteAndTodoVM::getAllNotesAndTask
+            noteAndTodoModel,
+            noteAndTodoModel::getAllNotesAndTask
         ).collectAsState()
         var imageUriState by remember { mutableStateOf<Uri?>(File(imageFile).toUri()) }
         val img by rememberSaveable { mutableStateOf(photoState) }
@@ -248,8 +250,9 @@ data class EditScreen(
             },
             bottomBar = {
                 AddEditBottomBar(
+                    dataStoreModel = dataStoreModel,
                     note = Data(uid = id),
-                    navController = navController,
+//                    navController = navController,
                     imageLaunch = chooseImageLauncher,
                     recordDialogState = recordDialogState,
                     remindingDialogState = remindingDialogState,
@@ -270,6 +273,8 @@ data class EditScreen(
             // reminding dialog visibility.
             if (remindingDialogState.value) {
                 RemindingNote(
+                    dataStoreModel = dataStoreModel,
+                    notificationModel = notificationModel,
                     dialogState = remindingDialogState,
                     remindingValue = remindingValue,
                     title = titleState.text.toString(),
@@ -343,17 +348,17 @@ data class EditScreen(
                     ) {
                         NormalMediaPlayer(audioScreenModel = audioModel, localMediaUid = id)
                         audioDurationState.intValue =
-                            exoViewModule.getMediaDuration(context, mediaFile).toInt()
+                            audioModel.getMediaDuration(context, mediaFile).toInt()
 
                     }
                 }
 
                 // Link display.
                 item {
-                    findUrlLink(descriptionState?.text.toString())?.let { url ->
+                    findUrlLink(descriptionState.text.toString())?.let { url ->
                         CacheLinks(
-                            linkVM = linkVM,
-                            noteAndLinkVM = noteAndLinkVM,
+                            linkScreenModel = linkModel,
+                            noteAndLinkScreenModel = noteAndLinkModel,
                             noteId = id,
                             url = url
                         )
@@ -364,9 +369,9 @@ data class EditScreen(
                             NoteAndLink(id, it.id)
                         )
                     }.forEach { _link ->
-                        LinkPart(
-                            linkVM = linkVM,
-                            noteAndLinkVM = noteAndLinkVM,
+                        LinkCard(
+                            linkScreenModel = linkModel,
+                            noteAndLinkScreenModel = noteAndLinkModel,
                             noteUid = id,
                             swipeable = true,
                             link = _link

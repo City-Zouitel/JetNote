@@ -10,11 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.CommonRow
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.model.Tag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteTopAppBar(
+    dataStoreModel: DataStoreScreenModel,
     searchNoteTitle: MutableState<String>,
     scrollBehavior: TopAppBarScrollBehavior,
     drawerState: DrawerState,
@@ -32,13 +34,14 @@ fun NoteTopAppBar(
                     CommonRow(
                         Modifier.padding(start = 10.dp, end = 10.dp),
                     ) {
-                        Open_Drawer(drawerState = drawerState)
+                        Open_Drawer(dataStoreModel, drawerState)
                     }
                 }
             }
         },
         title = {
             SearchField(
+                dataStoreModel = dataStoreModel,
                 title = searchNoteTitle,
                 placeholder = searchScreen,
                 tagEntity = tagEntity
@@ -52,6 +55,7 @@ fun NoteTopAppBar(
                     thisHomeScreen.let {
                         if (it) {
                             SortBy(
+                                dataStoreModel = dataStoreModel,
                                 isShow = expandedSortMenuState,
                             )
                         } else {
@@ -61,7 +65,7 @@ fun NoteTopAppBar(
 
                     Spacer(modifier = Modifier.width(5.dp))
 
-                    Layout()
+                    Layout(dataStoreModel)
                 }
             }
         },

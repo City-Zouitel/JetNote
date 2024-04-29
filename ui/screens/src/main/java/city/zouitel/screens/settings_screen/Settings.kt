@@ -28,25 +28,25 @@ import city.zouitel.screens.sound
 import city.zouitel.screens.top_action_bar.CustomTopAppBar
 import city.zouitel.systemDesign.AdaptingRowBetween
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.viewmodel.TagScreenModel
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 class Settings: Screen,  KoinComponent {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        val dataStoreVM: DataStoreVM by inject()
+//        val dataStoreVM: DataStoreScreenModel by inject()
 
         val tagModel = getScreenModel<TagScreenModel>()
+        val dataStoreModel = getScreenModel<DataStoreScreenModel>()
 
         val navigator = LocalNavigator.currentOrThrow
         val context = LocalContext.current
 
-        val isDarkTheme = remember(dataStoreVM, dataStoreVM::getTheme).collectAsState()
-        val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+        val isDarkTheme = remember(dataStoreModel, dataStoreModel::getTheme).collectAsState()
+        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
         val lazyListState = rememberLazyListState()
@@ -58,6 +58,7 @@ class Settings: Screen,  KoinComponent {
             drawerState = drawerState,
             drawerContent = {
                 NavigationDrawer(
+                    dataStoreModel = dataStoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
                     searchTagEntity = null,
@@ -71,6 +72,7 @@ class Settings: Screen,  KoinComponent {
                 backgroundColor = MaterialTheme.colorScheme.surface,
                 topBar = {
                     CustomTopAppBar(
+                        dataStoreModel = dataStoreModel,
                         drawerState = drawerState,
                         topAppBarScrollBehavior = scrollBehavior,
                         title = "Settings"
@@ -91,7 +93,7 @@ class Settings: Screen,  KoinComponent {
                             active = isDarkTheme.value == "DARK"
                         ) {
                             sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                            dataStoreVM.setTheme(
+                            dataStoreModel.setTheme(
                                 if (isDarkTheme.value == "DARK") "LITE" else "DARK"
                             )
                         }
@@ -108,7 +110,7 @@ class Settings: Screen,  KoinComponent {
                             active = thereIsSoundEffect.value
                         ) {
                             sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                            dataStoreVM.setSound(!thereIsSoundEffect.value)
+                            dataStoreModel.setSound(!thereIsSoundEffect.value)
                         }
                     }
 

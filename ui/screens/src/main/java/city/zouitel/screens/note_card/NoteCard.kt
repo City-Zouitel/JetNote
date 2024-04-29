@@ -33,20 +33,20 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.audios.ui.AudioScreenModel
 import city.zouitel.audios.ui.MiniMediaPlayer
 import city.zouitel.links.model.NoteAndLink
-import city.zouitel.links.ui.LinkPart
-import city.zouitel.links.ui.LinkVM
-import city.zouitel.links.ui.NoteAndLinkVM
+import city.zouitel.links.ui.LinkCard
+import city.zouitel.links.ui.LinkScreenModel
+import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.codeUrl
 import city.zouitel.logic.getImgPath
 import city.zouitel.logic.getRecPath
 import city.zouitel.screens.navigation_drawer.Screens
 import city.zouitel.screens.navigation_drawer.Screens.*
-import city.zouitel.note.DataScreenModel
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.NON
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.ANGLE_DOWN_ICON
 import city.zouitel.systemDesign.Icons.ANGLE_UP_ICON
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
@@ -65,17 +65,18 @@ import city.zouitel.tasks.viewmodel.TaskScreenModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
-import org.koin.androidx.compose.koinViewModel
 import java.io.File
 import java.util.*
 
 @Composable
 fun NoteCard(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     taskModel: TaskScreenModel,
     noteAndTaskModel: NoteAndTaskScreenModel,
     dataModel: DataScreenModel,
     audioModel: AudioScreenModel,
+    linkModel: LinkScreenModel,
+    noteAndLinkModel: NoteAndLinkScreenModel,
     screen: Screens,
     noteEntity: Note,
     homeSelectionState: MutableState<Boolean>?,
@@ -84,7 +85,7 @@ fun NoteCard(
     onSwipeNote: (Note) -> Unit,
 ) {
     val swipeState = rememberSwipeableActionsState()
-    val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
+    val currentLayout = remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
 
     val action = SwipeAction(
         onSwipe = {
@@ -107,6 +108,9 @@ fun NoteCard(
                 noteAndTodoModel = noteAndTaskModel,
                 dataModel = dataModel,
                 audioModel = audioModel,
+                dataStoreModel = dataStoreModel,
+                linkModel = linkModel,
+                noteAndLinkModel = noteAndLinkModel,
                 noteEntity = noteEntity,
                 screen = screen,
                 homeSelectionState = homeSelectionState,
@@ -120,6 +124,9 @@ fun NoteCard(
             noteAndTodoModel = noteAndTaskModel,
             dataModel = dataModel,
             audioModel = audioModel,
+            dataStoreModel = dataStoreModel,
+            linkModel = linkModel,
+            noteAndLinkModel = noteAndLinkModel,
             noteEntity = noteEntity,
             screen = screen,
             homeSelectionState = homeSelectionState,
@@ -135,9 +142,9 @@ private fun Card(
     taskModel: TaskScreenModel,
     noteAndTodoModel: NoteAndTaskScreenModel,
     dataModel: DataScreenModel,
-    dataStoreVM: DataStoreVM = koinViewModel(),
-    linkVM: LinkVM = koinViewModel(),
-    noteAndLinkVM: NoteAndLinkVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
+    linkModel: LinkScreenModel,
+    noteAndLinkModel: NoteAndLinkScreenModel,
     audioModel: AudioScreenModel,
     noteEntity: Note,
     screen: Screens,
@@ -147,19 +154,20 @@ private fun Card(
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val haptic = LocalHapticFeedback.current
 
     val note = noteEntity.dataEntity
     val labels = noteEntity.tagEntities
 //    val internalPath = context.filesDir.path
 
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val observeTodoList = remember(taskModel, taskModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoModel, noteAndTodoModel::getAllNotesAndTask).collectAsState()
 
-    val observerLinks = remember(linkVM, linkVM::getAllLinks).collectAsState()
+    val observerLinks = remember(linkModel, linkModel::getAllLinks).collectAsState()
     val observerNoteAndLink =
-        remember(noteAndLinkVM, noteAndLinkVM::getAllNotesAndLinks).collectAsState()
+        remember(noteAndLinkModel, noteAndLinkModel::getAllNotesAndLinks).collectAsState()
 
 //    val mediaPath = context.filesDir.path + "/$REC_DIR/" + note.uid + "." + MP3
 //    val imagePath = "$internalPath/$IMG_DIR/${note.uid}.$JPEG"
@@ -168,8 +176,6 @@ private fun Card(
 
     var todoListState by remember { mutableStateOf(false) }
 //    val media = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
-
-    val haptic = LocalHapticFeedback.current
 
     Card(
         modifier = Modifier
@@ -271,7 +277,7 @@ private fun Card(
 
         //display media player.
         if (File(mediaPath).exists()) {
-            MiniMediaPlayer(audioScreenModel = audioModel, localMediaUid = note.uid)
+            MiniMediaPlayer(audioScreenModel = audioModel, dataStoreModel = dataStoreModel, localMediaUid = note.uid)
         }
 
         //display tags.
@@ -372,9 +378,9 @@ private fun Card(
                 NoteAndLink(note.uid, it.id)
             )
         }.forEach { _link ->
-            LinkPart(
-                linkVM = linkVM,
-                noteAndLinkVM = noteAndLinkVM,
+            LinkCard(
+                linkScreenModel = linkModel,
+                noteAndLinkScreenModel = noteAndLinkModel,
                 noteUid = note.uid,
                 swipeable = false,
                 link = _link,
@@ -454,7 +460,7 @@ private fun Card(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(15.dp))
+//        Spacer(modifier = Modifier.height(15.dp))
     }
 }
 

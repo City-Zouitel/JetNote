@@ -14,7 +14,7 @@ import city.zouitel.recoder.di.recorderKoinModule
 import city.zouitel.repository.di.repositoryKoinModule
 import city.zouitel.root.di.rootKoinModule
 import city.zouitel.security.di.securityKoinModule
-import city.zouitel.systemDesign.di.datastoreVMKoinModule
+import city.zouitel.systemDesign.di.commonSystemDesignKoinModule
 import city.zouitel.tags.di.tagsKoinModule
 import city.zouitel.tasks.di.tasksKoinModule
 import city.zouitel.widget.di.widgetKoinModule
@@ -48,7 +48,7 @@ class NoteApplication: Application(), KoinComponent {
                 tasksKoinModule,
                 widgetKoinModule,
                 notificationKoinModule,
-                datastoreVMKoinModule,
+                commonSystemDesignKoinModule,
                 navigationKoinModule,
                 initializerKoinModule,
                 rootKoinModule

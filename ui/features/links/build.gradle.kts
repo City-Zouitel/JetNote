@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.cityzouitel.androidLibrary)
     alias(libs.plugins.cityzouitel.androidCompose)
+    alias(libs.plugins.cityzouitel.androidNavigation)
 }
 
 android {
@@ -11,6 +12,7 @@ android {
 dependencies {
     //Modules.
     implementation(projects.common.systemDesign)
+    implementation(projects.common.logic)
     implementation(projects.domain)
 
     //AndroidX.

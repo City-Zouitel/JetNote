@@ -48,17 +48,21 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.AudioScreenModel
+import city.zouitel.links.ui.LinkScreenModel
+import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.logic.asLongToast
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.Screens
 import city.zouitel.screens.note_card.NoteCard
 import city.zouitel.screens.sound
 import city.zouitel.screens.top_action_bar.NoteTopAppBar
 import city.zouitel.screens.top_action_bar.selection_bars.HomeSelectionTopAppBar
-import city.zouitel.note.DataScreenModel
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
 import city.zouitel.note.ui.add_screen.AddScreen
-import city.zouitel.notifications.viewmodel.NotificationVM
+import city.zouitel.notifications.viewmodel.NotificationScreenModel
+import city.zouitel.root.RootScreenModel
 import city.zouitel.systemDesign.Cons.BY_NAME
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.Cons.LIST
@@ -67,7 +71,7 @@ import city.zouitel.systemDesign.Cons.ORDER_BY_OLDEST
 import city.zouitel.systemDesign.Cons.ORDER_BY_PRIORITY
 import city.zouitel.systemDesign.Cons.ORDER_BY_REMINDER
 import city.zouitel.systemDesign.Cons.SEARCH_IN_LOCAL
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.PLUS_ICON
 import city.zouitel.tags.model.Tag
 import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
@@ -75,26 +79,20 @@ import city.zouitel.tags.viewmodel.TagScreenModel
 import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
 import city.zouitel.tasks.viewmodel.TaskScreenModel
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.UUID
 
 class HomeScreen: Screen, KoinComponent {
+
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {
-        val dataStoreVM: DataStoreVM by inject()
-        val notificationVM: NotificationVM by inject()
+//        val dataStoreVM: DataStoreScreenModel by inject()
+//        val notificationVM: NotificationScreenModel by inject()
 
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
 
-        val searchTitleState = remember { mutableStateOf("") }
-        val searchTagEntityState = remember { mutableStateOf(Tag()) }
-        val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
-        val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
-        val drawerState = rememberDrawerState(DrawerValue.Closed)
-        val scaffoldState = rememberScaffoldState()
-
+        val notificationModel = getScreenModel<NotificationScreenModel>()
         val tagModel = getScreenModel<TagScreenModel>()
         val noteAndTagModel = getScreenModel<NoteAndTagScreenModel>()
         val taskModel = getScreenModel<TaskScreenModel>()
@@ -102,10 +100,20 @@ class HomeScreen: Screen, KoinComponent {
         val homeModel = getScreenModel<HomeScreenModel>()
         val dataModel = getScreenModel<DataScreenModel>()
         val audioModel = getScreenModel<AudioScreenModel>()
+        val linkModel = getScreenModel<LinkScreenModel>()
+        val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
+        val dataStoreModel = getScreenModel<DataStoreScreenModel>()
+
+        val searchTitleState = remember { mutableStateOf("") }
+        val searchTagEntityState = remember { mutableStateOf(Tag()) }
+        val currentLayout = remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
+        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+        val drawerState = rememberDrawerState(DrawerValue.Closed)
+        val scaffoldState = rememberScaffoldState()
 
         // to observer notes while changing immediately.
         val observerLocalNotes: State<List<Note>> = when (
-            remember(dataStoreVM, dataStoreVM::getOrdination).collectAsState().value
+            remember(dataStoreModel, dataStoreModel::getOrdination).collectAsState().value
         ) {
             BY_NAME -> homeModel.allNotesById.collectAsState()
             ORDER_BY_OLDEST -> homeModel.allNotesByOldest.collectAsState()
@@ -159,6 +167,7 @@ class HomeScreen: Screen, KoinComponent {
         ModalNavigationDrawer(
             drawerContent = {
                 NavigationDrawer(
+                    dataStoreModel = dataStoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
                     searchTagEntity = searchTagEntityState,
@@ -176,6 +185,8 @@ class HomeScreen: Screen, KoinComponent {
                 topBar = {
                     if (homeSelectionState.value) {
                         HomeSelectionTopAppBar(
+                            dataStoreModel = dataStoreModel,
+                            notificationModel = notificationModel,
                             dataModel = dataModel,
                             tagModel = tagModel,
                             noteAndTagModel = noteAndTagModel,
@@ -187,6 +198,7 @@ class HomeScreen: Screen, KoinComponent {
                         )
                     } else {
                         NoteTopAppBar(
+                            dataStoreModel = dataStoreModel,
                             searchNoteTitle = searchTitleState,
                             scrollBehavior = scrollBehavior,
                             drawerState = drawerState,
@@ -237,10 +249,13 @@ class HomeScreen: Screen, KoinComponent {
                                 key = { it.dataEntity.uid }
                             ) { entity ->
                                 NoteCard(
+                                    dataStoreModel = dataStoreModel,
                                     taskModel = taskModel,
                                     noteAndTaskModel = noteAndTaskModel,
                                     dataModel = dataModel,
                                     audioModel = audioModel,
+                                    linkModel = linkModel,
+                                    noteAndLinkModel = noteAndLinkModel,
                                     screen = Screens.HOME_SCREEN,
                                     noteEntity = entity,
                                     homeSelectionState = homeSelectionState,
@@ -273,10 +288,13 @@ class HomeScreen: Screen, KoinComponent {
                                 key = { it.dataEntity.uid }
                             ) { entity ->
                                 NoteCard(
+                                    dataStoreModel = dataStoreModel,
                                     taskModel = taskModel,
                                     noteAndTaskModel = noteAndTaskModel,
                                     dataModel = dataModel,
                                     audioModel = audioModel,
+                                    linkModel = linkModel,
+                                    noteAndLinkModel = noteAndLinkModel,
                                     screen = Screens.HOME_SCREEN,
                                     noteEntity = entity,
                                     homeSelectionState = homeSelectionState,
@@ -296,7 +314,7 @@ class HomeScreen: Screen, KoinComponent {
                                         )
 
                                         // to cancel the alarm manager reminding.
-                                        notificationVM.scheduleNotification(
+                                        notificationModel.scheduleNotification(
                                             context = context,
                                             dateTime = it.dataEntity.reminding,
                                             title = it.dataEntity.title,

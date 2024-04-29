@@ -1,11 +1,11 @@
 package city.zouitel.jetnote
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
-import androidx.navigation.NavHostController
+import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.navigator.Navigator
-import city.zouitel.logic.codeUrl
+import city.zouitel.logic.asShortToast
 import city.zouitel.note.ui.add_screen.AddScreen
 import city.zouitel.screens.home_screen.HomeScreen
 import kotlinx.coroutines.CoroutineScope
@@ -14,49 +14,39 @@ import java.util.UUID
 
 internal interface IntentHandler: CoroutineScope {
 
-    fun intentHandler(
+    context (Context)
+    @SuppressLint("NotConstructor")
+    @Composable
+    fun IntentHandler(
         intent: Intent,
-        context: Context,
-        navHC: NavHostController,
         navigator: Navigator?,
+        composer: (@Composable () -> Unit) -> Unit
     ) {
         intent.apply {
             if (action == Intent.ACTION_SEND && type == "text/plain") {
-                getStringExtra(Intent.EXTRA_TEXT)?.let {
+                getStringExtra(Intent.EXTRA_TEXT)?.let { title ->
                     launch {
-//                        navigator?.push(listOf(HomeScreen(), AddScreen(UUID.randomUUID().toString(), codeUrl(it))))
-                        navigator?.push(
-                            listOf(
-                                AddScreen(UUID.randomUUID().toString(), codeUrl(it))
-                            )
-                        )
+                        title.asShortToast()
                     }
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 }
             }
             if (action == Intent.ACTION_VIEW) {
                 if (extras?.containsKey("new_note_shortcut") == true) {
                     getBooleanExtra("new_note_shortcut", false)
                     launch {
-//                        navigator?.push(AddScreen(UUID.randomUUID().toString()))
-                        navigator?.push(
-                            listOf(
-                                HomeScreen(),
-                                AddScreen(UUID.randomUUID().toString())
-                            )
-                        )
+                        "new_note_shortcut".asShortToast()
                     }
                 }
                 if (extras?.containsKey("quick_note") == true) {
                     getBooleanExtra("quick_note", false)
                     launch {
-//                        navHC.navigate("${Cons.ADD_ROUTE}/${UUID.randomUUID()}/${Cons.NUL}")
+                        // TODO:
                     }
                 }
                 if (extras?.containsKey("new_record") == true) {
                     getBooleanExtra("new_record", false)
                     launch {
-//                        navHC.navigate("${Cons.ADD_ROUTE}/${UUID.randomUUID()}/${Cons.NUL}")
+                        // TODO:
                     }
                 }
 

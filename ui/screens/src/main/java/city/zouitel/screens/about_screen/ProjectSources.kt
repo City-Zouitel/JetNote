@@ -17,19 +17,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.GITHUB_ICON
 import city.zouitel.screens.sound
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun ProjectSources(
-    dataStoreVM: DataStoreVM = koinViewModel()
-) {
+fun ProjectSources(dataStoreModel: DataStoreScreenModel) {
 
     val uri = LocalUriHandler.current
     val ctx = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     Opensource(
         txt = "Project Source",

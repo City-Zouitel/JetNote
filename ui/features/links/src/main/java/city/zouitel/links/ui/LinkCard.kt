@@ -22,9 +22,9 @@ import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
 
 @Composable
-fun LinkPart(
-    linkVM: LinkVM,
-    noteAndLinkVM: NoteAndLinkVM,
+fun LinkCard(
+    linkScreenModel: LinkScreenModel,
+    noteAndLinkScreenModel: NoteAndLinkScreenModel,
     noteUid: String,
     swipeable: Boolean,
     link: Link,
@@ -34,8 +34,8 @@ fun LinkPart(
 
     val action = SwipeAction(
         onSwipe = {
-            linkVM.deleteLink(link)
-            noteAndLinkVM.deleteNoteAndLink(
+            linkScreenModel.deleteLink(link)
+            noteAndLinkScreenModel.deleteNoteAndLink(
                 InNoteAndLink(noteUid, link.id)
             )
         },
@@ -52,7 +52,7 @@ fun LinkPart(
             state = swipeState
         ) {
             LinkCard(
-                linkVM = linkVM,
+                linkScreenModel = linkScreenModel,
                 swipeable = swipeable,
                 id = link.id,
                 title = link.title ?: "",
@@ -63,7 +63,7 @@ fun LinkPart(
         }
     } else {
         LinkCard(
-            linkVM = linkVM,
+            linkScreenModel = linkScreenModel,
             swipeable = swipeable,
             id = link.id,
             title = link.title ?: "",
@@ -76,7 +76,7 @@ fun LinkPart(
 
 @Composable
 private fun LinkCard(
-    linkVM: LinkVM,
+    linkScreenModel: LinkScreenModel,
     swipeable: Boolean,
     title: String,
     host: String,
@@ -98,9 +98,9 @@ private fun LinkCard(
         )
     ) {
         Row {
-            linkVM::imageDecoder.invoke(context, id)?.let {
+            linkScreenModel::imageDecoder.invoke(context, id)?.let {
                 Image(
-                    modifier = Modifier.size(70.dp),
+                    modifier = Modifier.size(74.dp),
                     contentScale = ContentScale.Crop,
                     bitmap = it,
                     contentDescription = null

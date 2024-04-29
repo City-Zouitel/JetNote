@@ -1,7 +1,7 @@
 package city.zouitel.root
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.RootUseCase
 import city.zouitel.root.mapper.RootMapper
 import city.zouitel.root.model.Root as InRoot
@@ -12,23 +12,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class RootViewModel(
+class RootScreenModel(
     rootUseCase: RootUseCase.RootUseCase,
     private val mapper: RootMapper
-): ViewModel() {
+): ScreenModel {
 
     private val _isDeviceRooted = MutableStateFlow(runCatching { InRoot(false) })
 
     val isDeviceRooted: StateFlow<Result<InRoot>> =
         _isDeviceRooted.stateIn(
-            viewModelScope,
+            screenModelScope,
             SharingStarted.WhileSubscribed(),
             runCatching { InRoot(false) }
         )
 
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             rootUseCase.invoke().collect { result ->
                 _isDeviceRooted.value = result.map { mapper.toView(it) }
             }

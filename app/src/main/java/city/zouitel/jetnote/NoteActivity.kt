@@ -2,49 +2,49 @@ package city.zouitel.jetnote
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.core.view.WindowCompat
-import androidx.navigation.compose.rememberNavController
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import city.zouitel.links.ui.LinkVM
+import city.zouitel.links.ui.LinkScreenModel
+import city.zouitel.logic.asLongToast
 import city.zouitel.screens.home_screen.HomeScreen
-import city.zouitel.root.RootViewModel
+import city.zouitel.root.RootScreenModel
 import city.zouitel.shortcuts.checkNoteActivityShortcut
+import city.zouitel.systemDesign.DataStoreScreenModel
+import city.zouitel.systemDesign.MainTheme
 import city.zouitel.widget.WidgetReceiver
 import kotlinx.coroutines.*
+import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import kotlin.coroutines.CoroutineContext
 
 class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
-    private val linkViewModel: LinkVM by inject()
-    private val rootViewModel: RootViewModel by inject()
+    private val linkScreenModel: LinkScreenModel by inject()
+    private val rootScreenModel: RootScreenModel by inject()
+    private val dataStoreModel: DataStoreScreenModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            val navHostController = rememberNavController()
             val navigator = LocalNavigator.current
-            val isDeviceRooted = rootViewModel.isDeviceRooted.collectAsState()
+            val isDeviceRooted = rootScreenModel.isDeviceRooted.collectAsState()
 
             require(!isDeviceRooted.value.getOrNull()?.isDeviceRooted!!) {
-                Toast.makeText(this, "Cannot run JetNote on rooted device!", Toast.LENGTH_SHORT).show()
+                "Cannot run JetNote on rooted device!".asLongToast()
             }
 
-            intentHandler(
+            IntentHandler(
                 intent,
-                this@NoteActivity,
-                navHostController,
-                navigator
+                navigator,
+                {}
             )
 
-            MainTheme {
+            MainTheme(dataStoreModel) {
                 Navigator(HomeScreen())
             }
         }
@@ -57,7 +57,7 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
     override fun onDestroy() {
         super.onDestroy()
-        linkViewModel.urlPreview(this, null, null, null, null)?.cleanUp()
+        linkScreenModel.urlPreview(this, null, null, null, null)?.cleanUp()
         WidgetReceiver.updateBroadcast(this)
     }
 

@@ -15,22 +15,19 @@ import city.zouitel.screens.sound
 import city.zouitel.systemDesign.Cons.GRID
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.LIST
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.DASHBOARD_ICON
 import city.zouitel.systemDesign.Icons.LIST_VIEW_ICON_1
 import city.zouitel.systemDesign.CommonPopupTip
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun Layout(
-    dataStoreVM: DataStoreVM = koinViewModel()
-) {
+internal fun Layout(dataStoreModel: DataStoreScreenModel) {
     val ctx = LocalContext.current
     val haptic = LocalHapticFeedback.current
 
-    val currentLayout = remember(dataStoreVM, dataStoreVM::getLayout).collectAsState()
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val currentLayout = remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     CommonPopupTip(message = if (currentLayout.value == LIST) "Grade Layout" else "List Layout") {
         Icon(
@@ -47,7 +44,7 @@ internal fun Layout(
                 }
             ) {
                 sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
-                dataStoreVM.setLayout(
+                dataStoreModel.setLayout(
                     if (currentLayout.value == GRID) LIST else GRID
                 )
             }

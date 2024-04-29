@@ -1,4 +1,4 @@
-package city.zouitel.note
+package city.zouitel.note.ui
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -17,7 +17,6 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.DataUseCase
 import city.zouitel.note.mapper.DataMapper
-import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.note.model.Data as InData
 import kotlinx.coroutines.Dispatchers

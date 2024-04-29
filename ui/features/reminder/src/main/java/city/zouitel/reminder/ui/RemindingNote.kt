@@ -32,17 +32,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import city.zouitel.notifications.viewmodel.NotificationVM
+import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.reminder.utils.Cons.SINGLE_DAY
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.CALENDAR_ICON
 import city.zouitel.systemDesign.Icons.CLOCK_ICON
 import city.zouitel.systemDesign.Icons.REFRESH_ICON
 import city.zouitel.systemDesign.SoundEffect
-import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.Calendar
@@ -56,8 +55,8 @@ import java.util.Locale
 )
 @Composable
 fun RemindingNote(
-    dataStoreVM: DataStoreVM = koinViewModel(),
-    notificationVM: NotificationVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
+    notificationModel: NotificationScreenModel,
     dialogState: MutableState<Boolean>,
     title: String?,
     message: String?,
@@ -67,7 +66,7 @@ fun RemindingNote(
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
 
-    val soundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val soundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val sound = SoundEffect()
 
     val dateState = rememberDatePickerState(
@@ -205,7 +204,7 @@ fun RemindingNote(
                 onClick = {
                     sound.makeSound(context, KEY_STANDARD, soundEffect.value)
                     runCatching {
-                        notificationVM.scheduleNotification(
+                        notificationModel.scheduleNotification(
                             context = context,
                             dateTime = dateTime,
                             title = title,

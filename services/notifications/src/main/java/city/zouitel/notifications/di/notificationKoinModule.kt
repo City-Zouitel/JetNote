@@ -6,13 +6,13 @@ import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import city.zouitel.notifications.Cons
-import city.zouitel.notifications.viewmodel.NotificationVM
+import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val notificationKoinModule = module {
-    viewModelOf(::NotificationVM)
+    factoryOf(::NotificationScreenModel)
 
     single {
         NotificationCompat.Builder(androidContext(), Cons.CHANNEL_ID)

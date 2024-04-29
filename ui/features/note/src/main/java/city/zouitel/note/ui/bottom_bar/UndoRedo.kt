@@ -13,22 +13,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.REDO_ICON
 import city.zouitel.systemDesign.Icons.UNDO_ICON
 import city.zouitel.systemDesign.SoundEffect
-import org.koin.androidx.compose.koinViewModel
 
 // TODO: need improvement.
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UndoRedo(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     titleState: Pair<TextFieldState?, Boolean>,
     descriptionState: TextFieldState?,
 ) {
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val sound = SoundEffect()
 
     IconButton(

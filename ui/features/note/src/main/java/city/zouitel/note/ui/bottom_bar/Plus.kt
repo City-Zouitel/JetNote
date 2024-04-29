@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -28,16 +27,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
-import androidx.navigation.NavController
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.media.AudioListViewModel
 import city.zouitel.note.model.Data
-import city.zouitel.systemDesign.Cons.DRAW_ROUTE
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.Cons.MP3
-import city.zouitel.systemDesign.DataStoreVM
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.ADD_IMAGE_ICON
 import city.zouitel.systemDesign.Icons.CAMERA_ICON
 import city.zouitel.systemDesign.Icons.CASSETTE_ICON
@@ -61,18 +58,18 @@ import java.io.File
 @SuppressLint("SuspiciousIndentation")
 @Composable
 internal fun Plus(
-    dataStoreVM: DataStoreVM = koinViewModel(),
+    dataStoreModel: DataStoreScreenModel,
     audioListViewModel: AudioListViewModel = koinViewModel(),
     isShow: MutableState<Boolean>,
     note: Data,
-    navController: NavController,
+//    navController: NavController,
     imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
     recordDialogState: MutableState<Boolean>,
     priorityColorState: MutableState<String>,
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
-    val thereIsSoundEffect = remember(dataStoreVM, dataStoreVM::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     val sound by lazy { SoundEffect() }
 
@@ -137,7 +134,7 @@ internal fun Plus(
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                 audioListViewModel.loadNotePath = context.filesDir.path + File.pathSeparator +
                         note.uid + "." + MP3
-                navController.navigate("audio-list-screen")
+//                navController.navigate("audio-list-screen")
 
                 isShow.value = false
             },
@@ -179,17 +176,17 @@ internal fun Plus(
                 )
             },
             onClick = {
-                navController.navigate(
-                    route = DRAW_ROUTE + "/" +
-                            note.title + "/" +
-                            note.description + "/" +
-                            note.color + "/" +
-                            note.textColor + "/" +
-                            note.priority + "/" +
-                            note.uid + "/" +
-                            note.audioDuration + "/" +
-                            note.reminding
-                )
+//                navController.navigate(
+//                    route = DRAW_ROUTE + "/" +
+//                            note.title + "/" +
+//                            note.description + "/" +
+//                            note.color + "/" +
+//                            note.textColor + "/" +
+//                            note.priority + "/" +
+//                            note.uid + "/" +
+//                            note.audioDuration + "/" +
+//                            note.reminding
+//                )
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
             },

@@ -1,7 +1,7 @@
 package city.zouitel.systemDesign
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.datastore.Cons
 import city.zouitel.datastore.DataStoreRepo
 import kotlinx.coroutines.Dispatchers
@@ -11,58 +11,58 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class DataStoreVM(
+class DataStoreScreenModel(
     private val dataStoreRepo: DataStoreRepo
-) : ViewModel() {
+): ScreenModel {
 
     val getLayout: StateFlow<String> = dataStoreRepo.getLayout.filter {
         it.isNotEmpty()
     }.stateIn(
-            viewModelScope,
+            screenModelScope,
             SharingStarted.WhileSubscribed(),
             Cons.GRID
         )
 
     val getSound: StateFlow<Boolean> = dataStoreRepo.getSound
         .stateIn(
-            viewModelScope,
+            screenModelScope,
             SharingStarted.WhileSubscribed(),
             false
         )
 
     val getOrdination: StateFlow<String> = dataStoreRepo.getOrdination
         .stateIn(
-            viewModelScope,
+            screenModelScope,
             SharingStarted.WhileSubscribed(),
             city.zouitel.systemDesign.Cons.BY_NAME
         )
 
     val getTheme: StateFlow<String> = dataStoreRepo.getTheme
         .stateIn(
-            viewModelScope,
+            screenModelScope,
             SharingStarted.WhileSubscribed(),
             Cons.DARK
         )
 
     fun setSound(sound: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             dataStoreRepo.setSound(sound)
         }
     }
     fun setOrdination(order: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             dataStoreRepo.setOrdination(order)
         }
     }
 
     fun setLayout(layout: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             dataStoreRepo.setLayout(layout)
         }
     }
 
     fun setTheme(theme: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             dataStoreRepo.setTheme(theme)
         }
     }

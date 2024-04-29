@@ -1,7 +1,7 @@
 package city.zouitel.screens.top_action_bar.selection_bars
 
 import android.content.Context
-import city.zouitel.note.DataScreenModel
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.IMG_DIR

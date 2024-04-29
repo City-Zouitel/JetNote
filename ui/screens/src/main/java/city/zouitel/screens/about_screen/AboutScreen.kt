@@ -13,6 +13,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.top_action_bar.CustomTopAppBar
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.viewmodel.TagScreenModel
 
 class AboutScreen: Screen {
@@ -26,12 +27,15 @@ class AboutScreen: Screen {
         val scaffoldState = rememberScaffoldState()
 
         val tagModel = getScreenModel<TagScreenModel>()
+        val dataStoreModel = getScreenModel<DataStoreScreenModel>()
+
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
 
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = {
                 NavigationDrawer(
+                    dataStoreModel = dataStoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
                     searchTagEntity = null,
@@ -45,6 +49,7 @@ class AboutScreen: Screen {
                 backgroundColor = MaterialTheme.colorScheme.surface,
                 topBar = {
                     CustomTopAppBar(
+                        dataStoreModel = dataStoreModel,
                         drawerState = drawerState,
                         topAppBarScrollBehavior = scrollBehavior,
                         title = "About"
@@ -59,7 +64,7 @@ class AboutScreen: Screen {
                 ) {
                     item { AboutLabel() }
                     item { AboutDescription() }
-                    item { ProjectSources() }
+                    item { ProjectSources(dataStoreModel = dataStoreModel) }
                 }
             }
         }

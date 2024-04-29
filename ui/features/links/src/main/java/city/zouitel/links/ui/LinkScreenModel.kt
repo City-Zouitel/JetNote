@@ -7,9 +7,9 @@ import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.work.*
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.baha.url.preview.BahaUrlPreview
 import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
@@ -18,26 +18,24 @@ import city.zouitel.links.mapper.LinkMapper
 import city.zouitel.links.model.Link as InLink
 import city.zouitel.links.worker.LinkWorker
 import city.zouitel.systemDesign.Cons.JPEG
-import city.zouitel.systemDesign.Cons.LINK_DIR
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import java.io.File
 import java.net.URL
 
-class LinkVM(
+class LinkScreenModel(
     application: Application,
     getAll: LinkUseCase.GetAllLinks,
     private val delete: LinkUseCase.DeleteLink,
     private val mapper: LinkMapper,
     private val linkPath: String
-): ViewModel() {
+): ScreenModel {
 
     private val _getAllLinks = MutableStateFlow<List<InLink>>(emptyList())
     val getAllLinks: StateFlow<List<InLink>>
         get() = _getAllLinks
             .stateIn(
-                viewModelScope,
+                screenModelScope,
                 SharingStarted.WhileSubscribed(),
                 listOf()
             )
@@ -45,7 +43,7 @@ class LinkVM(
     private var workManager = WorkManager.getInstance(application)
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             getAll.invoke().collect { list ->
                 _getAllLinks.value = list.map { mapper.toView(it) }
             }
@@ -53,7 +51,7 @@ class LinkVM(
     }
 
     fun deleteLink(link: InLink) {
-        viewModelScope.launch(Dispatchers.IO) {
+        screenModelScope.launch(Dispatchers.IO) {
             delete.invoke(mapper.toDomain(link))
         }
     }
@@ -67,7 +65,7 @@ class LinkVM(
     ) = res?.let {
         BahaUrlPreview(it, object : IUrlPreviewCallback {
             override fun onComplete(urlInfo: UrlInfoItem) {
-                viewModelScope.launch(Dispatchers.IO) {
+                screenModelScope.launch(Dispatchers.IO) {
                     urlInfo.apply {
                         title?.value = this.title
                         host?.value = URL(this.url).host
@@ -83,7 +81,7 @@ class LinkVM(
     }
 
     fun imageDecoder(context: Context, id:String): ImageBitmap? {
-        val path = "$linkPath$id.$JPEG"
+        val path = "$linkPath/$id.$JPEG"
         val bitImg = BitmapFactory.decodeFile(path)
         return bitImg?.asImageBitmap()
     }
@@ -95,7 +93,7 @@ class LinkVM(
         image: String,
         title: String,
         host: String
-    ) = viewModelScope.launch(Dispatchers.IO) {
+    ) = screenModelScope.launch(Dispatchers.IO) {
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
