@@ -1,4 +1,4 @@
-package city.zouitel.audios.media
+package city.zouitel.audios.state
 
 data class AudioListUiState(
     val searchQuery: String = "",

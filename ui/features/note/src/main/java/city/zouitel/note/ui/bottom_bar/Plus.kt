@@ -28,12 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import city.zouitel.audios.media.AudioListViewModel
+import city.zouitel.audios.ui.list.AudioListScreen
 import city.zouitel.note.model.Data
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
-import city.zouitel.systemDesign.Cons.MP3
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.ADD_IMAGE_ICON
 import city.zouitel.systemDesign.Icons.CAMERA_ICON
@@ -51,29 +51,27 @@ import city.zouitel.tags.ui.TagsScreen
 import city.zouitel.tasks.ui.TasksScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import org.koin.androidx.compose.koinViewModel
-import java.io.File
 
 @OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("SuspiciousIndentation")
 @Composable
 internal fun Plus(
     dataStoreModel: DataStoreScreenModel,
-    audioListViewModel: AudioListViewModel = koinViewModel(),
     isShow: MutableState<Boolean>,
     note: Data,
-//    navController: NavController,
     imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
     recordDialogState: MutableState<Boolean>,
     priorityColorState: MutableState<String>,
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
+    val navBottomSheet = LocalBottomSheetNavigator.current
+
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
 
     val sound by lazy { SoundEffect() }
 
-    val permissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    val recorderPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         rememberMultiplePermissionsState(
             permissions =  listOf(
                 permission.RECORD_AUDIO,
@@ -96,13 +94,38 @@ internal fun Plus(
         }
     }
 
+    val readMediaPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberMultiplePermissionsState(
+            permissions =  listOf(
+                permission.READ_MEDIA_AUDIO
+            )
+        ) {
+            if (it.all { true }) {
+                navBottomSheet.show(AudioListScreen(note.uid))
+            }
+        }
+    } else {
+        rememberMultiplePermissionsState(
+            permissions =  emptyList()
+        ) {
+            navBottomSheet.show(AudioListScreen(note.uid))
+        }
+    }
+
     val currentColor = remember { mutableStateOf(getColorOfPriority(priorityColorState.value)) }
 
-    val showRationalDialog = remember { mutableStateOf(false) }
+    val recorderRationalDialog = remember { mutableStateOf(false) }
+    val readMedaiRationalDialog = remember { mutableStateOf(false) }
 
     RationalDialog(
-        showRationalDialog = showRationalDialog,
-        permissionState = permissionState,
+        showRationalDialog = recorderRationalDialog,
+        permissionState = recorderPermissions,
+        permissionName = "audio record"
+    )
+
+    RationalDialog(
+        showRationalDialog = readMedaiRationalDialog,
+        permissionState = readMediaPermissions,
         permissionName = "audio record"
     )
 
@@ -132,13 +155,18 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(CASSETTE_ICON), null) },
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                audioListViewModel.loadNotePath = context.filesDir.path + File.pathSeparator +
-                        note.uid + "." + MP3
-//                navController.navigate("audio-list-screen")
-
+                if(!readMediaPermissions.allPermissionsGranted) {
+                    if (readMediaPermissions.shouldShowRationale) {
+                        readMedaiRationalDialog.value = true
+                    } else {
+                        readMediaPermissions.launchMultiplePermissionRequest()
+                    }
+                } else {
+                    navBottomSheet.show(AudioListScreen(note.uid))
+                }
                 isShow.value = false
             },
-            enabled = false
+            enabled = true
         )
         DropdownMenuItem(
             text = { Text(text = "Take Photo", fontSize = 18.sp) },
@@ -153,18 +181,18 @@ internal fun Plus(
             leadingIcon = { Icon(painterResource(MIC_ICON), null) },
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                if(!permissionState.allPermissionsGranted) {
-                    if (permissionState.shouldShowRationale) {
-                        showRationalDialog.value = true
+                if (!recorderPermissions.allPermissionsGranted) {
+                    if (recorderPermissions.shouldShowRationale) {
+                        recorderRationalDialog.value = true
                     } else {
-                        permissionState.launchMultiplePermissionRequest()
+                        recorderPermissions.launchMultiplePermissionRequest()
                     }
                 } else {
                     recordDialogState.value = true
-//                    navigator.push(RecorderScreen(id = note.uid))
                 }
                 isShow.value = false
-            }
+            },
+            enabled = false
         )
 
         DropdownMenuItem(

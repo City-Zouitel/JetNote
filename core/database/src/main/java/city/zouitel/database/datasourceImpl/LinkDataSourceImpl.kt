@@ -8,21 +8,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class LinkDataSourceImpl /*@Inject*/ constructor(
-    private val linkDao: LinkDao,
-    private val linkMapper: LinkMapper
+    private val dao: LinkDao,
+    private val mapper: LinkMapper
 ): LinkDataSource {
     override val getAllLinks: Flow<List<OutLink>>
-        get() = linkDao.getAllLinks().map {  list ->
-            list.map {
-                linkMapper.readOnly(it)
+        get() = dao.getAllLinks().map { list ->
+            list.map { link ->
+                mapper.readOnly(link)
             }
         }
 
     override suspend fun addLink(link: OutLink) {
-        linkDao.addLink(linkMapper.toLocal(link))
+        dao.addLink(mapper.toLocal(link))
     }
 
     override suspend fun deleteLink(link: OutLink) {
-        linkDao.deleteLink(linkMapper.toLocal(link))
+        dao.deleteLink(mapper.toLocal(link))
     }
 }

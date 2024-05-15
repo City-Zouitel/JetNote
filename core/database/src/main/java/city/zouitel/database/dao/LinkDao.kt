@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface LinkDao {
 
-    @Query("select * from links_table")
+    @Query("SELECT * FROM LINKS_TABLE")
     fun getAllLinks(): Flow<List<LinkEntity>>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addLink(link: LinkEntity)

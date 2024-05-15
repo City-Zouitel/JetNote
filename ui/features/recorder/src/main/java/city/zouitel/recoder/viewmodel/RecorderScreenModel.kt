@@ -4,14 +4,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
+import city.zouitel.domain.usecase.AudioUseCase
+import city.zouitel.domain.usecase.NoteAndAudioUseCase
+import city.zouitel.recoder.mapper.AudioMapper
+import city.zouitel.recoder.mapper.NoteAndAudioMapper
+import city.zouitel.recoder.model.Audio
+import city.zouitel.recoder.model.NoteAndAudio as InNoteAndAudio
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-class RecorderScreenModel : ScreenModel {
+class RecorderScreenModel(
+    private val addAudio: AudioUseCase.AddAudio,
+    private val addNoteAndAudio: NoteAndAudioUseCase.AddNoteAndAudio,
+    private val audioMapper: AudioMapper,
+    private val noteAndAudioMapper: NoteAndAudioMapper
+) : ScreenModel {
 
-    private var time: Duration = Duration.ZERO
+    var time: Duration by mutableStateOf(Duration.ZERO)
+
     private lateinit var timer: Timer
 
     var seconds by mutableStateOf("00")
@@ -48,5 +63,16 @@ class RecorderScreenModel : ScreenModel {
         pause()
         time = Duration.ZERO
         updateTimeStates()
+    }
+
+    fun onRecordingComplete(id: String, audio: Audio) {
+        screenModelScope.launch(Dispatchers.IO) {
+            addAudio.invoke(audioMapper.toDomain(audio))
+            addNoteAndAudio.invoke(
+                noteAndAudioMapper.toDomain(
+                    InNoteAndAudio(noteUid = id, audioId = audio.id)
+                )
+            )
+        }
     }
 }

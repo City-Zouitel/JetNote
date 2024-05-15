@@ -1,5 +1,6 @@
-package city.zouitel.audios.media
+package city.zouitel.audios.audio
 
+import city.zouitel.audios.model.Audio
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
@@ -9,11 +10,11 @@ class AudioRepository(
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    suspend fun loadAudioFiles(query: String): List<LocalAudio> = withContext(ioDispatcher) {
+    suspend fun loadAudioFiles(query: String): List<Audio> = withContext(ioDispatcher) {
         return@withContext localMediaDataSource.loadAudioFiles(query)
     }
 
-    suspend fun loadAudioByContentId(id: String): LocalAudio? = withContext(ioDispatcher) {
+    suspend fun loadAudioByContentId(id: Long): Audio? = withContext(ioDispatcher) {
         return@withContext localMediaDataSource.loadAudioById(id)
     }
 

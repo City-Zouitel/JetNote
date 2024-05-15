@@ -80,7 +80,7 @@ private fun LinkCard(
     swipeable: Boolean,
     title: String,
     host: String,
-    id: String,
+    id: Long,
     onClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -121,7 +121,7 @@ private fun LinkCard(
                 Text(
                     text = host,
                     fontSize = 11.sp,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(
                         start = 5.dp,

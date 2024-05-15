@@ -6,12 +6,10 @@ import city.zouitel.domain.model.Data as OutData
 
 class DataMapper: Mapper.Base<InData, OutData> {
     override fun toView(data: OutData): InData = with(data) {
-        InData(uid, title, description, priority, color, textColor, date,
-            trashed, audioDuration, reminding, imageUrl, audioUrl)
+        InData(uid, title, description, priority, color, textColor, date, trashed, reminding)
     }
 
     override fun toDomain(data: InData): OutData = with(data) {
-        OutData(uid, title, description, priority, color, textColor, date,
-            trashed, audioDuration, reminding, imageUrl, audioUrl)
+        OutData(uid, title, description, priority, color, textColor, date, trashed, reminding)
     }
 }

@@ -1,14 +1,13 @@
 package city.zouitel.database.model
 
-import androidx.annotation.Keep
 import androidx.room.*
 import city.zouitel.database.utils.Constants.COLOR
 import city.zouitel.database.utils.Constants.ID
 import city.zouitel.database.utils.Constants.LABEL
-import city.zouitel.database.utils.Constants.LABELS_TABLE
+import city.zouitel.database.utils.Constants.LABELS
 
 @Entity(
-    tableName = LABELS_TABLE
+    tableName = LABELS
 )
 data class TagEntity(
     @PrimaryKey(autoGenerate = true)

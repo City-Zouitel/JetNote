@@ -12,10 +12,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 internal fun UndoSnackbar(
-    viewModule: DataScreenModel,
+    dataModule: DataScreenModel,
     scaffoldState : ScaffoldState,
     scope : CoroutineScope,
-    trashedNotesState : State<List<Note>>
+    removedNotesState : State<List<Note>>
 ): (Data) -> Unit {
     val onShowSnackbar: (Data) -> Unit = { note ->
 
@@ -27,15 +27,15 @@ internal fun UndoSnackbar(
             when(snackbarResult)  {
                 SnackbarResult.Dismissed -> {} // Timber.d("Snackbar dismissed")
                 SnackbarResult.ActionPerformed -> {
-                    viewModule.editData(
+                    dataModule.editData(
                         Data(
-                            title = trashedNotesState.value.last().dataEntity.title,
-                            description = trashedNotesState.value.last().dataEntity.description,
-                            priority = trashedNotesState.value.last().dataEntity.priority,
-                            uid = trashedNotesState.value.last().dataEntity.uid,
-                            textColor = trashedNotesState.value.last().dataEntity.textColor,
-                            date = trashedNotesState.value.last().dataEntity.date,
-                            color = trashedNotesState.value.last().dataEntity.color,
+                            title = removedNotesState.value.last().dataEntity.title,
+                            description = removedNotesState.value.last().dataEntity.description,
+                            priority = removedNotesState.value.last().dataEntity.priority,
+                            uid = removedNotesState.value.last().dataEntity.uid,
+                            textColor = removedNotesState.value.last().dataEntity.textColor,
+                            date = removedNotesState.value.last().dataEntity.date,
+                            color = removedNotesState.value.last().dataEntity.color,
                             trashed = 0,
                         )
                     )

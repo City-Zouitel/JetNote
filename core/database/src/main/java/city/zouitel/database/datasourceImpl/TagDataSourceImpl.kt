@@ -8,25 +8,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class TagDataSourceImpl /*@Inject*/ constructor(
-    private val tagDao: TagDao,
-    private val tagMapper: TagMapper
+    private val dao: TagDao,
+    private val mapper: TagMapper
 ): TagDataSource {
     override val getAllLabels: Flow<List<OutTag>>
-        get() = tagDao.getAllTags().map { list ->
+        get() = dao.getAllTags().map { list ->
             list.map {
-                tagMapper.readOnly(it)
+                mapper.readOnly(it)
             }
         }
 
     override suspend fun addTag(tag: OutTag) {
-        tagDao.addTag(tagMapper.toLocal(tag))
+        dao.addTag(mapper.toLocal(tag))
     }
 
     override suspend fun updateTag(tag: OutTag) {
-        tagDao.updateTag(tagMapper.toLocal(tag))
+        dao.updateTag(mapper.toLocal(tag))
     }
 
     override suspend fun deleteTag(tag: OutTag) {
-        tagDao.deleteTag(tagMapper.toLocal(tag))
+        dao.deleteTag(mapper.toLocal(tag))
     }
 }

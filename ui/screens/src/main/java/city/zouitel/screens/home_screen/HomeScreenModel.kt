@@ -44,11 +44,7 @@ class HomeScreenModel(
     val allTrashedNotes: StateFlow<List<InNote>> = _allTrashedNotes.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     private val _allNotesByPriority = MutableStateFlow<List<InNote>>(emptyList())
-    val allNotesByPriority: StateFlow<List<InNote>> = _allNotesByPriority.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(),
-        listOf()
-    )
+    val allNotesByPriority: StateFlow<List<InNote>> = _allNotesByPriority.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     private val _allRemindingNotes = MutableStateFlow<List<InNote>>(emptyList())
     val allRemindingNotes: StateFlow<List<InNote>> = _allRemindingNotes.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())

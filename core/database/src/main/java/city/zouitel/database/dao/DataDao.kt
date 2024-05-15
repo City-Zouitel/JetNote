@@ -16,7 +16,7 @@ interface DataDao {
     suspend fun deleteNote(data: DataEntity)
 
     // delete all trashed notes.
-    @Query("delete from NOTES_TABLE where REMOVED = 1")
+    @Query("DELETE FROM NOTES_TABLE WHERE REMOVED = 1")
     suspend fun deleteAllTrashedNotes()
 
 }

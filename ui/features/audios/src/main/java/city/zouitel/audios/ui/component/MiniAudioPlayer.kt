@@ -1,4 +1,4 @@
-package city.zouitel.audios.ui
+package city.zouitel.audios.ui.component
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import city.zouitel.audios.model.Audio
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Cons.LIST
@@ -26,13 +27,12 @@ import java.io.File
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun MiniMediaPlayer(
-//    exoViewModule: AudioScreenModel = koinViewModel(),
+fun MiniAudioPlayer(
     dataStoreModel: DataStoreScreenModel,
     audioScreenModel: AudioScreenModel,
-    localMediaUid: String?
+    localMediaUid: String?,
+    audio: Audio
 ) {
-    val context = LocalContext.current
     val mediaFile = audioScreenModel.rec_path.value + File.separator +  localMediaUid + "." + Cons.MP3
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
@@ -41,7 +41,7 @@ fun MiniMediaPlayer(
 
     scope.launch {
         while (isPlaying.value && processState <= 1f) {
-            delay(audioScreenModel.getMediaDuration(context, mediaFile) / 100)
+            delay(audioScreenModel.getMediaDuration(audio.path) / 100)
             processState += .011f
         }
         when {
@@ -52,7 +52,7 @@ fun MiniMediaPlayer(
         }
     }
 
-    if (isPlaying.value) audioScreenModel.playMedia(mediaFile) else audioScreenModel.pauseMedia(mediaFile)
+    if (isPlaying.value) audioScreenModel.playMedia(audio.path) else audioScreenModel.pauseMedia(audio.path)
 
     Card(
         modifier = Modifier.padding(10.dp),
@@ -116,7 +116,7 @@ fun MiniMediaPlayer(
                 Text(
                     modifier = Modifier.padding(end = 7.dp),
                     text = audioScreenModel.formatLong(
-                        audioScreenModel.getMediaDuration(context, mediaFile)
+                        audioScreenModel.getMediaDuration(audio.path)
                     ),
                     color = MaterialTheme.colorScheme.surfaceVariant
                 )

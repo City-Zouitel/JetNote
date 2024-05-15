@@ -50,8 +50,8 @@ val callNumber: (Context,String) -> Unit = { ctx, number ->
 }
 
 //
-val findUrlLink: (String?) -> String? = {
-    it?.split(' ')?.find { str -> str.matches("https?://.+".toRegex()) }
+val findUrlLink: (String?) -> List<String>? = {
+    it?.split(' ')?.filter { str -> str.matches("https?://.+".toRegex()) }
 }
 
 //

@@ -6,10 +6,10 @@ import city.zouitel.repository.model.NoteAndTask as OutNoteAndTask
 
 class NoteAndTaskMapper: Mapper.Base<InNoteAndTask, OutNoteAndTask> {
     override fun toLocal(data: OutNoteAndTask): InNoteAndTask = with(data){
-        InNoteAndTask(noteUid, todoId)
+        InNoteAndTask(noteUid, taskId)
     }
 
     override fun readOnly(data: InNoteAndTask): OutNoteAndTask = with(data){
-        OutNoteAndTask(noteUid, todoId)
+        OutNoteAndTask(noteUid, taskId)
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text2.input.rememberTextFieldState
+import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -63,29 +64,34 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastFirstOrNull
 import androidx.core.net.toUri
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import city.zouitel.audios.ui.AudioScreenModel
-import city.zouitel.audios.ui.NormalMediaPlayer
+import cafe.adriel.voyager.navigator.Navigator
+import city.zouitel.audios.model.NoteAndAudio
+import city.zouitel.audios.ui.list.AudioListScreenModel
+import city.zouitel.audios.ui.component.AudioScreenModel
+import city.zouitel.audios.ui.component.BasicAudioScreen
+import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.CacheLinks
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
-import city.zouitel.note.ui.DataScreenModel
+import city.zouitel.logic.getImgPath
+import city.zouitel.logic.getRecPath
 import city.zouitel.note.model.Data
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
-import city.zouitel.recoder.ui.RecorderDialog
+import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.RemindingNote
 import city.zouitel.systemDesign.CommonTextField
-import city.zouitel.systemDesign.Cons.REC_DIR
 import city.zouitel.systemDesign.Cons.IMG_DIR
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
-import city.zouitel.systemDesign.Cons.MP3
 import city.zouitel.systemDesign.Cons.NON
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons
@@ -102,14 +108,13 @@ import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
 import city.zouitel.tasks.viewmodel.TaskScreenModel
 import com.google.accompanist.flowlayout.FlowRow
-import org.koin.core.component.KoinComponent
 import java.io.File
 import java.util.Date
 
 data class AddScreen(
     val id: String,
     val description: String? = null
-): Screen, KoinComponent {
+): Screen {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterialApi::class,
         ExperimentalFoundationApi::class
@@ -130,12 +135,8 @@ data class AddScreen(
 
         val focusRequester by lazy { FocusRequester() }
         val sound by lazy { SoundEffect() }
-        val mediaFile by lazy {
-            arrayOf(internalPath, '/', REC_DIR, '/', id, '.', MP3).joinToString("")
-        }
-        val imageFile by lazy {
-            arrayOf(internalPath, '/', IMG_DIR, '/', id, '.', JPEG).joinToString("")
-        }
+        val mediaFile by lazy { id getRecPath context }
+        val imageFile by lazy { id getImgPath context }
         val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
         val bitImg by lazy { BitmapFactory.decodeFile(imageFile) }
 
@@ -145,19 +146,21 @@ data class AddScreen(
         val noteAndTagModel = getScreenModel<NoteAndTagScreenModel>()
         val taskModel = getScreenModel<TaskScreenModel>()
         val noteAndTodoModel = getScreenModel<NoteAndTaskScreenModel>()
-        val audioModel = getScreenModel<AudioScreenModel>()
         val linkModel = getScreenModel<LinkScreenModel>()
         val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
         val dataStoreModel = getScreenModel<DataStoreScreenModel>()
+        val audioModel = getScreenModel<AudioScreenModel>()
+        val audioListModel = getScreenModel<AudioListScreenModel>()
+        val noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
 
-        val isTitleFieldFocused = remember { mutableStateOf(false) }
-        val isDescriptionFieldFocused = remember { mutableStateOf(false) }
+        val backgroundColor = MaterialTheme.colorScheme.surface.toArgb()
+        val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
         val titleState = rememberTextFieldState()
         val descriptionState = rememberTextFieldState()
-        val backgroundColor = MaterialTheme.colorScheme.surface.toArgb()
         val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
-        val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
         val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
+        val isTitleFieldFocused = remember { mutableStateOf(false) }
+        val isDescriptionFieldFocused = remember { mutableStateOf(false) }
         val priorityState = remember { mutableStateOf(NON) }
         val photoState = remember { mutableStateOf<Bitmap?>(bitImg) }
         val remindingDialogState = remember { mutableStateOf(false) }
@@ -185,6 +188,10 @@ data class AddScreen(
             noteAndLinkModel,
             noteAndLinkModel::getAllNotesAndLinks
         ).collectAsState()
+        val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
+        val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
+            .collectAsState()
+
         var imageUriState by remember { mutableStateOf<Uri?>(File(imageFile).toUri()) }
         val img by rememberSaveable { mutableStateOf(photoState) }
 
@@ -198,9 +205,9 @@ data class AddScreen(
                 )
             }
 
-        LaunchedEffect(Unit) {
+        LaunchedEffect(true) {
             kotlin.runCatching {
-                focusRequester.requestFocus()
+//                focusRequester.requestFocus()
             }
         }
 
@@ -223,7 +230,7 @@ data class AddScreen(
                                 uid = id,
                                 reminding = remindingValue.longValue,
                                 date = dateState.value.toString(),
-                                audioDuration = audioDurationState.intValue,
+//                                audioDuration = audioDurationState.intValue,
                                 color = backgroundColorState.intValue,
                                 textColor = textColorState.intValue,
                             )
@@ -256,7 +263,7 @@ data class AddScreen(
         ) {
             // recording dialog visibility.
             if (recordDialogState.value) {
-                RecorderDialog(id = id, dialogState = recordDialogState)
+                Navigator(RecorderScreen(id, recordDialogState))
             }
 
             // reminding dialog visibility.
@@ -332,23 +339,28 @@ data class AddScreen(
                 //display the media player.
                 item {
                     Spacer(modifier = Modifier.height(18.dp))
-                    if (
-                        File(mediaFile).exists() && !recordDialogState.value
-                    ) {
-                        NormalMediaPlayer(audioScreenModel = audioModel, localMediaUid = id)
-                        audioDurationState.intValue = audioModel.getMediaDuration(context, mediaFile).toInt()
+
+                    observerAudios.filter {
+                        observerNoteAndAudio.contains(
+                            NoteAndAudio(id, it.id)
+                        )
+                    }.fastFirstOrNull { _audio ->
+                        Navigator(screen = BasicAudioScreen(id, _audio))
+                        true
                     }
                 }
 
                 // Link display.
                 item {
-                    findUrlLink(descriptionState.text.toString())?.let { url ->
-                        CacheLinks(
-                            linkScreenModel = linkModel,
-                            noteAndLinkScreenModel = noteAndLinkModel,
-                            noteId = id,
-                            url = url
-                        )
+                    findUrlLink(descriptionState.text.toString()) ?. let { links ->
+                        for (link in links) {
+                            CacheLinks(
+                                linkScreenModel = linkModel,
+                                noteAndLinkScreenModel = noteAndLinkModel,
+                                noteId = id,
+                                url = link
+                            )
+                        }
                     }
                     // for refresh this screen.
                     observerLinks.filter {

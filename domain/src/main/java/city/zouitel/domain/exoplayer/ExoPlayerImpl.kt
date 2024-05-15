@@ -7,7 +7,9 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import java.io.File
 
+@Suppress("DEPRECATION")
 class ExoPlayerImpl (
+    private val context: Context,
     private val exo: ExoPlayer,
 ): ExoRepo {
 
@@ -23,22 +25,12 @@ class ExoPlayerImpl (
         return exo
     }
 
-    override suspend fun prepareStreamMediaPlayer(mediaPath: String): ExoPlayer {
-        exo.setMediaItem(
-            MediaItem.fromUri(
-                mediaPath
-            )
-        )
-        exo.prepare()
-        return exo
-    }
-
-    override suspend fun getMediaDuration(context: Context, path: String): Long {
+    override suspend fun getMediaDuration(path: String): Long {
         if (!File(path).exists()) return 0L
         val retriever = MediaMetadataRetriever()
         return try {
             retriever.setDataSource(context, File(path).path.toUri())
-            // retriever.setDataSource("url",HashMap<String, String>()) // for cloud media.
+            // retriever.setDataSource("uri",HashMap<String, String>()) // for cloud media.
             val duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
             retriever.release()
             duration?.toLongOrNull() ?: 0L

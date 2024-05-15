@@ -6,22 +6,22 @@ import city.zouitel.repository.datasource.DataDataSource
 import city.zouitel.repository.model.Data as OutData
 
 class DataDataSourceImpl /*@Inject*/ constructor(
-    private val dataDao: DataDao,
-    private val dataMapper: DataMapper
+    private val dao: DataDao,
+    private val mapper: DataMapper
 ): DataDataSource {
     override suspend fun addData(data: OutData) {
-        dataDao.addNote(dataMapper.toLocal(data))
+        dao.addNote(mapper.toLocal(data))
     }
 
     override suspend fun editData(data: OutData) {
-        dataDao.editNote(dataMapper.toLocal(data))
+        dao.editNote(mapper.toLocal(data))
     }
 
     override suspend fun deleteData(data: OutData) {
-        dataDao.deleteNote(dataMapper.toLocal(data))
+        dao.deleteNote(mapper.toLocal(data))
     }
 
     override suspend fun deleteAllTrashedData() {
-        dataDao.deleteAllTrashedNotes()
+        dao.deleteAllTrashedNotes()
     }
 }

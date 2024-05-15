@@ -1,13 +1,12 @@
 package city.zouitel.database.model
 
-import androidx.annotation.Keep
 import androidx.room.Entity
 
 @Entity(
-    tableName = "note_and_todo",
-    primaryKeys = ["noteUid","todoId"]
+    tableName = "note_and_task",
+    primaryKeys = ["noteUid","taskId"]
 )
 data class NoteAndTaskEntity(
     val noteUid:String,
-    val todoId:Long
+    val taskId:Long
 )

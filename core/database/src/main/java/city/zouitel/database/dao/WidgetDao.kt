@@ -9,6 +9,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WidgetDao {
     @Transaction
-    @Query("select * from NOTES_TABLE where REMOVED = 0 order by Date desc")
+    @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY DATE DESC")
     fun allWidgetEntitiesById(): Flow<List<NoteEntity>>
 }

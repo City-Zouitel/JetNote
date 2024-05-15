@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskDao {
 
-    @Query("select * from TASKS_TABLE")
+    @Query("SELECT * FROM tasks_table")
     fun getAllTaskItems():Flow<List<TaskEntity>>
 
     @Insert

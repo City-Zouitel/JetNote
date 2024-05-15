@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.core.datastore)
     implementation(projects.domain)
     implementation(projects.common.systemDesign)
+    implementation(projects.common.logic)
 
     //AndroidX.
     implementation(libs.constraintlayout)
@@ -27,4 +28,9 @@ dependencies {
     //Sliders.
     implementation(libs.audiowaveform)
     implementation(libs.amplituda)
+
+    //Media3.
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.session)
+    implementation(libs.media3.ui)
 }

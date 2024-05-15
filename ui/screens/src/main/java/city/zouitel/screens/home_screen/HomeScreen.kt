@@ -43,14 +43,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.util.fastFirstOrNull
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import city.zouitel.audios.ui.AudioScreenModel
+import city.zouitel.audios.model.NoteAndAudio
+import city.zouitel.audios.ui.component.AudioScreenModel
+import city.zouitel.audios.ui.component.BasicAudioScreen
+import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
-import city.zouitel.logic.asLongToast
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.Screens
 import city.zouitel.screens.note_card.NoteCard
@@ -62,7 +66,6 @@ import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
 import city.zouitel.note.ui.add_screen.AddScreen
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
-import city.zouitel.root.RootScreenModel
 import city.zouitel.systemDesign.Cons.BY_NAME
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.Cons.LIST
@@ -78,10 +81,9 @@ import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
 import city.zouitel.tags.viewmodel.TagScreenModel
 import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
 import city.zouitel.tasks.viewmodel.TaskScreenModel
-import org.koin.core.component.KoinComponent
 import java.util.UUID
 
-class HomeScreen: Screen, KoinComponent {
+class HomeScreen: Screen {
 
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
     @Composable
@@ -100,6 +102,7 @@ class HomeScreen: Screen, KoinComponent {
         val homeModel = getScreenModel<HomeScreenModel>()
         val dataModel = getScreenModel<DataScreenModel>()
         val audioModel = getScreenModel<AudioScreenModel>()
+        val noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
         val linkModel = getScreenModel<LinkScreenModel>()
         val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
         val dataStoreModel = getScreenModel<DataStoreScreenModel>()
@@ -115,7 +118,7 @@ class HomeScreen: Screen, KoinComponent {
         val observerLocalNotes: State<List<Note>> = when (
             remember(dataStoreModel, dataStoreModel::getOrdination).collectAsState().value
         ) {
-            BY_NAME -> homeModel.allNotesById.collectAsState()
+            BY_NAME -> homeModel.allNotesByName.collectAsState()
             ORDER_BY_OLDEST -> homeModel.allNotesByOldest.collectAsState()
             ORDER_BY_NEWEST -> homeModel.allNotesByNewest.collectAsState()
             ORDER_BY_PRIORITY -> homeModel.allNotesByPriority.collectAsState()
@@ -158,10 +161,10 @@ class HomeScreen: Screen, KoinComponent {
 
         //undo snack-bar.
         val undo = UndoSnackbar(
-            viewModule = dataModel,
+            dataModule = dataModel,
             scaffoldState = scaffoldState,
             scope = coroutineScope,
-            trashedNotesState = removedNotesState
+            removedNotesState = removedNotesState
         )
 
         ModalNavigationDrawer(
@@ -254,6 +257,7 @@ class HomeScreen: Screen, KoinComponent {
                                     noteAndTaskModel = noteAndTaskModel,
                                     dataModel = dataModel,
                                     audioModel = audioModel,
+                                    noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
                                     noteAndLinkModel = noteAndLinkModel,
                                     screen = Screens.HOME_SCREEN,
@@ -293,6 +297,7 @@ class HomeScreen: Screen, KoinComponent {
                                     noteAndTaskModel = noteAndTaskModel,
                                     dataModel = dataModel,
                                     audioModel = audioModel,
+                                    noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
                                     noteAndLinkModel = noteAndLinkModel,
                                     screen = Screens.HOME_SCREEN,

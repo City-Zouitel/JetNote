@@ -60,12 +60,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastFirstOrNull
 import androidx.core.net.toUri
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import city.zouitel.audios.ui.AudioScreenModel
-import city.zouitel.audios.ui.NormalMediaPlayer
+import cafe.adriel.voyager.navigator.Navigator
+import city.zouitel.audios.model.NoteAndAudio
+import city.zouitel.audios.ui.list.AudioListScreenModel
+import city.zouitel.audios.ui.component.AudioScreenModel
+import city.zouitel.audios.ui.component.BasicAudioScreen
+import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.CacheLinks
 import city.zouitel.links.ui.LinkCard
@@ -99,7 +104,6 @@ import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
 import city.zouitel.tasks.viewmodel.TaskScreenModel
 import com.google.accompanist.flowlayout.FlowRow
-import org.koin.core.component.KoinComponent
 import java.io.File
 import java.util.Date
 
@@ -110,9 +114,9 @@ data class EditScreen(
     val color: Int = 0,
     val textColor: Int = 0,
     val priority: String = NON,
-    val audioDuration: Int = 0,
+//    val audioDuration: Int = 0,
     val reminding: Long = 0
-): Screen, KoinComponent {
+): Screen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -173,6 +177,8 @@ data class EditScreen(
         val linkModel = getScreenModel<LinkScreenModel>()
         val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
         val dataStoreModel = getScreenModel<DataStoreScreenModel>()
+        val audioListModel = getScreenModel<AudioListScreenModel>()
+        val noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
 
         val backgroundColorState = rememberSaveable { mutableIntStateOf(color) }
         val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
@@ -204,6 +210,10 @@ data class EditScreen(
             noteAndTodoModel,
             noteAndTodoModel::getAllNotesAndTask
         ).collectAsState()
+        val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
+        val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
+            .collectAsState()
+
         var imageUriState by remember { mutableStateOf<Uri?>(File(imageFile).toUri()) }
         val img by rememberSaveable { mutableStateOf(photoState) }
 
@@ -232,7 +242,7 @@ data class EditScreen(
                                 description = if (descriptionState.text.isBlank()) null else descriptionState.text.toString(),
                                 priority = priorityState.value,
                                 uid = id,
-                                audioDuration = audioDuration,
+//                                audioDuration = audioDuration,
                                 reminding = remindingValue.longValue,
                                 date = dateState.value.toString(),
                                 trashed = 0,
@@ -343,25 +353,28 @@ data class EditScreen(
                 // display the media player.
                 item {
                     Spacer(modifier = Modifier.height(18.dp))
-                    if (
-                        File(mediaFile).exists() && !recordDialogState.value
-                    ) {
-                        NormalMediaPlayer(audioScreenModel = audioModel, localMediaUid = id)
-                        audioDurationState.intValue =
-                            audioModel.getMediaDuration(context, mediaFile).toInt()
 
+                    observerAudios.filter {
+                        observerNoteAndAudio.contains(
+                            NoteAndAudio(id, it.id)
+                        )
+                    }.fastFirstOrNull { _audio ->
+                        Navigator(screen = BasicAudioScreen(id, _audio))
+                        true
                     }
                 }
 
                 // Link display.
                 item {
-                    findUrlLink(descriptionState.text.toString())?.let { url ->
-                        CacheLinks(
-                            linkScreenModel = linkModel,
-                            noteAndLinkScreenModel = noteAndLinkModel,
-                            noteId = id,
-                            url = url
-                        )
+                    findUrlLink(descriptionState.text.toString()) ?. let { links ->
+                        for (link in links) {
+                            CacheLinks(
+                                linkScreenModel = linkModel,
+                                noteAndLinkScreenModel = noteAndLinkModel,
+                                noteId = id,
+                                url = link
+                            )
+                        }
                     }
                     // for refresh this screen.
                     observerLinks.filter {

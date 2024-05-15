@@ -50,4 +50,5 @@ fun DependencyHandlerScope.voyagerDependencies(libs: VersionCatalog) {
     add("implementation", libs.findLibrary("voyager-screenModel").get())
     add("implementation", libs.findLibrary("voyager-transitions").get())
     add("implementation", libs.findLibrary("voyager-koin").get())
+    add("implementation", libs.findLibrary("voyager-bottom-sheet").get())
 }

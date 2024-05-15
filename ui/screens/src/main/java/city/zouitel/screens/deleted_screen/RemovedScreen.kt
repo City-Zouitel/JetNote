@@ -14,7 +14,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.audios.ui.AudioScreenModel
+import city.zouitel.audios.ui.component.AudioScreenModel
+import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
@@ -58,6 +59,7 @@ class RemovedScreen : Screen, KoinComponent {
         val taskModel = getScreenModel<TaskScreenModel>()
         val noteAndTaskModel = getScreenModel<NoteAndTaskScreenModel>()
         val audioModel = getScreenModel<AudioScreenModel>()
+        val noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
         val linkModel = getScreenModel<LinkScreenModel>()
         val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
         val homeModel = getScreenModel<HomeScreenModel>()
@@ -154,6 +156,7 @@ class RemovedScreen : Screen, KoinComponent {
                                 noteAndTaskModel = noteAndTaskModel,
                                 dataModel = dataModel,
                                 audioModel = audioModel,
+                                noteAndAudioModel = noteAndAudioModel,
                                 linkModel = linkModel,
                                 noteAndLinkModel = noteAndLinkModel,
                                 screen = Screens.DELETED_SCREEN,
@@ -194,6 +197,7 @@ class RemovedScreen : Screen, KoinComponent {
                                         noteAndTaskModel = noteAndTaskModel,
                                         dataModel = dataModel,
                                         audioModel = audioModel,
+                                        noteAndAudioModel = noteAndAudioModel,
                                         linkModel = linkModel,
                                         noteAndLinkModel = noteAndLinkModel,
                                         screen = Screens.DELETED_SCREEN,

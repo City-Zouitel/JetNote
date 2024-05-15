@@ -1,4 +1,4 @@
-package city.zouitel.audios.media
+package city.zouitel.audios.audio
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

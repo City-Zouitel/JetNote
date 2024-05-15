@@ -1,7 +1,9 @@
 package city.zouitel.repository.di
 
+import city.zouitel.domain.repository.AudioRepository
 import city.zouitel.domain.repository.DataRepository
 import city.zouitel.domain.repository.LinkRepository
+import city.zouitel.domain.repository.NoteAndAudioRepository
 import city.zouitel.domain.repository.NoteAndLinkRepository
 import city.zouitel.domain.repository.NoteAndTagRepository
 import city.zouitel.domain.repository.NoteAndTaskRepository
@@ -10,8 +12,10 @@ import city.zouitel.domain.repository.RootRepository
 import city.zouitel.domain.repository.TagRepository
 import city.zouitel.domain.repository.TaskRepository
 import city.zouitel.domain.repository.WidgetRepository
+import city.zouitel.domain.usecase.AudioUseCase
 import city.zouitel.domain.usecase.DataUseCase
 import city.zouitel.domain.usecase.LinkUseCase
+import city.zouitel.domain.usecase.NoteAndAudioUseCase
 import city.zouitel.domain.usecase.NoteAndLinkUseCase
 import city.zouitel.domain.usecase.NoteAndTagUseCase
 import city.zouitel.domain.usecase.NoteAndTaskUseCase
@@ -29,6 +33,8 @@ import city.zouitel.repository.mapper.NoteMapper
 import city.zouitel.repository.mapper.RootMapper
 import city.zouitel.repository.mapper.TagMapper
 import city.zouitel.repository.mapper.TaskMapper
+import city.zouitel.repository.mapper.AudioMapper
+import city.zouitel.repository.mapper.NoteAndAudioMapper
 import city.zouitel.repository.mapper.WidgetMapper
 import city.zouitel.repository.repositoryImpl.DataRepositoryImpl
 import city.zouitel.repository.repositoryImpl.LinkRepositoryImpl
@@ -37,6 +43,8 @@ import city.zouitel.repository.repositoryImpl.NoteAndTagRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteAndTaskRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteRepositoryImpl
 import city.zouitel.repository.repositoryImpl.RootRepositoryImpl
+import city.zouitel.repository.repositoryImpl.AudioRepositoryImpl
+import city.zouitel.repository.repositoryImpl.NoteAndAudioRepositoryImpl
 import city.zouitel.repository.repositoryImpl.TagRepositoryImpl
 import city.zouitel.repository.repositoryImpl.TaskRepositoryImpl
 import city.zouitel.repository.repositoryImpl.WidgetRepositoryImpl
@@ -52,27 +60,30 @@ val repositoryKoinModule = module {
     factoryOf(::LinkMapper)
     factoryOf(::TagMapper)
     factoryOf(::TaskMapper)
+    factoryOf(::AudioMapper)
     factoryOf(::NoteAndLinkMapper)
     factoryOf(::NoteAndTagMapper)
     factoryOf(::NoteAndTaskMapper)
+    factoryOf(::NoteAndAudioMapper)
     factoryOf(::RootMapper)
     factory {
         NoteMapper(get(), get(), get(), get())
     }
-
     factory {
         WidgetMapper(get(), get(), get(), get())
     }
 
     //Repositories.
-    singleOf(::LinkRepositoryImpl) bind LinkRepository::class
     singleOf(::DataRepositoryImpl) bind DataRepository::class
-    singleOf(::NoteAndLinkRepositoryImpl) bind NoteAndLinkRepository::class
-    singleOf(::NoteAndTagRepositoryImpl) bind NoteAndTagRepository::class
-    singleOf(::NoteAndTaskRepositoryImpl) bind NoteAndTaskRepository::class
     singleOf(::NoteRepositoryImpl) bind NoteRepository::class
+    singleOf(::LinkRepositoryImpl) bind LinkRepository::class
+    singleOf(::NoteAndLinkRepositoryImpl) bind NoteAndLinkRepository::class
     singleOf(::TagRepositoryImpl) bind TagRepository::class
+    singleOf(::NoteAndTagRepositoryImpl) bind NoteAndTagRepository::class
     singleOf(::TaskRepositoryImpl) bind TaskRepository::class
+    singleOf(::NoteAndTaskRepositoryImpl) bind NoteAndTaskRepository::class
+    singleOf(::AudioRepositoryImpl) bind AudioRepository::class
+    singleOf(::NoteAndAudioRepositoryImpl) bind NoteAndAudioRepository::class
     singleOf(::WidgetRepositoryImpl) bind WidgetRepository::class
     singleOf(::RootRepositoryImpl) bind RootRepository::class
 
@@ -119,4 +130,12 @@ val repositoryKoinModule = module {
     factoryOf(WidgetUseCase::GetAllWidgetMainEntityById)
 
     factoryOf(RootUseCase::RootUseCase)
+
+    factoryOf(AudioUseCase::GetAllAudios)
+    factoryOf(AudioUseCase::AddAudio)
+    factoryOf(AudioUseCase::DeleteAudio)
+
+    factoryOf(NoteAndAudioUseCase::GetAllNotesAndAudios)
+    factoryOf(NoteAndAudioUseCase::AddNoteAndAudio)
+    factoryOf(NoteAndAudioUseCase::DeleteNoteAndAudio)
 }

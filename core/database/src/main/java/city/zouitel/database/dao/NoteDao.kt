@@ -10,37 +10,37 @@ import kotlinx.coroutines.flow.Flow
 interface NoteDao {
 
     @Transaction
-    @Query("select * from NOTES_TABLE where REMOVED = 0 order by Date asc")
+    @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY Date ASC")
     fun getAllNotesById():Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where REMOVED = 0 order by Date desc")
+    @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY Date DESC")
     fun getAllNotesByNewest():Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where REMOVED = 0 order by Date asc")
+    @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY Date ASC")
     fun getAllNotesByOldest():Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where REMOVED = 0 order by TITLE asc")
+    @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY TITLE ASC")
     fun getAllNotesByName():Flow<List<NoteEntity>>
 
     @Transaction
-@Query("select * from NOTES_TABLE where REMOVED = 0 order by case " +
-            "when Priority like 'URGENT' then 1 " +
-            "when Priority like 'IMPORTANT' then 2 " +
-            "when Priority like 'NORMAL' then 3 " +
-            "when Priority like 'LOW' then 4 " +
-            "when Priority like 'NON' then 5 " +
-            "end")
+@Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY CASE " +
+            "WHEN PRIORITY LIKE 'URGENT' THEN 1 " +
+            "WHEN PRIORITY LIKE 'IMPORTANT' THEN 2 " +
+            "WHEN PRIORITY LIKE 'NORMAL' THEN 3 " +
+            "WHEN PRIORITY LIKE 'LOW' THEN 4 " +
+            "WHEN PRIORITY LIKE 'NON' THEN 5 " +
+            "END")
     fun getAllNotesByPriority():Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where REMOVED = 1")
+    @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 1")
     fun getAllTrashedNotes(): Flow<List<NoteEntity>>
 
     @Transaction
-    @Query("select * from NOTES_TABLE where REMOVED = 0 order by Reminding desc")
+    @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY REMINDING DESC")
     fun getAllRemindingNotes(): Flow<List<NoteEntity>>
 
 

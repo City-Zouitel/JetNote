@@ -29,9 +29,15 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastFirstOrNull
 import cafe.adriel.voyager.navigator.LocalNavigator
-import city.zouitel.audios.ui.AudioScreenModel
-import city.zouitel.audios.ui.MiniMediaPlayer
+import cafe.adriel.voyager.navigator.Navigator
+import city.zouitel.audios.model.Audio
+import city.zouitel.audios.model.NoteAndAudio
+import city.zouitel.audios.ui.component.AudioScreenModel
+import city.zouitel.audios.ui.component.BasicAudioScreen
+import city.zouitel.audios.ui.component.MiniAudioPlayer
+import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
@@ -75,6 +81,7 @@ fun NoteCard(
     noteAndTaskModel: NoteAndTaskScreenModel,
     dataModel: DataScreenModel,
     audioModel: AudioScreenModel,
+    noteAndAudioModel: NoteAndAudioScreenModel,
     linkModel: LinkScreenModel,
     noteAndLinkModel: NoteAndLinkScreenModel,
     screen: Screens,
@@ -86,6 +93,8 @@ fun NoteCard(
 ) {
     val swipeState = rememberSwipeableActionsState()
     val currentLayout = remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
+
+
 
     val action = SwipeAction(
         onSwipe = {
@@ -108,6 +117,7 @@ fun NoteCard(
                 noteAndTodoModel = noteAndTaskModel,
                 dataModel = dataModel,
                 audioModel = audioModel,
+                noteAndAudioModel = noteAndAudioModel,
                 dataStoreModel = dataStoreModel,
                 linkModel = linkModel,
                 noteAndLinkModel = noteAndLinkModel,
@@ -124,6 +134,7 @@ fun NoteCard(
             noteAndTodoModel = noteAndTaskModel,
             dataModel = dataModel,
             audioModel = audioModel,
+            noteAndAudioModel = noteAndAudioModel,
             dataStoreModel = dataStoreModel,
             linkModel = linkModel,
             noteAndLinkModel = noteAndLinkModel,
@@ -146,6 +157,7 @@ private fun Card(
     linkModel: LinkScreenModel,
     noteAndLinkModel: NoteAndLinkScreenModel,
     audioModel: AudioScreenModel,
+    noteAndAudioModel: NoteAndAudioScreenModel,
     noteEntity: Note,
     screen: Screens,
     homeSelectionState: MutableState<Boolean>?,
@@ -168,7 +180,9 @@ private fun Card(
     val observerLinks = remember(linkModel, linkModel::getAllLinks).collectAsState()
     val observerNoteAndLink =
         remember(noteAndLinkModel, noteAndLinkModel::getAllNotesAndLinks).collectAsState()
-
+    val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
+    val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
+        .collectAsState()
 //    val mediaPath = context.filesDir.path + "/$REC_DIR/" + note.uid + "." + MP3
 //    val imagePath = "$internalPath/$IMG_DIR/${note.uid}.$JPEG"
     val mediaPath = note.uid getRecPath context
@@ -211,7 +225,7 @@ private fun Card(
                             note.color,
                             note.textColor,
                             note.priority,
-                            note.audioDuration,
+//                            note.audioDuration,
                             note.reminding
                         )
                     )
@@ -275,10 +289,19 @@ private fun Card(
             modifier = Modifier.padding(start = 3.dp, end = 3.dp, bottom = 7.dp)
         )
 
-        //display media player.
-        if (File(mediaPath).exists()) {
-            MiniMediaPlayer(audioScreenModel = audioModel, dataStoreModel = dataStoreModel, localMediaUid = note.uid)
+        observerAudios.filter {
+            observerNoteAndAudio.contains(
+                NoteAndAudio(note.uid, it.id)
+            )
+        }.fastFirstOrNull { _audio ->
+            MiniAudioPlayer(dataStoreModel, audioModel, note.uid, _audio)
+            true
         }
+
+        //display media player.
+//        if (File(mediaPath).exists()) {
+//            MiniAudioPlayer(audioScreenModel = audioModel, dataStoreModel = dataStoreModel, localMediaUid = note.uid)
+//        }
 
         //display tags.
         LazyRow {

@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.map
 import city.zouitel.repository.model.Note as OutNote
 
 class WidgetDataSourceImpl /*@Inject*/ constructor(
-    private val widgetDao: WidgetDao,
-    private val widgetMapper: WidgetMapper
+    private val dao: WidgetDao,
+    private val mapper: WidgetMapper
 ): WidgetDataSource {
     override val getAllWidgetMainEntityById: Flow<List<OutNote>>
-        get() = widgetDao.allWidgetEntitiesById().map { list ->
+        get() = dao.allWidgetEntitiesById().map { list ->
             list.map { note ->
-                widgetMapper.readOnly(note)
+                mapper.readOnly(note)
             }
         }
 }

@@ -33,7 +33,7 @@ class LinkWorker(
     override suspend fun doWork(): Result = withContext(ioDeprecated) {
         return@withContext try {
             val note_id_data = inputData.getString("note_id_data") ?: ""
-            val link_id_data = inputData.getString("link_id_data") ?: ""
+            val link_id_data = inputData.getLong("link_id_data", 0L) ?: 0L
             val title_data = inputData.getString("title_data") ?: ""
 //            val description_data = inputData.getString("description_data") ?: ""
             val url_data = inputData.getString("url_data") ?: ""

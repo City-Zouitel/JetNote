@@ -8,56 +8,56 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class NoteDataSourceImpl /*@Inject*/ constructor(
-    private val noteDao: NoteDao,
-    private val noteMapper: NoteMapper
+    private val dao: NoteDao,
+    private val mapper: NoteMapper
 ): NoteDataSource {
 
     override val getAllNotesById: Flow<List<OutNote>>
-        get() = noteDao.getAllNotesById().map { list ->
+        get() = dao.getAllNotesById().map { list ->
             list.map {
-                noteMapper.readOnly(it)
+                mapper.readOnly(it)
             }
         }
 
     override val getAllNotesByName: Flow<List<OutNote>>
-        get() = noteDao.getAllNotesByName().map { list ->
+        get() = dao.getAllNotesByName().map { list ->
             list.map {
-                noteMapper.readOnly(it)
+                mapper.readOnly(it)
             }
         }
 
     override val getAllNotesByNewest: Flow<List<OutNote>>
-        get() = noteDao.getAllNotesByNewest().map { list ->
+        get() = dao.getAllNotesByNewest().map { list ->
             list.map {
-                noteMapper.readOnly(it)
+                mapper.readOnly(it)
             }
         }
 
     override val getAllNotesByOldest: Flow<List<OutNote>>
-        get() = noteDao.getAllNotesByOldest().map { list ->
+        get() = dao.getAllNotesByOldest().map { list ->
             list.map {
-                noteMapper.readOnly(it)
+                mapper.readOnly(it)
             }
         }
 
     override val getAllTrashedNotes: Flow<List<OutNote>>
-        get() = noteDao.getAllTrashedNotes().map { list ->
+        get() = dao.getAllTrashedNotes().map { list ->
             list.map {
-                noteMapper.readOnly(it)
+                mapper.readOnly(it)
             }
         }
 
     override val allNotesByPriority: Flow<List<OutNote>>
-        get() = noteDao.getAllNotesByPriority().map { list ->
+        get() = dao.getAllNotesByPriority().map { list ->
             list.map {
-                noteMapper.readOnly(it)
+                mapper.readOnly(it)
             }
         }
 
     override val getAllRemindingNotes: Flow<List<OutNote>>
-        get() = noteDao.getAllRemindingNotes().map { list ->
+        get() = dao.getAllRemindingNotes().map { list ->
             list.map {
-                noteMapper.readOnly(it)
+                mapper.readOnly(it)
             }
         }
 }

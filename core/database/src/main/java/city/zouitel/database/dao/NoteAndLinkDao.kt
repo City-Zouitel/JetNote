@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteAndLinkDao {
 
-    @Query("select * from note_and_link")
+    @Query("SELECT * FROM NOTE_AND_LINK")
     fun getAllNotesAndLinks(): Flow<List<NoteAndLinkEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

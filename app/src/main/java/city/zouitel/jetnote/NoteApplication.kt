@@ -51,7 +51,7 @@ class NoteApplication: Application(), KoinComponent {
                 commonSystemDesignKoinModule,
                 navigationKoinModule,
                 initializerKoinModule,
-                rootKoinModule
+                rootKoinModule,
             )
         }
 

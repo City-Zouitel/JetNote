@@ -8,21 +8,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class NoteAndTagDataSourceImpl /*@Inject*/ constructor(
-    private val noteAndTagDao: NoteAndTagDao,
-    private val noteAndTagMapper: NoteAndTagMapper
+    private val dao: NoteAndTagDao,
+    private val mapper: NoteAndTagMapper
 ): NoteAndTagDataSource {
     override val getAllNotesAndTags: Flow<List<OutNoteAndTag>>
-        get() = noteAndTagDao.getAllNotesAndTags().map { list ->
+        get() = dao.getAllNotesAndTags().map { list ->
             list.map {
-                noteAndTagMapper.readOnly(it)
+                mapper.readOnly(it)
             }
         }
 
     override suspend fun addNoteAndTag(noteAndTag: OutNoteAndTag) {
-        noteAndTagDao.addNoteAndTag(noteAndTagMapper.toLocal(noteAndTag))
+        dao.addNoteAndTag(mapper.toLocal(noteAndTag))
     }
 
     override suspend fun deleteNoteAndTag(noteAndTag: OutNoteAndTag) {
-        noteAndTagDao.deleteNoteAndTag(noteAndTagMapper.toLocal(noteAndTag))
+        dao.deleteNoteAndTag(mapper.toLocal(noteAndTag))
     }
 }

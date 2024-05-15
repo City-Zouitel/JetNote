@@ -1,5 +1,7 @@
-package city.zouitel.audios.media
+package city.zouitel.audios.audio
 
+import city.zouitel.audios.model.Audio
+import city.zouitel.audios.state.SingleAudioUiState
 import java.util.concurrent.TimeUnit
 import kotlin.math.log2
 import kotlin.math.pow
@@ -20,3 +22,10 @@ val Long.formatAsFileSize: String
         val prefix = arrayOf("", "K", "M", "G", "T", "P", "E", "Z", "Y")
         String.format("%.${precision}f ${prefix[it]}B", toDouble() / 2.0.pow(it * 10.0))
     }
+
+fun Audio.toUiState(onClick: () -> Unit) = SingleAudioUiState(
+    id = id,
+    displayName = title,
+    size = duration.formatAsAudioDuration + " | " + size.formatAsFileSize,
+    onClick = onClick
+)

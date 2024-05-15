@@ -23,7 +23,7 @@ fun CacheLinks(
 //    val description = remember { mutableStateOf("") }
     val host = remember { mutableStateOf("") }
     val img = remember { mutableStateOf("") }
-    val id = UUID.randomUUID().toString()
+    val id = Random().nextLong()
 
     runCatching {
         linkScreenModel.urlPreview(context, url, title, host, img)?.fetchUrlPreview()

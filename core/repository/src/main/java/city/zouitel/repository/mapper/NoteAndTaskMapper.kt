@@ -10,6 +10,6 @@ class NoteAndTaskMapper: Mapper.Base<InNoteAndTask, OutNoteAndTask> {
     }
 
     override fun toDomain(data: InNoteAndTask): OutNoteAndTask = with(data){
-        OutNoteAndTask(noteUid, todoId)
+        OutNoteAndTask(noteUid, taskId)
     }
 }

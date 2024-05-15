@@ -1,20 +1,19 @@
 package city.zouitel.audios.di
 
-import android.media.AudioAttributes
-import city.zouitel.audios.media.LocalMediaDataSource
-import city.zouitel.audios.media.AudioListViewModel
-import city.zouitel.audios.media.AudioManager
-import city.zouitel.audios.media.AudioRepository
+import city.zouitel.audios.audio.*
+import city.zouitel.audios.mapper.*
+import city.zouitel.audios.ui.list.AudioListScreenModel
 import com.google.android.exoplayer2.ExoPlayer
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
-import city.zouitel.audios.ui.AudioScreenModel
+import city.zouitel.audios.ui.component.AudioScreenModel
+import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import org.koin.core.module.dsl.singleOf
 import city.zouitel.domain.exoplayer.*
 import city.zouitel.systemDesign.Cons.REC_DIR
 import kotlinx.coroutines.Dispatchers
 import linc.com.amplituda.Amplituda
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 
@@ -42,7 +41,10 @@ val audioPlayerKoinModule = module {
     single { AudioRepository(get(), get(), get()) }
     single { LocalMediaDataSource(androidContext(), get()) }
 
-    factory { AudioScreenModel(get(), get(), get(named(REC_DIR))) }
-    viewModel { AudioListViewModel(androidContext(), get()) }
+    factory { AudioScreenModel(get(), get(),get(),get(), get(named(REC_DIR))) }
+    factory { AudioListScreenModel(get(), get(), get(), get(), get(), get()) }
+    factory { NoteAndAudioScreenModel(get(), get(), get()) }
 
+    factoryOf(::AudioMapper)
+    factoryOf(::NoteAndAudioMapper)
 }

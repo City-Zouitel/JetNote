@@ -152,13 +152,15 @@ fun Quick(
 
                     // Link display.
                     item {
-                        findUrlLink(descriptionState.value)?.let { url ->
-                            CacheLinks(
-                                linkScreenModel = linkModel,
-                                noteAndLinkScreenModel = noteAndLinkModel,
-                                noteId = uid,
-                                url = url
-                            )
+                        findUrlLink(descriptionState.value) ?. let { links ->
+                            for (link in links) {
+                                CacheLinks(
+                                    linkScreenModel = linkModel,
+                                    noteAndLinkScreenModel = noteAndLinkModel,
+                                    noteId = uid,
+                                    url = link
+                                )
+                            }
                         }
                         // for refresh this screen.
                         observerLinks.filter {

@@ -7,11 +7,11 @@ import city.zouitel.repository.model.Data as OutData
 class DataMapper: Mapper.Base<InData, OutData> {
     override fun toLocal(data: OutData): InData = with(data){
         InData(uid, title, description, priority, color, textColor, date,
-            trashed, audioDuration, reminding, imageUrl, audioUrl)
+            trashed, reminding)
     }
 
     override fun readOnly(data: InData): OutData = with(data){
         OutData(uid, title, description, priority, color, textColor, date,
-            removed, audioDuration, reminding, imageUrl, audioUrl)
+            removed, reminding)
     }
 }

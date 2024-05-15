@@ -32,6 +32,7 @@ class LinkScreenModel(
 ): ScreenModel {
 
     private val _getAllLinks = MutableStateFlow<List<InLink>>(emptyList())
+
     val getAllLinks: StateFlow<List<InLink>>
         get() = _getAllLinks
             .stateIn(
@@ -80,14 +81,14 @@ class LinkScreenModel(
         })
     }
 
-    fun imageDecoder(context: Context, id:String): ImageBitmap? {
+    fun imageDecoder(context: Context, id: Long): ImageBitmap? {
         val path = "$linkPath/$id.$JPEG"
         val bitImg = BitmapFactory.decodeFile(path)
         return bitImg?.asImageBitmap()
     }
 
     fun doWork(
-        linkId: String,
+        linkId: Long,
         noteId: String,
         url: String,
         image: String,
@@ -104,7 +105,7 @@ class LinkScreenModel(
             .setInputData(
                 Data.Builder()
                     .putString("note_id_data", noteId)
-                    .putString("link_id_data", linkId)
+//                    .putLong("link_id_data", linkId)
                     .putString("title_data", title)
                     .putString("url_data", url)
                     .putString("image_data", image)

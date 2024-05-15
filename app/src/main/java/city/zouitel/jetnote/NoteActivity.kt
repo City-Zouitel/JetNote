@@ -1,13 +1,19 @@
 package city.zouitel.jetnote
 
 import android.content.Intent
+import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.logic.asLongToast
 import city.zouitel.screens.home_screen.HomeScreen
@@ -37,16 +43,15 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
             require(!isDeviceRooted.value.getOrNull()?.isDeviceRooted!!) {
                 "Cannot run JetNote on rooted device!".asLongToast()
             }
-
-            IntentHandler(
-                intent,
-                navigator,
-                {}
-            )
-
             MainTheme(dataStoreModel) {
-                Navigator(HomeScreen())
+                BottomSheetNavigator(
+                    sheetShape = ShapeDefaults.Large,
+                    sheetElevation = 150.dp
+                ) {
+                    Navigator(HomeScreen())
+                }
             }
+            IntentHandler(intent, navigator) {}
         }
     }
 
