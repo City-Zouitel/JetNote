@@ -35,7 +35,7 @@ JetNote is modern note android application written by kotlin language and [jetpa
 A coroutine is a concurrency design pattern that you can use on Android to simplify code that executes asynchronously.
 
 ### [Voyager](https://voyager.adriel.cafe/) 
-A multiplatform navigation library built for, and seamlessly integrated with, Jetpack Compose.
+A multiplatform navigation and viewmodel library built for, and seamlessly integrated with, Jetpack Compose.
 
 ### [Room](https://developer.android.com/jetpack/androidx/releases/room) 
 The Room persistence library provides an abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
