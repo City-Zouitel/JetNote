@@ -30,7 +30,7 @@ compose-constraintlayout = "1.1.0-alpha13"
 
 #Plugins.
 ksp = "1.9.23-1.0.20"
-dependencyanalysis = "1.30.0"
+dependencyanalysis = "1.32.0"
 
 #KotlinX.
 serialization = "1.6.3"
