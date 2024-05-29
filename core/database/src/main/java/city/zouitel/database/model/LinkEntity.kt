@@ -15,7 +15,7 @@ import city.zouitel.database.utils.Constants.URL
     tableName = LINKS
 )
 data class LinkEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(ID) var id: Long = 0L,
     @ColumnInfo(URL) var url: String = "",
     @ColumnInfo(HOST) var host: String = "",

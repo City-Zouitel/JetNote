@@ -3,6 +3,7 @@ package city.zouitel.links.ui
 import android.annotation.SuppressLint
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import city.zouitel.links.model.Link
 import city.zouitel.logic.asShortToast
 import java.util.*
 
@@ -10,42 +11,30 @@ import java.util.*
 @Composable
 fun CacheLinks(
     linkScreenModel: LinkScreenModel,
-    noteAndLinkScreenModel: NoteAndLinkScreenModel,
     noteId: String,
     url: String
 ) {
-    val observeLinks = remember(linkScreenModel, linkScreenModel::getAllLinks).collectAsState()
-    val observerNoteAndLinks = remember(noteAndLinkScreenModel, noteAndLinkScreenModel::getAllNotesAndLinks).collectAsState()
-
     val context = LocalContext.current
+    val observeLinks = remember(linkScreenModel, linkScreenModel::getAllLinks).collectAsState()
 
-    val title = remember { mutableStateOf("") }
-//    val description = remember { mutableStateOf("") }
-    val host = remember { mutableStateOf("") }
-    val img = remember { mutableStateOf("") }
-    val id = Random().nextLong()
+    val uiState by lazy { linkScreenModel.uiState }
+    val id by lazy { Random().nextLong() }
 
     runCatching {
-        linkScreenModel.urlPreview(context, url, title, host, img)?.fetchUrlPreview()
+        linkScreenModel.urlPreview(context, url)?.fetchUrlPreview()
     }.onSuccess {
         if (
-            observeLinks.value.none { it.image == img.value } &&
-            title.value.isNotBlank() &&
-            host.value.isNotBlank() &&
-            img.value.isNotBlank()
+            observeLinks.value.none { it.url == url } &&
+            uiState.title.isNotBlank() &&
+            uiState.host.isNotBlank() &&
+            uiState.img.isNotBlank()
         ) {
             linkScreenModel.doWork(
-                linkId = id,
                 noteId = noteId,
-                url = url,
-                image = img.value,
-                title = title.value,
-                host = host.value
+                link = Link(id, url, uiState.host, uiState.img, uiState.title, uiState.description)
             )
         }
     }.onFailure {
-        context.apply {
-            it.message ?.asShortToast()
-        }
+        context.apply { it.message?.asShortToast() }
     }
 }

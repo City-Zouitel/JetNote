@@ -1,9 +1,13 @@
-package city.zouitel.tasks.viewmodel
+package city.zouitel.tasks.ui
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.TaskUseCase
 import city.zouitel.tasks.mapper.TaskMapper
+import city.zouitel.tasks.state.UiState
 import city.zouitel.tasks.model.Task as InTask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,14 +24,11 @@ class TaskScreenModel(
     private val mapper: TaskMapper
 ): ScreenModel {
 
+    internal var uiState by mutableStateOf(UiState())
+        private set
+
     private val _getAllTaskList = MutableStateFlow<List<InTask>>(emptyList())
-    val getAllTaskList:StateFlow<List<InTask>>
-        get() = _getAllTaskList
-            .stateIn(
-                screenModelScope,
-                SharingStarted.WhileSubscribed(),
-                listOf()
-            )
+    val getAllTaskList:StateFlow<List<InTask>> = _getAllTaskList.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     init {
         screenModelScope.launch {
@@ -49,4 +50,10 @@ class TaskScreenModel(
         delete.invoke(mapper.toDomain(task))
     }
 
+    fun updateId(id: Long = 0L): TaskScreenModel {
+        screenModelScope.launch {
+            uiState = uiState.copy(currentId = id)
+        }
+        return this
+    }
 }

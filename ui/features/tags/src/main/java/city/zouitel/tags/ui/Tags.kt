@@ -1,75 +1,73 @@
 package city.zouitel.tags.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text2.input.clearText
+import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
+import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.Icons.FULL_LABEL_ICON
 import city.zouitel.systemDesign.Icons.OUTLINE_LABEL_ICON
-import city.zouitel.tags.state.State
 import city.zouitel.tags.utils.DialogColors
 import city.zouitel.tags.utils.HashTagLayout
-import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
-import city.zouitel.tags.viewmodel.TagScreenModel
 import com.google.accompanist.flowlayout.FlowRow
 import org.koin.core.component.KoinComponent
 import city.zouitel.tags.model.NoteAndTag as InNoteAndTag
 import city.zouitel.tags.model.Tag as InTag
 
 data class TagsScreen(val id: String? = null): Screen, KoinComponent {
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+        ExperimentalComposeUiApi::class
+    )
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     override fun Content() {
+        val keyboardManager = LocalFocusManager.current
+
         val tagModel = getScreenModel<TagScreenModel>()
         val noteAndTagModel = getScreenModel<NoteAndTagScreenModel>()
 
-        val tagState = State.Tag(tagModel)
-        val noteAndTagState = State.NoteTag(noteAndTagModel)
+        val observeTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
+        val observeNoteAndTag by remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
+        val textFieldState = rememberTextFieldState("")
 
-        val allTags = tagState.rememberAllTags
-        val allNoteAndTags = noteAndTagState.rememberAllNoteTags
-        val idState = remember { mutableLongStateOf(-1L) }
-        val labelState = remember { mutableStateOf("") }
-        val colorState = remember { mutableIntStateOf(Color.Transparent.toArgb()) }
-        val labelDialogState = remember { mutableStateOf(false) }
+        val uiState by lazy { tagModel.uiState }
+        val focusRequester by lazy { FocusRequester() }
 
-        if (labelDialogState.value) {
-            DialogColors(
-                tagModel = tagModel,
-                dialogState = labelDialogState,
-                idState = idState,
-                labelState = labelState,
-                colorState = colorState
-            )
+        if (uiState.colorsDialogState) {
+            DialogColors(tagModel = tagModel, textFieldState = textFieldState)
         }
 
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
+
+
         Scaffold(
-            modifier = Modifier
-                .navigationBarsPadding(),
+            modifier = Modifier.navigationBarsPadding(),
         ) {
             LazyColumn(
                 modifier = Modifier
@@ -80,12 +78,12 @@ data class TagsScreen(val id: String? = null): Screen, KoinComponent {
                 item {
                     id?.let {
                         FlowRow(mainAxisSpacing = 3.dp) {
-                            allTags.forEach { label ->
+                            observeTags.forEach { label ->
                                 ElevatedFilterChip(
                                     selected = true,
                                     modifier = Modifier,
                                     onClick = {
-                                        if (allNoteAndTags.contains(InNoteAndTag(id, label.id))) {
+                                        if (observeNoteAndTag.contains(InNoteAndTag(id, label.id))) {
                                             noteAndTagModel.deleteNoteAndTag(
                                                 InNoteAndTag(
                                                     noteUid = id,
@@ -102,7 +100,7 @@ data class TagsScreen(val id: String? = null): Screen, KoinComponent {
                                         }
                                     },
                                     leadingIcon = {
-                                        if (allNoteAndTags.contains(InNoteAndTag(id, label.id))
+                                        if (observeNoteAndTag.contains(InNoteAndTag(id, label.id))
                                         ) {
                                             Icon(
                                                 painterResource(FULL_LABEL_ICON), null,
@@ -125,71 +123,100 @@ data class TagsScreen(val id: String? = null): Screen, KoinComponent {
                         }
                     } ?: HashTagLayout(
                         tagModel = tagModel,
-                        labelDialogState = labelDialogState,
-                        hashTags = allTags,
-                        idState = idState,
-                        labelState = labelState
+                        hashTags = observeTags
                     )
                 }
 
                 item {
-                    OutlinedTextField(
-                        value = labelState.value,
-                        onValueChange = { labelState.value = it },
+                    CommonTextField(
+                        state = textFieldState,
+                        placeholder = "Tag..",
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surface),
-                        placeholder = {
-                            Text("Tag..", color = Color.Gray, fontSize = 19.sp)
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = CIRCLE_ICON_18),
-                                contentDescription = null,
-                                tint = Color(colorState.intValue)
-                            )
-                        },
-                        maxLines = 1,
-                        textStyle = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Normal,
-                            fontFamily = FontFamily.Default,
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Sentences,
-                            autoCorrect = false,
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
+                            .focusRequester(focusRequester)
+                            .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) },
+                        imeAction = ImeAction.Done,
                         keyboardActions = KeyboardActions(
                             onDone = {
-                                if (allTags.any { it.id == idState.longValue }) {
+                                if (observeTags.any { it.id == uiState.currentId }) {
                                     tagModel.updateTag(
                                         InTag(
-                                            id = idState.longValue,
-                                            label = labelState.value,
-                                            color = colorState.intValue
+                                            id = uiState.currentId,
+                                            label = textFieldState.text.toString(),
+                                            color = uiState.currentColor
                                         )
                                     )
                                 } else {
                                     tagModel.addTag(
                                         InTag(
-                                            label = labelState.value,
-                                            color = colorState.intValue
+                                            label = textFieldState.text.toString(),
+                                            color = uiState.currentColor
                                         )
                                     )
                                 }.invokeOnCompletion {
-                                    labelState.value = ""
-                                    idState.longValue = -1
-                                    colorState.intValue = 0x0000
+                                    textFieldState.clearText()
+                                    tagModel.updateColor().updateId()
                                 }
                             }
-                        ),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent
                         )
                     )
+
+//                    OutlinedTextField(
+//                        value = uiState.currentLabel,
+//                        onValueChange = { tagModel.updateLabel(it) },
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .background(MaterialTheme.colorScheme.surface),
+//                        placeholder = {
+//                            Text("Tag..", color = Color.Gray, fontSize = 19.sp)
+//                        },
+//                        leadingIcon = {
+//                            Icon(
+//                                painter = painterResource(id = CIRCLE_ICON_18),
+//                                contentDescription = null,
+//                                tint = Color(uiState.currentColor)
+//                            )
+//                        },
+//                        maxLines = 1,
+//                        textStyle = TextStyle(
+//                            fontSize = 18.sp,
+//                            fontWeight = FontWeight.Normal,
+//                            fontFamily = FontFamily.Default,
+//                        ),
+//                        keyboardOptions = KeyboardOptions(
+//                            capitalization = KeyboardCapitalization.Sentences,
+//                            autoCorrect = false,
+//                            keyboardType = KeyboardType.Text,
+//                            imeAction = ImeAction.Done
+//                        ),
+//                        keyboardActions = KeyboardActions(
+//                            onDone = {
+//                                if (observeTags.any { it.id == uiState.currentId }) {
+//                                    tagModel.updateTag(
+//                                        InTag(
+//                                            id = uiState.currentId,
+//                                            label = uiState.currentLabel,
+//                                            color = uiState.currentColor
+//                                        )
+//                                    )
+//                                } else {
+//                                    tagModel.addTag(
+//                                        InTag(
+//                                            label = uiState.currentLabel,
+//                                            color = uiState.currentColor
+//                                        )
+//                                    )
+//                                }.invokeOnCompletion {
+//                                    tagModel.updateLabel()
+//                                        .updateColor()
+//                                        .updateId()
+//                                }
+//                            }
+//                        ),
+//                        colors = TextFieldDefaults.outlinedTextFieldColors(
+//                            focusedBorderColor = Color.Transparent,
+//                            unfocusedBorderColor = Color.Transparent
+//                        )
+//                    )
                 }
             }
         }

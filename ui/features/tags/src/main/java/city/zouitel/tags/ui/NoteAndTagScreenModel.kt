@@ -1,4 +1,4 @@
-package city.zouitel.tags.viewmodel
+package city.zouitel.tags.ui
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 class HomeScreenModel(
     private val getAllById: NoteUseCase.GetAllNotesById,
@@ -56,6 +57,7 @@ class HomeScreenModel(
                 getAllById.invoke().collect { list ->
                     _allNotesById.value = list.map { note -> mapper.toView(note) }
                 }
+                this.isActive
             }
             launch(Dispatchers.IO) {
                 getAllByName.invoke().collect { list ->

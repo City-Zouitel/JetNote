@@ -6,11 +6,8 @@ import android.content.Intent
 import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.navigator.Navigator
 import city.zouitel.logic.asShortToast
-import city.zouitel.note.ui.add_screen.AddScreen
-import city.zouitel.screens.home_screen.HomeScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 internal interface IntentHandler: CoroutineScope {
 

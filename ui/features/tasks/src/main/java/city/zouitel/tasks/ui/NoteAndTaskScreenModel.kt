@@ -1,4 +1,4 @@
-package city.zouitel.tasks.viewmodel
+package city.zouitel.tasks.ui
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope

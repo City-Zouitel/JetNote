@@ -1,11 +1,13 @@
-package city.zouitel.tags.viewmodel
+package city.zouitel.tags.ui
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.TagUseCase
 import city.zouitel.tags.mapper.TagMapper
+import city.zouitel.tags.state.UiState
 import city.zouitel.tags.model.Tag as InTag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,15 +24,11 @@ class TagScreenModel(
     private val mapper: TagMapper
 ): ScreenModel {
 
-    private val _getAllTags = MutableStateFlow<List<InTag>>(emptyList())
+    internal var uiState by mutableStateOf(UiState())
+        private set
 
-    val getAllLTags: StateFlow<List<InTag>>
-        get() = _getAllTags
-            .stateIn(
-                screenModelScope,
-                SharingStarted.WhileSubscribed(),
-                listOf()
-            )
+    private val _getAllTags = MutableStateFlow<List<InTag>>(emptyList())
+    val getAllLTags: StateFlow<List<InTag>> = _getAllTags.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
 
     init {
         screenModelScope.launch(Dispatchers.IO) {
@@ -50,5 +48,26 @@ class TagScreenModel(
 
     fun deleteTag(tag: InTag) = screenModelScope.launch(Dispatchers.IO) {
         delete.invoke(mapper.toDomain(tag))
+    }
+
+    fun updateId(id: Long = 0L): TagScreenModel {
+        screenModelScope.launch {
+            uiState = uiState.copy(currentId = id)
+        }
+        return this
+    }
+
+    fun updateColor(color: Int = 0x0000): TagScreenModel {
+        screenModelScope.launch {
+            uiState = uiState.copy(currentColor = color)
+        }
+        return this
+    }
+
+    fun updateColorDialogState(isShow: Boolean = false): TagScreenModel {
+        screenModelScope.launch {
+            uiState = uiState.copy(colorsDialogState = isShow)
+        }
+        return this
     }
 }

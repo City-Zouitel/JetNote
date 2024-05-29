@@ -37,9 +37,9 @@ import city.zouitel.screens.top_action_bar.selection_bars.RemoveSelectionTopAppB
 import city.zouitel.systemDesign.Cons.JPEG
 import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.Cons.MP3
-import city.zouitel.tags.viewmodel.TagScreenModel
-import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
-import city.zouitel.tasks.viewmodel.TaskScreenModel
+import city.zouitel.tags.ui.TagScreenModel
+import city.zouitel.tasks.ui.NoteAndTaskScreenModel
+import city.zouitel.tasks.ui.TaskScreenModel
 import org.koin.core.component.KoinComponent
 import java.io.File
 
@@ -81,7 +81,7 @@ class RemovedScreen : Screen, KoinComponent {
         //
         if (confirmationDialogState.value) {
             EraseDialog(dataStoreModel = dataStoreModel, dialogState = confirmationDialogState) {
-                dataModel.eraseTrash()
+                dataModel.eraseNotes()
                 observerRemovedNotes.value.forEach { entity ->
                     entity.linkEntities.forEach { link ->
                         linkModel.deleteLink(link)

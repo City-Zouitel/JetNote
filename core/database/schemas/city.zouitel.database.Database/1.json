@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6e5591204f402bd35478b761443df3d5",
+    "identityHash": "cddfa9dc370b73ab53f9c894202b6dc5",
     "entities": [
       {
         "tableName": "notes_table",
@@ -193,7 +193,7 @@
       },
       {
         "tableName": "links_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `url` TEXT NOT NULL, `host` TEXT NOT NULL, `imageLink` TEXT, `title` TEXT, `description` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `host` TEXT NOT NULL, `imageLink` TEXT, `title` TEXT, `description` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -233,7 +233,7 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
+          "autoGenerate": true,
           "columnNames": [
             "id"
           ]
@@ -349,7 +349,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6e5591204f402bd35478b761443df3d5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cddfa9dc370b73ab53f9c894202b6dc5')"
     ]
   }
 }

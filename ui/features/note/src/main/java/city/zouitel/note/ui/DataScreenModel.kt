@@ -32,15 +32,10 @@ class DataScreenModel(
     private val imgPath: String
 ): ScreenModel {
 
-    var isProcessing by mutableStateOf(false)
-        private set
-
     // for add a dataEntity from NoteEntityState as it to DataEntity class.
     fun addData(data: InData) {
         screenModelScope.launch(Dispatchers.IO) {
-            isProcessing = true
             add.invoke(mapper.toDomain(data))
-            isProcessing = false
         }
     }
 
@@ -48,27 +43,21 @@ class DataScreenModel(
     // depending on changes.
     fun editData(data: InData){
         screenModelScope.launch(Dispatchers.IO) {
-            isProcessing = true
             edit.invoke(mapper.toDomain(data))
-            isProcessing = false
         }
     }
 
     // for deleting a dataEntity by the id.
     fun deleteData(data: InData){
         screenModelScope.launch(Dispatchers.IO) {
-            isProcessing = true
             delete.invoke(mapper.toDomain(data))
-            isProcessing = false
         }
     }
 
     //delete all trashed notes.
-    fun eraseTrash() {
+    fun eraseNotes() {
         screenModelScope.launch(Dispatchers.IO) {
-            isProcessing = true
             eraseTrash.invoke()
-            isProcessing = false
         }
     }
 
@@ -101,4 +90,3 @@ class DataScreenModel(
         return bitImg?.asImageBitmap()
     }
 }
-

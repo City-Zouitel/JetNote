@@ -1,4 +1,4 @@
-package city.zouitel.note.ui.add_screen
+package city.zouitel.note.ui.workplace
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
@@ -22,8 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text2.input.rememberTextFieldState
-import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Checkbox
@@ -39,8 +37,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -53,7 +49,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -71,7 +66,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import city.zouitel.audios.model.NoteAndAudio
-import city.zouitel.audios.ui.list.AudioListScreenModel
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.BasicAudioScreen
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
@@ -81,7 +75,6 @@ import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.getImgPath
-import city.zouitel.logic.getRecPath
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
@@ -89,56 +82,44 @@ import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.RemindingNote
 import city.zouitel.systemDesign.CommonTextField
-import city.zouitel.systemDesign.Cons.IMG_DIR
-import city.zouitel.systemDesign.Cons.JPEG
-import city.zouitel.systemDesign.Cons.KEY_STANDARD
-import city.zouitel.systemDesign.Cons.NON
+import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons
-import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
-import city.zouitel.systemDesign.Icons.DONE_ICON
 import city.zouitel.systemDesign.ImageDisplayed
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.findUrlLink
 import city.zouitel.tags.model.NoteAndTag
-import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
-import city.zouitel.tags.viewmodel.TagScreenModel
+import city.zouitel.tags.ui.NoteAndTagScreenModel
+import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
-import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
-import city.zouitel.tasks.viewmodel.TaskScreenModel
+import city.zouitel.tasks.ui.NoteAndTaskScreenModel
+import city.zouitel.tasks.ui.TaskScreenModel
 import com.google.accompanist.flowlayout.FlowRow
 import java.io.File
 import java.util.Date
+import java.util.UUID
 
-data class AddScreen(
-    val id: String,
-    val description: String? = null
+data class WorkplaceScreen(
+    val id: String = UUID.randomUUID().toString(),
+    val isNew: Boolean = true,
+    val title: String? = null,
+    val description: String? = null,
+    val backgroundColor: Int = 0,
+    val textColor: Int = 0,
+    val priority: String = Cons.NON,
+    val reminding: Long = 0
 ): Screen {
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterialApi::class,
-        ExperimentalFoundationApi::class
-    )
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
-//        val exoVM: AudioScreenModel by inject()
-//        val dataStoreVM: DataStoreScreenModel by inject()
-//        val linkVM: LinkScreenModel by inject()
-//        val noteAndLinkVM: NoteAndLinkScreenModel by inject()
 
-//        val navController = rememberNavController()
         val navigator = LocalNavigator.current
         val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
-        val keyboardController = LocalSoftwareKeyboardController.current
         val internalPath = context.filesDir.path
-
-        val focusRequester by lazy { FocusRequester() }
-        val sound by lazy { SoundEffect() }
-        val mediaFile by lazy { id getRecPath context }
-        val imageFile by lazy { id getImgPath context }
-        val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
-        val bitImg by lazy { BitmapFactory.decodeFile(imageFile) }
 
         val notificationModel = getScreenModel<NotificationScreenModel>()
         val dataModel = getScreenModel<DataScreenModel>()
@@ -150,25 +131,25 @@ data class AddScreen(
         val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
         val dataStoreModel = getScreenModel<DataStoreScreenModel>()
         val audioModel = getScreenModel<AudioScreenModel>()
-        val audioListModel = getScreenModel<AudioListScreenModel>()
         val noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
+        val workspaceModel = getScreenModel<WorkplaceScreenModel>()
 
-        val backgroundColor = MaterialTheme.colorScheme.surface.toArgb()
-        val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
-        val titleState = rememberTextFieldState()
-        val descriptionState = rememberTextFieldState()
-        val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
-        val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
-        val isTitleFieldFocused = remember { mutableStateOf(false) }
-        val isDescriptionFieldFocused = remember { mutableStateOf(false) }
-        val priorityState = remember { mutableStateOf(NON) }
+        val focusRequester by lazy { FocusRequester() }
+        val sound by lazy { SoundEffect() }
+        val imageFile by lazy { id getImgPath context }
+        val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
+        val bitImg by lazy { BitmapFactory.decodeFile(imageFile) }
+        val uiState by lazy { workspaceModel.uiState }
+
+        LaunchedEffect(isNew) {
+            initializeUiState(workspaceModel)
+        }
+
+        val titleState = rememberTextFieldState(title ?: "")
+        val descriptionState = rememberTextFieldState(description ?: "")
+
         val photoState = remember { mutableStateOf<Bitmap?>(bitImg) }
-        val remindingDialogState = remember { mutableStateOf(false) }
-        val remindingValue = remember { mutableLongStateOf(0L) }
-        val recordDialogState = remember { mutableStateOf(false) }
-        val audioDurationState = remember { mutableIntStateOf(0) }
 
-        var focusState by remember { mutableStateOf(false) }
         val thereIsSoundEffect by remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
         val observeNotesAndLabels by remember(
             noteAndTagModel,
@@ -201,11 +182,11 @@ data class AddScreen(
                 dataModel::decodeBitmapImage.invoke(img, photoState, it!!, context)
                 img.value = photoState.value
                 dataModel::saveImageLocally.invoke(
-                    img.value, "$internalPath/$IMG_DIR", "$id.$JPEG"
+                    img.value, "$internalPath/${Cons.IMG_DIR}", "$id.${Cons.JPEG}"
                 )
             }
 
-        LaunchedEffect(true) {
+        LaunchedEffect(Unit) {
             kotlin.runCatching {
 //                focusRequester.requestFocus()
             }
@@ -220,68 +201,81 @@ data class AddScreen(
                         backgroundColor = MaterialTheme.colorScheme.outlineVariant
                     ),
                     onClick = {
-                        sound.makeSound.invoke(context, KEY_STANDARD, thereIsSoundEffect)
+                        sound.makeSound.invoke(context, Cons.KEY_STANDARD, thereIsSoundEffect)
 
-                        dataModel.addData(
-                            Data(
-                                title = titleState.text.toString(),
-                                description = if (descriptionState.text.isBlank()) null else descriptionState.text.toString(),
-                                priority = priorityState.value,
-                                uid = id,
-                                reminding = remindingValue.longValue,
-                                date = dateState.value.toString(),
-//                                audioDuration = audioDurationState.intValue,
-                                color = backgroundColorState.intValue,
-                                textColor = textColorState.intValue,
+                        if (isNew) {
+                            dataModel.addData(
+                                Data(
+                                    uid = id,
+                                    title = titleState.text.toString(),
+                                    description = descriptionState.text.toString(),
+                                    priority = uiState.priority,
+                                    reminding = uiState.reminding,
+                                    date = dateState.value.toString(),
+                                    color = uiState.backgroundColor,
+                                    textColor = uiState.textColor
+                                )
                             )
-                        )
+                        } else {
+                            dataModel.editData(
+                                Data(
+                                    uid = id,
+                                    title = titleState.text.toString(),
+                                    description = descriptionState.text.toString(),
+                                    priority = uiState.priority,
+                                    reminding = uiState.reminding,
+                                    date = dateState.value.toString(),
+                                    trashed = 0,
+                                    color = uiState.backgroundColor,
+                                    textColor = uiState.textColor
+                                )
+                            )
+                        }
                         navigator?.pop()
                     }
                 ) {
                     Icon(
-                        painter = painterResource(id = DONE_ICON),
+                        painter = painterResource(id = if(isNew) Icons.DONE_ICON else Icons.EDIT_ICON),
                         null
                     )
                 }
             },
             bottomBar = {
                 AddEditBottomBar(
-                    note = Data(uid = id),
+                    id = id,
                     dataStoreModel = dataStoreModel,
-//                    navController = navController,
                     imageLaunch = chooseImageLauncher,
-                    recordDialogState = recordDialogState,
-                    remindingDialogState = remindingDialogState,
-                    backgroundColorState = backgroundColorState,
-                    textColorState = textColorState,
-                    priorityColorState = priorityState,
-                    remindingValue = remindingValue,
-                    titleState = Pair(titleState, isTitleFieldFocused.value),
+                    workspaceModel = workspaceModel,
+                    titleState = titleState,
                     descriptionState = descriptionState,
                 )
             }
         ) {
             // recording dialog visibility.
-            if (recordDialogState.value) {
-                Navigator(RecorderScreen(id, recordDialogState))
+            if (uiState.recordedDialogState) {
+                Navigator(RecorderScreen(id) { workspaceModel.updateRecorderDialog(false) })
             }
 
             // reminding dialog visibility.
-            if (remindingDialogState.value) {
+            if (uiState.remindingDialogState) {
                 RemindingNote(
                     dataStoreModel = dataStoreModel,
                     notificationModel = notificationModel,
-                    dialogState = remindingDialogState,
-                    remindingValue = remindingValue,
                     title = titleState.text.toString(),
                     message = descriptionState.text.toString(),
-                    uid = id
+                    uid = id,
+                    dialogState = { state ->
+                        workspaceModel.updateRemindingDialog(state)
+                    },
+                    remindingValue = { value ->
+                        workspaceModel.updateRemindingValue(value)
+                    }
                 )
             }
 
             LazyColumn(
                 Modifier
-                    .background(Color(backgroundColorState.intValue))
+                    .background(Color(uiState.backgroundColor))
                     .fillMaxSize()
             ) {
 
@@ -295,16 +289,15 @@ data class AddScreen(
                     CommonTextField(
                         state = titleState,
                         modifier = Modifier
-                            .padding(10.dp)
-                            .height(30.dp)
+                            .height(50.dp)
                             .focusRequester(focusRequester)
                             .onFocusEvent {
-                                isTitleFieldFocused.value = it.isFocused
+                                workspaceModel.updateTitleFieldFocused(it.isFocused)
                             },
 
                         placeholder = "Title",
-                        textSize = 24,
-                        textColor = textColorState.intValue,
+                        textSize = 24.sp,
+                        textColor = Color(uiState.textColor),
                         imeAction = ImeAction.Next,
                         keyboardActions = KeyboardActions(
                             onNext = { keyboardManager.moveFocus(FocusDirection.Next) }
@@ -317,22 +310,12 @@ data class AddScreen(
                     CommonTextField(
                         state = descriptionState,
                         modifier = Modifier
-                            .padding(10.dp)
-                            .height(60.dp)
+                            .height(200.dp)
                             .onFocusEvent {
-                                isDescriptionFieldFocused.value = it.isFocused
-                                focusState = it.isFocused
+                                workspaceModel.updateDescriptionFieldFocused(it.isFocused)
                             },
                         placeholder = "Note",
-                        textSize = 19,
-                        textColor = textColorState.intValue,
-                        imeAction = ImeAction.Done,
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                keyboardController?.hide()
-                                keyboardManager.clearFocus()
-                            }
-                        )
+                        textColor = Color(uiState.textColor)
                     )
                 }
 
@@ -356,7 +339,6 @@ data class AddScreen(
                         for (link in links) {
                             CacheLinks(
                                 linkScreenModel = linkModel,
-                                noteAndLinkScreenModel = noteAndLinkModel,
                                 noteId = id,
                                 url = link
                             )
@@ -379,9 +361,9 @@ data class AddScreen(
                 }
 
                 // display reminding chip.
-                if (remindingValue.longValue != 0L) {
+                if (uiState.reminding != 0L) {
                     item {
-                        remindingValue.longValue.let {
+                        uiState.reminding.let {
                             runCatching {
                                 ElevatedAssistChip(
                                     modifier = Modifier.padding(start = 15.dp),
@@ -431,7 +413,7 @@ data class AddScreen(
                                 onClick = { },
                                 leadingIcon = {
                                     Icon(
-                                        painter = painterResource(id = CIRCLE_ICON_18),
+                                        painter = painterResource(id = Icons.CIRCLE_ICON_18),
                                         contentDescription = null,
                                         tint = Color(it.color),
                                         modifier = Modifier.size(10.dp)
@@ -469,7 +451,7 @@ data class AddScreen(
                                 },
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = Color.Gray,
-                                    uncheckedColor = Color(textColorState.intValue)
+                                    uncheckedColor = Color(uiState.textColor)
                                 )
                             )
 
@@ -479,9 +461,7 @@ data class AddScreen(
                                     style = TextStyle(
                                         fontSize = 14.sp,
                                         textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
-                                        color = if (todo.isDone) Color.Gray else Color(
-                                            textColorState.intValue
-                                        )
+                                        color = if (todo.isDone) Color.Gray else Color(uiState.textColor)
                                     )
                                 )
                             }
@@ -499,5 +479,12 @@ data class AddScreen(
                 }
             }
         }
+    }
+
+    private fun initializeUiState(workplaceModel: WorkplaceScreenModel) {
+        workplaceModel
+            .updatePriority(priority)
+            .updateBackgroundColor(backgroundColor)
+            .updateTextColor(textColor)
     }
 }

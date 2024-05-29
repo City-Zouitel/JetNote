@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.REDO_ICON
@@ -23,20 +24,29 @@ import city.zouitel.systemDesign.SoundEffect
 @Composable
 fun UndoRedo(
     dataStoreModel: DataStoreScreenModel,
-    titleState: Pair<TextFieldState?, Boolean>,
+    workplaceModel: WorkplaceScreenModel,
+    titleState: TextFieldState?,
     descriptionState: TextFieldState?,
 ) {
     val context = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val sound = SoundEffect()
 
+    val uiState = workplaceModel.uiState
+
     IconButton(
         modifier = Modifier.size(23.dp),
         onClick = {
             sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-            if (titleState.second) titleState.first?.undoState?.undo() else descriptionState?.undoState?.undo()
+            if (uiState.isTitleFieldFocused) titleState?.undoState?.undo()
+            else if (uiState.isDescriptionFieldFocused) descriptionState?.undoState?.undo()
+            else throw Exception("there is no field is focused!!")
+
+//            if (titleState.second) titleState.first?.undoState?.undo() else descriptionState?.undoState?.undo()
         },
-        enabled = if (titleState.second) titleState.first?.undoState?.canUndo!! else descriptionState?.undoState?.canUndo!!
+        enabled =
+            titleState?.undoState?.canUndo!! or descriptionState?.undoState?.canUndo!!
+//        if (titleState.second) titleState.first?.undoState?.canUndo!! else descriptionState?.undoState?.canUndo!!
     ) {
         Icon(
             painter = painterResource(id = UNDO_ICON),
@@ -49,10 +59,16 @@ fun UndoRedo(
         modifier = Modifier.size(23.dp),
         onClick = {
             sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-            if (titleState.second) titleState.first?.undoState?.redo() else descriptionState?.undoState?.redo()
+//            if (titleState.second) titleState.first?.undoState?.redo() else descriptionState?.undoState?.redo()
 
+            if (uiState.isTitleFieldFocused) titleState.undoState.redo()
+            else if (uiState.isDescriptionFieldFocused) descriptionState.undoState.redo()
+            else throw Exception("there is no field is focused!!")
         },
-        enabled = if (titleState.second) titleState.first?.undoState?.canRedo!! else descriptionState?.undoState?.canRedo!!,
+        enabled =
+        titleState.undoState.canRedo or descriptionState.undoState.canRedo
+
+//        if (titleState.second) titleState.first?.undoState?.canRedo!! else descriptionState?.undoState?.canRedo!!,
     ) {
         Icon(
             painter = painterResource(id = REDO_ICON),

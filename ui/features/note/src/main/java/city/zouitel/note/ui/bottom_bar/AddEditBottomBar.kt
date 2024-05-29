@@ -22,8 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.logic.asShortToast
-import city.zouitel.note.ui.ColorsRow
-import city.zouitel.note.model.Data
+import city.zouitel.note.utils.ColorsRow
+import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Cons.FOCUS_NAVIGATION
 import city.zouitel.systemDesign.Cons.KEY_CLICK
@@ -49,16 +49,17 @@ import java.text.SimpleDateFormat
 @Composable
 fun AddEditBottomBar(
     dataStoreModel: DataStoreScreenModel,
-    note: Data,
+    id: String,
 //    navController: NavController,
     imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
-    recordDialogState: MutableState<Boolean>,
-    remindingDialogState: MutableState<Boolean>,
-    backgroundColorState: MutableState<Int>,
-    textColorState: MutableState<Int>,
-    priorityColorState: MutableState<String>,
-    remindingValue: MutableLongState,
-    titleState: Pair<TextFieldState?, Boolean>,
+//    recordDialogState: MutableState<Boolean>,
+    workspaceModel: WorkplaceScreenModel,
+//    remindingDialogState: MutableState<Boolean>,
+//    backgroundColorState: MutableState<Int>,
+//    textColorState: MutableState<Int>,
+//    priorityColorState: MutableState<String>,
+//    remindingValue: MutableLongState,
+    titleState: TextFieldState?,
     descriptionState: TextFieldState?,
 ) {
     val context = LocalContext.current
@@ -79,14 +80,16 @@ fun AddEditBottomBar(
             )
         ) {
             context.run {
-                "Notification permission granted.".asShortToast()
+//                "Notification permission granted.".asShortToast()
+                workspaceModel.updateRecorderDialog(true)
             }
         }
     } else {
         rememberMultiplePermissionsState(
             permissions = listOf()
         ) {
-            recordDialogState.value = true
+//            recordDialogState.value = true
+            workspaceModel.updateRecorderDialog(true)
 //            navigator?.push()
         }
     }
@@ -131,15 +134,15 @@ fun AddEditBottomBar(
                 }
 
                 CommonPopupTip(
-                    message = if (remindingValue.longValue != 0L) {
-                        formatter.format(remindingValue.longValue)
+                    message = if (workspaceModel.uiState.reminding != 0L) {
+                        formatter.format(workspaceModel.uiState.reminding)
                     } else {
                         "Reminding"
                     }
                 ) {
                     Icon(
                         painter = painterResource(
-                            if (remindingValue.longValue != 0L) BELL_RING_ICON_24 else BELL_ICON
+                            if (workspaceModel.uiState.reminding != 0L) BELL_RING_ICON_24 else BELL_ICON
                         ),
                         contentDescription = null,
                         tint = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surfaceVariant),
@@ -159,8 +162,9 @@ fun AddEditBottomBar(
                                         permissionState.launchMultiplePermissionRequest()
                                     }
                                 } else {
-                                    remindingDialogState.value = true
+//                                    remindingDialogState.value = true
 //                                    navigator?.push()
+                                    workspaceModel.updateRemindingDialog(true)
                                 }
                             }
                     )
@@ -169,36 +173,40 @@ fun AddEditBottomBar(
                 // undo
                 UndoRedo(
                     dataStoreModel = dataStoreModel,
-                    titleState = Pair(titleState.first, titleState.second),
+                    workplaceModel = workspaceModel,
+                    titleState = titleState,
                     descriptionState = descriptionState,
                 )
             }
         }
 
         // more options menu.
-        Plus(
+        Options(
             dataStoreModel = dataStoreModel,
             isShow = showOptionsMenu,
-            note = note,
+            id = id,
 //            navController = navController,
             imageLaunch = imageLaunch,
-            recordDialogState = recordDialogState,
-            priorityColorState = priorityColorState
+//            recordDialogState = recordDialogState,
+            workspaceModel = workspaceModel,
+//            priorityColorState = priorityColorState
         )
 
         // row of background colors.
         ColorsRow(
             dataStoreModel = dataStoreModel,
-            colorState = backgroundColorState,
             colors = listOfBackgroundColors
-        )
+        ) { color ->
+            workspaceModel.updateBackgroundColor(color)
+        }
 
         // row of text colors.
         ColorsRow(
             dataStoreModel = dataStoreModel,
-            colorState = textColorState,
             colors = listOfTextColors
-        )
+        ) { color ->
+            workspaceModel.updateTextColor(color)
+        }
     }
 }
 

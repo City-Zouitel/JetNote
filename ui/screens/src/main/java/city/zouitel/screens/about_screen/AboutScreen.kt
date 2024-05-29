@@ -14,7 +14,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.top_action_bar.CustomTopAppBar
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.tags.viewmodel.TagScreenModel
+import city.zouitel.tags.ui.TagScreenModel
 
 class AboutScreen: Screen {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

@@ -31,18 +31,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastFirstOrNull
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
-import city.zouitel.audios.model.Audio
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
-import city.zouitel.audios.ui.component.BasicAudioScreen
 import city.zouitel.audios.ui.component.MiniAudioPlayer
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
-import city.zouitel.logic.codeUrl
 import city.zouitel.logic.getImgPath
 import city.zouitel.logic.getRecPath
 import city.zouitel.screens.navigation_drawer.Screens
@@ -58,20 +54,19 @@ import city.zouitel.systemDesign.Icons.ANGLE_UP_ICON
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.RESET_ICON
 import city.zouitel.systemDesign.ImageDisplayed
-import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
+import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.screens.sound
-import city.zouitel.note.ui.edit_screen.EditScreen
+import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.screens.normalNotePath
 import city.zouitel.screens.prioritizedNotePath
 import city.zouitel.systemDesign.Cons.LIST
 import city.zouitel.systemDesign.Icons.BELL_RING_ICON
-import city.zouitel.tasks.viewmodel.TaskScreenModel
+import city.zouitel.tasks.ui.TaskScreenModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
-import java.io.File
 import java.util.*
 
 @Composable
@@ -218,15 +213,15 @@ private fun Card(
 
                 if (screen == HOME_SCREEN && !homeSelectionState?.value!!) {
                     navigator?.push(
-                        EditScreen(
-                            note.uid,
-                            codeUrl.invoke(note.title),
-                            codeUrl.invoke(note.description),
-                            note.color,
-                            note.textColor,
-                            note.priority,
-//                            note.audioDuration,
-                            note.reminding
+                        WorkplaceScreen(
+                            id = note.uid,
+                            isNew = false,
+                            title = note.title,
+                            description = note.description,
+                            backgroundColor = note.color,
+                            textColor = note.textColor,
+                            priority = note.priority,
+                            reminding = note.reminding
                         )
                     )
                 } else if (screen == DELETED_SCREEN && !trashSelectionState?.value!!) {
@@ -289,6 +284,7 @@ private fun Card(
             modifier = Modifier.padding(start = 3.dp, end = 3.dp, bottom = 7.dp)
         )
 
+        //display media player.
         observerAudios.filter {
             observerNoteAndAudio.contains(
                 NoteAndAudio(note.uid, it.id)
@@ -297,11 +293,6 @@ private fun Card(
             MiniAudioPlayer(dataStoreModel, audioModel, note.uid, _audio)
             true
         }
-
-        //display media player.
-//        if (File(mediaPath).exists()) {
-//            MiniAudioPlayer(audioScreenModel = audioModel, dataStoreModel = dataStoreModel, localMediaUid = note.uid)
-//        }
 
         //display tags.
         LazyRow {

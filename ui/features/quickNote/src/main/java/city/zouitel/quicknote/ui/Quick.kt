@@ -58,151 +58,146 @@ data class QuickScreen(
         Quick(dataModel, linkModel, noteAndLinkModel, action = action)
     }
 
-}
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Quick(
-//    quickDataViewModel: QuickDataScreenModel = koinViewModel(),
-//    linkVM: LinkScreenModel = koinViewModel(),
-//    noteAndLinkModel: NoteAndLinkScreenModel = koinViewModel(),
-    dataModel: QuickDataScreenModel,
-    linkModel: LinkScreenModel,
-    noteAndLinkModel: NoteAndLinkScreenModel,
-    action:() -> (Unit)
-) {
-    val uid = UUID.randomUUID().toString()
-
-    val descriptionState = remember { mutableStateOf("") }
-    val backgroundColor = MaterialTheme.colorScheme.surface.toArgb()
-    val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
-    val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
-    val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
-    val priorityState = remember { mutableStateOf(Cons.URGENT) }
-
-    val focusRequester = FocusRequester()
-
-    val observerLinks by remember(linkModel, linkModel::getAllLinks).collectAsState()
-    val observerNoteAndLink by remember(noteAndLinkModel, noteAndLinkModel::getAllNotesAndLinks).collectAsState()
-
-    LaunchedEffect(Unit) {
-        kotlin.runCatching {
-            focusRequester.requestFocus()
-        }
-    }
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black.copy(alpha = .6f))
-            .clickable {
-                action.invoke()
-            }
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun Quick(
+        dataModel: QuickDataScreenModel,
+        linkModel: LinkScreenModel,
+        noteAndLinkModel: NoteAndLinkScreenModel,
+        action:() -> (Unit)
     ) {
+        val uid = UUID.randomUUID().toString()
+
+        val descriptionState = remember { mutableStateOf("") }
+        val backgroundColor = MaterialTheme.colorScheme.surface.toArgb()
+        val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
+        val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
+        val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
+        val priorityState = remember { mutableStateOf(Cons.NON) }
+
+        val focusRequester = FocusRequester()
+
+        val observerLinks by remember(linkModel, linkModel::getAllLinks).collectAsState()
+        val observerNoteAndLink by remember(noteAndLinkModel, noteAndLinkModel::getAllNotesAndLinks).collectAsState()
+
+        LaunchedEffect(Unit) {
+            kotlin.runCatching {
+                focusRequester.requestFocus()
+            }
+        }
         Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .background(Color.Transparent)
-                .padding(start = 30.dp, end = 30.dp)
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = .6f))
+                .clickable {
+                    action.invoke()
+                }
         ) {
-
-            Surface(
-                shape = RoundedCornerShape(18.dp),
-                color = MaterialTheme.colorScheme.surface
+            Box(
+                modifier = Modifier
+                    .background(Color.Transparent)
+                    .padding(start = 30.dp, end = 30.dp)
             ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .background(Color.Transparent)
-                ) {
-                    item {
-                        OutlinedTextField(
-                            value = descriptionState.value,
-                            onValueChange = { descriptionState.value = it },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                                .focusRequester(focusRequester)
-                                .onFocusEvent {
-                                },
-                            placeholder = {
-                                Text("Note..", color = Color.Gray, fontSize = 22.sp)
-                            },
-                            textStyle = TextStyle(
-                                fontSize = 21.sp,
-                                fontWeight = FontWeight.Normal,
-                                fontFamily = FontFamily.Default,
-                                color = Color(textColorState.intValue)
-                            ),
-                            keyboardOptions = KeyboardOptions(
-                                capitalization = KeyboardCapitalization.Sentences,
-                                autoCorrect = false,
-                                keyboardType = KeyboardType.Text,
-                                imeAction = ImeAction.Default
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onDone = {
-                                }
-                            ),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                focusedBorderColor = Color.Transparent,
-                                unfocusedBorderColor = Color.Transparent
-                            )
-                        )
-                    }
 
-                    // Link display.
-                    item {
-                        findUrlLink(descriptionState.value) ?. let { links ->
-                            for (link in links) {
-                                CacheLinks(
+                Surface(
+                    shape = RoundedCornerShape(18.dp),
+                    color = MaterialTheme.colorScheme.surface
+                ) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .background(Color.Transparent)
+                    ) {
+                        item {
+                            OutlinedTextField(
+                                value = descriptionState.value,
+                                onValueChange = { descriptionState.value = it },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                                    .focusRequester(focusRequester)
+                                    .onFocusEvent {
+                                    },
+                                placeholder = {
+                                    Text("Note..", color = Color.Gray, fontSize = 22.sp)
+                                },
+                                textStyle = TextStyle(
+                                    fontSize = 21.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    fontFamily = FontFamily.Default,
+                                    color = Color(textColorState.intValue)
+                                ),
+                                keyboardOptions = KeyboardOptions(
+                                    capitalization = KeyboardCapitalization.Sentences,
+                                    autoCorrect = false,
+                                    keyboardType = KeyboardType.Text,
+                                    imeAction = ImeAction.Default
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onDone = {
+                                    }
+                                ),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = Color.Transparent,
+                                    unfocusedBorderColor = Color.Transparent
+                                )
+                            )
+                        }
+
+                        // Link display.
+                        item {
+                            findUrlLink(descriptionState.value) ?. let { links ->
+                                for (link in links) {
+                                    CacheLinks(
+                                        linkScreenModel = linkModel,
+                                        noteId = uid,
+                                        url = link
+                                    )
+                                }
+                            }
+                            // for refresh this screen.
+                            observerLinks.filter {
+                                observerNoteAndLink.contains(
+                                    NoteAndLink(uid, it.id)
+                                )
+                            }.forEach { _link ->
+                                LinkCard(
                                     linkScreenModel = linkModel,
                                     noteAndLinkScreenModel = noteAndLinkModel,
-                                    noteId = uid,
-                                    url = link
+                                    noteUid = uid,
+                                    swipeable = true,
+                                    link = _link
                                 )
                             }
                         }
-                        // for refresh this screen.
-                        observerLinks.filter {
-                            observerNoteAndLink.contains(
-                                NoteAndLink(uid, it.id)
-                            )
-                        }.forEach { _link ->
-                            LinkCard(
-                                linkScreenModel = linkModel,
-                                noteAndLinkScreenModel = noteAndLinkModel,
-                                noteUid = uid,
-                                swipeable = true,
-                                link = _link
-                            )
-                        }
-                    }
 
-                    item {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End
-                        ) {
-                            SmallFloatingActionButton(
-                                onClick = {
-                                    dataModel.addQuickData(
-                                        QuickData(
-                                            description = descriptionState.value,
-                                            uid = uid,
-                                            color = backgroundColorState.intValue,
-                                            textColor = textColorState.intValue,
-                                            priority = priorityState.value
-                                        )
-                                    ).invokeOnCompletion {
-                                        action.invoke()
-                                    }
-
-                                }, containerColor = MaterialTheme.colorScheme.outlineVariant,
-                                contentColor = contentColorFor(
-                                    backgroundColor = MaterialTheme.colorScheme.outlineVariant
-                                )
+                        item {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
                             ) {
-                                Icon(painterResource(Icons.DONE_ICON), null)
+                                SmallFloatingActionButton(
+                                    onClick = {
+                                        dataModel.addQuickData(
+                                            QuickData(
+                                                description = descriptionState.value,
+                                                uid = uid,
+                                                color = backgroundColorState.intValue,
+                                                textColor = textColorState.intValue,
+                                                priority = priorityState.value
+                                            )
+                                        ).invokeOnCompletion {
+                                            action.invoke()
+                                        }
+
+                                    }, containerColor = MaterialTheme.colorScheme.outlineVariant,
+                                    contentColor = contentColorFor(
+                                        backgroundColor = MaterialTheme.colorScheme.outlineVariant
+                                    )
+                                ) {
+                                    Icon(painterResource(Icons.DONE_ICON), null)
+                                }
                             }
                         }
                     }

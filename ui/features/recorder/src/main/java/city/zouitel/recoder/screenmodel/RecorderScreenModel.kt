@@ -1,4 +1,4 @@
-package city.zouitel.recoder.viewmodel
+package city.zouitel.recoder.screenmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +10,7 @@ import city.zouitel.domain.usecase.NoteAndAudioUseCase
 import city.zouitel.recoder.mapper.AudioMapper
 import city.zouitel.recoder.mapper.NoteAndAudioMapper
 import city.zouitel.recoder.model.Audio
+import city.zouitel.recoder.state.UiState
 import city.zouitel.recoder.model.NoteAndAudio as InNoteAndAudio
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,24 +30,26 @@ class RecorderScreenModel(
 
     private lateinit var timer: Timer
 
-    var seconds by mutableStateOf("00")
-    var minutes by mutableStateOf("00")
-    var hours by mutableStateOf("00")
-    private var isPlaying by mutableStateOf(false)
+    internal var uiState by mutableStateOf(UiState())
+        private set
 
     fun start() {
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
             time += 1.seconds
             updateTimeStates()
         }
-        isPlaying = true
+        uiState = uiState.copy(
+            isPlaying = true
+        )
     }
 
     private fun updateTimeStates() {
         time.toComponents { hours, minutes, seconds, _ ->
-            this@RecorderScreenModel.seconds = seconds.pad()
-            this@RecorderScreenModel.minutes = minutes.pad()
-            this@RecorderScreenModel.hours = hours.toInt().pad()
+            uiState = uiState.copy(
+                seconds = seconds.pad(),
+                minutes = minutes.pad(),
+                hours = hours.toInt().pad()
+            )
         }
     }
 
@@ -56,7 +59,9 @@ class RecorderScreenModel(
 
     fun pause() {
         timer.cancel()
-        isPlaying = false
+        uiState = uiState.copy(
+            isPlaying = false
+        )
     }
 
     fun stop() {
@@ -73,6 +78,18 @@ class RecorderScreenModel(
                     InNoteAndAudio(noteUid = id, audioId = audio.id)
                 )
             )
+        }
+    }
+
+    fun updateRecordState(value: Boolean) {
+        screenModelScope.launch {
+            uiState = uiState.copy(isRecording = value)
+        }
+    }
+
+    fun updatePausingState(value: Boolean) {
+        screenModelScope.launch {
+            uiState = uiState.copy(isPause = value)
         }
     }
 }

@@ -29,7 +29,7 @@ import city.zouitel.screens.top_action_bar.CustomTopAppBar
 import city.zouitel.systemDesign.AdaptingRowBetween
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.tags.viewmodel.TagScreenModel
+import city.zouitel.tags.ui.TagScreenModel
 import org.koin.core.component.KoinComponent
 
 class Settings: Screen,  KoinComponent {

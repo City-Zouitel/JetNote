@@ -1,35 +1,33 @@
 package city.zouitel.tags.utils
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.listOfBackgroundColors
-import city.zouitel.tags.viewmodel.TagScreenModel
-import org.koin.androidx.compose.koinViewModel
+import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tags.model.Tag as InTag
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun DialogColors(
-    tagModel: TagScreenModel,
-    dialogState:MutableState<Boolean>,
-    idState: MutableState<Long>,
-    labelState: MutableState<String>,
-    colorState: MutableState<Int>
-) {
+internal fun DialogColors(tagModel: TagScreenModel, textFieldState: TextFieldState) {
+
+    val uiState by lazy { tagModel.uiState }
+
     AlertDialog(
-        onDismissRequest = { dialogState.value = false },
+        onDismissRequest = { tagModel.updateColorDialogState(false) },
         confirmButton = {},
-        modifier = Modifier.padding(30.dp),
+        modifier = Modifier.padding(7.dp),
         text = {
             LazyVerticalGrid(columns = GridCells.Fixed(7), content = {
                 items(listOfBackgroundColors) {
@@ -38,21 +36,17 @@ internal fun DialogColors(
                             .size(37.dp)
                             .padding(2.dp)
                             .clickable {
-                                /*colorState.value = it.toArgb()*/
-                                tagModel
-                                    .updateTag(
-                                        InTag(
-                                            id = idState.value,
-                                            label = labelState.value,
-                                            color = it.toArgb()
-                                        )
+                                tagModel.updateTag(
+                                    InTag(
+                                        id = uiState.currentId,
+                                        label = textFieldState.text.toString(),
+                                        color = it.toArgb()
                                     )
-                                    .invokeOnCompletion {
-                                        dialogState.value = false
-                                        colorState.value = 0x0000
-                                        labelState.value = ""
-                                        idState.value = -1L
-                                    }
+                                ).invokeOnCompletion {
+                                    tagModel.updateId()
+                                        .updateColorDialogState()
+                                        .updateColor()
+                                }
                             }
                     ) {
                         drawArc(

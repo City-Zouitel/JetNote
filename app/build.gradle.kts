@@ -66,4 +66,7 @@ dependencies {
 
     //Koin.
     implementation(libs.koin.worker)
+
+    //Coil.
+    implementation(libs.coil.compose)
 }

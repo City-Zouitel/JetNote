@@ -1,6 +1,5 @@
 package city.zouitel.links.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -10,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import city.zouitel.links.model.Link
+import coil.compose.AsyncImage
 import city.zouitel.links.model.NoteAndLink as InNoteAndLink
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -52,22 +51,16 @@ fun LinkCard(
             state = swipeState
         ) {
             LinkCard(
-                linkScreenModel = linkScreenModel,
                 swipeable = swipeable,
-                id = link.id,
-                title = link.title ?: "",
-                host = link.host ?: "",
+            link = link
             ) {
                 uriHand.openUri(link.url)
             }
         }
     } else {
         LinkCard(
-            linkScreenModel = linkScreenModel,
             swipeable = swipeable,
-            id = link.id,
-            title = link.title ?: "",
-            host = link.host ?: "",
+            link = link
         ) {
             uriHand.openUri(link.url)
         }
@@ -76,15 +69,10 @@ fun LinkCard(
 
 @Composable
 private fun LinkCard(
-    linkScreenModel: LinkScreenModel,
     swipeable: Boolean,
-    title: String,
-    host: String,
-    id: Long,
+    link: Link,
     onClick: () -> Unit
 ) {
-    val context = LocalContext.current
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,17 +86,16 @@ private fun LinkCard(
         )
     ) {
         Row {
-            linkScreenModel::imageDecoder.invoke(context, id)?.let {
-                Image(
-                    modifier = Modifier.size(74.dp),
-                    contentScale = ContentScale.Crop,
-                    bitmap = it,
-                    contentDescription = null
-                )
-            }
-            Column{
+            AsyncImage(
+                modifier = Modifier.size(74.dp),
+                model = link.image,
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+
+            Column {
                 Text(
-                    text = title,
+                    text = link.title ?: "Unknown",
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -119,7 +106,7 @@ private fun LinkCard(
                 )
 
                 Text(
-                    text = host,
+                    text = link.host,
                     fontSize = 11.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

@@ -29,8 +29,5 @@ data class DataEntity(
     @ColumnInfo(name = TXT_COLOR) var textColor: Int = 0x000000,
     @ColumnInfo(name = DATE) var date: String = "",
     @ColumnInfo(name = REMOVED) var removed: Int = 0,
-//    @ColumnInfo(name = DURATION) var audioDuration: Int = 0,
     @ColumnInfo(name = REMINDING) var reminding: Long = 0L,
-//    @ColumnInfo(name = UIL) var imageUrl: String? = null,
-//    @ColumnInfo(name = URL) var audioUrl: String? = null,
 )

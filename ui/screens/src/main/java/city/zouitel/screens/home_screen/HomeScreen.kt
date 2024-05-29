@@ -40,18 +40,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.util.fastFirstOrNull
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
-import city.zouitel.audios.ui.component.BasicAudioScreen
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
@@ -64,7 +61,7 @@ import city.zouitel.screens.top_action_bar.selection_bars.HomeSelectionTopAppBar
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
-import city.zouitel.note.ui.add_screen.AddScreen
+import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.systemDesign.Cons.BY_NAME
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
@@ -77,10 +74,10 @@ import city.zouitel.systemDesign.Cons.SEARCH_IN_LOCAL
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.Icons.PLUS_ICON
 import city.zouitel.tags.model.Tag
-import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
-import city.zouitel.tags.viewmodel.TagScreenModel
-import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
-import city.zouitel.tasks.viewmodel.TaskScreenModel
+import city.zouitel.tags.ui.NoteAndTagScreenModel
+import city.zouitel.tags.ui.TagScreenModel
+import city.zouitel.tasks.ui.NoteAndTaskScreenModel
+import city.zouitel.tasks.ui.TaskScreenModel
 import java.util.UUID
 
 class HomeScreen: Screen {
@@ -88,8 +85,6 @@ class HomeScreen: Screen {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {
-//        val dataStoreVM: DataStoreScreenModel by inject()
-//        val notificationVM: NotificationScreenModel by inject()
 
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
@@ -159,6 +154,9 @@ class HomeScreen: Screen {
         val homeSelectionState = remember { mutableStateOf(false) }
         val selectedNotes = remember { mutableStateListOf<Data>() }
 
+        val getBackgroundColor = MaterialTheme.colorScheme.surface.toArgb()
+        val getTextColor = MaterialTheme.colorScheme.onSurface.toArgb()
+
         //undo snack-bar.
         val undo = UndoSnackbar(
             dataModule = dataModel,
@@ -226,7 +224,8 @@ class HomeScreen: Screen {
                         },
                         onClick = {
                             sound.makeSound.invoke(context, KEY_STANDARD, thereIsSoundEffect.value)
-                            navigator.push(AddScreen(uid, null))
+//                            navigator.push(AddScreen(uid, null))
+                            navigator.push(WorkplaceScreen(id = uid, backgroundColor = getBackgroundColor, textColor = getTextColor))
                         },
                         expanded = scrollBehavior.state.collapsedFraction != 1f,
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -336,7 +335,7 @@ class HomeScreen: Screen {
                     }
 
                     PullRefreshIndicator(
-                        refreshing = dataModel.isProcessing,
+                        refreshing = false,
                         state = pullRefreshState,
                     )
                 }

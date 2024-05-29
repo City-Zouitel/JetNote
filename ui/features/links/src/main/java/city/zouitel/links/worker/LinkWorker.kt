@@ -10,6 +10,13 @@ import city.zouitel.domain.usecase.LinkUseCase
 import city.zouitel.domain.usecase.NoteAndLinkUseCase
 import city.zouitel.links.mapper.LinkMapper
 import city.zouitel.links.mapper.NoteAndLinkMapper
+import city.zouitel.links.utils.Constants.DESCRIBE
+import city.zouitel.links.utils.Constants.HOST
+import city.zouitel.links.utils.Constants.IMG
+import city.zouitel.links.utils.Constants.LINK_ID
+import city.zouitel.links.utils.Constants.NOTE_ID
+import city.zouitel.links.utils.Constants.TITLE
+import city.zouitel.links.utils.Constants.URL
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Cons.LINK_DIR
 import city.zouitel.links.model.Link as InLink
@@ -20,30 +27,34 @@ import java.io.File
 import java.io.FileOutputStream
 
 class LinkWorker(
-    private val context: Context,
+    context: Context,
     workerParameters: WorkerParameters,
     private val ioDeprecated: CoroutineDispatcher,
     private val addLink: LinkUseCase.AddLink,
     private val addNoteAndLink: NoteAndLinkUseCase.AddNoteAndLink,
     private val linkMapper: LinkMapper,
     private val noteAndLinkMapper: NoteAndLinkMapper,
-): CoroutineWorker(context, workerParameters), KoinComponent {
-    private val linkImgPath = context.filesDir.path + "/" + LINK_DIR
+): CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result = withContext(ioDeprecated) {
         return@withContext try {
-            val note_id_data = inputData.getString("note_id_data") ?: ""
-            val link_id_data = inputData.getLong("link_id_data", 0L) ?: 0L
-            val title_data = inputData.getString("title_data") ?: ""
-//            val description_data = inputData.getString("description_data") ?: ""
-            val url_data = inputData.getString("url_data") ?: ""
-            val image_data = inputData.getString("image_data") ?: ""
-            val host_data = inputData.getString("host_data") ?: ""
+            val note_id_data = inputData.getString(NOTE_ID) ?: ""
+            val link_id_data = inputData.getLong(LINK_ID, 0L)
+            val title_data = inputData.getString(TITLE) ?: ""
+            val description_data = inputData.getString(DESCRIBE) ?: ""
+            val url_data = inputData.getString(URL) ?: ""
+            val image_data = inputData.getString(IMG) ?: ""
+            val host_data = inputData.getString(HOST) ?: ""
 
             addLink.invoke(
                linkMapper.toDomain(
                    InLink(
-                       link_id_data, url_data, host_data,image_data, title_data, null
+                       id = link_id_data,
+                       url = url_data,
+                       host = host_data,
+                       image = image_data,
+                       title = title_data,
+                       description = description_data
                    )
                )
             )
@@ -51,24 +62,11 @@ class LinkWorker(
             addNoteAndLink.invoke(
                 noteAndLinkMapper.toDomain(
                     InNoteAndLink(
-                        note_id_data, link_id_data
+                        noteUid = note_id_data,
+                        linkId = link_id_data
                     )
                 )
             )
-
-            // save link image in local link images file.
-            val il = ImageLoader(context)
-            val ir = ImageRequest.Builder(context)
-                .data(image_data)
-                .target {
-                    saveImageLocally(
-                        img = it.toBitmap(),
-                        path = linkImgPath,
-                        name = "$link_id_data.${Cons.JPEG}"
-                    )
-                }
-                .build()
-            il.enqueue(ir)
 
             Result.success()
         } catch (e: Exception) {

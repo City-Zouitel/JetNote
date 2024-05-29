@@ -62,7 +62,7 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
     override fun onDestroy() {
         super.onDestroy()
-        linkScreenModel.urlPreview(this, null, null, null, null)?.cleanUp()
+        linkScreenModel.urlPreview(this, null/*, null, null, null*/)?.cleanUp()
         WidgetReceiver.updateBroadcast(this)
     }
 

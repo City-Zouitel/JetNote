@@ -1,6 +1,6 @@
 package city.zouitel.recoder.di
 
-import city.zouitel.recoder.viewmodel.*
+import city.zouitel.recoder.screenmodel.*
 import city.zouitel.recoder.mapper.*
 import city.zouitel.systemDesign.Cons.REC_DIR
 import org.koin.core.module.dsl.factoryOf

@@ -1,4 +1,4 @@
-package city.zouitel.widget.viewmodel
+package city.zouitel.widget.ui
 
 import android.content.Context
 import android.graphics.Bitmap

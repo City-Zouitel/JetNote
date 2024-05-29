@@ -2,11 +2,9 @@ package city.zouitel.links.ui
 
 import android.app.Application
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.widget.Toast
-import androidx.compose.runtime.MutableState
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.work.*
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -15,9 +13,20 @@ import com.baha.url.preview.IUrlPreviewCallback
 import com.baha.url.preview.UrlInfoItem
 import city.zouitel.domain.usecase.LinkUseCase
 import city.zouitel.links.mapper.LinkMapper
+import city.zouitel.links.model.Link
+import city.zouitel.links.state.UiState
+import city.zouitel.links.utils.Constants.DESCRIBE
+import city.zouitel.links.utils.Constants.HOST
+import city.zouitel.links.utils.Constants.IMG
+import city.zouitel.links.utils.Constants.LINK_ID
+import city.zouitel.links.utils.Constants.LINK_TAG
+import city.zouitel.links.utils.Constants.NOTE_ID
+import city.zouitel.links.utils.Constants.TITLE
+import city.zouitel.links.utils.Constants.UNIQUE_LINK_WORK
+import city.zouitel.links.utils.Constants.URL
 import city.zouitel.links.model.Link as InLink
 import city.zouitel.links.worker.LinkWorker
-import city.zouitel.systemDesign.Cons.JPEG
+import city.zouitel.logic.asShortToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -30,6 +39,9 @@ class LinkScreenModel(
     private val mapper: LinkMapper,
     private val linkPath: String
 ): ScreenModel {
+
+    internal var uiState: UiState by mutableStateOf(UiState())
+        private set
 
     private val _getAllLinks = MutableStateFlow<List<InLink>>(emptyList())
 
@@ -58,42 +70,32 @@ class LinkScreenModel(
     }
 
     fun urlPreview(
-        ctx: Context,
+        context: Context,
         res: String?,
-        title: MutableState<String>?,
-        host: MutableState<String>?,
-        img: MutableState<String>?
     ) = res?.let {
         BahaUrlPreview(it, object : IUrlPreviewCallback {
             override fun onComplete(urlInfo: UrlInfoItem) {
                 screenModelScope.launch(Dispatchers.IO) {
                     urlInfo.apply {
-                        title?.value = this.title
-                        host?.value = URL(this.url).host
-                        img?.value = this.image
+                        uiState = uiState.copy(
+                            title = title,
+                            description = description,
+                            host = URL(url).host,
+                            img = image
+                        )
                     }
                 }
             }
 
             override fun onFailed(throwable: Throwable) {
-                Toast.makeText(ctx, "Can't load link", Toast.LENGTH_SHORT).show()
+                context.apply { "Can't load link".asShortToast() }
             }
         })
     }
 
-    fun imageDecoder(context: Context, id: Long): ImageBitmap? {
-        val path = "$linkPath/$id.$JPEG"
-        val bitImg = BitmapFactory.decodeFile(path)
-        return bitImg?.asImageBitmap()
-    }
-
     fun doWork(
-        linkId: Long,
         noteId: String,
-        url: String,
-        image: String,
-        title: String,
-        host: String
+        link: Link
     ) = screenModelScope.launch(Dispatchers.IO) {
 
         val constraints = Constraints.Builder()
@@ -101,15 +103,16 @@ class LinkScreenModel(
             .build()
 
         val worker = OneTimeWorkRequest.Builder(LinkWorker::class.java)
-            .addTag("link_work")
+            .addTag(LINK_TAG)
             .setInputData(
                 Data.Builder()
-                    .putString("note_id_data", noteId)
-//                    .putLong("link_id_data", linkId)
-                    .putString("title_data", title)
-                    .putString("url_data", url)
-                    .putString("image_data", image)
-                    .putString("host_data", host)
+                    .putString(NOTE_ID, noteId)
+                    .putLong(LINK_ID, link.id)
+                    .putString(TITLE, link.title)
+                    .putString(DESCRIBE, link.description)
+                    .putString(URL, link.url)
+                    .putString(IMG, link.image)
+                    .putString(HOST, link.host)
                     .build()
             )
             .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
@@ -117,7 +120,7 @@ class LinkScreenModel(
             .build()
 
         workManager.enqueueUniqueWork(
-            "unique_link_worker",
+            UNIQUE_LINK_WORK,
             ExistingWorkPolicy.KEEP,
             worker
         )

@@ -1,6 +1,7 @@
 package city.zouitel.tasks.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,11 +9,19 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text2.input.clearText
+import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -26,10 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.Cons
 import city.zouitel.systemDesign.Icons.DELETE_OUTLINE_ICON
-import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
-import city.zouitel.tasks.viewmodel.TaskScreenModel
 import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
 import city.zouitel.tasks.model.Task as InTask
 import kotlinx.coroutines.Job
@@ -40,18 +48,26 @@ import org.koin.core.component.KoinComponent
 import kotlin.random.Random
 
 data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     override fun Content() {
+        val keyboardManager = LocalFocusManager.current
+
         val taskModel = getScreenModel<TaskScreenModel>()
         val noteAndTodoListModel = getScreenModel<NoteAndTaskScreenModel>()
 
         val observeTaskList = taskModel.getAllTaskList.collectAsState()
         val observeNoteAndTodoList = noteAndTodoListModel.getAllNotesAndTask.collectAsState()
 
-        val itemState = remember { mutableStateOf("") }//.filterBadWords()
-        val idState = remember { mutableStateOf(-1L) }
+        val uiState by lazy { taskModel.uiState }
+        val focusRequester by lazy { FocusRequester() }
+
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
+
+        val textFieldState = rememberTextFieldState("")
 
         Scaffold(
             modifier = Modifier.navigationBarsPadding()
@@ -64,7 +80,7 @@ data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
                             InNoteAndTask(id, task.id)
                         )
                     ) {
-                        TodoItem(task, taskModel, itemState, idState) {
+                        TodoItem(task, taskModel) {
                             taskModel.deleteTotoItem(
                                 InTask(id = task.id)
                             )
@@ -72,55 +88,87 @@ data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
                     }
                 }
                 item {
-                    OutlinedTextField(
-                        value = itemState.value,
-                        onValueChange = { itemState.value = it },
+                    CommonTextField(
+                        state = textFieldState,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surface),
-                        placeholder = {
-                            Text("Task..", color = Color.Gray, fontSize = 19.sp)
-                        },
-                        maxLines = 1,
-                        textStyle = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Normal,
-                            fontFamily = FontFamily.Default,
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            capitalization = KeyboardCapitalization.Sentences,
-                            autoCorrect = false,
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
+                            .focusRequester(focusRequester)
+                            .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) },
+                        placeholder = "Task..",
+                        imeAction = ImeAction.Done,
                         keyboardActions = KeyboardActions(
                             onDone = {
-                                if (observeTaskList.value.any { it.id == idState.value }) {
+                                if (observeTaskList.value.any { it.id == uiState.currentId }) {
                                     taskModel.updateTotoItem(
                                         InTask(
-                                            idState.value,
-                                            itemState.value,
+                                            uiState.currentId,
+                                            textFieldState.text.toString(),
                                             false
                                         )
                                     )
                                 } else {
                                     Random.nextLong().let {
                                         taskModel.addTotoItem(
-                                            InTask(it, itemState.value, false)
+                                            InTask(it, textFieldState.text.toString(), false)
                                         )
                                         noteAndTodoListModel.addNoteAndTaskItem(InNoteAndTask(id, it))
                                     }
                                 }.invokeOnCompletion {
-                                    itemState.value = ""
-                                    idState.value = -1L
+                                    textFieldState.clearText()
+                                    taskModel.updateId()
                                 }
                             }
-                        ),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent
                         )
                     )
+
+//                    OutlinedTextField(
+//                        value = uiState.currentTask,
+//                        onValueChange = { taskModel.updateTask(it) },
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .background(MaterialTheme.colorScheme.surface),
+//                        placeholder = {
+//                            Text("Task..", color = Color.Gray, fontSize = 19.sp)
+//                        },
+//                        maxLines = 1,
+//                        textStyle = TextStyle(
+//                            fontSize = 18.sp,
+//                            fontWeight = FontWeight.Normal,
+//                            fontFamily = FontFamily.Default,
+//                        ),
+//                        keyboardOptions = KeyboardOptions(
+//                            capitalization = KeyboardCapitalization.Sentences,
+//                            autoCorrect = false,
+//                            keyboardType = KeyboardType.Text,
+//                            imeAction = ImeAction.Done
+//                        ),
+//                        keyboardActions = KeyboardActions(
+//                            onDone = {
+//                                if (observeTaskList.value.any { it.id == uiState.currentId }) {
+//                                    taskModel.updateTotoItem(
+//                                        InTask(
+//                                            uiState.currentId,
+//                                            uiState.currentTask,
+//                                            false
+//                                        )
+//                                    )
+//                                } else {
+//                                    Random.nextLong().let {
+//                                        taskModel.addTotoItem(
+//                                            InTask(it, uiState.currentTask, false)
+//                                        )
+//                                        noteAndTodoListModel.addNoteAndTaskItem(InNoteAndTask(id, it))
+//                                    }
+//                                }.invokeOnCompletion {
+//                                    taskModel.updateTask()
+//                                        .updateId()
+//                                }
+//                            }
+//                        ),
+//                        colors = TextFieldDefaults.outlinedTextFieldColors(
+//                            focusedBorderColor = Color.Transparent,
+//                            unfocusedBorderColor = Color.Transparent
+//                        )
+//                    )
                 }
             }
         }
@@ -130,8 +178,6 @@ data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
     fun TodoItem(
         task: InTask,
         taskModel: TaskScreenModel,
-        itemState: MutableState<String>,
-        idState: MutableState<Long>,
         onClick: () -> Job
     ) {
         val swipeState = rememberSwipeableActionsState()
@@ -189,8 +235,7 @@ data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
                             color = if (task.isDone) Color.Gray else MaterialTheme.colorScheme.onSurface
                         )
                     ) {
-                        itemState.value = task.item!!
-                        idState.value = task.id
+                        taskModel.updateId(task.id)
                     }
                 }
             }

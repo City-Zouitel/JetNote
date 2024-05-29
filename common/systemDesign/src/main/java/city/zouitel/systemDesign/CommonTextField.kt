@@ -31,6 +31,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -39,11 +41,11 @@ import androidx.compose.ui.unit.sp
 fun CommonTextField(
     state: TextFieldState,
     modifier: Modifier,
-    placeholder: String,
-    textSize: Int,
-    textColor: Int,
-    imeAction : ImeAction,
-    keyboardActions: KeyboardActions
+    placeholder: String = "...",
+    textSize: TextUnit = TextUnit(19f, TextUnitType.Sp),
+    textColor: Color = Color.LightGray,
+    imeAction : ImeAction = ImeAction.Default,
+    keyboardActions: KeyboardActions = KeyboardActions()
 ) {
     Box(
         modifier = Modifier.padding(top = 30.dp)
@@ -52,19 +54,20 @@ fun CommonTextField(
             modifier = Modifier.padding(10.dp),
             text = if (state.text.isEmpty()) placeholder else "",
             color = Color.Gray,
-            fontSize = textSize.sp,
+            fontSize = textSize,
         )
 
         BasicTextField2(
             state = state,
             modifier = modifier
                 .fillMaxWidth()
+                .padding(10.dp)
                 .background(Color.Transparent),
             textStyle = TextStyle(
-                fontSize = textSize.sp,
+                fontSize = textSize,
                 fontWeight = FontWeight.Normal,
                 fontFamily = FontFamily.Default,
-                color = Color(textColor)
+                color = textColor
             ),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
@@ -73,43 +76,6 @@ fun CommonTextField(
                 imeAction = imeAction
             ),
             keyboardActions = keyboardActions
-        )
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Preview
-@Composable
-fun qsfidjqsoldqsd() {
-    val state = rememberTextFieldState()
-    Box(
-        modifier = Modifier
-    ) {
-        Text(
-            modifier = Modifier.padding(10.dp),
-            text = "placeholder",
-            color = Color.Gray,
-            fontSize = 20.sp,
-        )
-
-        BasicTextField2(
-            state = state,
-            modifier = Modifier
-                .padding(10.dp)
-                .height(30.dp)
-                .fillMaxWidth()
-                .background(Color.Transparent),
-            textStyle = TextStyle(
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Normal,
-                fontFamily = FontFamily.Default,
-                color = Color.Black
-            ),
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences,
-                autoCorrect = false,
-                keyboardType = KeyboardType.Text,
-            ),
         )
     }
 }

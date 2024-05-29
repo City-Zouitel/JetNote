@@ -25,14 +25,14 @@ import city.zouitel.systemDesign.Icons.REMOVE_ICON
 import city.zouitel.systemDesign.CommonPopupTip
 import city.zouitel.systemDesign.sharNote
 import city.zouitel.tags.model.NoteAndTag
-import city.zouitel.tags.viewmodel.TagScreenModel
-import city.zouitel.tasks.viewmodel.NoteAndTaskScreenModel
+import city.zouitel.tags.ui.TagScreenModel
+import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.screens.sound
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
-import city.zouitel.tags.viewmodel.NoteAndTagScreenModel
-import city.zouitel.tasks.viewmodel.TaskScreenModel
+import city.zouitel.tags.ui.NoteAndTagScreenModel
+import city.zouitel.tasks.ui.TaskScreenModel
 import java.util.*
 import kotlin.random.Random.Default.nextLong
 

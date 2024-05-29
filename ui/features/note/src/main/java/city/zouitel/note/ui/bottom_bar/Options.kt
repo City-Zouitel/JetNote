@@ -31,7 +31,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.list.AudioListScreen
-import city.zouitel.note.model.Data
+import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.systemDesign.Cons.KEY_CLICK
 import city.zouitel.systemDesign.Cons.KEY_STANDARD
 import city.zouitel.systemDesign.DataStoreScreenModel
@@ -53,15 +53,14 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalPermissionsApi::class)
-@SuppressLint("SuspiciousIndentation")
+@SuppressLint("SuspiciousIndentation", "UnrememberedMutableState")
 @Composable
-internal fun Plus(
+internal fun Options(
     dataStoreModel: DataStoreScreenModel,
     isShow: MutableState<Boolean>,
-    note: Data,
+    id: String,
     imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
-    recordDialogState: MutableState<Boolean>,
-    priorityColorState: MutableState<String>,
+    workspaceModel: WorkplaceScreenModel,
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
@@ -79,7 +78,7 @@ internal fun Plus(
             )
         ) {
             if (it.all { true }) {
-                recordDialogState.value = true
+                workspaceModel.updateRecorderDialog(true)
             }
         }
     } else {
@@ -89,7 +88,8 @@ internal fun Plus(
             )
         ) {
             if (it.all { true }) {
-                recordDialogState.value = true
+                workspaceModel.updateRecorderDialog(true)
+
             }
         }
     }
@@ -101,18 +101,18 @@ internal fun Plus(
             )
         ) {
             if (it.all { true }) {
-                navBottomSheet.show(AudioListScreen(note.uid))
+                navBottomSheet.show(AudioListScreen(id))
             }
         }
     } else {
         rememberMultiplePermissionsState(
             permissions =  emptyList()
         ) {
-            navBottomSheet.show(AudioListScreen(note.uid))
+            navBottomSheet.show(AudioListScreen(id))
         }
     }
 
-    val currentColor = remember { mutableStateOf(getColorOfPriority(priorityColorState.value)) }
+    val uiState = workspaceModel.uiState
 
     val recorderRationalDialog = remember { mutableStateOf(false) }
     val readMedaiRationalDialog = remember { mutableStateOf(false) }
@@ -162,7 +162,7 @@ internal fun Plus(
                         readMediaPermissions.launchMultiplePermissionRequest()
                     }
                 } else {
-                    navBottomSheet.show(AudioListScreen(note.uid))
+                    navBottomSheet.show(AudioListScreen(id))
                 }
                 isShow.value = false
             },
@@ -188,7 +188,7 @@ internal fun Plus(
                         recorderPermissions.launchMultiplePermissionRequest()
                     }
                 } else {
-                    recordDialogState.value = true
+                    workspaceModel.updateRecorderDialog(true)
                 }
                 isShow.value = false
             },
@@ -208,7 +208,7 @@ internal fun Plus(
 //                    route = DRAW_ROUTE + "/" +
 //                            note.title + "/" +
 //                            note.description + "/" +
-//                            note.color + "/" +
+//                            note.backgroundColor + "/" +
 //                            note.textColor + "/" +
 //                            note.priority + "/" +
 //                            note.uid + "/" +
@@ -226,7 +226,7 @@ internal fun Plus(
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
-                navigator.push(TagsScreen(id = note.uid))
+                navigator.push(TagsScreen(id = id))
             }
         )
         DropdownMenuItem(
@@ -235,7 +235,7 @@ internal fun Plus(
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                 isShow.value = false
-                navigator.push(TasksScreen(id = note.uid))
+                navigator.push(TasksScreen(id = id))
             }
         )
         DropdownMenuItem(
@@ -247,8 +247,7 @@ internal fun Plus(
                             modifier = Modifier
                                 .size(20.dp)
                                 .clickable {
-                                    currentColor.value = it
-                                    priorityColorState.value = getPriorityOfColor(it)
+                                    workspaceModel.updatePriority(getPriorityOfColor(it))
                                     sound.makeSound.invoke(
                                         context,
                                         KEY_CLICK,
@@ -262,7 +261,7 @@ internal fun Plus(
                                 sweepAngle = 360f,
                                 useCenter = true,
                                 style =
-                                if (currentColor.value == it) {
+                                if (getColorOfPriority(uiState.priority) == it) {
                                     Stroke(width = 5f, cap = StrokeCap.Round)
                                 } else {
                                     Fill

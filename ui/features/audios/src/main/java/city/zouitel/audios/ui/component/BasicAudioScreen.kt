@@ -16,8 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -32,7 +30,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.audios.model.Audio
 import city.zouitel.audios.model.NoteAndAudio
-import city.zouitel.audios.ui.list.AudioListScreen
 import city.zouitel.audios.ui.list.AudioListScreenModel
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.Icons
@@ -51,43 +48,44 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
     @Composable
     override fun Content() {
         val audioModel = getScreenModel<AudioScreenModel>()
-        val audioListScreen = getScreenModel<AudioListScreenModel>()
-        val noteAndAudioScreenModel = getScreenModel<NoteAndAudioScreenModel>()
+        val audioListModel = getScreenModel<AudioListScreenModel>()
+        val noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
 
         val scope = rememberCoroutineScope()
-        var processState by remember { mutableFloatStateOf(0f) }
-        val playingState = remember { mutableStateOf(false) }
         val swipeState = rememberSwipeableActionsState()
-        val iconState = remember(playingState.value) {
-            mutableIntStateOf(if (playingState.value) Icons.PAUSE_CIRCLE_FILLED_ICON_24 else Icons.PLAY_CIRCLE_FILLED_ICON_24)
-        }
+
+        val uiState = audioModel.uiState
+
+        var processState by remember { mutableFloatStateOf(0f) }
 
         LaunchedEffect(audio.path) {
-            audioModel.loadAudioAmplitudes(audio.path)
+            audioModel.prepareMediaPlayer(audio.path)
         }
 
         scope.launch {
 
-            while (playingState.value && processState <= 1f) {
-                delay(audioModel.getMediaDuration(audio.path) / 100)
+            while (uiState.isPlaying && processState <= 1f) {
+                delay(audio.duration / 100)
                 processState += .011f
             }
 
             when {
                 processState >= 1f -> {
-                    playingState.value = false
+//                    playingState = false
                     processState = 0f
                 }
             }
         }
 
-        if (playingState.value) audioModel.playMedia(audio.path) else audioModel.pauseMedia(audio.path)
+        LaunchedEffect(uiState.isPlaying) {
+            if (uiState.isPlaying) audioModel.playMedia() else audioModel.pauseMedia()
+        }
 
         val swipeAction = SwipeAction(
             onSwipe = {
                 File(audio.path).delete()
-                audioListScreen.deleteAudio(audio)
-                noteAndAudioScreenModel.deleteNoteAndAudio(
+                audioListModel.deleteAudio(audio)
+                noteAndAudioModel.deleteNoteAndAudio(
                     NoteAndAudio(id, audio.id)
                 )
             },
@@ -119,19 +117,23 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
                                 .height(80.dp)
                         ) {
                             Icon(
-                                painter = painterResource(id = iconState.intValue),
+                                painter = painterResource(id = uiState.icon),
                                 null,
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .clickable {
-                                        playingState.value = !playingState.value
+                                        if (uiState.isPlaying) {
+                                            audioModel.pauseMedia()
+                                        } else {
+                                            audioModel.playMedia()
+                                        }
                                     },
                                 tint = Color.White
                             )
 
                             AudioWaveform(
                                 modifier = Modifier.weight(1f),
-                                amplitudes = audioModel.audioAmplitudes.toList(),
+                                amplitudes = uiState.amplitudes,
                                 progress = processState,
                                 onProgressChange = { processState = it },
                                 waveformAlignment = WaveformAlignment.Center,
@@ -152,9 +154,7 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
 
                             Text(
                                 modifier = Modifier.padding(end = 10.dp),
-                                text = audioModel.formatLong(
-                                    audioModel.getMediaDuration(audio.path)
-                                ),
+                                text = audioModel.formatLong(audio.duration),
                                 color = Color.White
                             )
                         }

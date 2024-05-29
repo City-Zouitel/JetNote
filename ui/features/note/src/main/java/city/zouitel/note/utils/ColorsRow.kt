@@ -1,4 +1,4 @@
-package city.zouitel.note.ui
+package city.zouitel.note.utils
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -24,8 +24,8 @@ import city.zouitel.systemDesign.SoundEffect
 @Composable
 fun ColorsRow(
     dataStoreModel: DataStoreScreenModel,
-    colorState: MutableState<Int>,
-    colors: Array<Color>
+    colors: Array<Color>,
+    onAction: (Int) -> Unit
     ) {
 
     val currentColor = remember { mutableStateOf(Color.White) }
@@ -50,7 +50,8 @@ fun ColorsRow(
                     .clickable {
                         sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                         currentColor.value = it
-                        colorState.value = it.toArgb()
+//                        colorState.value = it.toArgb()
+                        onAction.invoke(it.toArgb())
                     }
             ){
                 drawArc(color = it,

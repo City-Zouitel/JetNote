@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import city.zouitel.audios.state.AudioListUiState
 import city.zouitel.audios.audio.AudioRepository
@@ -30,7 +29,7 @@ class AudioListScreenModel(
     private val noteAndAudioMapper: NoteAndAudioMapper
 ): ScreenModel {
 
-    var uiState: AudioListUiState by mutableStateOf(AudioListUiState())
+    var AudioListUiState: AudioListUiState by mutableStateOf(AudioListUiState())
         private set
 
     var noteUid: String? = null
@@ -40,7 +39,7 @@ class AudioListScreenModel(
     var bottomSheetNavigator: BottomSheetNavigator? by mutableStateOf(null)
 
     fun updateSearchQuery(query: String) {
-        uiState = uiState.copy(searchQuery = query)
+        AudioListUiState = AudioListUiState.copy(searchQuery = query)
         loadAudioFiles(query)
     }
 
@@ -52,19 +51,19 @@ class AudioListScreenModel(
         loadAudioJob?.cancel()
         loadAudioJob = screenModelScope.launch {
             runCatching {
-                uiState = uiState.copy(isLoadingAudios = true)
-                val audioFiles = audioRepository.loadAudioFiles(query ?: uiState.searchQuery)
+                AudioListUiState = AudioListUiState.copy(isLoadingAudios = true)
+                val audioFiles = audioRepository.loadAudioFiles(query ?: AudioListUiState.searchQuery)
                     .map {
                         it.toUiState {
                             // onClick.
                             onSelectAudioItem(it)
                         }
                     }
-                uiState = uiState.copy(audioFiles = audioFiles)
+                AudioListUiState = AudioListUiState.copy(audioFiles = audioFiles)
             }.onFailure {
                 it.printStackTrace()
             }.onSuccess {
-                uiState = uiState.copy(isLoadingAudios = false)
+                AudioListUiState = AudioListUiState.copy(isLoadingAudios = false)
             }
         }
     }

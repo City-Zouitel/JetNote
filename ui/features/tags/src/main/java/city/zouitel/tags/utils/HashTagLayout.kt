@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.Icons.CROSS_CIRCLE_ICON
-import city.zouitel.tags.viewmodel.TagScreenModel
+import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tags.model.Tag as InTag
 import com.google.accompanist.flowlayout.FlowRow
 
@@ -22,10 +22,7 @@ import com.google.accompanist.flowlayout.FlowRow
 @Composable
 internal fun HashTagLayout(
     tagModel: TagScreenModel,
-    labelDialogState: MutableState<Boolean>,
     hashTags: Collection<InTag>,
-    idState: MutableState<Long>,
-    labelState: MutableState<String>
 ) {
     FlowRow(mainAxisSpacing = 3.dp) {
         hashTags.forEach { label ->
@@ -55,13 +52,11 @@ internal fun HashTagLayout(
                             color = Color.Transparent,
                             modifier = Modifier.combinedClickable(
                                 onLongClick = {
-                                    labelState.value = label.label
-                                    idState.value = label.id
-                                    labelDialogState.value = true
+                                    tagModel.updateId(label.id)
+                                        .updateColorDialogState(true)
                                 },
                             ) {
-                                labelState.value = label.label
-                                idState.value = label.id
+                                tagModel.updateId(label.id)
                             }
                         ) {
                             Text(it)

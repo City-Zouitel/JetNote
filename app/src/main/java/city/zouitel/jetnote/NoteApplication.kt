@@ -18,6 +18,10 @@ import city.zouitel.systemDesign.di.commonSystemDesignKoinModule
 import city.zouitel.tags.di.tagsKoinModule
 import city.zouitel.tasks.di.tasksKoinModule
 import city.zouitel.widget.di.widgetKoinModule
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.memory.MemoryCache
+import coil.request.CachePolicy
 import com.karacca.beetle.Beetle
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -26,7 +30,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class NoteApplication: Application(), KoinComponent {
+class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
@@ -68,5 +72,18 @@ class NoteApplication: Application(), KoinComponent {
             enableLabels = true
         }
         Beetle.init(this, "City-Zouitel", "JetNote")
+    }
+
+    override fun newImageLoader(): ImageLoader {
+        return ImageLoader(this)
+            .newBuilder()
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .memoryCache {
+                MemoryCache.Builder(this)
+                    .maxSizePercent(.5)
+                    .weakReferencesEnabled(true)
+                    .build()
+            }
+            .build()
     }
 }

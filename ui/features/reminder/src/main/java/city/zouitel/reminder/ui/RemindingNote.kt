@@ -20,8 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableLongState
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -57,11 +55,11 @@ import java.util.Locale
 fun RemindingNote(
     dataStoreModel: DataStoreScreenModel,
     notificationModel: NotificationScreenModel,
-    dialogState: MutableState<Boolean>,
     title: String?,
     message: String?,
     uid: String?,
-    remindingValue: MutableLongState?
+    dialogState: (Boolean) -> Unit,
+    remindingValue: (Long) -> Unit
 ) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
@@ -109,7 +107,7 @@ fun RemindingNote(
 
     AlertDialog(
         onDismissRequest = {
-            dialogState.value = false
+            dialogState.invoke(false)
         },
         title = {
             Row {
@@ -217,9 +215,9 @@ fun RemindingNote(
                             dateTime == 0L
                         }
                     }.onSuccess {
-                        remindingValue?.longValue = dateTime
+                        remindingValue.invoke(dateTime)
                     }
-                    dialogState.value = false
+                    dialogState.invoke(false)
                 }) {
                 Text(text = "Save", fontSize = 16.sp)
             }
@@ -230,7 +228,7 @@ fun RemindingNote(
                     .size(90.dp,35.dp),
                 onClick = {
                     sound.makeSound(context, KEY_CLICK, soundEffect.value)
-                    dialogState.value = false
+                    dialogState.invoke(false)
                 }) {
                 Text(text = "Cancel", fontSize = 16.sp)
             }

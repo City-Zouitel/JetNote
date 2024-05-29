@@ -31,7 +31,7 @@ import city.zouitel.systemDesign.Icons.SETTINGS_ICON
 import city.zouitel.systemDesign.Icons.SHARE_ICON
 import city.zouitel.systemDesign.Icons.TAGS_ICON
 import city.zouitel.systemDesign.Icons.REMOVE_ICON
-import city.zouitel.tags.viewmodel.TagScreenModel
+import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tags.model.Tag
 import city.zouitel.tags.ui.TagsScreen
 import com.karacca.beetle.Beetle

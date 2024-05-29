@@ -14,25 +14,16 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.*
 import androidx.glance.text.Text
 import androidx.glance.unit.ColorProvider
-import cafe.adriel.voyager.core.lifecycle.LocalNavigatorScreenLifecycleProvider
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.registry.screenModule
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import city.zouitel.domain.model.Note
-import city.zouitel.domain.usecase.WidgetUseCase
 import city.zouitel.widget.model.WidgetNote
-import city.zouitel.widget.viewmodel.WidgetScreenModel
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 class AppWidget: GlanceAppWidget(), Screen {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) = provideContent {
         this.Content()
     }
+
     @Composable
     override fun Content() {
         val context = LocalContext.current

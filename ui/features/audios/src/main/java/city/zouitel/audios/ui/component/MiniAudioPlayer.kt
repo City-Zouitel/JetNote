@@ -41,7 +41,7 @@ fun MiniAudioPlayer(
 
     scope.launch {
         while (isPlaying.value && processState <= 1f) {
-            delay(audioScreenModel.getMediaDuration(audio.path) / 100)
+            delay(audio.duration / 100)
             processState += .011f
         }
         when {
@@ -52,7 +52,7 @@ fun MiniAudioPlayer(
         }
     }
 
-    if (isPlaying.value) audioScreenModel.playMedia(audio.path) else audioScreenModel.pauseMedia(audio.path)
+    if (isPlaying.value) audioScreenModel.playMedia() else audioScreenModel.pauseMedia()
 
     Card(
         modifier = Modifier.padding(10.dp),
@@ -115,9 +115,7 @@ fun MiniAudioPlayer(
 
                 Text(
                     modifier = Modifier.padding(end = 7.dp),
-                    text = audioScreenModel.formatLong(
-                        audioScreenModel.getMediaDuration(audio.path)
-                    ),
+                    text = audioScreenModel.formatLong(audio.duration),
                     color = MaterialTheme.colorScheme.surfaceVariant
                 )
             }
