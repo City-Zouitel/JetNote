@@ -15,25 +15,24 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.screens.about_screen.AboutScreen
-import city.zouitel.screens.deleted_screen.RemovedScreen
-import city.zouitel.screens.home_screen.HomeScreen
-import city.zouitel.screens.settings_screen.Settings
+import city.zouitel.screens.main_screen.MainScreenModel
+import city.zouitel.screens.main_screen.MainScreen
+import city.zouitel.screens.settings_screen.SettingsScreen
 import city.zouitel.screens.sharApp
 import city.zouitel.screens.sound
-import city.zouitel.systemDesign.Cons.APP_NAME
-import city.zouitel.systemDesign.Cons.KEY_CLICK
+import city.zouitel.screens.tags_screen.HashTagsScreen
+import city.zouitel.systemDesign.CommonConstants.APP_NAME
+import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
-import city.zouitel.systemDesign.Icons.COMMENT_EXCLAMATION
-import city.zouitel.systemDesign.Icons.HOME_ICON
-import city.zouitel.systemDesign.Icons.INTERROGATION_ICON
-import city.zouitel.systemDesign.Icons.SETTINGS_ICON
-import city.zouitel.systemDesign.Icons.SHARE_ICON
-import city.zouitel.systemDesign.Icons.TAGS_ICON
-import city.zouitel.systemDesign.Icons.REMOVE_ICON
+import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
+import city.zouitel.systemDesign.CommonIcons.COMMENT_EXCLAMATION
+import city.zouitel.systemDesign.CommonIcons.HOME_ICON
+import city.zouitel.systemDesign.CommonIcons.INTERROGATION_ICON
+import city.zouitel.systemDesign.CommonIcons.SETTINGS_ICON
+import city.zouitel.systemDesign.CommonIcons.SHARE_ICON
+import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
+import city.zouitel.systemDesign.CommonIcons.REMOVE_ICON
 import city.zouitel.tags.ui.TagScreenModel
-import city.zouitel.tags.model.Tag
-import city.zouitel.tags.ui.TagsScreen
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
 
@@ -42,9 +41,8 @@ fun NavigationDrawer(
     tagModel: TagScreenModel,
     dataStoreModel: DataStoreScreenModel,
     drawerState: DrawerState,
-    searchTitle: MutableState<String>?,
-    searchTagEntity: MutableState<Tag>?
-) {
+    homeScreen: MainScreenModel
+    ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
     val observeLabels = remember(tagModel,tagModel::getAllLTags).collectAsState()
@@ -72,8 +70,11 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(HOME_ICON), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                        navigator.push(HomeScreen())
+                        scope.launch {
+                            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+                            navigator.push(MainScreen(true))
+                            drawerState.close()
+                        }
                     }
                 )
             }
@@ -87,8 +88,11 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(TAGS_ICON), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                        navigator.push(TagsScreen())
+                        scope.launch {
+                            sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
+                            navigator.push(HashTagsScreen())
+                            drawerState.close()
+                        }
                     }
                 )
             }
@@ -97,27 +101,27 @@ fun NavigationDrawer(
                 com.google.accompanist.flowlayout.FlowRow(
                     mainAxisSpacing = 3.dp
                 ) {
-                    observeLabels.value.forEach { label ->
+                    observeLabels.value.forEach { tag ->
                         ElevatedFilterChip(
                             selected = true,
                             onClick = {
                                 scope.launch {
-                                    drawerState.close()
                                     sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
+                                    homeScreen.updateSearchTag(tag)
+                                    homeScreen.updateSearchTitle(tag.label ?: "")
+                                    drawerState.close()
                                 }
-                                searchTitle?.value = label.label!!
-                                searchTagEntity?.value = label
                             },
                             leadingIcon = {
                                 Icon(
                                     painter = painterResource(id = CIRCLE_ICON_18),
                                     contentDescription = null,
-                                    tint = Color(label.color),
+                                    tint = Color(tag.color),
                                     modifier = Modifier.size(10.dp)
                                 )
                             },
                             label = {
-                                label.label?.let { Text(it, fontSize = 11.sp) }
+                                tag.label?.let { Text(it, fontSize = 11.sp) }
                             },
                             shape = CircleShape
                         )
@@ -135,8 +139,11 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(SETTINGS_ICON), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                        navigator.push(Settings())
+                        scope.launch {
+                            sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
+                            navigator.push(SettingsScreen())
+                            drawerState.close()
+                        }
                     }
                 )
             }
@@ -147,8 +154,11 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(REMOVE_ICON), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                        navigator.push(RemovedScreen())
+                        scope.launch {
+                            sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
+                            navigator.push(MainScreen(false))
+                            drawerState.close()
+                        }
                     }
                 )
             }
@@ -160,8 +170,11 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(SHARE_ICON), null) },
                     selected = false,
                     onClick = {
-                        sharApp(context,"[COMING SOON.]")
-                        sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
+                        scope.launch {
+                            sharApp(context,"[COMING SOON.]")
+                            sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
+                            drawerState.close()
+                        }
                     }
                 )
             }
@@ -174,10 +187,9 @@ fun NavigationDrawer(
                     onClick = {
                         sound.makeSound.invoke(context, KEY_CLICK,thereIsSoundEffect.value)
                         scope.launch {
+                            Beetle.startFeedback()
                             drawerState.close()
                         }
-//                        mailTo(ctx,"mailto:example@gmail.com")
-                        Beetle.startFeedback()
                     }
                 )
             }
@@ -188,8 +200,11 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(INTERROGATION_ICON), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                        navigator.push(AboutScreen())
+                        scope.launch {
+                            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+                            navigator.push(AboutScreen())
+                            drawerState.close()
+                        }
                     }
                 )
             }

@@ -5,11 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
-import city.zouitel.systemDesign.Cons.IMPORTANT
-import city.zouitel.systemDesign.Cons.LOW
-import city.zouitel.systemDesign.Cons.NON
-import city.zouitel.systemDesign.Cons.NORMAL
-import city.zouitel.systemDesign.Cons.URGENT
+import city.zouitel.systemDesign.CommonConstants.IMPORTANT
+import city.zouitel.systemDesign.CommonConstants.LOW
+import city.zouitel.systemDesign.CommonConstants.NON
+import city.zouitel.systemDesign.CommonConstants.NORMAL
+import city.zouitel.systemDesign.CommonConstants.URGENT
 
 //
 val sharNote: (Context, String, String, then: () -> Unit) -> Unit = { ctx, title, description ,then ->

@@ -34,7 +34,7 @@ class DataStoreScreenModel(
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(),
-            city.zouitel.systemDesign.Cons.BY_NAME
+            CommonConstants.BY_NAME
         )
 
     val getTheme: StateFlow<String> = dataStoreRepo.getTheme

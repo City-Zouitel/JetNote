@@ -1,11 +1,10 @@
 package city.zouitel.init
 
-import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
-import city.zouitel.systemDesign.Cons.IMG_DIR
-import city.zouitel.systemDesign.Cons.LINK_DIR
-import city.zouitel.systemDesign.Cons.MEDIA_DIR
-import city.zouitel.systemDesign.Cons.REC_DIR
+import city.zouitel.systemDesign.CommonConstants.IMG_DIR
+import city.zouitel.systemDesign.CommonConstants.LINK_DIR
+import city.zouitel.systemDesign.CommonConstants.MEDIA_DIR
+import city.zouitel.systemDesign.CommonConstants.REC_DIR
 import net.sqlcipher.database.SQLiteDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named

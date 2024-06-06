@@ -1,8 +1,9 @@
-package city.zouitel.screens.top_action_bar
+package city.zouitel.systemDesign
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,19 +14,14 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
-import city.zouitel.screens.sound
-import city.zouitel.systemDesign.Cons
-import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.Icons
-import city.zouitel.systemDesign.CommonPopupTip
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun Open_Drawer(
+fun Open_Drawer(
     dataStoreModel: DataStoreScreenModel,
     drawerState: DrawerState,
-    ) {
+) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
 
@@ -34,7 +30,7 @@ internal fun Open_Drawer(
 
     CommonPopupTip(message = "Navigation Drawer") {
         Icon(
-            painterResource(Icons.MENU_BURGER_ICON),
+            painterResource(CommonIcons.MENU_BURGER_ICON),
             null,
             modifier = Modifier.combinedClickable(
                 onLongClick = {
@@ -44,7 +40,7 @@ internal fun Open_Drawer(
                 }
             ) {
                 scope.launch {
-                    sound.makeSound.invoke(context, Cons.KEY_CLICK, thereIsSoundEffect.value)
+                    SoundEffect().makeSound.invoke(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                     drawerState.open()
                 }
             }

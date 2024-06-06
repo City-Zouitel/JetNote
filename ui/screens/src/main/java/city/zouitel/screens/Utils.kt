@@ -13,11 +13,14 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
 import city.zouitel.note.model.Data
+import city.zouitel.note.ui.DataScreenModel
+import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.getColorOfPriority
+import java.io.File
+import java.util.UUID
 
 internal val sound = SoundEffect()
-
 
 val sharApp: (Context, String) -> Unit = { ctx, txt ->
     ctx.startActivity(
@@ -78,3 +81,30 @@ val DrawScope.normalNotePath: (Data) -> Unit get() = {
         )
     }
 }
+
+fun copyNote(
+    ctx: Context,
+    dataScreenModel: DataScreenModel,
+    note: Data,
+    uid: UUID,
+    cc : () -> Unit
+) {
+    dataScreenModel.addData(
+        note.copy(uid = uid.toString())
+    )
+    //
+    "${ctx.filesDir.path}/${CommonConstants.IMG_DIR}/".apply {
+        File("$this${note.uid}.${CommonConstants.JPEG}").let {
+            if (it.exists()) it.copyTo(File("${this}${uid}.${CommonConstants.JPEG}"))
+        }
+    }
+    //
+    "${ctx.filesDir.path}/${CommonConstants.REC_DIR}/".apply {
+        File("$this${note.uid}.${CommonConstants.MP3}").let {
+            if (it.exists()) it.copyTo(File("$this${uid}.${CommonConstants.MP3}"))
+        }
+    }
+    //
+    cc.invoke()
+}
+

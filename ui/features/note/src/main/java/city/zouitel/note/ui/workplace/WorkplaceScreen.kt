@@ -49,9 +49,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -82,9 +82,9 @@ import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.RemindingNote
 import city.zouitel.systemDesign.CommonTextField
-import city.zouitel.systemDesign.Cons
+import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.Icons
+import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.ImageDisplayed
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.findUrlLink
@@ -107,50 +107,73 @@ data class WorkplaceScreen(
     val description: String? = null,
     val backgroundColor: Int = 0,
     val textColor: Int = 0,
-    val priority: String = Cons.NON,
+    val priority: String = CommonConstants.NON,
     val reminding: Long = 0
 ): Screen {
+
+    @Composable
+    override fun Content() {
+        val workspaceModel = getScreenModel<WorkplaceScreenModel>()
+
+        LaunchedEffect(!isNew) {
+            workspaceModel.updateTextColor(textColor)
+                .updateBackgroundColor(backgroundColor)
+                .updatePriority(priority)
+        }
+
+        Workplace(
+            notificationModel = getScreenModel<NotificationScreenModel>(),
+            dataModel = getScreenModel<DataScreenModel>(),
+            tagModel = getScreenModel<TagScreenModel>(),
+            noteAndTagModel = getScreenModel<NoteAndTagScreenModel>(),
+            taskModel = getScreenModel<TaskScreenModel>(),
+            noteAndTodoModel = getScreenModel<NoteAndTaskScreenModel>(),
+            linkModel = getScreenModel<LinkScreenModel>(),
+            noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>(),
+            dataStoreModel = getScreenModel<DataStoreScreenModel>(),
+            audioModel = getScreenModel<AudioScreenModel>(),
+            noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>(),
+            workspaceModel = workspaceModel
+        )
+    }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    override fun Content() {
-
+    private fun Workplace(
+        notificationModel: NotificationScreenModel,
+        dataModel: DataScreenModel,
+        tagModel: TagScreenModel,
+        noteAndTagModel: NoteAndTagScreenModel,
+        taskModel: TaskScreenModel,
+        noteAndTodoModel: NoteAndTaskScreenModel,
+        linkModel: LinkScreenModel,
+        noteAndLinkModel: NoteAndLinkScreenModel,
+        dataStoreModel: DataStoreScreenModel,
+        audioModel: AudioScreenModel,
+        noteAndAudioModel: NoteAndAudioScreenModel,
+        workspaceModel: WorkplaceScreenModel
+    ) {
         val navigator = LocalNavigator.current
         val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
         val internalPath = context.filesDir.path
-
-        val notificationModel = getScreenModel<NotificationScreenModel>()
-        val dataModel = getScreenModel<DataScreenModel>()
-        val tagModel = getScreenModel<TagScreenModel>()
-        val noteAndTagModel = getScreenModel<NoteAndTagScreenModel>()
-        val taskModel = getScreenModel<TaskScreenModel>()
-        val noteAndTodoModel = getScreenModel<NoteAndTaskScreenModel>()
-        val linkModel = getScreenModel<LinkScreenModel>()
-        val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
-        val dataStoreModel = getScreenModel<DataStoreScreenModel>()
-        val audioModel = getScreenModel<AudioScreenModel>()
-        val noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
-        val workspaceModel = getScreenModel<WorkplaceScreenModel>()
 
         val focusRequester by lazy { FocusRequester() }
         val sound by lazy { SoundEffect() }
         val imageFile by lazy { id getImgPath context }
         val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
         val bitImg by lazy { BitmapFactory.decodeFile(imageFile) }
-        val uiState by lazy { workspaceModel.uiState }
-
-        LaunchedEffect(isNew) {
-            initializeUiState(workspaceModel)
-        }
 
         val titleState = rememberTextFieldState(title ?: "")
         val descriptionState = rememberTextFieldState(description ?: "")
 
         val photoState = remember { mutableStateOf<Bitmap?>(bitImg) }
 
-        val thereIsSoundEffect by remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+        val thereIsSoundEffect by remember(
+            dataStoreModel,
+            dataStoreModel::getSound
+        ).collectAsState()
         val observeNotesAndLabels by remember(
             noteAndTagModel,
             noteAndTagModel::getAllNotesAndTags
@@ -172,6 +195,7 @@ data class WorkplaceScreen(
         val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
         val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
             .collectAsState()
+        val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
 
         var imageUriState by remember { mutableStateOf<Uri?>(File(imageFile).toUri()) }
         val img by rememberSaveable { mutableStateOf(photoState) }
@@ -182,7 +206,9 @@ data class WorkplaceScreen(
                 dataModel::decodeBitmapImage.invoke(img, photoState, it!!, context)
                 img.value = photoState.value
                 dataModel::saveImageLocally.invoke(
-                    img.value, "$internalPath/${Cons.IMG_DIR}", "$id.${Cons.JPEG}"
+                    img.value,
+                    "$internalPath/${CommonConstants.IMG_DIR}",
+                    "$id.${CommonConstants.JPEG}"
                 )
             }
 
@@ -201,7 +227,11 @@ data class WorkplaceScreen(
                         backgroundColor = MaterialTheme.colorScheme.outlineVariant
                     ),
                     onClick = {
-                        sound.makeSound.invoke(context, Cons.KEY_STANDARD, thereIsSoundEffect)
+                        sound.makeSound.invoke(
+                            context,
+                            CommonConstants.KEY_STANDARD,
+                            thereIsSoundEffect
+                        )
 
                         if (isNew) {
                             dataModel.addData(
@@ -235,7 +265,7 @@ data class WorkplaceScreen(
                     }
                 ) {
                     Icon(
-                        painter = painterResource(id = if(isNew) Icons.DONE_ICON else Icons.EDIT_ICON),
+                        painter = painterResource(id = if (isNew) CommonIcons.DONE_ICON else CommonIcons.EDIT_ICON),
                         null
                     )
                 }
@@ -335,7 +365,7 @@ data class WorkplaceScreen(
 
                 // Link display.
                 item {
-                    findUrlLink(descriptionState.text.toString()) ?. let { links ->
+                    findUrlLink(descriptionState.text.toString())?.let { links ->
                         for (link in links) {
                             CacheLinks(
                                 linkScreenModel = linkModel,
@@ -385,7 +415,7 @@ data class WorkplaceScreen(
                                     leadingIcon = {
                                         if (it >= java.util.Calendar.getInstance().time.time) {
                                             Icon(
-                                                painterResource(Icons.BELL_RING_ICON),
+                                                painterResource(CommonIcons.BELL_RING_ICON),
                                                 null,
                                                 tint = MaterialTheme.colorScheme.surfaceVariant
                                             )
@@ -413,7 +443,7 @@ data class WorkplaceScreen(
                                 onClick = { },
                                 leadingIcon = {
                                     Icon(
-                                        painter = painterResource(id = Icons.CIRCLE_ICON_18),
+                                        painter = painterResource(id = CommonIcons.CIRCLE_ICON_18),
                                         contentDescription = null,
                                         tint = Color(it.color),
                                         modifier = Modifier.size(10.dp)
@@ -479,12 +509,5 @@ data class WorkplaceScreen(
                 }
             }
         }
-    }
-
-    private fun initializeUiState(workplaceModel: WorkplaceScreenModel) {
-        workplaceModel
-            .updatePriority(priority)
-            .updateBackgroundColor(backgroundColor)
-            .updateTextColor(textColor)
     }
 }

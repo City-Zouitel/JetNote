@@ -2,10 +2,7 @@ package city.zouitel.links.worker
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.core.graphics.drawable.toBitmap
 import androidx.work.*
-import coil.ImageLoader
-import coil.request.ImageRequest
 import city.zouitel.domain.usecase.LinkUseCase
 import city.zouitel.domain.usecase.NoteAndLinkUseCase
 import city.zouitel.links.mapper.LinkMapper
@@ -17,12 +14,9 @@ import city.zouitel.links.utils.Constants.LINK_ID
 import city.zouitel.links.utils.Constants.NOTE_ID
 import city.zouitel.links.utils.Constants.TITLE
 import city.zouitel.links.utils.Constants.URL
-import city.zouitel.systemDesign.Cons
-import city.zouitel.systemDesign.Cons.LINK_DIR
 import city.zouitel.links.model.Link as InLink
 import city.zouitel.links.model.NoteAndLink as InNoteAndLink
 import kotlinx.coroutines.*
-import org.koin.core.component.KoinComponent
 import java.io.File
 import java.io.FileOutputStream
 

@@ -8,16 +8,13 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.DataUseCase
 import city.zouitel.note.mapper.DataMapper
-import city.zouitel.systemDesign.Cons.JPEG
+import city.zouitel.systemDesign.CommonConstants.JPEG
 import city.zouitel.note.model.Data as InData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

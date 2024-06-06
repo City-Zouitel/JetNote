@@ -33,12 +33,12 @@ import androidx.compose.ui.unit.sp
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.reminder.utils.Cons.SINGLE_DAY
 import city.zouitel.systemDesign.CommonRow
-import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.Cons.KEY_STANDARD
+import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
+import city.zouitel.systemDesign.CommonConstants.KEY_STANDARD
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.Icons.CALENDAR_ICON
-import city.zouitel.systemDesign.Icons.CLOCK_ICON
-import city.zouitel.systemDesign.Icons.REFRESH_ICON
+import city.zouitel.systemDesign.CommonIcons.CALENDAR_ICON
+import city.zouitel.systemDesign.CommonIcons.CLOCK_ICON
+import city.zouitel.systemDesign.CommonIcons.REFRESH_ICON
 import city.zouitel.systemDesign.SoundEffect
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import androidx.core.graphics.drawable.IconCompat
-import city.zouitel.systemDesign.Icons
+import city.zouitel.systemDesign.CommonIcons
 
 fun newNote(context: Context): ShortcutInfo {
     val intent = Intent(context, context::class.java)
@@ -13,7 +13,7 @@ fun newNote(context: Context): ShortcutInfo {
     return ShortcutInfo.Builder(context, "note")
         .setShortLabel("Compose")
         .setLongLabel("Compose")
-        .setIcon(IconCompat.createWithResource(context, Icons.PLUS_ICON_18).toIcon(context))
+        .setIcon(IconCompat.createWithResource(context, CommonIcons.PLUS_ICON_18).toIcon(context))
         .setIntent(intent)
         .build()
 }

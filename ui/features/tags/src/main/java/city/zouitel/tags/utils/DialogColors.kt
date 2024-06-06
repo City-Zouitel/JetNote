@@ -18,9 +18,8 @@ import city.zouitel.systemDesign.listOfBackgroundColors
 import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tags.model.Tag as InTag
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun DialogColors(tagModel: TagScreenModel, textFieldState: TextFieldState) {
+fun DialogColors(tagModel: TagScreenModel) {
 
     val uiState by lazy { tagModel.uiState }
 
@@ -39,13 +38,14 @@ internal fun DialogColors(tagModel: TagScreenModel, textFieldState: TextFieldSta
                                 tagModel.updateTag(
                                     InTag(
                                         id = uiState.currentId,
-                                        label = textFieldState.text.toString(),
+                                        label = uiState.currentLabel,
                                         color = it.toArgb()
                                     )
                                 ).invokeOnCompletion {
                                     tagModel.updateId()
                                         .updateColorDialogState()
                                         .updateColor()
+                                        .updateLabel()
                                 }
                             }
                     ) {

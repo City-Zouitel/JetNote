@@ -1,6 +1,6 @@
 package city.zouitel.quicknote.model
 
-import city.zouitel.systemDesign.Cons.NON
+import city.zouitel.systemDesign.CommonConstants.NON
 
 data class QuickData(
     var uid: String = "",

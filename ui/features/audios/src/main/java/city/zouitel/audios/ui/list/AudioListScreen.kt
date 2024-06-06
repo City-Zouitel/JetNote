@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -124,7 +123,7 @@ data class AudioListScreen(val noteUid: String): Screen {
             ) {
                 Icon(
                     modifier = Modifier.padding(horizontal = 4.dp),
-                    painter = painterResource(id = city.zouitel.systemDesign.Icons.CASSETTE_ICON),
+                    painter = painterResource(id = city.zouitel.systemDesign.CommonIcons.CASSETTE_ICON),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.surface
                 )

@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.pm.ShortcutInfo
 import androidx.core.graphics.drawable.IconCompat
 import city.zouitel.quicknote.QuickActivity
-import city.zouitel.systemDesign.Icons
+import city.zouitel.systemDesign.CommonIcons
 
 fun quickNote(context: Context): ShortcutInfo {
     val intent = Intent(context, QuickActivity::class.java)
@@ -14,7 +14,7 @@ fun quickNote(context: Context): ShortcutInfo {
     return ShortcutInfo.Builder(context, "quick_note")
         .setShortLabel("Quick")
         .setLongLabel("Quick Note")
-        .setIcon(IconCompat.createWithResource(context, Icons.PLUS_ICON_18).toIcon(context))
+        .setIcon(IconCompat.createWithResource(context, CommonIcons.PLUS_ICON_18).toIcon(context))
         .setIntent(intent)
         .build()
 }

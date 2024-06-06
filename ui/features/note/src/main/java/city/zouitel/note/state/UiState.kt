@@ -1,10 +1,10 @@
 package city.zouitel.note.state
 
 import android.net.Uri
-import city.zouitel.systemDesign.Cons
+import city.zouitel.systemDesign.CommonConstants
 
 internal data class UiState(
-    val priority: String = Cons.NONE,
+    val priority: String = CommonConstants.NONE,
     val remindingDialogState: Boolean = false,
     val reminding: Long = 0L,
     val recordedDialogState: Boolean = false,

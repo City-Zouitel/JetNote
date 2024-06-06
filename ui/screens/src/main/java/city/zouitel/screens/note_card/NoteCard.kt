@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -39,30 +38,27 @@ import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
-import city.zouitel.logic.getImgPath
-import city.zouitel.logic.getRecPath
-import city.zouitel.screens.navigation_drawer.Screens
-import city.zouitel.screens.navigation_drawer.Screens.*
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
-import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.Cons.NON
+import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
+import city.zouitel.systemDesign.CommonConstants.NON
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.Icons.ANGLE_DOWN_ICON
-import city.zouitel.systemDesign.Icons.ANGLE_UP_ICON
-import city.zouitel.systemDesign.Icons.CIRCLE_ICON_18
-import city.zouitel.systemDesign.Icons.RESET_ICON
+import city.zouitel.systemDesign.CommonIcons.ANGLE_DOWN_ICON
+import city.zouitel.systemDesign.CommonIcons.ANGLE_UP_ICON
+import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
+import city.zouitel.systemDesign.CommonIcons.RESET_ICON
 import city.zouitel.systemDesign.ImageDisplayed
 import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.screens.sound
 import city.zouitel.note.ui.workplace.WorkplaceScreen
+import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.normalNotePath
 import city.zouitel.screens.prioritizedNotePath
-import city.zouitel.systemDesign.Cons.LIST
-import city.zouitel.systemDesign.Icons.BELL_RING_ICON
+import city.zouitel.systemDesign.CommonConstants.LIST
+import city.zouitel.systemDesign.CommonIcons.BELL_RING_ICON
 import city.zouitel.tasks.ui.TaskScreenModel
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -79,17 +75,13 @@ fun NoteCard(
     noteAndAudioModel: NoteAndAudioScreenModel,
     linkModel: LinkScreenModel,
     noteAndLinkModel: NoteAndLinkScreenModel,
-    screen: Screens,
+    isHomeScreen: Boolean,
     noteEntity: Note,
-    homeSelectionState: MutableState<Boolean>?,
-    trashSelectionState: MutableState<Boolean>?,
-    selectedNotes: SnapshotStateList<Data>?,
+    homeModel: MainScreenModel,
     onSwipeNote: (Note) -> Unit,
 ) {
     val swipeState = rememberSwipeableActionsState()
     val currentLayout = remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
-
-
 
     val action = SwipeAction(
         onSwipe = {
@@ -117,10 +109,8 @@ fun NoteCard(
                 linkModel = linkModel,
                 noteAndLinkModel = noteAndLinkModel,
                 noteEntity = noteEntity,
-                screen = screen,
-                homeSelectionState = homeSelectionState,
-                trashSelectionState = trashSelectionState,
-                selectedNotes = selectedNotes
+                isHomeScreen = isHomeScreen,
+                homeModel = homeModel
             )
         }
     } else {
@@ -134,10 +124,8 @@ fun NoteCard(
             linkModel = linkModel,
             noteAndLinkModel = noteAndLinkModel,
             noteEntity = noteEntity,
-            screen = screen,
-            homeSelectionState = homeSelectionState,
-            trashSelectionState = trashSelectionState,
-            selectedNotes = selectedNotes
+            isHomeScreen = isHomeScreen,
+            homeModel = homeModel
         )
     }
 }
@@ -154,18 +142,17 @@ private fun Card(
     audioModel: AudioScreenModel,
     noteAndAudioModel: NoteAndAudioScreenModel,
     noteEntity: Note,
-    screen: Screens,
-    homeSelectionState: MutableState<Boolean>?,
-    trashSelectionState: MutableState<Boolean>?,
-    selectedNotes: SnapshotStateList<Data>?
+    isHomeScreen: Boolean,
+    homeModel: MainScreenModel
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.current
     val haptic = LocalHapticFeedback.current
 
+    val uiState by lazy { homeModel.uiState }
+
     val note = noteEntity.dataEntity
     val labels = noteEntity.tagEntities
-//    val internalPath = context.filesDir.path
 
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val observeTodoList = remember(taskModel, taskModel::getAllTaskList).collectAsState()
@@ -178,13 +165,8 @@ private fun Card(
     val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
     val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
         .collectAsState()
-//    val mediaPath = context.filesDir.path + "/$REC_DIR/" + note.uid + "." + MP3
-//    val imagePath = "$internalPath/$IMG_DIR/${note.uid}.$JPEG"
-    val mediaPath = note.uid getRecPath context
-    val imagePath = note.uid getImgPath context
 
     var todoListState by remember { mutableStateOf(false) }
-//    val media = remember { mutableStateOf<Uri?>(File(imagePath).toUri()) }
 
     Card(
         modifier = Modifier
@@ -194,24 +176,13 @@ private fun Card(
                 onLongClick = {
                     // To make vibration.
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-
-                    when (screen) {
-                        HOME_SCREEN -> {
-                            homeSelectionState?.value = true
-                        }
-
-                        DELETED_SCREEN -> {
-                            trashSelectionState?.value = true
-                        }
-
-                        else -> {}
-                    }
-                    selectedNotes?.add(note)
+                    homeModel.updateSelectedNotes(note)
+                    homeModel.updateSelection(true)
                 }
             ) {
                 sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
 
-                if (screen == HOME_SCREEN && !homeSelectionState?.value!!) {
+                if (isHomeScreen && !uiState.isSelection) {
                     navigator?.push(
                         WorkplaceScreen(
                             id = note.uid,
@@ -224,17 +195,16 @@ private fun Card(
                             reminding = note.reminding
                         )
                     )
-                } else if (screen == DELETED_SCREEN && !trashSelectionState?.value!!) {
-                    /*do nothing.*/
+                } else if (!isHomeScreen && !uiState.isSelection) {
+                    /*show return note dialog.*/
                 } else {
                     when {
-                        !selectedNotes?.contains(note)!! -> selectedNotes.add(note)
-                        else -> selectedNotes.remove(note)
+                        !uiState.selectedNotes.contains(note) -> uiState.selectedNotes.add(note)
+                        else -> uiState.selectedNotes.remove(note)
                     }
                 }
-                selectedNotes?.ifEmpty {
-                    homeSelectionState?.value = false
-                    trashSelectionState?.value = false
+                uiState.selectedNotes.ifEmpty {
+                    homeModel.updateSelection(false)
                 }
             }
             .drawBehind {
@@ -246,11 +216,10 @@ private fun Card(
             },
         shape = AbsoluteRoundedCornerShape(15.dp),
         border =
-            if(selectedNotes?.contains(note) == true) {
-                when(screen) {
-                    HOME_SCREEN -> BorderStroke(3.dp, Color.Cyan)
-                    DELETED_SCREEN -> BorderStroke(3.dp, Color.Red)
-                    else -> { throw Exception("") }
+            if(uiState.selectedNotes.contains(note)) {
+                when(isHomeScreen) {
+                    true -> BorderStroke(3.dp, Color.Cyan)
+                    false -> BorderStroke(3.dp, Color.Red)
                 }
             } else {
                 BorderStroke(0.dp, Color.Transparent)
@@ -263,11 +232,9 @@ private fun Card(
     ) {
 
         // display the image.
-        when (screen) {
-            HOME_SCREEN, DELETED_SCREEN -> {
+        when (isHomeScreen) {
+            true, false -> {
                 ImageDisplayed(media = dataModel::imageDecoder.invoke(context, note.uid))
-            }
-            else -> { // Timber.tag(TAG).d("")
             }
         }
 
@@ -326,7 +293,7 @@ private fun Card(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (screen == DELETED_SCREEN) {
+            if (!isHomeScreen) {
                 IconButton(onClick = {
                     dataModel.editData(
                         Data(
@@ -348,7 +315,7 @@ private fun Card(
             }
 
             //display the reminding chip.
-            if (screen == HOME_SCREEN && note.reminding != 0L) {
+            if (isHomeScreen && note.reminding != 0L) {
                 note.reminding.let {
                     runCatching {
                         ElevatedAssistChip(

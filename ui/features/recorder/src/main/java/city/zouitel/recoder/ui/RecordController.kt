@@ -14,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import city.zouitel.recoder.screenmodel.RecorderScreenModel
 import city.zouitel.systemDesign.CommonRow
-import city.zouitel.systemDesign.Icons.MIC_ICON_36
-import city.zouitel.systemDesign.Icons.PAUSE_CIRCLE_FILLED_ICON_36
-import city.zouitel.systemDesign.Icons.PLAY_CIRCLE_FILLED_ICON_36
-import city.zouitel.systemDesign.Icons.STOP_CIRCLE_ICON_36
+import city.zouitel.systemDesign.CommonIcons.MIC_ICON_36
+import city.zouitel.systemDesign.CommonIcons.PAUSE_CIRCLE_FILLED_ICON_36
+import city.zouitel.systemDesign.CommonIcons.PLAY_CIRCLE_FILLED_ICON_36
+import city.zouitel.systemDesign.CommonIcons.STOP_CIRCLE_ICON_36
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

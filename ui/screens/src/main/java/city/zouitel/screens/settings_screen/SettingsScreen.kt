@@ -23,30 +23,41 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.sound
-import city.zouitel.screens.top_action_bar.CustomTopAppBar
 import city.zouitel.systemDesign.AdaptingRowBetween
-import city.zouitel.systemDesign.Cons.KEY_CLICK
+import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
+import city.zouitel.systemDesign.CommonTopAppBar
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.ui.TagScreenModel
-import org.koin.core.component.KoinComponent
 
-class Settings: Screen,  KoinComponent {
+class SettingsScreen: Screen {
+
+    @Composable
+    override fun Content() {
+
+        Settings(
+            tagModel = getScreenModel<TagScreenModel>(),
+            datastoreModel = getScreenModel<DataStoreScreenModel>(),
+            mainScreen = getScreenModel<MainScreenModel>()
+        )
+    }
+
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun Content() {
-//        val dataStoreVM: DataStoreScreenModel by inject()
-
-        val tagModel = getScreenModel<TagScreenModel>()
-        val dataStoreModel = getScreenModel<DataStoreScreenModel>()
+    private fun Settings(
+        tagModel: TagScreenModel,
+        datastoreModel: DataStoreScreenModel,
+        mainScreen: MainScreenModel
+    ) {
 
         val navigator = LocalNavigator.currentOrThrow
         val context = LocalContext.current
 
-        val isDarkTheme = remember(dataStoreModel, dataStoreModel::getTheme).collectAsState()
-        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+        val isDarkTheme = remember(datastoreModel, datastoreModel::getTheme).collectAsState()
+        val thereIsSoundEffect = remember(datastoreModel, datastoreModel::getSound).collectAsState()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
         val lazyListState = rememberLazyListState()
@@ -58,11 +69,10 @@ class Settings: Screen,  KoinComponent {
             drawerState = drawerState,
             drawerContent = {
                 NavigationDrawer(
-                    dataStoreModel = dataStoreModel,
+                    dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    searchTagEntity = null,
-                    searchTitle = null
+                    homeScreen = mainScreen
                 )
             },
             modifier = Modifier.navigationBarsPadding()
@@ -71,10 +81,10 @@ class Settings: Screen,  KoinComponent {
                 scaffoldState = scaffoldState,
                 backgroundColor = MaterialTheme.colorScheme.surface,
                 topBar = {
-                    CustomTopAppBar(
-                        dataStoreModel = dataStoreModel,
+                    CommonTopAppBar(
+                        datastoreModel = datastoreModel,
                         drawerState = drawerState,
-                        topAppBarScrollBehavior = scrollBehavior,
+                        scrollBehavior = scrollBehavior,
                         title = "Settings"
                     )
                 },
@@ -93,7 +103,7 @@ class Settings: Screen,  KoinComponent {
                             active = isDarkTheme.value == "DARK"
                         ) {
                             sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                            dataStoreModel.setTheme(
+                            datastoreModel.setTheme(
                                 if (isDarkTheme.value == "DARK") "LITE" else "DARK"
                             )
                         }
@@ -110,7 +120,7 @@ class Settings: Screen,  KoinComponent {
                             active = thereIsSoundEffect.value
                         ) {
                             sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                            dataStoreModel.setSound(!thereIsSoundEffect.value)
+                            datastoreModel.setSound(!thereIsSoundEffect.value)
                         }
                     }
 

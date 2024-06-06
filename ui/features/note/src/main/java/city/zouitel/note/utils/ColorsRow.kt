@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import city.zouitel.systemDesign.Cons.KEY_CLICK
+import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.SoundEffect
 
@@ -26,7 +26,7 @@ fun ColorsRow(
     dataStoreModel: DataStoreScreenModel,
     colors: Array<Color>,
     onAction: (Int) -> Unit
-    ) {
+) {
 
     val currentColor = remember { mutableStateOf(Color.White) }
     val ctx = LocalContext.current
@@ -50,7 +50,6 @@ fun ColorsRow(
                     .clickable {
                         sound.makeSound.invoke(ctx, KEY_CLICK, thereIsSoundEffect.value)
                         currentColor.value = it
-//                        colorState.value = it.toArgb()
                         onAction.invoke(it.toArgb())
                     }
             ){

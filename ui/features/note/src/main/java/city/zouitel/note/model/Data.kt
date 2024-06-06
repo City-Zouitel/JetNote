@@ -1,7 +1,7 @@
 package city.zouitel.note.model
 
 import androidx.annotation.Keep
-import city.zouitel.systemDesign.Cons.NON
+import city.zouitel.systemDesign.CommonConstants.NON
 
 @Keep
 data class Data(

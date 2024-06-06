@@ -2,7 +2,7 @@ package city.zouitel.recoder.screenmodel
 
 import android.media.MediaRecorder
 import cafe.adriel.voyager.core.model.ScreenModel
-import city.zouitel.systemDesign.Cons.MP3
+import city.zouitel.systemDesign.CommonConstants.MP3
 import java.io.File
 
 class MediaRecordScreenModel(private val recPath: String): ScreenModel {

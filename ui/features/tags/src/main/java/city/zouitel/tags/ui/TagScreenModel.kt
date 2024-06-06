@@ -24,7 +24,7 @@ class TagScreenModel(
     private val mapper: TagMapper
 ): ScreenModel {
 
-    internal var uiState by mutableStateOf(UiState())
+    var uiState by mutableStateOf(UiState())
         private set
 
     private val _getAllTags = MutableStateFlow<List<InTag>>(emptyList())
@@ -66,7 +66,14 @@ class TagScreenModel(
 
     fun updateColorDialogState(isShow: Boolean = false): TagScreenModel {
         screenModelScope.launch {
-            uiState = uiState.copy(colorsDialogState = isShow)
+            uiState = uiState.copy(isColorsDialog = isShow)
+        }
+        return this
+    }
+
+    fun updateLabel(label: String = ""): TagScreenModel {
+        screenModelScope.launch {
+            uiState = uiState.copy(currentLabel = label)
         }
         return this
     }

@@ -12,7 +12,7 @@ import city.zouitel.audios.model.Audio
 import city.zouitel.audios.state.AudioUiState
 import city.zouitel.domain.exoplayer.ExoPlayerImpl
 import city.zouitel.domain.usecase.AudioUseCase
-import city.zouitel.systemDesign.Icons
+import city.zouitel.systemDesign.CommonIcons
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -60,7 +60,7 @@ class AudioScreenModel (
         screenModelScope.launch {
             exoBuilder.playMedia()
             uiState = uiState.copy(isPlaying = true)
-            uiState = uiState.copy(icon = Icons.PAUSE_CIRCLE_FILLED_ICON_24)
+            uiState = uiState.copy(icon = CommonIcons.PAUSE_CIRCLE_FILLED_ICON_24)
         }
     }
 
@@ -68,7 +68,7 @@ class AudioScreenModel (
         screenModelScope.launch {
             exoBuilder.pauseMedia()
             uiState = uiState.copy(isPlaying = false)
-            uiState = uiState.copy(icon = Icons.PLAY_CIRCLE_FILLED_ICON_24)
+            uiState = uiState.copy(icon = CommonIcons.PLAY_CIRCLE_FILLED_ICON_24)
         }
     }
 

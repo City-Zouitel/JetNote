@@ -7,7 +7,7 @@ import androidx.annotation.WorkerThread
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.WidgetUseCase
-import city.zouitel.systemDesign.Cons
+import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.widget.mapper.WidgetMapper
 import city.zouitel.widget.model.WidgetNote as InNote
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +38,7 @@ class WidgetScreenModel(
 
     @WorkerThread
     fun imageDecoder(context: Context, uid: String): Bitmap {
-        val path = File(context.filesDir.path + "/" + Cons.IMG_DIR, "$uid.${Cons.JPEG}")
+        val path = File(context.filesDir.path + "/" + CommonConstants.IMG_DIR, "$uid.${CommonConstants.JPEG}")
         val bitmapOptions = BitmapFactory.Options()
         bitmapOptions.inSampleSize = 4
         return BitmapFactory.decodeFile(path.absolutePath, bitmapOptions)

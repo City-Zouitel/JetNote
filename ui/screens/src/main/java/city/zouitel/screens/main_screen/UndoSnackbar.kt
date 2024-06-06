@@ -1,4 +1,4 @@
-package city.zouitel.screens.home_screen
+package city.zouitel.screens.main_screen
 
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
@@ -6,8 +6,8 @@ import androidx.compose.runtime.State
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
-import city.zouitel.systemDesign.Cons.TRASH_MESSAGE
-import city.zouitel.systemDesign.Cons.UNDO
+import city.zouitel.systemDesign.CommonConstants.TRASH_MESSAGE
+import city.zouitel.systemDesign.CommonConstants.UNDO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

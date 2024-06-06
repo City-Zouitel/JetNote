@@ -24,8 +24,9 @@ class TaskScreenModel(
     private val mapper: TaskMapper
 ): ScreenModel {
 
-    internal var uiState by mutableStateOf(UiState())
-        private set
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState = _uiState.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), UiState())
+
 
     private val _getAllTaskList = MutableStateFlow<List<InTask>>(emptyList())
     val getAllTaskList:StateFlow<List<InTask>> = _getAllTaskList.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
@@ -38,21 +39,35 @@ class TaskScreenModel(
         }
     }
 
-    fun addTotoItem(task: InTask) = screenModelScope.launch(Dispatchers.IO) {
-        add.invoke(mapper.toDomain(task))
+    fun addTotoItem(task: InTask) {
+        screenModelScope.launch(Dispatchers.IO) {
+            add.invoke(mapper.toDomain(task))
+        }
     }
 
-    fun updateTotoItem(task: InTask) = screenModelScope.launch(Dispatchers.IO) {
-        update.invoke(mapper.toDomain(task))
+    fun updateTotoItem(task: InTask)  {
+        screenModelScope.launch(Dispatchers.IO) {
+            update.invoke(mapper.toDomain(task))
+        }
     }
 
-    fun deleteTotoItem(task: InTask) = screenModelScope.launch(Dispatchers.IO) {
-        delete.invoke(mapper.toDomain(task))
+    fun deleteTotoItem(task: InTask) {
+        screenModelScope.launch(Dispatchers.IO) {
+            delete.invoke(mapper.toDomain(task))
+        }
     }
 
     fun updateId(id: Long = 0L): TaskScreenModel {
         screenModelScope.launch {
-            uiState = uiState.copy(currentId = id)
+            _uiState.value = _uiState.value.copy(currentId = id)
+        }
+        return this
+    }
+
+
+    fun updateItem(item: String = ""): TaskScreenModel {
+        screenModelScope.launch {
+            _uiState.value = _uiState.value.copy(currentItem = item)
         }
         return this
     }

@@ -12,15 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.audios.model.Audio
 import city.zouitel.systemDesign.CommonRow
-import city.zouitel.systemDesign.Cons
-import city.zouitel.systemDesign.Cons.LIST
+import city.zouitel.systemDesign.CommonConstants
+import city.zouitel.systemDesign.CommonConstants.LIST
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.Icons
+import city.zouitel.systemDesign.CommonIcons
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
@@ -33,7 +32,7 @@ fun MiniAudioPlayer(
     localMediaUid: String?,
     audio: Audio
 ) {
-    val mediaFile = audioScreenModel.rec_path.value + File.separator +  localMediaUid + "." + Cons.MP3
+    val mediaFile = audioScreenModel.rec_path.value + File.separator +  localMediaUid + "." + CommonConstants.MP3
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
     val currentLayout by dataStoreModel.getLayout.collectAsState()
@@ -69,7 +68,7 @@ fun MiniAudioPlayer(
                 if (currentLayout == LIST) {
                     Icon(
                         painter = painterResource(
-                            id = if (isPlaying.value) Icons.PAUSE_CIRCLE_FILLED_ICON else Icons.PLAY_CIRCLE_FILLED_ICON
+                            id = if (isPlaying.value) CommonIcons.PAUSE_CIRCLE_FILLED_ICON else CommonIcons.PLAY_CIRCLE_FILLED_ICON
                         ),
                         null,
                         modifier = Modifier
@@ -95,7 +94,7 @@ fun MiniAudioPlayer(
                     ) {
                         Icon(
                             painter = painterResource(
-                                id = if (isPlaying.value) Icons.PAUSE_CIRCLE_FILLED_ICON else Icons.PLAY_CIRCLE_FILLED_ICON
+                                id = if (isPlaying.value) CommonIcons.PAUSE_CIRCLE_FILLED_ICON else CommonIcons.PLAY_CIRCLE_FILLED_ICON
                             ),
                             null,
                             modifier = Modifier

@@ -2,7 +2,7 @@ package city.zouitel.recoder.di
 
 import city.zouitel.recoder.screenmodel.*
 import city.zouitel.recoder.mapper.*
-import city.zouitel.systemDesign.Cons.REC_DIR
+import city.zouitel.systemDesign.CommonConstants.REC_DIR
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module

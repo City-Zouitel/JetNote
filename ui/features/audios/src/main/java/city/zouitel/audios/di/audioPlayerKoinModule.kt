@@ -10,7 +10,7 @@ import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import org.koin.core.module.dsl.singleOf
 import city.zouitel.domain.exoplayer.*
-import city.zouitel.systemDesign.Cons.REC_DIR
+import city.zouitel.systemDesign.CommonConstants.REC_DIR
 import kotlinx.coroutines.Dispatchers
 import linc.com.amplituda.Amplituda
 import org.koin.core.module.dsl.factoryOf

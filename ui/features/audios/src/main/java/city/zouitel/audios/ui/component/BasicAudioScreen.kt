@@ -32,7 +32,7 @@ import city.zouitel.audios.model.Audio
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.list.AudioListScreenModel
 import city.zouitel.systemDesign.CommonRow
-import city.zouitel.systemDesign.Icons
+import city.zouitel.systemDesign.CommonIcons
 import com.linc.audiowaveform.AudioWaveform
 import com.linc.audiowaveform.model.AmplitudeType
 import com.linc.audiowaveform.model.WaveformAlignment
@@ -90,7 +90,7 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
                 )
             },
             icon = {
-                Icon(painterResource(Icons.DELETE_OUTLINE_ICON), null)
+                Icon(painterResource(CommonIcons.DELETE_OUTLINE_ICON), null)
             },
             background = Color.Red
         )

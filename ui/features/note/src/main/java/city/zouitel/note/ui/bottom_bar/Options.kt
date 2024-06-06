@@ -32,16 +32,16 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.list.AudioListScreen
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
-import city.zouitel.systemDesign.Cons.KEY_CLICK
-import city.zouitel.systemDesign.Cons.KEY_STANDARD
+import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
+import city.zouitel.systemDesign.CommonConstants.KEY_STANDARD
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.Icons.ADD_IMAGE_ICON
-import city.zouitel.systemDesign.Icons.CAMERA_ICON
-import city.zouitel.systemDesign.Icons.CASSETTE_ICON
-import city.zouitel.systemDesign.Icons.GESTURE_ICON
-import city.zouitel.systemDesign.Icons.LIST_CHECK_ICON
-import city.zouitel.systemDesign.Icons.MIC_ICON
-import city.zouitel.systemDesign.Icons.TAGS_ICON
+import city.zouitel.systemDesign.CommonIcons.ADD_IMAGE_ICON
+import city.zouitel.systemDesign.CommonIcons.CAMERA_ICON
+import city.zouitel.systemDesign.CommonIcons.CASSETTE_ICON
+import city.zouitel.systemDesign.CommonIcons.GESTURE_ICON
+import city.zouitel.systemDesign.CommonIcons.LIST_CHECK_ICON
+import city.zouitel.systemDesign.CommonIcons.MIC_ICON
+import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
 import city.zouitel.systemDesign.RationalDialog
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.getColorOfPriority
@@ -67,6 +67,7 @@ internal fun Options(
     val navBottomSheet = LocalBottomSheetNavigator.current
 
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
 
     val sound by lazy { SoundEffect() }
 
@@ -112,10 +113,8 @@ internal fun Options(
         }
     }
 
-    val uiState = workspaceModel.uiState
-
     val recorderRationalDialog = remember { mutableStateOf(false) }
-    val readMedaiRationalDialog = remember { mutableStateOf(false) }
+    val readMediaRationalDialog = remember { mutableStateOf(false) }
 
     RationalDialog(
         showRationalDialog = recorderRationalDialog,
@@ -124,7 +123,7 @@ internal fun Options(
     )
 
     RationalDialog(
-        showRationalDialog = readMedaiRationalDialog,
+        showRationalDialog = readMediaRationalDialog,
         permissionState = readMediaPermissions,
         permissionName = "audio record"
     )
@@ -157,7 +156,7 @@ internal fun Options(
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                 if(!readMediaPermissions.allPermissionsGranted) {
                     if (readMediaPermissions.shouldShowRationale) {
-                        readMedaiRationalDialog.value = true
+                        readMediaRationalDialog.value = true
                     } else {
                         readMediaPermissions.launchMultiplePermissionRequest()
                     }
@@ -247,12 +246,8 @@ internal fun Options(
                             modifier = Modifier
                                 .size(20.dp)
                                 .clickable {
+                                    sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
                                     workspaceModel.updatePriority(getPriorityOfColor(it))
-                                    sound.makeSound.invoke(
-                                        context,
-                                        KEY_CLICK,
-                                        thereIsSoundEffect.value
-                                    )
                                 }
                         ) {
                             drawArc(

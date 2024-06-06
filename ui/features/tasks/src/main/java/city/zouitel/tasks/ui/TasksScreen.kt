@@ -3,7 +3,14 @@ package city.zouitel.tasks.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
@@ -11,8 +18,22 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text2.input.clearText
 import androidx.compose.foundation.text2.input.rememberTextFieldState
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.contentColorFor
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -25,165 +46,175 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.systemDesign.CommonTextField
-import city.zouitel.systemDesign.Cons
-import city.zouitel.systemDesign.Icons.DELETE_OUTLINE_ICON
-import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
-import city.zouitel.tasks.model.Task as InTask
-import kotlinx.coroutines.Job
+import cafe.adriel.voyager.navigator.LocalNavigator
+import city.zouitel.systemDesign.CommonConstants
+import city.zouitel.systemDesign.CommonIcons
+import city.zouitel.systemDesign.CommonIcons.DELETE_OUTLINE_ICON
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
-import org.koin.core.component.KoinComponent
 import kotlin.random.Random
+import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
+import city.zouitel.tasks.model.Task as InTask
 
-data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
-    @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
+
     @Composable
     override fun Content() {
+
+        Tasks(
+            taskModel = getScreenModel<TaskScreenModel>(),
+            noteAndTaskModel = getScreenModel<NoteAndTaskScreenModel>()
+        )
+    }
+
+    @OptIn(
+        ExperimentalComposeUiApi::class,
+        ExperimentalMaterial3Api::class
+    )
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @Composable
+    private fun Tasks(
+        taskModel: TaskScreenModel,
+        noteAndTaskModel: NoteAndTaskScreenModel
+    ) {
         val keyboardManager = LocalFocusManager.current
+        val navigator = LocalNavigator.current
 
-        val taskModel = getScreenModel<TaskScreenModel>()
-        val noteAndTodoListModel = getScreenModel<NoteAndTaskScreenModel>()
+        val observeTaskList by remember(taskModel, taskModel::getAllTaskList).collectAsState()
+        val observeNoteAndTodoList by remember(
+            noteAndTaskModel,
+            noteAndTaskModel::getAllNotesAndTask
+        ).collectAsState()
+        val uiState by remember(taskModel, taskModel::uiState).collectAsState()
 
-        val observeTaskList = taskModel.getAllTaskList.collectAsState()
-        val observeNoteAndTodoList = noteAndTodoListModel.getAllNotesAndTask.collectAsState()
-
-        val uiState by lazy { taskModel.uiState }
         val focusRequester by lazy { FocusRequester() }
 
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
 
-        val textFieldState = rememberTextFieldState("")
-
         Scaffold(
-            modifier = Modifier.navigationBarsPadding()
+            modifier = Modifier.navigationBarsPadding(),
+            floatingActionButton = {
+                FloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.outlineVariant,
+                    contentColor = contentColorFor(
+                        backgroundColor = MaterialTheme.colorScheme.outlineVariant
+                    ),
+                    onClick = { navigator?.pop() }) {
+                    Icon(
+                        painter = painterResource(CommonIcons.DONE_ICON),
+                        contentDescription = null
+                    )
+                }
+            }
         ) {
             LazyColumn(
-                modifier = Modifier.padding(top = 25.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(top = 25.dp)
             ) {
-                items(observeTaskList.value) { task ->
-                    if (observeNoteAndTodoList.value.contains(
+                items(observeTaskList) { task ->
+                    if (observeNoteAndTodoList.contains(
                             InNoteAndTask(id, task.id)
                         )
                     ) {
-                        TodoItem(task, taskModel) {
-                            taskModel.deleteTotoItem(
-                                InTask(id = task.id)
-                            )
-                        }
+                        TaskItem(
+                            task = task,
+                            taskModel = taskModel,
+                            onSwipe = {
+                                taskModel.deleteTotoItem(
+                                    InTask(id = task.id)
+                                )
+                            },
+                            onClick = {
+                                taskModel
+                                    .updateId(task.id)
+                                    .updateItem(task.item ?: "")
+                            }
+                        )
                     }
                 }
                 item {
-                    CommonTextField(
-                        state = textFieldState,
+                    OutlinedTextField(
                         modifier = Modifier
                             .focusRequester(focusRequester)
                             .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) },
-                        placeholder = "Task..",
-                        imeAction = ImeAction.Done,
+                        value = uiState.currentItem,
+                        onValueChange = { taskModel.updateItem(it) },
+                        singleLine = true,
+                        textStyle = TextStyle(
+                            fontSize = 19.sp,
+                            color = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface)
+                        ),
+                        placeholder = {
+                            Text(
+                                text = "Task..",
+                                maxLines = 1,
+                                style = TextStyle(
+                                    fontSize = 19.sp,
+                                    color = Color.DarkGray
+                                )
+                            )
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Done
+                        ),
                         keyboardActions = KeyboardActions(
                             onDone = {
-                                if (observeTaskList.value.any { it.id == uiState.currentId }) {
+                                if (observeTaskList.any { it.id == uiState.currentId }) {
                                     taskModel.updateTotoItem(
                                         InTask(
                                             uiState.currentId,
-                                            textFieldState.text.toString(),
+                                            uiState.currentItem,
                                             false
                                         )
                                     )
                                 } else {
                                     Random.nextLong().let {
                                         taskModel.addTotoItem(
-                                            InTask(it, textFieldState.text.toString(), false)
+                                            InTask(it, uiState.currentItem, false)
                                         )
-                                        noteAndTodoListModel.addNoteAndTaskItem(InNoteAndTask(id, it))
+                                        noteAndTaskModel.addNoteAndTaskItem(InNoteAndTask(id, it))
                                     }
-                                }.invokeOnCompletion {
-                                    textFieldState.clearText()
+                                }.also {
                                     taskModel.updateId()
+                                        .updateItem()
                                 }
                             }
+                        ),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedTextColor = Color.DarkGray,
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedBorderColor = Color.Transparent
                         )
                     )
-
-//                    OutlinedTextField(
-//                        value = uiState.currentTask,
-//                        onValueChange = { taskModel.updateTask(it) },
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .background(MaterialTheme.colorScheme.surface),
-//                        placeholder = {
-//                            Text("Task..", color = Color.Gray, fontSize = 19.sp)
-//                        },
-//                        maxLines = 1,
-//                        textStyle = TextStyle(
-//                            fontSize = 18.sp,
-//                            fontWeight = FontWeight.Normal,
-//                            fontFamily = FontFamily.Default,
-//                        ),
-//                        keyboardOptions = KeyboardOptions(
-//                            capitalization = KeyboardCapitalization.Sentences,
-//                            autoCorrect = false,
-//                            keyboardType = KeyboardType.Text,
-//                            imeAction = ImeAction.Done
-//                        ),
-//                        keyboardActions = KeyboardActions(
-//                            onDone = {
-//                                if (observeTaskList.value.any { it.id == uiState.currentId }) {
-//                                    taskModel.updateTotoItem(
-//                                        InTask(
-//                                            uiState.currentId,
-//                                            uiState.currentTask,
-//                                            false
-//                                        )
-//                                    )
-//                                } else {
-//                                    Random.nextLong().let {
-//                                        taskModel.addTotoItem(
-//                                            InTask(it, uiState.currentTask, false)
-//                                        )
-//                                        noteAndTodoListModel.addNoteAndTaskItem(InNoteAndTask(id, it))
-//                                    }
-//                                }.invokeOnCompletion {
-//                                    taskModel.updateTask()
-//                                        .updateId()
-//                                }
-//                            }
-//                        ),
-//                        colors = TextFieldDefaults.outlinedTextFieldColors(
-//                            focusedBorderColor = Color.Transparent,
-//                            unfocusedBorderColor = Color.Transparent
-//                        )
-//                    )
                 }
             }
         }
     }
 
     @Composable
-    fun TodoItem(
+    private fun TaskItem(
         task: InTask,
         taskModel: TaskScreenModel,
-        onClick: () -> Job
+        onSwipe: () -> Unit,
+        onClick: () -> Unit,
     ) {
         val swipeState = rememberSwipeableActionsState()
         val action = SwipeAction(
             onSwipe = {
-                onClick.invoke()
+                onSwipe.invoke()
             },
             icon = {
                 Icon(painterResource(DELETE_OUTLINE_ICON), null)
@@ -199,8 +230,10 @@ data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
             state = swipeState
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onClick.invoke() },
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Checkbox(
                     checked = task.isDone,
@@ -234,9 +267,7 @@ data class TasksScreen(val id: String = Cons.NONE): Screen, KoinComponent {
                             },
                             color = if (task.isDone) Color.Gray else MaterialTheme.colorScheme.onSurface
                         )
-                    ) {
-                        taskModel.updateId(task.id)
-                    }
+                    ) { onClick.invoke() }
                 }
             }
         }

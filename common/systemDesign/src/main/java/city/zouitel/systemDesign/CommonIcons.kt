@@ -1,7 +1,7 @@
 package city.zouitel.systemDesign
 
 
-object Icons {
+object CommonIcons {
 
     val ADD_CIRCLE_ICON = R.drawable.add_24
     val ADD_PHOTO_ICON = R.drawable.ic_baseline_add_photo_alternate_24

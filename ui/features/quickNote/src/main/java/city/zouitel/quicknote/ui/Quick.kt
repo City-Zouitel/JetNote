@@ -41,8 +41,8 @@ import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.quicknote.model.QuickData
-import city.zouitel.systemDesign.Cons
-import city.zouitel.systemDesign.Icons
+import city.zouitel.systemDesign.CommonConstants
+import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.findUrlLink
 import java.util.UUID
 
@@ -74,7 +74,7 @@ data class QuickScreen(
         val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
         val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
         val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
-        val priorityState = remember { mutableStateOf(Cons.NON) }
+        val priorityState = remember { mutableStateOf(CommonConstants.NON) }
 
         val focusRequester = FocusRequester()
 
@@ -196,7 +196,7 @@ data class QuickScreen(
                                         backgroundColor = MaterialTheme.colorScheme.outlineVariant
                                     )
                                 ) {
-                                    Icon(painterResource(Icons.DONE_ICON), null)
+                                    Icon(painterResource(CommonIcons.DONE_ICON), null)
                                 }
                             }
                         }
