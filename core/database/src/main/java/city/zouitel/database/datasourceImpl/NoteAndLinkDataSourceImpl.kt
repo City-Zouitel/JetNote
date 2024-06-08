@@ -7,7 +7,7 @@ import city.zouitel.repository.model.NoteAndLink as OutNoteAndLink
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class NoteAndLinkDataSourceImpl /*@Inject*/ constructor(
+class NoteAndLinkDataSourceImpl(
     private val dao: NoteAndLinkDao,
     private val  mapper: NoteAndLinkMapper
 ): NoteAndLinkDataSource {

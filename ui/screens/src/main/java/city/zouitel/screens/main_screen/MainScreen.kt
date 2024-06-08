@@ -64,24 +64,11 @@ import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
-import java.util.UUID
 
 data class MainScreen(val isHome: Boolean): Screen {
 
     @Composable
     override fun Content() {
-
-//        val notificationModel = getScreenModel<NotificationScreenModel>()
-//        val tagModel = getScreenModel<TagScreenModel>()
-//        val noteAndTagModel = getScreenModel<NoteAndTagScreenModel>()
-//        val taskModel = getScreenModel<TaskScreenModel>()
-//        val noteAndTaskModel = getScreenModel<NoteAndTaskScreenModel>()
-//        val dataModel = getScreenModel<DataScreenModel>()
-//        val audioModel = getScreenModel<AudioScreenModel>()
-//        val noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
-//        val linkModel = getScreenModel<LinkScreenModel>()
-//        val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
-//        val datastoreModel = getScreenModel<DataStoreScreenModel>()
         val mainModel = getScreenModel<MainScreenModel>()
 
         LaunchedEffect(isHome) {
@@ -124,9 +111,7 @@ data class MainScreen(val isHome: Boolean): Screen {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
 
-        val uiState by lazy { mainModel.uiState }
-        val newUid by lazy { UUID.randomUUID() }
-
+        val uiState by remember(mainModel, mainModel::uiState).collectAsState()
         val currentLayout = remember(datastoreModel, datastoreModel::getLayout).collectAsState()
         val thereIsSoundEffect = remember(datastoreModel, datastoreModel::getSound).collectAsState()
         val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -225,7 +210,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                         uiState.isHomeScreen && uiState.isSelection -> {
                             HomeSelectionTopAppBar(
                                 datastoreModel = datastoreModel,
-                                homeModel = mainModel,
+                                mainModel = mainModel,
                                 dataModel = dataModel,
                                 notificationModel = notificationModel,
                                 noteAndTagModel = noteAndTagModel,
@@ -239,7 +224,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                         !uiState.isHomeScreen && uiState.isSelection -> {
                             RemovedSelectionTopAppBar(
                                 datastoreModel = datastoreModel,
-                                homeModel = mainModel,
+                                mainModel = mainModel,
                                 dataModel = dataModel
                             )
                         }
@@ -247,7 +232,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                         else -> {
                             MainTopAppBar(
                                 datastoreModel = datastoreModel,
-                                homeModel = mainModel,
+                                mainModel = mainModel,
                                 scrollBehavior = scrollBehavior,
                                 drawerState = drawerState
                             )

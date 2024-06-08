@@ -5,7 +5,7 @@ import city.zouitel.database.mapper.DataMapper
 import city.zouitel.repository.datasource.DataDataSource
 import city.zouitel.repository.model.Data as OutData
 
-class DataDataSourceImpl /*@Inject*/ constructor(
+class DataDataSourceImpl(
     private val dao: DataDao,
     private val mapper: DataMapper
 ): DataDataSource {

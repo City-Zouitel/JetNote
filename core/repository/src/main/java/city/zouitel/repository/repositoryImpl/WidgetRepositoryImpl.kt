@@ -7,7 +7,7 @@ import city.zouitel.repository.mapper.WidgetMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class WidgetRepositoryImpl /*@Inject*/ constructor(
+class WidgetRepositoryImpl(
     private val dataSource: WidgetDataSource,
     private val mapper: WidgetMapper
 ): WidgetRepository {

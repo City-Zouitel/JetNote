@@ -7,7 +7,7 @@ import city.zouitel.repository.mapper.TagMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class TagRepositoryImpl /*@Inject*/ constructor(
+class TagRepositoryImpl(
     private val dataSource: TagDataSource,
     private val mapper: TagMapper
 ): TagRepository {

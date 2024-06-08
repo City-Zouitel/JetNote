@@ -6,25 +6,25 @@ import city.zouitel.domain.repository.TagRepository
 //@Singleton
 sealed class TagUseCase {
 
-    class GetAllTags /*@Inject*/ constructor(
+    class GetAllTags(
         private val repository: TagRepository
     ): TagUseCase() {
         operator fun invoke() = repository.getAllTags
     }
 
-    class AddTag /*@Inject*/ constructor(
+    class AddTag(
         private val repository: TagRepository
     ): TagUseCase() {
         suspend operator fun invoke(tag: Tag) = repository.addTag(tag)
     }
 
-    class UpdateTag /*@Inject*/ constructor(
+    class UpdateTag(
         private val repository: TagRepository
     ): TagUseCase() {
         suspend operator fun invoke(tag: Tag) = repository.updateTag(tag)
     }
 
-    class DeleteTag /*@Inject*/ constructor(
+    class DeleteTag(
         private val repository: TagRepository
     ): TagUseCase() {
         suspend operator fun invoke(tag: Tag) = repository.deleteTag(tag)

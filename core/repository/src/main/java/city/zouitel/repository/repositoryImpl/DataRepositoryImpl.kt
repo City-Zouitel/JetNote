@@ -5,7 +5,7 @@ import city.zouitel.domain.repository.DataRepository
 import city.zouitel.repository.datasource.DataDataSource
 import city.zouitel.repository.mapper.DataMapper
 
-class DataRepositoryImpl /*@Inject*/ constructor(
+class DataRepositoryImpl(
     private val dataSource: DataDataSource,
     private val mapper: DataMapper
 ): DataRepository {

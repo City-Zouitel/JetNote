@@ -9,6 +9,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.audios.audio.AudioRepository
 import city.zouitel.audios.mapper.AudioMapper
 import city.zouitel.audios.model.Audio
+import city.zouitel.audios.state.AudioListUiState
 import city.zouitel.audios.state.AudioUiState
 import city.zouitel.domain.exoplayer.ExoPlayerImpl
 import city.zouitel.domain.usecase.AudioUseCase
@@ -16,6 +17,7 @@ import city.zouitel.systemDesign.CommonIcons
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -29,8 +31,15 @@ class AudioScreenModel (
     private val recPath: String
 ): ScreenModel {
 
-    var uiState: AudioUiState by mutableStateOf(AudioUiState())
-        private set
+    private val _audioUiState: MutableStateFlow<AudioUiState> = MutableStateFlow(
+        AudioUiState()
+    )
+    internal val audioUiState: StateFlow<AudioUiState> = _audioUiState
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            AudioUiState()
+        )
 
     var rec_path = derivedStateOf { recPath }
         private set
@@ -49,26 +58,24 @@ class AudioScreenModel (
     suspend fun prepareMediaPlayer(mediaPath: String) {
         runCatching {
             exoBuilder.prepareMediaPlayer(mediaPath)
-
             val amplitudes = repository.loadAudioAmplitudes(mediaPath)
-//            audioAmplitudes.addAll(amplitudes)
-            uiState = uiState.copy(amplitudes = amplitudes)
+            _audioUiState.value = _audioUiState.value.copy(amplitudes = amplitudes)
         }
     }
 
     fun playMedia() {
         screenModelScope.launch {
             exoBuilder.playMedia()
-            uiState = uiState.copy(isPlaying = true)
-            uiState = uiState.copy(icon = CommonIcons.PAUSE_CIRCLE_FILLED_ICON_24)
+            _audioUiState.value = _audioUiState.value.copy(isPlaying = true)
+            _audioUiState.value = _audioUiState.value.copy(icon = CommonIcons.PAUSE_CIRCLE_FILLED_ICON_24)
         }
     }
 
     fun pauseMedia() {
         screenModelScope.launch {
             exoBuilder.pauseMedia()
-            uiState = uiState.copy(isPlaying = false)
-            uiState = uiState.copy(icon = CommonIcons.PLAY_CIRCLE_FILLED_ICON_24)
+            _audioUiState.value = _audioUiState.value.copy(isPlaying = false)
+            _audioUiState.value = _audioUiState.value.copy(icon = CommonIcons.PLAY_CIRCLE_FILLED_ICON_24)
         }
     }
 

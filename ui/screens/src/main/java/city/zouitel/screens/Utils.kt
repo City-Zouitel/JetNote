@@ -1,7 +1,6 @@
 package city.zouitel.screens
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -9,31 +8,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipPath
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
+import city.zouitel.logic.getColorOfPriority
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.SoundEffect
-import city.zouitel.systemDesign.getColorOfPriority
 import java.io.File
 import java.util.UUID
 
 internal val sound = SoundEffect()
 
-val sharApp: (Context, String) -> Unit = { ctx, txt ->
-    ctx.startActivity(
-        Intent.createChooser(
-            Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, txt)
-                type = "text/plain"
-            },
-            null
-        )
-    )
-}
+
 
 val DrawScope.prioritizedNotePath: (Data) -> Unit get() = {
     clipPath(
@@ -53,7 +40,7 @@ val DrawScope.prioritizedNotePath: (Data) -> Unit get() = {
         )
         drawRoundRect(
             color = Color(
-                ColorUtils.blendARGB(getColorOfPriority(it.priority).toArgb(), 0x000000, .05f)
+                ColorUtils.blendARGB(getColorOfPriority(it.priority), 0x000000, .05f)
             ),
             topLeft = Offset(size.width - 25.dp.toPx(), size.height - 25.dp.toPx()),
             size = Size(
@@ -87,7 +74,7 @@ fun copyNote(
     dataScreenModel: DataScreenModel,
     note: Data,
     uid: UUID,
-    cc : () -> Unit
+    onAction : () -> Unit
 ) {
     dataScreenModel.addData(
         note.copy(uid = uid.toString())
@@ -105,6 +92,6 @@ fun copyNote(
         }
     }
     //
-    cc.invoke()
+    onAction.invoke()
 }
 

@@ -14,7 +14,7 @@ fun checkNoteActivityShortcut(context: Context) {
 
     runCatching {
         context.shortcutManage.dynamicShortcuts =
-            listOf(newNoteShortcut, /*newRecordShortcut,*/ /*quickNoteShortcut*/)
+            listOf(newNoteShortcut)
     }.onFailure {
         context.run {
             "something wring!".asShortToast()

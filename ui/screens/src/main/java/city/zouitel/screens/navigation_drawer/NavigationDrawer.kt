@@ -14,11 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import city.zouitel.logic.sharApp
 import city.zouitel.screens.about_screen.AboutScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.main_screen.MainScreen
 import city.zouitel.screens.settings_screen.SettingsScreen
-import city.zouitel.screens.sharApp
 import city.zouitel.screens.sound
 import city.zouitel.screens.tags_screen.HashTagsScreen
 import city.zouitel.systemDesign.CommonConstants.APP_NAME

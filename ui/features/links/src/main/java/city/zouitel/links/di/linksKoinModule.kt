@@ -15,7 +15,7 @@ val linksKoinModule = module {
     factoryOf(::NoteAndLinkMapper)
 
     factory {
-        LinkScreenModel(get(), get(), get(), get(), get(named(LINK_DIR)))
+        LinkScreenModel(get(), get(), get(), get())
     }
     factory {
         NoteAndLinkScreenModel(get(), get(), get())

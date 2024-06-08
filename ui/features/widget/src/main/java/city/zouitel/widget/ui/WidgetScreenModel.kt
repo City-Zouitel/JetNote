@@ -9,6 +9,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.WidgetUseCase
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.widget.mapper.WidgetMapper
+import city.zouitel.widget.model.WidgetNote
 import city.zouitel.widget.model.WidgetNote as InNote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,9 +25,15 @@ class WidgetScreenModel(
 ): ScreenModel {
 
     // for observing the dataEntity changes.
-    private val _allNotesById = MutableStateFlow<List<InNote>>(emptyList())
-    val allNotesById: StateFlow<List<InNote>>
-        get() = _allNotesById.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
+    private val _allNotesById: MutableStateFlow<List<WidgetNote>> = MutableStateFlow(
+        emptyList()
+    )
+    val allNotesById: StateFlow<List<InNote>> = _allNotesById
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            listOf()
+        )
 
     init {
         screenModelScope.launch(context = Dispatchers.IO) {

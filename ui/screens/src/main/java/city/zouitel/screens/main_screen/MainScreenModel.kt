@@ -1,24 +1,21 @@
 package city.zouitel.screens.main_screen
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.NoteUseCase
 import city.zouitel.note.mapper.NoteMapper
 import city.zouitel.note.model.Data
-import city.zouitel.screens.state.MainUiState
+import city.zouitel.screens.state.UiState
 import city.zouitel.tags.model.Tag
-import city.zouitel.note.model.Note as InNote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import city.zouitel.note.model.Note as InNote
+
 class MainScreenModel(
     private val getAllById: NoteUseCase.GetAllNotesById,
     private val getAllByOldest: NoteUseCase.GetAllNotesByOldest,
@@ -30,8 +27,15 @@ class MainScreenModel(
     private val mapper: NoteMapper
 ): ScreenModel {
 
-    internal var uiState: MainUiState by mutableStateOf(MainUiState())
-        private set
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
+        UiState()
+    )
+    internal val uiState: StateFlow<UiState> = _uiState
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            UiState()
+        )
 
     // for observing the dataEntity changes.
     private val _allNotesById = MutableStateFlow<List<InNote>>(emptyList())
@@ -61,92 +65,85 @@ class MainScreenModel(
                 getAllById.invoke().collect { list ->
                     _allNotesById.value = list.map { note -> mapper.toView(note) }
                 }
-                uiState = uiState.copy(isProcessing = isActive)
             }
             launch(Dispatchers.IO) {
                 getAllByName.invoke().collect { list ->
                     _allNotesByName.value = list.map { note -> mapper.toView(note) }
                 }
-                uiState = uiState.copy(isProcessing = isActive)
             }
             launch(Dispatchers.IO) {
                 getAllByNewest.invoke().collect { list ->
                     _allNotesByNewest.value = list.map { note -> mapper.toView(note) }
                 }
-                uiState = uiState.copy(isProcessing = isActive)
             }
             launch(Dispatchers.IO) {
                 getAllByOldest.invoke().collect { list ->
                     _allNotesByOldest.value = list.map { note -> mapper.toView(note) }
                 }
-                uiState = uiState.copy(isProcessing = isActive)
             }
             launch(Dispatchers.IO) {
                 getAllTrashed.invoke().collect { list ->
                     _allTrashedNotes.value = list.map { note -> mapper.toView(note) }
                 }
-                uiState = uiState.copy(isProcessing = isActive)
             }
             launch(Dispatchers.IO) {
                 getAllByPriority.invoke().collect { list ->
                     _allNotesByPriority.value = list.map { note -> mapper.toView(note) }
                 }
-                uiState = uiState.copy(isProcessing = isActive)
             }
             launch(Dispatchers.IO) {
                 getAllReminding.invoke().collect { list ->
                     _allRemindingNotes.value = list.map { note -> mapper.toView(note) }
                 }
-                uiState = uiState.copy(isProcessing = isActive)
             }
         }
     }
 
     fun updateSearchTitle(title: String) {
         screenModelScope.launch {
-            uiState = uiState.copy(searchTitle = title)
+            _uiState.value = _uiState.value.copy(searchTitle = title)
         }
     }
 
     fun updateSearchTag(tag: Tag?) {
         screenModelScope.launch {
-            uiState = uiState.copy(searchTag = tag)
+            _uiState.value = _uiState.value.copy(searchTag = tag)
         }
     }
 
     fun updateExpandedSortMenu(isShow: Boolean) {
         screenModelScope.launch {
-            uiState = uiState.copy(expandedSortMenu = isShow)
+            _uiState.value = _uiState.value.copy(expandedSortMenu = isShow)
         }
     }
 
     fun updateSelection(value: Boolean) {
         screenModelScope.launch {
-            uiState = uiState.copy(isSelection = value)
+            _uiState.value = _uiState.value.copy(isSelection = value)
         }
     }
 
     fun updateSelectedNotes(note: Data) {
         screenModelScope.launch {
-            uiState = uiState.copy().addSelectedNote(note)
+            _uiState.value = _uiState.value.copy().addSelectedNote(note)
         }
     }
 
     fun clearSelectionNotes() {
         screenModelScope.launch {
-            uiState = uiState.copy(selectedNotes = mutableStateListOf())
+            _uiState.value = _uiState.value.copy(selectedNotes = mutableStateListOf())
         }
     }
 
     fun updateErasing(isErase: Boolean) {
         screenModelScope.launch {
-            uiState = uiState.copy(isErase = isErase)
+            _uiState.value = _uiState.value.copy(isErase = isErase)
         }
     }
 
     fun updateScreen(isHome: Boolean) {
         screenModelScope.launch {
-            uiState = uiState.copy(isHomeScreen = isHome)
+            _uiState.value = _uiState.value.copy(isHomeScreen = isHome)
         }
     }
 }

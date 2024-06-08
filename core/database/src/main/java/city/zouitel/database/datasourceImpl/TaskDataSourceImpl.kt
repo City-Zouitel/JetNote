@@ -7,7 +7,7 @@ import city.zouitel.repository.model.Task as OutTask
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class TaskDataSourceImpl /*@Inject*/ constructor(
+class TaskDataSourceImpl(
     private val dao: TaskDao,
     private val mapper: TaskMapper
 ): TaskDataSource {

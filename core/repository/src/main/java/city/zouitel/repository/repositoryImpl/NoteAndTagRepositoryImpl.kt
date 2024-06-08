@@ -8,7 +8,7 @@ import city.zouitel.repository.model.NoteAndTag as InNoteAndTag
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class NoteAndTagRepositoryImpl /*@Inject*/ constructor(
+class NoteAndTagRepositoryImpl(
     private val dataSource: NoteAndTagDataSource,
     private val mapper: NoteAndTagMapper
 ): NoteAndTagRepository {

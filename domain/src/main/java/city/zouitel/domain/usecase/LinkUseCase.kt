@@ -5,19 +5,19 @@ import city.zouitel.domain.repository.LinkRepository
 
 //@Singleton
 sealed class LinkUseCase {
-    class GetAllLinks /*@Inject*/ constructor(
+    class GetAllLinks(
         private val repository: LinkRepository
     ): LinkUseCase() {
         operator fun invoke() = repository.getAllLinks
     }
 
-    class AddLink /*@Inject*/ constructor(
+    class AddLink(
         private val repository: LinkRepository
     ): LinkUseCase() {
         suspend operator fun invoke(link: Link) = repository.addLink(link)
     }
 
-    class DeleteLink /*@Inject*/ constructor(
+    class DeleteLink(
         private val repository: LinkRepository
     ): LinkUseCase() {
         suspend operator fun invoke(link: Link) = repository.deleteLink(link)

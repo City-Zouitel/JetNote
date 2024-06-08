@@ -1,7 +1,11 @@
 package city.zouitel.audios.state
 
-data class AudioListUiState(
+import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
+
+internal data class AudioListUiState(
     val searchQuery: String = "",
     val audioFiles: List<SingleAudioUiState> = emptyList(),
-    val isLoadingAudios: Boolean = false
+    val isLoadingAudios: Boolean = false,
+    val currentId: String = "",
+    val bottomSheetNavigator: BottomSheetNavigator? = null
 )

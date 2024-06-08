@@ -5,13 +5,21 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.note.state.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class WorkplaceScreenModel: ScreenModel {
 
-    private val _uiState = MutableStateFlow(UiState())
-    internal var uiState = _uiState.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), UiState())
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
+        UiState()
+    )
+    internal var uiState: StateFlow<UiState> = _uiState
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            UiState()
+        )
 
     fun updateRecorderDialog(value: Boolean) {
         screenModelScope.launch {

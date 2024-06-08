@@ -2,6 +2,9 @@ package city.zouitel.recoder.ui
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import cafe.adriel.voyager.core.screen.Screen
@@ -18,13 +21,23 @@ data class RecorderScreen(
 ): Screen {
     @Composable
     override fun Content() {
+
+        Recorder(
+            mediaRecordModel = getScreenModel<MediaRecordScreenModel>(),
+            recorderModel =getScreenModel<RecorderScreenModel>()
+        )
+    }
+
+    @Composable
+    private fun Recorder(
+        mediaRecordModel: MediaRecordScreenModel,
+        recorderModel: RecorderScreenModel
+    ) {
         val context = LocalContext.current
         val path = id getRecPath context
 
-        val mediaRecordModel = getScreenModel<MediaRecordScreenModel>()
-        val recorderModel = getScreenModel<RecorderScreenModel>()
+        val uiState by remember(recorderModel, recorderModel::uiState).collectAsState()
 
-        val uiState = recorderModel.uiState
         val record = mediaRecordModel.buildMediaRecord(id)
 
         if (uiState.isRecording) {

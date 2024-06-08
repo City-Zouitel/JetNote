@@ -7,7 +7,7 @@ import city.zouitel.repository.mapper.LinkMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class LinkRepositoryImpl /*@Inject*/ constructor(
+class LinkRepositoryImpl(
     private val dataSource: LinkDataSource,
     private val mapper: LinkMapper
 ): LinkRepository {

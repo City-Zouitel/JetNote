@@ -13,6 +13,10 @@ import city.zouitel.recoder.model.Audio
 import city.zouitel.recoder.state.UiState
 import city.zouitel.recoder.model.NoteAndAudio as InNoteAndAudio
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
@@ -30,22 +34,27 @@ class RecorderScreenModel(
 
     private lateinit var timer: Timer
 
-    internal var uiState by mutableStateOf(UiState())
-        private set
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
+        UiState()
+    )
+    internal val uiState: StateFlow<UiState> = _uiState
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            UiState()
+        )
 
     fun start() {
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
             time += 1.seconds
             updateTimeStates()
         }
-        uiState = uiState.copy(
-            isPlaying = true
-        )
+        _uiState.value = uiState.value.copy(isPlaying = true)
     }
 
     private fun updateTimeStates() {
         time.toComponents { hours, minutes, seconds, _ ->
-            uiState = uiState.copy(
+            _uiState.value = _uiState.value.copy(
                 seconds = seconds.pad(),
                 minutes = minutes.pad(),
                 hours = hours.toInt().pad()
@@ -59,9 +68,7 @@ class RecorderScreenModel(
 
     fun pause() {
         timer.cancel()
-        uiState = uiState.copy(
-            isPlaying = false
-        )
+        _uiState.value = _uiState.value.copy(isPlaying = false)
     }
 
     fun stop() {
@@ -83,13 +90,13 @@ class RecorderScreenModel(
 
     fun updateRecordState(value: Boolean) {
         screenModelScope.launch {
-            uiState = uiState.copy(isRecording = value)
+            _uiState.value = _uiState.value.copy(isRecording = value)
         }
     }
 
     fun updatePausingState(value: Boolean) {
         screenModelScope.launch {
-            uiState = uiState.copy(isPause = value)
+            _uiState.value = _uiState.value.copy(isPause = value)
         }
     }
 }

@@ -37,16 +37,22 @@ class LinkScreenModel(
     getAll: LinkUseCase.GetAllLinks,
     private val delete: LinkUseCase.DeleteLink,
     private val mapper: LinkMapper,
-    private val linkPath: String
 ): ScreenModel {
 
-    internal var uiState: UiState by mutableStateOf(UiState())
-        private set
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
+        UiState()
+    )
+    internal val uiState: StateFlow<UiState> = _uiState
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            UiState()
+        )
 
-    private val _getAllLinks = MutableStateFlow<List<InLink>>(emptyList())
-
-    val getAllLinks: StateFlow<List<InLink>>
-        get() = _getAllLinks
+    private val _getAllLinks: MutableStateFlow<List<Link>> = MutableStateFlow(
+        emptyList()
+    )
+    val getAllLinks: StateFlow<List<InLink>> = _getAllLinks
             .stateIn(
                 screenModelScope,
                 SharingStarted.WhileSubscribed(),
@@ -77,7 +83,7 @@ class LinkScreenModel(
             override fun onComplete(urlInfo: UrlInfoItem) {
                 screenModelScope.launch(Dispatchers.IO) {
                     urlInfo.apply {
-                        uiState = uiState.copy(
+                        _uiState.value = _uiState.value.copy(
                             title = title,
                             description = description,
                             host = URL(url).host,

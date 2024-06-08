@@ -78,11 +78,11 @@ class HashTagsScreen: Screen {
         val navigator = LocalNavigator.current
 
         val observeTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
+        val uiState by remember(tagModel, tagModel::uiState).collectAsState()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
 
-        val uiState by lazy { tagModel.uiState }
         val focusRequester by lazy { FocusRequester() }
 
         if (uiState.isColorsDialog) {

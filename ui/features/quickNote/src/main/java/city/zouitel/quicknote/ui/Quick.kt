@@ -40,10 +40,10 @@ import city.zouitel.links.ui.CacheLinks
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.logic.findUrlLink
 import city.zouitel.quicknote.model.QuickData
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
-import city.zouitel.systemDesign.findUrlLink
 import java.util.UUID
 
 data class QuickScreen(
@@ -150,7 +150,7 @@ data class QuickScreen(
                             findUrlLink(descriptionState.value) ?. let { links ->
                                 for (link in links) {
                                     CacheLinks(
-                                        linkScreenModel = linkModel,
+                                        linkModel = linkModel,
                                         noteId = uid,
                                         url = link
                                     )
@@ -166,7 +166,7 @@ data class QuickScreen(
                                     linkScreenModel = linkModel,
                                     noteAndLinkScreenModel = noteAndLinkModel,
                                     noteUid = uid,
-                                    swipeable = true,
+                                    isSwipe = true,
                                     link = _link
                                 )
                             }

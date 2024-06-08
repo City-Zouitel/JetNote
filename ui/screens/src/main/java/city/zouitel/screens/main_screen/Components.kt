@@ -21,6 +21,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,10 +51,10 @@ internal fun SortBy(
     mainModel: MainScreenModel
 ) {
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val haptic = LocalHapticFeedback.current
 
-    val uiState by lazy { mainModel.uiState }
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     val currentSortIcon = when(
         remember(dataStoreModel, dataStoreModel::getOrdination).collectAsState().value
@@ -79,7 +80,11 @@ internal fun SortBy(
                         it.showAlignBottom()
                     }
                 ) {
-                    sound.makeSound.invoke(context, CommonConstants.FOCUS_NAVIGATION, thereIsSoundEffect.value)
+                    sound.makeSound.invoke(
+                        context,
+                        CommonConstants.FOCUS_NAVIGATION,
+                        thereIsSoundEffect.value
+                    )
                     mainModel.updateExpandedSortMenu(true)
                 }
         )
@@ -159,20 +164,19 @@ internal fun SortBy(
 @Composable
 internal fun SearchField(
     dataStoreModel: DataStoreScreenModel,
-    homeModel: MainScreenModel
+    mainModel: MainScreenModel
 ) {
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
-
     val keyboardController = LocalSoftwareKeyboardController.current
     val keyboardManager = LocalFocusManager.current
 
-    val uiState by lazy { homeModel.uiState }
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = uiState.searchTitle,
-        onValueChange = { homeModel.updateSearchTitle(it) },
+        onValueChange = { mainModel.updateSearchTitle(it) },
         singleLine = true,
         textStyle = TextStyle(
             fontSize = 17.sp,
@@ -192,8 +196,8 @@ internal fun SearchField(
                     contentDescription = null,
                     modifier = Modifier.clickable {
                         sound.makeSound.invoke(context, CommonConstants.KEY_INVALID, thereIsSoundEffect.value)
-                        homeModel.updateSearchTitle("")
-                        homeModel.updateSearchTag(null)
+                        mainModel.updateSearchTitle("")
+                        mainModel.updateSearchTag(null)
                         keyboardController?.hide()
                         keyboardManager.clearFocus(true)
                     }
@@ -282,9 +286,9 @@ internal fun BroomData(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun SelectionsCount(
-    homeModel: MainScreenModel
+    mainModel: MainScreenModel
 ) {
-    val uiState by lazy { homeModel.uiState }
+    val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     CommonPopupTip(message = "Cancel") {
         Icon(
@@ -295,8 +299,8 @@ internal fun SelectionsCount(
                     it.showAlignBottom()
                 }
             ) {
-                homeModel.updateSelection(false)
-                homeModel.clearSelectionNotes()
+                mainModel.updateSelection(false)
+                mainModel.clearSelectionNotes()
             }
         )
     }

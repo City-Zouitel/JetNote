@@ -14,6 +14,7 @@ import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -44,17 +45,28 @@ import me.saket.swipe.rememberSwipeableActionsState
 import java.io.File
 
 data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
-    @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
     override fun Content() {
-        val audioModel = getScreenModel<AudioScreenModel>()
-        val audioListModel = getScreenModel<AudioListScreenModel>()
-        val noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
+
+        BasicAudio(
+            audioModel = getScreenModel<AudioScreenModel>(),
+            audioListModel = getScreenModel<AudioListScreenModel>(),
+            noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
+        )
+    }
+
+    @Composable
+    @SuppressLint("CoroutineCreationDuringComposition")
+    fun BasicAudio(
+        audioModel: AudioScreenModel,
+        audioListModel: AudioListScreenModel,
+        noteAndAudioModel: NoteAndAudioScreenModel
+    ) {
 
         val scope = rememberCoroutineScope()
         val swipeState = rememberSwipeableActionsState()
 
-        val uiState = audioModel.uiState
+        val uiState by remember(audioModel, audioModel::audioUiState).collectAsState()
 
         var processState by remember { mutableFloatStateOf(0f) }
 
@@ -71,7 +83,6 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
 
             when {
                 processState >= 1f -> {
-//                    playingState = false
                     processState = 0f
                 }
             }

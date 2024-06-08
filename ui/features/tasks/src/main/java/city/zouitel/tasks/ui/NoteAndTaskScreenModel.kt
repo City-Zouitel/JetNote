@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.NoteAndTaskUseCase
 import city.zouitel.tasks.mapper.NoteAndTaskMapper
+import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,9 @@ class NoteAndTaskScreenModel(
     private val mapper: NoteAndTaskMapper
 ): ScreenModel {
 
-    private val _getAllNotesAndTask = MutableStateFlow<List<InNoteAndTask>>(emptyList())
+    private val _getAllNotesAndTask: MutableStateFlow<List<NoteAndTask>> = MutableStateFlow(
+        emptyList()
+    )
     val getAllNotesAndTask: StateFlow<List<InNoteAndTask>>
         get() = _getAllNotesAndTask
             .stateIn(

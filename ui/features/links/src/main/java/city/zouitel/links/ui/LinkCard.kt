@@ -25,7 +25,7 @@ fun LinkCard(
     linkScreenModel: LinkScreenModel,
     noteAndLinkScreenModel: NoteAndLinkScreenModel,
     noteUid: String,
-    swipeable: Boolean,
+    isSwipe: Boolean,
     link: Link,
 ) {
     val uriHand = LocalUriHandler.current
@@ -42,7 +42,7 @@ fun LinkCard(
         background = Color.Transparent
     )
 
-    if (swipeable) {
+    if (isSwipe) {
         SwipeableActionsBox(
             modifier = Modifier,
             backgroundUntilSwipeThreshold = Color.Transparent,
@@ -51,7 +51,7 @@ fun LinkCard(
             state = swipeState
         ) {
             LinkCard(
-                swipeable = swipeable,
+                swipeable = isSwipe,
             link = link
             ) {
                 uriHand.openUri(link.url)
@@ -59,7 +59,7 @@ fun LinkCard(
         }
     } else {
         LinkCard(
-            swipeable = swipeable,
+            swipeable = isSwipe,
             link = link
         ) {
             uriHand.openUri(link.url)

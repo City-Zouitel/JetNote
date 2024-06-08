@@ -24,8 +24,15 @@ class TaskScreenModel(
     private val mapper: TaskMapper
 ): ScreenModel {
 
-    private val _uiState = MutableStateFlow(UiState())
-    val uiState = _uiState.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), UiState())
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
+        UiState()
+    )
+    val uiState: StateFlow<UiState> = _uiState
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            UiState()
+        )
 
 
     private val _getAllTaskList = MutableStateFlow<List<InTask>>(emptyList())

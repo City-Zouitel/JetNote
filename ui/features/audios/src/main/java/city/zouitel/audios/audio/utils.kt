@@ -23,7 +23,7 @@ val Long.formatAsFileSize: String
         String.format("%.${precision}f ${prefix[it]}B", toDouble() / 2.0.pow(it * 10.0))
     }
 
-fun Audio.toUiState(onClick: () -> Unit) = SingleAudioUiState(
+internal fun Audio.toUiState(onClick: () -> Unit) = SingleAudioUiState(
     id = id,
     displayName = title,
     size = duration.formatAsAudioDuration + " | " + size.formatAsFileSize,

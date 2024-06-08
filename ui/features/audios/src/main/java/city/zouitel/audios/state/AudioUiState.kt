@@ -2,7 +2,7 @@ package city.zouitel.audios.state
 
 import city.zouitel.systemDesign.CommonIcons
 
-data class AudioUiState(
+internal data class AudioUiState(
     var isPlaying: Boolean = false,
     val icon: Int = CommonIcons.PAUSE_CIRCLE_FILLED_ICON_24,
     val progress: Float = 0F,

@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.NoteAndLinkUseCase
 import city.zouitel.links.mapper.NoteAndLinkMapper
+import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.model.NoteAndLink as InNoteAndLink
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,10 +19,10 @@ class NoteAndLinkScreenModel(
     private val mapper: NoteAndLinkMapper
 ): ScreenModel {
 
-    private val _getAllNotesAndLinks = MutableStateFlow<List<InNoteAndLink>>(emptyList())
-
-    val getAllNotesAndLinks: StateFlow<List<InNoteAndLink>>
-        get() = _getAllNotesAndLinks
+    private val _getAllNotesAndLinks: MutableStateFlow<List<NoteAndLink>> = MutableStateFlow(
+        emptyList()
+    )
+    val getAllNotesAndLinks: StateFlow<List<InNoteAndLink>> = _getAllNotesAndLinks
             .stateIn(
                 screenModelScope,
                 SharingStarted.WhileSubscribed(),

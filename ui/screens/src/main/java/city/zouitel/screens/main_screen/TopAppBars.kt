@@ -11,18 +11,18 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import city.zouitel.logic.sharNote
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
@@ -34,7 +34,6 @@ import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.Open_Drawer
-import city.zouitel.systemDesign.sharNote
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
@@ -49,11 +48,11 @@ import kotlin.random.Random
 @Composable
 internal fun MainTopAppBar(
     datastoreModel: DataStoreScreenModel,
-    homeModel: MainScreenModel,
+    mainModel: MainScreenModel,
     scrollBehavior: TopAppBarScrollBehavior,
     drawerState: DrawerState,
 ) {
-    val uiState by lazy { homeModel.uiState }
+    val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     TopAppBar(
         navigationIcon = {
@@ -70,7 +69,7 @@ internal fun MainTopAppBar(
         title = {
             SearchField(
                 dataStoreModel = datastoreModel,
-                homeModel = homeModel
+                mainModel = mainModel
             )
         },
         actions = {
@@ -81,10 +80,10 @@ internal fun MainTopAppBar(
                     if (uiState.isHomeScreen) {
                         SortBy(
                             dataStoreModel = datastoreModel,
-                            mainModel = homeModel
+                            mainModel = mainModel
                         )
                     } else {
-                        BroomData(homeModel = homeModel)
+                        BroomData(homeModel = mainModel)
                     }
 
                     Spacer(modifier = Modifier.width(5.dp))
@@ -104,7 +103,7 @@ internal fun MainTopAppBar(
 @Composable
 internal fun HomeSelectionTopAppBar(
     datastoreModel: DataStoreScreenModel,
-    homeModel: MainScreenModel,
+    mainModel: MainScreenModel,
     dataModel: DataScreenModel,
     notificationModel: NotificationScreenModel,
     noteAndTagModel: NoteAndTagScreenModel,
@@ -115,7 +114,7 @@ internal fun HomeSelectionTopAppBar(
 ) {
 
     val context = LocalContext.current
-    val uiState by lazy { homeModel.uiState }
+    val uiState by remember(mainModel, mainModel::uiState).collectAsState()
     val thereIsSoundEffect = remember(datastoreModel, datastoreModel::getSound).collectAsState()
     val newUid by lazy { UUID.randomUUID() }
     val observeNotesAndLabels =
@@ -170,8 +169,8 @@ internal fun HomeSelectionTopAppBar(
                                     )
                                     undo.invoke(it)
                                 }
-                                homeModel.clearSelectionNotes()
-                                homeModel.updateSelection(false)
+                                mainModel.clearSelectionNotes()
+                                mainModel.updateSelection(false)
                             }
                     )
                 }
@@ -200,8 +199,8 @@ internal fun HomeSelectionTopAppBar(
                                             uiState.selectedNotes.single().title!!,
                                             uiState.selectedNotes.single().description!!
                                         ) {
-                                            homeModel.clearSelectionNotes()
-                                            homeModel.updateSelection(false)
+                                            mainModel.clearSelectionNotes()
+                                            mainModel.updateSelection(false)
                                         }
                                     })
                         }
@@ -278,8 +277,8 @@ internal fun HomeSelectionTopAppBar(
                                                         }
                                                 }
                                         }
-                                        homeModel.clearSelectionNotes()
-                                        homeModel.updateSelection(false)
+                                        mainModel.clearSelectionNotes()
+                                        mainModel.updateSelection(false)
                                     }
                             )
                         }
@@ -293,7 +292,7 @@ internal fun HomeSelectionTopAppBar(
                 Modifier.padding(start = 10.dp, end = 10.dp),
             ) {
                 SelectionsCount(
-                    homeModel = homeModel
+                    mainModel = mainModel
                 )
             }
         }
@@ -304,12 +303,12 @@ internal fun HomeSelectionTopAppBar(
 @Composable
 internal fun RemovedSelectionTopAppBar(
     datastoreModel: DataStoreScreenModel,
-    homeModel: MainScreenModel,
+    mainModel: MainScreenModel,
     dataModel: DataScreenModel
 ) {
     val context = LocalContext.current
     val thereIsSoundEffect = remember(datastoreModel, datastoreModel::getSound).collectAsState()
-    val uiState by lazy { homeModel.uiState }
+    val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     TopAppBar(
         navigationIcon = {
@@ -333,8 +332,8 @@ internal fun RemovedSelectionTopAppBar(
                             uiState.selectedNotes.forEach {
                                 dataModel.deleteData(it)
                             }
-                            homeModel.clearSelectionNotes()
-                            homeModel.updateSelection(false)
+                            mainModel.clearSelectionNotes()
+                            mainModel.updateSelection(false)
                         }
                 )
             }
@@ -345,7 +344,7 @@ internal fun RemovedSelectionTopAppBar(
             CommonRow(
                 modifier = Modifier.padding(start = 10.dp, end = 10.dp)
             ) {
-                SelectionsCount(homeModel = homeModel)
+                SelectionsCount(mainModel = mainModel)
             }
         }
     )

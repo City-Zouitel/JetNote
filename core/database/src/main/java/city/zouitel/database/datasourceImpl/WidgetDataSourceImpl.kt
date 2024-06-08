@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import city.zouitel.repository.model.Note as OutNote
 
-class WidgetDataSourceImpl /*@Inject*/ constructor(
+class WidgetDataSourceImpl(
     private val dao: WidgetDao,
     private val mapper: WidgetMapper
 ): WidgetDataSource {

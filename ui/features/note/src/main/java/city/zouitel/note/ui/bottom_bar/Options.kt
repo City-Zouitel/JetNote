@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.list.AudioListScreen
+import city.zouitel.logic.getColorOfPriority
+import city.zouitel.logic.getPriorityOfColor
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.KEY_STANDARD
@@ -44,8 +47,6 @@ import city.zouitel.systemDesign.CommonIcons.MIC_ICON
 import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
 import city.zouitel.systemDesign.RationalDialog
 import city.zouitel.systemDesign.SoundEffect
-import city.zouitel.systemDesign.getColorOfPriority
-import city.zouitel.systemDesign.getPriorityOfColor
 import city.zouitel.systemDesign.listOfPriorityColors
 import city.zouitel.tags.ui.TagsScreen
 import city.zouitel.tasks.ui.TasksScreen
@@ -247,7 +248,7 @@ internal fun Options(
                                 .size(20.dp)
                                 .clickable {
                                     sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                                    workspaceModel.updatePriority(getPriorityOfColor(it))
+                                    workspaceModel.updatePriority(getPriorityOfColor(it.toArgb()))
                                 }
                         ) {
                             drawArc(
@@ -256,7 +257,7 @@ internal fun Options(
                                 sweepAngle = 360f,
                                 useCenter = true,
                                 style =
-                                if (getColorOfPriority(uiState.priority) == it) {
+                                if (getColorOfPriority(uiState.priority) == it.toArgb()) {
                                     Stroke(width = 5f, cap = StrokeCap.Round)
                                 } else {
                                     Fill

@@ -7,7 +7,7 @@ import city.zouitel.repository.model.Tag as OutTag
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class TagDataSourceImpl /*@Inject*/ constructor(
+class TagDataSourceImpl(
     private val dao: TagDao,
     private val mapper: TagMapper
 ): TagDataSource {

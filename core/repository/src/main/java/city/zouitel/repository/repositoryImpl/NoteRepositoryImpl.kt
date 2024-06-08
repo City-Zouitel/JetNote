@@ -7,7 +7,7 @@ import city.zouitel.repository.mapper.NoteMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class NoteRepositoryImpl /*@Inject*/ constructor(
+class NoteRepositoryImpl(
     private val dataSource: NoteDataSource,
     private val mapper: NoteMapper
 ): NoteRepository {

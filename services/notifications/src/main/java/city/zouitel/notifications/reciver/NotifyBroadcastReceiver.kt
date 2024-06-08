@@ -7,7 +7,7 @@ import androidx.annotation.CallSuper
 
 abstract class NotifyBroadcastReceiver : BroadcastReceiver() {
 
-    /*@CallSuper*/
+    @CallSuper
     override fun onReceive(context: Context, intent: Intent) {}
 
 }

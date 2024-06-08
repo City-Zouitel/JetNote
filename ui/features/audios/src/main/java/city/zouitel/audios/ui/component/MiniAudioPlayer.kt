@@ -29,10 +29,8 @@ import java.io.File
 fun MiniAudioPlayer(
     dataStoreModel: DataStoreScreenModel,
     audioScreenModel: AudioScreenModel,
-    localMediaUid: String?,
     audio: Audio
 ) {
-    val mediaFile = audioScreenModel.rec_path.value + File.separator +  localMediaUid + "." + CommonConstants.MP3
     var processState by remember { mutableFloatStateOf(0f) }
     val isPlaying = remember { mutableStateOf(false) }
     val currentLayout by dataStoreModel.getLayout.collectAsState()

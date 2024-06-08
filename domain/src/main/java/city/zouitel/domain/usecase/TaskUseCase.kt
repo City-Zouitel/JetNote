@@ -6,25 +6,25 @@ import city.zouitel.domain.repository.TaskRepository
 //@Singleton
 sealed class TaskUseCase {
 
-    class GetAllTaskItems /*@Inject*/ constructor(
+    class GetAllTaskItems(
         private val repository: TaskRepository
     ): TaskUseCase() {
         operator fun invoke() = repository.getAllTaskItems
     }
 
-    class AddTaskItem /*@Inject*/ constructor(
+    class AddTaskItem(
         private val repository: TaskRepository
     ): TaskUseCase() {
         suspend operator fun invoke(task: Task) = repository.addTaskItem(task)
     }
 
-    class UpdateTaskItem /*@Inject*/ constructor(
+    class UpdateTaskItem(
         private val repository: TaskRepository
     ): TaskUseCase() {
         suspend operator fun invoke(task: Task) = repository.updateTaskItem(task)
     }
 
-    class DeleteTaskItem /*@Inject*/ constructor(
+    class DeleteTaskItem(
         private val repository: TaskRepository
     ): TaskUseCase() {
         suspend operator fun invoke(task: Task) = repository.deleteTaskItem(task)

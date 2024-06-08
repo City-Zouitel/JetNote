@@ -10,6 +10,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.toArgb
@@ -21,7 +24,7 @@ import city.zouitel.tags.model.Tag as InTag
 @Composable
 fun DialogColors(tagModel: TagScreenModel) {
 
-    val uiState by lazy { tagModel.uiState }
+    val uiState by remember(tagModel, tagModel::uiState).collectAsState()
 
     AlertDialog(
         onDismissRequest = { tagModel.updateColorDialogState(false) },
@@ -35,18 +38,21 @@ fun DialogColors(tagModel: TagScreenModel) {
                             .size(37.dp)
                             .padding(2.dp)
                             .clickable {
-                                tagModel.updateTag(
-                                    InTag(
-                                        id = uiState.currentId,
-                                        label = uiState.currentLabel,
-                                        color = it.toArgb()
+                                tagModel
+                                    .updateTag(
+                                        InTag(
+                                            id = uiState.currentId,
+                                            label = uiState.currentLabel,
+                                            color = it.toArgb()
+                                        )
                                     )
-                                ).invokeOnCompletion {
-                                    tagModel.updateId()
-                                        .updateColorDialogState()
-                                        .updateColor()
-                                        .updateLabel()
-                                }
+                                    .invokeOnCompletion {
+                                        tagModel
+                                            .updateId()
+                                            .updateColorDialogState()
+                                            .updateColor()
+                                            .updateLabel()
+                                    }
                             }
                     ) {
                         drawArc(

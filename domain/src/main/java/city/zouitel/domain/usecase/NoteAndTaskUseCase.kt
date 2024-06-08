@@ -6,19 +6,19 @@ import city.zouitel.domain.repository.NoteAndTaskRepository
 //@Singleton
 sealed class NoteAndTaskUseCase {
 
-    class GetAllNotesAndTask /*@Inject*/ constructor(
+    class GetAllNotesAndTask(
         private val repository: NoteAndTaskRepository
     ): NoteAndTaskUseCase() {
         operator fun invoke() = repository.getAllNotesAndTask
     }
 
-    class AddNoteAndTask /*@Inject*/ constructor(
+    class AddNoteAndTask(
         private val repository: NoteAndTaskRepository
     ): NoteAndTaskUseCase() {
         suspend operator fun invoke(noteAndTask: NoteAndTask) = repository.addNoteAndTask(noteAndTask)
     }
 
-    class DeleteNoteAndTask /*@Inject*/ constructor(
+    class DeleteNoteAndTask(
         private val repository: NoteAndTaskRepository
     ): NoteAndTaskUseCase() {
         suspend operator fun invoke(noteAndTask: NoteAndTask) = repository.deleteNoteAndTask(noteAndTask)

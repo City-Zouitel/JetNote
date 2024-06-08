@@ -7,7 +7,7 @@ import city.zouitel.repository.model.NoteAndTask as OutNoteAndTask
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class NoteAndTaskDataSourceImpl /*@Inject*/ constructor(
+class NoteAndTaskDataSourceImpl(
     private val dao: NoteAndTaskDao,
     private val mapper: NoteAndTaskMapper
 ): NoteAndTaskDataSource {

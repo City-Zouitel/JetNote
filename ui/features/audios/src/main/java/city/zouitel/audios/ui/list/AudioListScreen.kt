@@ -1,6 +1,5 @@
 package city.zouitel.audios.ui.list
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,36 +30,26 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import city.zouitel.audios.state.AudioListUiState
 import city.zouitel.audios.state.SingleAudioUiState
 
-data class AudioListScreen(val noteUid: String): Screen {
+data class AudioListScreen(val noteId: String): Screen {
     @Composable
     override fun Content() {
-        val audioListModel = getScreenModel<AudioListScreenModel>()
-        val noteUid = remember { mutableStateOf<String?>(noteUid) }
 
-        audioListModel.noteUid = noteUid.value
-        audioListModel.bottomSheetNavigator = LocalBottomSheetNavigator.current
-
-        AudioListScreen(audioListModel = audioListModel)
-    }
-
-    @SuppressLint("NotConstructor")
-    @Composable
-    fun AudioListScreen(audioListModel: AudioListScreenModel) {
-
-        AudioList(
-            uiState = audioListModel.AudioListUiState,
-            onQueryChange = audioListModel::updateSearchQuery
-        )
+        AudioList(audioListModel = getScreenModel<AudioListScreenModel>())
     }
 
     @Composable
-    private fun AudioList(
-        uiState: AudioListUiState,
-        onQueryChange: (String) -> Unit
-    ) {
+    private fun AudioList(audioListModel: AudioListScreenModel) {
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+
+        LaunchedEffect(Unit) {
+            audioListModel.updateId(noteId)
+                .updateBottomSheetNavigator(bottomSheetNavigator)
+        }
+
+        val uiState by remember(audioListModel, audioListModel::audioListUiState).collectAsState()
+
         LazyColumn(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.surface),

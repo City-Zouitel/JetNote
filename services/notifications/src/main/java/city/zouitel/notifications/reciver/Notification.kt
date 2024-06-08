@@ -27,6 +27,7 @@ class Notification : NotifyBroadcastReceiver(), KoinComponent {
     private val notifyChannel : NotificationChannel by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
 
         val path = context.filesDir.path
         val uid = intent.getStringExtra(UID)

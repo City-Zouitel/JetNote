@@ -5,43 +5,43 @@ import city.zouitel.domain.repository.NoteRepository
 //@Singleton
 sealed class NoteUseCase {
 
-    class GetAllNotesById /*@Inject*/ constructor(
+    class GetAllNotesById(
         private val repository: NoteRepository
     ): NoteUseCase() {
         operator fun invoke() = repository.getAllNotesById
     }
 
-    class GetAllNotesByName /*@Inject*/ constructor(
+    class GetAllNotesByName(
         private val repository: NoteRepository
     ): NoteUseCase() {
         operator fun invoke() = repository.getAllNotesByName
     }
 
-    class GetAllNotesByNewest /*@Inject*/ constructor(
+    class GetAllNotesByNewest(
         private val repository: NoteRepository
     ): NoteUseCase() {
         operator fun invoke() = repository.getAllNotesByNewest
     }
 
-    class GetAllNotesByOldest /*@Inject*/ constructor(
+    class GetAllNotesByOldest(
         private val repository: NoteRepository
     ): NoteUseCase() {
         operator fun invoke() = repository.getAllNotesByOldest
     }
 
-    class GetAllTrashedNotes /*@Inject*/ constructor(
+    class GetAllTrashedNotes(
         private val repository: NoteRepository
     ): NoteUseCase() {
         operator fun invoke() = repository.getAllTrashedNotes
     }
 
-    class GetAllNotesByPriority /*@Inject*/ constructor(
+    class GetAllNotesByPriority(
         private val repository: NoteRepository
     ): NoteUseCase() {
         operator fun invoke() = repository.allNotesByPriority
     }
 
-    class GetAllRemindingNotes /*@Inject*/ constructor(
+    class GetAllRemindingNotes(
         private val repository: NoteRepository
     ): NoteUseCase() {
         operator fun invoke() = repository.getAllRemindingNotes

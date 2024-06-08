@@ -10,18 +10,18 @@ import java.util.*
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun CacheLinks(
-    linkScreenModel: LinkScreenModel,
+    linkModel: LinkScreenModel,
     noteId: String,
     url: String
 ) {
     val context = LocalContext.current
-    val observeLinks = remember(linkScreenModel, linkScreenModel::getAllLinks).collectAsState()
+    val observeLinks = remember(linkModel, linkModel::getAllLinks).collectAsState()
+    val uiState by remember(linkModel, linkModel::uiState).collectAsState()
 
-    val uiState by lazy { linkScreenModel.uiState }
     val id by lazy { Random().nextLong() }
 
     runCatching {
-        linkScreenModel.urlPreview(context, url)?.fetchUrlPreview()
+        linkModel.urlPreview(context, url)?.fetchUrlPreview()
     }.onSuccess {
         if (
             observeLinks.value.none { it.url == url } &&
@@ -29,7 +29,7 @@ fun CacheLinks(
             uiState.host.isNotBlank() &&
             uiState.img.isNotBlank()
         ) {
-            linkScreenModel.doWork(
+            linkModel.doWork(
                 noteId = noteId,
                 link = Link(id, url, uiState.host, uiState.img, uiState.title, uiState.description)
             )

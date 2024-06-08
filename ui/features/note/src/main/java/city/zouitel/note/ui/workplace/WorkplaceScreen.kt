@@ -49,7 +49,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -74,6 +73,7 @@ import city.zouitel.links.ui.CacheLinks
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.logic.findUrlLink
 import city.zouitel.logic.getImgPath
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
@@ -87,7 +87,6 @@ import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.ImageDisplayed
 import city.zouitel.systemDesign.SoundEffect
-import city.zouitel.systemDesign.findUrlLink
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
@@ -368,7 +367,7 @@ data class WorkplaceScreen(
                     findUrlLink(descriptionState.text.toString())?.let { links ->
                         for (link in links) {
                             CacheLinks(
-                                linkScreenModel = linkModel,
+                                linkModel = linkModel,
                                 noteId = id,
                                 url = link
                             )
@@ -384,7 +383,7 @@ data class WorkplaceScreen(
                             linkScreenModel = linkModel,
                             noteAndLinkScreenModel = noteAndLinkModel,
                             noteUid = id,
-                            swipeable = true,
+                            isSwipe = true,
                             link = _link
                         )
                     }

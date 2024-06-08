@@ -76,8 +76,8 @@ data class TagsScreen(val id: String): Screen {
 
         val observeTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
         val observeNoteAndTag by remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
+        val uiState by remember(tagModel, tagModel::uiState).collectAsState()
 
-        val uiState by lazy { tagModel.uiState }
         val focusRequester by lazy { FocusRequester() }
 
         if (uiState.isColorsDialog) {

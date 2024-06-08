@@ -110,7 +110,7 @@ fun NoteCard(
                 noteAndLinkModel = noteAndLinkModel,
                 noteEntity = noteEntity,
                 isHomeScreen = isHomeScreen,
-                homeModel = homeModel
+                mainModel = homeModel
             )
         }
     } else {
@@ -125,7 +125,7 @@ fun NoteCard(
             noteAndLinkModel = noteAndLinkModel,
             noteEntity = noteEntity,
             isHomeScreen = isHomeScreen,
-            homeModel = homeModel
+            mainModel = homeModel
         )
     }
 }
@@ -143,13 +143,11 @@ private fun Card(
     noteAndAudioModel: NoteAndAudioScreenModel,
     noteEntity: Note,
     isHomeScreen: Boolean,
-    homeModel: MainScreenModel
+    mainModel: MainScreenModel
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.current
     val haptic = LocalHapticFeedback.current
-
-    val uiState by lazy { homeModel.uiState }
 
     val note = noteEntity.dataEntity
     val labels = noteEntity.tagEntities
@@ -165,6 +163,7 @@ private fun Card(
     val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
     val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
         .collectAsState()
+    val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     var todoListState by remember { mutableStateOf(false) }
 
@@ -176,8 +175,8 @@ private fun Card(
                 onLongClick = {
                     // To make vibration.
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    homeModel.updateSelectedNotes(note)
-                    homeModel.updateSelection(true)
+                    mainModel.updateSelectedNotes(note)
+                    mainModel.updateSelection(true)
                 }
             ) {
                 sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
@@ -204,7 +203,7 @@ private fun Card(
                     }
                 }
                 uiState.selectedNotes.ifEmpty {
-                    homeModel.updateSelection(false)
+                    mainModel.updateSelection(false)
                 }
             }
             .drawBehind {
@@ -257,7 +256,7 @@ private fun Card(
                 NoteAndAudio(note.uid, it.id)
             )
         }.fastFirstOrNull { _audio ->
-            MiniAudioPlayer(dataStoreModel, audioModel, note.uid, _audio)
+            MiniAudioPlayer(dataStoreModel, audioModel, _audio)
             true
         }
 
@@ -363,7 +362,7 @@ private fun Card(
                 linkScreenModel = linkModel,
                 noteAndLinkScreenModel = noteAndLinkModel,
                 noteUid = note.uid,
-                swipeable = false,
+                isSwipe = false,
                 link = _link,
             )
         }

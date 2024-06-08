@@ -1,5 +1,6 @@
 package city.zouitel.audios.ui.list
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -18,6 +19,10 @@ import city.zouitel.domain.usecase.NoteAndAudioUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class AudioListScreenModel(
@@ -29,19 +34,17 @@ class AudioListScreenModel(
     private val noteAndAudioMapper: NoteAndAudioMapper
 ): ScreenModel {
 
-    var AudioListUiState: AudioListUiState by mutableStateOf(AudioListUiState())
-        private set
-
-    var noteUid: String? = null
+    private val _audioListUiState: MutableStateFlow<AudioListUiState> = MutableStateFlow(
+        AudioListUiState()
+    )
+    internal val audioListUiState: StateFlow<AudioListUiState> = _audioListUiState
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            AudioListUiState()
+        )
 
     private var loadAudioJob: Job? = null
-
-    var bottomSheetNavigator: BottomSheetNavigator? by mutableStateOf(null)
-
-    fun updateSearchQuery(query: String) {
-        AudioListUiState = AudioListUiState.copy(searchQuery = query)
-        loadAudioFiles(query)
-    }
 
     init {
         loadAudioFiles()
@@ -51,19 +54,19 @@ class AudioListScreenModel(
         loadAudioJob?.cancel()
         loadAudioJob = screenModelScope.launch {
             runCatching {
-                AudioListUiState = AudioListUiState.copy(isLoadingAudios = true)
-                val audioFiles = audioRepository.loadAudioFiles(query ?: AudioListUiState.searchQuery)
+                _audioListUiState.value = _audioListUiState.value.copy(isLoadingAudios = true)
+                val audioFiles = audioRepository.loadAudioFiles(query ?: _audioListUiState.value.searchQuery)
                     .map {
                         it.toUiState {
                             // onClick.
                             onSelectAudioItem(it)
                         }
                     }
-                AudioListUiState = AudioListUiState.copy(audioFiles = audioFiles)
+                _audioListUiState.value = _audioListUiState.value.copy(audioFiles = audioFiles)
             }.onFailure {
                 it.printStackTrace()
             }.onSuccess {
-                AudioListUiState = AudioListUiState.copy(isLoadingAudios = false)
+                _audioListUiState.value = _audioListUiState.value.copy(isLoadingAudios = false)
             }
         }
     }
@@ -73,11 +76,11 @@ class AudioListScreenModel(
             addAudio.invoke(audioMapper.toDomain(audio))
             addNoteAndAudio.invoke(
                 noteAndAudioMapper.toDomain(
-                    InNoteAndAudio(noteUid = noteUid ?: "0", audioId = audio.id)
+                    InNoteAndAudio(noteUid = audioListUiState.value.currentId, audioId = audio.id)
                 )
             )
             delay(500).runCatching {
-                bottomSheetNavigator?.hide()
+                audioListUiState.value.bottomSheetNavigator?.hide()
             }
         }
     }
@@ -85,6 +88,24 @@ class AudioListScreenModel(
     fun deleteAudio(audio: Audio) {
         screenModelScope.launch(Dispatchers.IO) {
             deleteAudio.invoke(audioMapper.toDomain(audio))
+        }
+    }
+
+    fun updateSearchQuery(query: String) {
+        _audioListUiState.value = _audioListUiState.value.copy(searchQuery = query)
+        loadAudioFiles(query)
+    }
+
+    fun updateId(id: String): AudioListScreenModel {
+        screenModelScope.launch {
+            _audioListUiState.value = _audioListUiState.value.copy(currentId = id)
+        }
+        return this
+    }
+
+    fun updateBottomSheetNavigator(bottomSheetNavigator: BottomSheetNavigator?) {
+        screenModelScope.launch {
+            _audioListUiState.value = _audioListUiState.value.copy(bottomSheetNavigator = bottomSheetNavigator)
         }
     }
 }

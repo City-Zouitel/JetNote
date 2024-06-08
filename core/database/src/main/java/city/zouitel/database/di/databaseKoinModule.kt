@@ -2,6 +2,7 @@ package city.zouitel.database.di
 
 import androidx.room.Room
 import city.zouitel.database.Database
+import city.zouitel.database.Encryption
 import city.zouitel.database.datasourceImpl.DataDataSourceImpl
 import city.zouitel.database.datasourceImpl.LinkDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteAndLinkDataSourceImpl
@@ -36,6 +37,7 @@ import city.zouitel.repository.datasource.TagDataSource
 import city.zouitel.repository.datasource.TaskDataSource
 import city.zouitel.repository.datasource.WidgetDataSource
 import city.zouitel.repository.datasource.NoteAndAudioDataSource
+import net.sqlcipher.database.SupportFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -93,10 +95,9 @@ val databaseKoinModule = module {
             androidContext(),
             Database::class.java,
             Constants.DATABASE
-        )
-//            .openHelperFactory(
-//            SupportFactory(Encryption(androidContext()).getCrypticPass())
-//        )
+        ).openHelperFactory(
+                SupportFactory(Encryption(androidContext()).getCrypticPass())
+            )
             .fallbackToDestructiveMigration()
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
