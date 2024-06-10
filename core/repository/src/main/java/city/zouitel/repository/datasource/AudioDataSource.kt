@@ -9,5 +9,7 @@ interface AudioDataSource {
 
     suspend fun addAudio(audio: Audio)
 
+    suspend fun updateAudio(audio: Audio)
+
     suspend fun deleteAudio(audio: Audio)
 }

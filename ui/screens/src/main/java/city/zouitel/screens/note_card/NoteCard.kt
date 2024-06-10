@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastFirstOrNull
+import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
@@ -255,7 +256,7 @@ private fun Card(
             observerNoteAndAudio.contains(
                 NoteAndAudio(note.uid, it.id)
             )
-        }.fastFirstOrNull { _audio ->
+        }.fastLastOrNull { _audio ->
             MiniAudioPlayer(dataStoreModel, audioModel, _audio)
             true
         }

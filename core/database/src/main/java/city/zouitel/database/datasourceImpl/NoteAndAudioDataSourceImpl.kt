@@ -3,6 +3,7 @@ package city.zouitel.database.datasourceImpl
 import city.zouitel.database.dao.NoteAndAudioDao
 import city.zouitel.database.mapper.NoteAndAudioMapper
 import city.zouitel.repository.datasource.NoteAndAudioDataSource
+import city.zouitel.repository.model.NoteAndAudio
 import city.zouitel.repository.model.NoteAndAudio as OutNoteAndAudio
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -20,6 +21,10 @@ class NoteAndAudioDataSourceImpl(
 
     override suspend fun addNoteAndAudio(noteAndAudio: OutNoteAndAudio) {
         dao.addNoteAndAudio(mapper.toLocal(noteAndAudio))
+    }
+
+    override suspend fun updateNoteAndAudio(noteAndAudio: NoteAndAudio) {
+        dao.updateNoteAndAudio(mapper.toLocal(noteAndAudio))
     }
 
     override suspend fun deleteNoteAndAudio(noteAndAudio: OutNoteAndAudio) {

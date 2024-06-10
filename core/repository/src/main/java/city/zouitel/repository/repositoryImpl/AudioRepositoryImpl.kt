@@ -1,5 +1,6 @@
 package city.zouitel.repository.repositoryImpl
 
+import city.zouitel.domain.model.Audio
 import city.zouitel.domain.model.Audio as OutAudio
 import city.zouitel.domain.repository.AudioRepository
 import city.zouitel.repository.datasource.AudioDataSource
@@ -20,6 +21,10 @@ class AudioRepositoryImpl(
 
     override suspend fun addAudio(audio: OutAudio) {
         dataSource.addAudio(mapper.toRepository(audio))
+    }
+
+    override suspend fun updateAudio(audio: Audio) {
+        dataSource.updateAudio(mapper.toRepository(audio))
     }
 
     override suspend fun deleteAudio(audio: OutAudio) {

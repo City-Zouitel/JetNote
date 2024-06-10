@@ -17,6 +17,12 @@ sealed class NoteAndAudioUseCase {
         suspend operator fun invoke(noteAndAudio: NoteAndAudio) = repository.addNoteAndAudio(noteAndAudio)
     }
 
+    class UpdateNoteAndAudio(
+        private val repository: NoteAndAudioRepository
+    ): NoteAndLinkUseCase() {
+        suspend operator fun invoke(noteAndAudio: NoteAndAudio) = repository.updateNoteAndAudio(noteAndAudio)
+    }
+
     class DeleteNoteAndAudio(
         private val repository: NoteAndAudioRepository
     ): NoteAndLinkUseCase() {

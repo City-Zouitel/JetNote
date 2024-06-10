@@ -133,9 +133,11 @@ val repositoryKoinModule = module {
 
     factoryOf(AudioUseCase::GetAllAudios)
     factoryOf(AudioUseCase::AddAudio)
+    factoryOf(AudioUseCase::UpdateAudio)
     factoryOf(AudioUseCase::DeleteAudio)
 
     factoryOf(NoteAndAudioUseCase::GetAllNotesAndAudios)
     factoryOf(NoteAndAudioUseCase::AddNoteAndAudio)
+    factoryOf(NoteAndAudioUseCase::UpdateNoteAndAudio)
     factoryOf(NoteAndAudioUseCase::DeleteNoteAndAudio)
 }

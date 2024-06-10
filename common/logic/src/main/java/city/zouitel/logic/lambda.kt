@@ -23,8 +23,8 @@ val sharNote: (Context, String, String, then: () -> Unit) -> Unit = { context, t
     then.invoke()
 }
 
-val sharApp: (Context, String) -> Unit = { ctx, txt ->
-    ctx.startActivity(
+val sharApp: (Context, String) -> Unit = { context, txt ->
+    context.startActivity(
         Intent.createChooser(
             Intent().apply {
                 action = Intent.ACTION_SEND

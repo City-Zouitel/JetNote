@@ -42,7 +42,7 @@ val audioPlayerKoinModule = module {
     single { LocalMediaDataSource(androidContext(), get()) }
 
     factory { AudioScreenModel(get(), get(),get(),get(), get(named(REC_DIR))) }
-    factory { AudioListScreenModel(get(), get(), get(), get(), get(), get()) }
+    factory { AudioListScreenModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { NoteAndAudioScreenModel(get(), get(), get()) }
 
     factoryOf(::AudioMapper)

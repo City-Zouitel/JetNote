@@ -16,6 +16,12 @@ sealed class AudioUseCase {
         suspend operator fun invoke(audio: Audio) = repository.addAudio(audio)
     }
 
+    class UpdateAudio(
+        private val repository: AudioRepository
+    ): AudioUseCase() {
+        suspend operator fun invoke(audio: Audio) = repository.updateAudio(audio)
+    }
+
     class DeleteAudio(
         private val repository: AudioRepository
     ): AudioUseCase() {

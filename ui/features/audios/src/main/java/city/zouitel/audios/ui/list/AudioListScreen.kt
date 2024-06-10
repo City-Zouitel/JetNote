@@ -4,16 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,23 +25,32 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
+import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.state.SingleAudioUiState
+import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 
 data class AudioListScreen(val noteId: String): Screen {
     @Composable
     override fun Content() {
 
-        AudioList(audioListModel = getScreenModel<AudioListScreenModel>())
+        AudioList(
+            audioListModel = getScreenModel<AudioListScreenModel>(),
+            )
     }
 
     @Composable
-    private fun AudioList(audioListModel: AudioListScreenModel) {
+    private fun AudioList(
+        audioListModel: AudioListScreenModel,
+    ) {
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
+        val navigator = LocalNavigator.current
 
         LaunchedEffect(Unit) {
             audioListModel.updateId(noteId)
                 .updateBottomSheetNavigator(bottomSheetNavigator)
+                .updateNavigator(navigator)
         }
 
         val uiState by remember(audioListModel, audioListModel::audioListUiState).collectAsState()
@@ -69,7 +74,7 @@ data class AudioListScreen(val noteId: String): Screen {
             }
 
             items(items = uiState.audioFiles, key = { it.id }) {
-                AudioItem(itemState = it)
+                AudioItem(itemState = it, audioListModel = audioListModel)
             }
 
             item {
@@ -78,34 +83,19 @@ data class AudioListScreen(val noteId: String): Screen {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    private fun SearchField(
-        modifier: Modifier = Modifier,
-        value: String,
-        onValueChange: (String) -> Unit,
-    ) {
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .then(modifier),
-            value = value,
-            onValueChange = onValueChange,
-            placeholder = { Text(text = "search in ..") },
-            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
-            colors = TextFieldDefaults.textFieldColors()
-        )
-    }
-
     @Composable
     private fun AudioItem(
-        itemState: SingleAudioUiState
+        itemState: SingleAudioUiState,
+        audioListModel: AudioListScreenModel
     ) {
         Surface(
             color = MaterialTheme.colorScheme.onSurface,
             shape = ShapeDefaults.Large,
             tonalElevation = 0.dp,
-            onClick = itemState.onClick
+            onClick = {
+                itemState.onClick.invoke()
+                audioListModel.updateNewAudio(false)
+            }
         ) {
             Row(
                 modifier = Modifier

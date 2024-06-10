@@ -9,5 +9,7 @@ interface NoteAndAudioDataSource {
 
     suspend fun addNoteAndAudio(noteAndAudio: NoteAndAudio)
 
+    suspend fun updateNoteAndAudio(noteAndAudio: NoteAndAudio)
+
     suspend fun deleteNoteAndAudio(noteAndAudio: NoteAndAudio)
 }

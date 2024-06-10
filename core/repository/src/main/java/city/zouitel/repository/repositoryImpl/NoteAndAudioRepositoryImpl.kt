@@ -22,6 +22,10 @@ class NoteAndAudioRepositoryImpl(
         dataSource.addNoteAndAudio(mapper.toRepository(noteAndAudio))
     }
 
+    override suspend fun updateNoteAndAudio(noteAndAudio: NoteAndAudio) {
+        dataSource.updateNoteAndAudio(mapper.toRepository(noteAndAudio))
+    }
+
     override suspend fun deleteNoteAndAudio(noteAndAudio: NoteAndAudio) {
         dataSource.deleteNoteAndAudio(mapper.toRepository(noteAndAudio))
     }

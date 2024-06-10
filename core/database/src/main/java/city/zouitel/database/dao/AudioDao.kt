@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import city.zouitel.database.model.AudioEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -15,6 +16,9 @@ interface AudioDao {
     fun getAllAudios(): Flow<List<AudioEntity>>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addAudio(audioEntity: AudioEntity)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateAudio(audioEntity: AudioEntity)
 
     @Delete
     suspend fun deleteAudio(audioEntity: AudioEntity)

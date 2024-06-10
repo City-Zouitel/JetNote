@@ -3,6 +3,7 @@ package city.zouitel.database.datasourceImpl
 import city.zouitel.database.dao.AudioDao
 import city.zouitel.database.mapper.AudioMapper
 import city.zouitel.repository.datasource.AudioDataSource
+import city.zouitel.repository.model.Audio
 import city.zouitel.repository.model.Audio as OutAudio
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -20,6 +21,10 @@ class AudioDataSourceImpl(
 
     override suspend fun addAudio(audio: OutAudio) {
         dao.addAudio(mapper.toLocal(audio))
+    }
+
+    override suspend fun updateAudio(audio: Audio) {
+        dao.updateAudio(mapper.toLocal(audio))
     }
 
     override suspend fun deleteAudio(audio: OutAudio) {

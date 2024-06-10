@@ -27,5 +27,5 @@ internal fun Audio.toUiState(onClick: () -> Unit) = SingleAudioUiState(
     id = id,
     displayName = title,
     size = duration.formatAsAudioDuration + " | " + size.formatAsFileSize,
-    onClick = onClick
+    onClick = onClick,
 )

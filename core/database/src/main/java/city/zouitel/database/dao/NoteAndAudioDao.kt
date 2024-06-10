@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import city.zouitel.database.model.NoteAndAudioEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -16,6 +17,9 @@ interface NoteAndAudioDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNoteAndAudio(noteAndAudio: NoteAndAudioEntity)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateNoteAndAudio(noteAndAudio: NoteAndAudioEntity)
 
     @Delete
     suspend fun deleteNoteAndAudio(noteAndAudio: NoteAndAudioEntity)

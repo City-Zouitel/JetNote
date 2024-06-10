@@ -59,6 +59,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastFirstOrNull
+import androidx.compose.ui.util.fastLastOrNull
 import androidx.core.net.toUri
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
@@ -356,7 +357,7 @@ data class WorkplaceScreen(
                         observerNoteAndAudio.contains(
                             NoteAndAudio(id, it.id)
                         )
-                    }.fastFirstOrNull { _audio ->
+                    }.fastLastOrNull { _audio ->
                         Navigator(screen = BasicAudioScreen(id, _audio))
                         true
                     }

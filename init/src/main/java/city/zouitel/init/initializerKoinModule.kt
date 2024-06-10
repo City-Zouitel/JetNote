@@ -2,7 +2,6 @@ package city.zouitel.init
 
 import androidx.compose.ui.platform.ComposeView
 import city.zouitel.systemDesign.CommonConstants.IMG_DIR
-import city.zouitel.systemDesign.CommonConstants.LINK_DIR
 import city.zouitel.systemDesign.CommonConstants.MEDIA_DIR
 import city.zouitel.systemDesign.CommonConstants.REC_DIR
 import net.sqlcipher.database.SQLiteDatabase
@@ -32,11 +31,11 @@ val initializerKoinModule = module {
         file.path
     }
 
-    single<String>(named(LINK_DIR)) {
-        val file = File(androidContext().filesDir.path, LINK_DIR)
-        if (!file.exists()) file.mkdirs()
-        file.path
-    }
+//    single<String>(named(LINK_DIR)) {
+//        val file = File(androidContext().filesDir.path, LINK_DIR)
+//        if (!file.exists()) file.mkdirs()
+//        file.path
+//    }
 
     single<String>(named(MEDIA_DIR)) {
         val file = File(androidContext().filesDir.path, MEDIA_DIR)

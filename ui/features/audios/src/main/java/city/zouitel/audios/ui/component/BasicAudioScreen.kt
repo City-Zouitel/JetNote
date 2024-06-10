@@ -95,10 +95,8 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
         val swipeAction = SwipeAction(
             onSwipe = {
                 File(audio.path).delete()
-                audioListModel.deleteAudio(audio)
-                noteAndAudioModel.deleteNoteAndAudio(
-                    NoteAndAudio(id, audio.id)
-                )
+//                audioListModel.deleteAudio(audio)
+                noteAndAudioModel.deleteNoteAndAudio(NoteAndAudio(id, audio.id))
             },
             icon = {
                 Icon(painterResource(CommonIcons.DELETE_OUTLINE_ICON), null)
