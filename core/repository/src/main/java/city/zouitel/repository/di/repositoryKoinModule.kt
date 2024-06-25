@@ -29,13 +29,12 @@ import city.zouitel.repository.mapper.LinkMapper
 import city.zouitel.repository.mapper.NoteAndLinkMapper
 import city.zouitel.repository.mapper.NoteAndTagMapper
 import city.zouitel.repository.mapper.NoteAndTaskMapper
-import city.zouitel.repository.mapper.NoteMapper
+import city.zouitel.repository.mapper.WidgetMapper
 import city.zouitel.repository.mapper.RootMapper
 import city.zouitel.repository.mapper.TagMapper
 import city.zouitel.repository.mapper.TaskMapper
 import city.zouitel.repository.mapper.AudioMapper
 import city.zouitel.repository.mapper.NoteAndAudioMapper
-import city.zouitel.repository.mapper.WidgetMapper
 import city.zouitel.repository.repositoryImpl.DataRepositoryImpl
 import city.zouitel.repository.repositoryImpl.LinkRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteAndLinkRepositoryImpl
@@ -67,7 +66,7 @@ val repositoryKoinModule = module {
     factoryOf(::NoteAndAudioMapper)
     factoryOf(::RootMapper)
     factory {
-        NoteMapper(get(), get(), get(), get())
+        WidgetMapper(get(), get(), get(), get())
     }
     factory {
         WidgetMapper(get(), get(), get(), get())

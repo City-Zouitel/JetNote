@@ -36,7 +36,7 @@ internal fun UndoSnackbar(
                             textColor = removedNotesState.value.last().dataEntity.textColor,
                             date = removedNotesState.value.last().dataEntity.date,
                             color = removedNotesState.value.last().dataEntity.color,
-                            trashed = 0,
+                            removed = 0,
                         )
                     )
                 }

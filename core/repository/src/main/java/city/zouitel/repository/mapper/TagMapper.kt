@@ -1,15 +1,21 @@
 package city.zouitel.repository.mapper
 
-import city.zouitel.repository.mapper.base.Mapper
 import city.zouitel.repository.model.Tag as InTag
 import city.zouitel.domain.model.Tag as OutTag
 
-class TagMapper: Mapper.Base<InTag, OutTag> {
-    override fun toRepository(data: OutTag): InTag = with(data){
-        InTag(id, label, color)
-    }
+class TagMapper {
 
-    override fun toDomain(data: InTag): OutTag = with(data){
-        OutTag(id, label, color)
-    }
+    fun toDomain(tags: List<InTag>) = tags.map { toDomain(it) }
+
+    fun toDomain(tag: InTag) = OutTag(
+        id = tag.id,
+        label = tag.label,
+        color = tag.color
+    )
+
+    fun fromDomain(tag: OutTag) = InTag(
+        id = tag.id,
+        label = tag.label,
+        color = tag.color
+    )
 }

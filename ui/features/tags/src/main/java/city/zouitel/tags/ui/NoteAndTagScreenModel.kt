@@ -27,8 +27,8 @@ class NoteAndTagScreenModel(
 
     init {
         screenModelScope.launch(Dispatchers.IO) {
-            getAll.invoke().collect { list ->
-                _getAllNotesAndTags.value = list.map { noteAndTag -> mapper.toView(noteAndTag) }
+            getAll.invoke().collect { notesAndTag ->
+                _getAllNotesAndTags.value = mapper.fromDomain(notesAndTag)
             }
         }
     }

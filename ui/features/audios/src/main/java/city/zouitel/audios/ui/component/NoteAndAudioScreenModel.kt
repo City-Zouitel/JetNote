@@ -30,8 +30,8 @@ class NoteAndAudioScreenModel(
 
     init {
         screenModelScope.launch(Dispatchers.IO) {
-            getAllNotesAndAudios.invoke().collect { list ->
-                _allNotesAndAudios.value = list.map { noteAndAudio -> mapper.toView(noteAndAudio) }
+            getAllNotesAndAudios.invoke().collect { notesAndAudio ->
+                _allNotesAndAudios.value = mapper.fromDomain(notesAndAudio)
             }
         }
     }

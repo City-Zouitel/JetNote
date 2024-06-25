@@ -12,17 +12,13 @@ class LinkDataSourceImpl(
     private val mapper: LinkMapper
 ): LinkDataSource {
     override val getAllLinks: Flow<List<OutLink>>
-        get() = dao.getAllLinks().map { list ->
-            list.map { link ->
-                mapper.readOnly(link)
-            }
-        }
+        get() = dao.getAllLinks().map { links -> mapper.toRepo(links) }
 
     override suspend fun addLink(link: OutLink) {
-        dao.addLink(mapper.toLocal(link))
+        dao.addLink(mapper.fromRepo(link))
     }
 
     override suspend fun deleteLink(link: OutLink) {
-        dao.deleteLink(mapper.toLocal(link))
+        dao.deleteLink(mapper.fromRepo(link))
     }
 }

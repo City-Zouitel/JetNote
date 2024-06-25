@@ -4,12 +4,17 @@ import city.zouitel.links.mapper.base.Mapper
 import city.zouitel.domain.model.NoteAndLink as OutNoteAndLink
 import city.zouitel.links.model.NoteAndLink as InNoteAndLink
 
-class NoteAndLinkMapper: Mapper.Base<InNoteAndLink, OutNoteAndLink> {
-    override fun toView(data: OutNoteAndLink): InNoteAndLink = with(data) {
-        InNoteAndLink(noteUid, linkId)
-    }
+class NoteAndLinkMapper {
 
-    override fun toDomain(data: InNoteAndLink): OutNoteAndLink = with(data) {
-        OutNoteAndLink(noteUid, linkId)
-    }
+    fun fromDomain(notesAndLink: List<OutNoteAndLink>) = notesAndLink.map { fromDomain(it) }
+
+    fun toDomain(notesAndLink: InNoteAndLink) = OutNoteAndLink(
+        noteUid = notesAndLink.noteUid,
+        linkId = notesAndLink.linkId
+    )
+
+    fun fromDomain(notesAndLink: OutNoteAndLink) = InNoteAndLink(
+        noteUid = notesAndLink.noteUid,
+        linkId = notesAndLink.linkId
+    )
 }

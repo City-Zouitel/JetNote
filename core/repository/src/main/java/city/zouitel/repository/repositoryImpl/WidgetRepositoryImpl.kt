@@ -12,9 +12,5 @@ class WidgetRepositoryImpl(
     private val mapper: WidgetMapper
 ): WidgetRepository {
     override val getAllWidgetMainEntityById: Flow<List<OutNote>>
-        get() = dataSource.getAllWidgetMainEntityById.map { list ->
-            list.map { note ->
-                mapper.toDomain(note)
-            }
-        }
+        get() = dataSource.getAllWidgetMainEntityById.map { notes -> mapper.toDomain(notes) }
 }

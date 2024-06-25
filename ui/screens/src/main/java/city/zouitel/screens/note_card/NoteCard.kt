@@ -28,7 +28,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.fastFirstOrNull
 import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.audios.model.NoteAndAudio
@@ -301,7 +300,7 @@ private fun Card(
                             description = note.description,
                             priority = note.priority,
                             uid = note.uid,
-                            trashed = 0,
+                            removed = 0,
                             color = note.color,
                             textColor = note.textColor
                         )

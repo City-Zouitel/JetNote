@@ -15,6 +15,6 @@ class RootRepositoryImpl(
 ): RootRepository {
     override val isDeviceRooted: Flow<Result<OutRoot>>
         get() = dataSource.isDeviceRooted.map { result ->
-            result.map { mapper.toDomain(it) }
+            result.mapCatching { mapper.toDomain(it) }
         }
 }

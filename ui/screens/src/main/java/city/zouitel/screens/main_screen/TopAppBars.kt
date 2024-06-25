@@ -154,7 +154,7 @@ internal fun HomeSelectionTopAppBar(
                                             uid = it.uid,
                                             color = it.color,
                                             textColor = it.textColor,
-                                            trashed = 1
+                                            removed = 1
                                         )
                                     )
 

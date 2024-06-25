@@ -12,21 +12,17 @@ class TaskRepositoryImpl(
     private val mapper: TaskMapper
 ): TaskRepository {
     override val getAllTaskItems: Flow<List<OutTask>>
-        get() = dataSource.getAllTaskItems.map { list ->
-            list.map { task ->
-                mapper.toDomain(task)
-            }
-        }
+        get() = dataSource.getAllTaskItems.map { tasks -> mapper.toDomain(tasks) }
 
     override suspend fun addTaskItem(task: OutTask) {
-        dataSource.addTaskItem(mapper.toRepository(task))
+        dataSource.addTaskItem(mapper.fromDomain(task))
     }
 
     override suspend fun updateTaskItem(task: OutTask) {
-        dataSource.updateTaskItem(mapper.toRepository(task))
+        dataSource.updateTaskItem(mapper.fromDomain(task))
     }
 
     override suspend fun deleteTaskItem(task: OutTask) {
-        dataSource.deleteTaskItem(mapper.toRepository(task))
+        dataSource.deleteTaskItem(mapper.fromDomain(task))
     }
 }

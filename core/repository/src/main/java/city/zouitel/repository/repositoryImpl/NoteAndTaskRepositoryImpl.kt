@@ -12,17 +12,13 @@ class NoteAndTaskRepositoryImpl(
     private val mapper: NoteAndTaskMapper
 ): NoteAndTaskRepository {
     override val getAllNotesAndTask: Flow<List<OutNoteAndTask>>
-        get() = dataSource.getAllNotesAndTask.map { list ->
-            list.map { noteAndTask ->
-                mapper.toDomain(noteAndTask)
-            }
-        }
+        get() = dataSource.getAllNotesAndTask.map { notesAndTask -> mapper.toDomain(notesAndTask) }
 
     override suspend fun addNoteAndTask(noteAndTask: OutNoteAndTask) {
-        dataSource.addNoteAndTask(mapper.toRepository(noteAndTask))
+        dataSource.addNoteAndTask(mapper.fromDomain(noteAndTask))
     }
 
     override suspend fun deleteNoteAndTask(noteAndTask: OutNoteAndTask) {
-        dataSource.deleteNoteAndTask(mapper.toRepository(noteAndTask))
+        dataSource.deleteNoteAndTask(mapper.fromDomain(noteAndTask))
     }
 }

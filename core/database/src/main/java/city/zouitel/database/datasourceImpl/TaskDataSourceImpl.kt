@@ -12,21 +12,17 @@ class TaskDataSourceImpl(
     private val mapper: TaskMapper
 ): TaskDataSource {
     override val getAllTaskItems: Flow<List<OutTask>>
-        get() = dao.getAllTaskItems().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllTaskItems().map { tasks -> mapper.toRepo(tasks) }
 
     override suspend fun addTaskItem(task: OutTask) {
-        dao.addTaskItem(mapper.toLocal(task))
+        dao.addTaskItem(mapper.fromRepo(task))
     }
 
     override suspend fun updateTaskItem(task: OutTask) {
-        dao.updateTaskItem(mapper.toLocal(task))
+        dao.updateTaskItem(mapper.fromRepo(task))
     }
 
     override suspend fun deleteTaskItem(task: OutTask) {
-        dao.deleteTaskItem(mapper.toLocal(task))
+        dao.deleteTaskItem(mapper.fromRepo(task))
     }
 }

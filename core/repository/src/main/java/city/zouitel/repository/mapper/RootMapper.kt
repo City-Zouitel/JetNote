@@ -5,8 +5,8 @@ import city.zouitel.repository.mapper.base.Mapper
 import city.zouitel.repository.model.Root
 import city.zouitel.repository.model.Root as InRoot
 
-class RootMapper: Mapper.ReadOnly<InRoot, OutRoot> {
-    override fun toDomain(data: InRoot): OutRoot = with(data) {
+class RootMapper {
+    fun toDomain(data: InRoot): OutRoot = with(data) {
         OutRoot(isDeviceRooted)
     }
 }

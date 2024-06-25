@@ -15,6 +15,6 @@ class RootDataSourceImpl(
 
     override val isDeviceRooted: Flow<Result<OutRoot>>
         get() = root.isDeviceRooted().map { result ->
-            result.map { rootMapper.readOnly(InRoot(it)) }
+            result.mapCatching { rootMapper.toRepo(InRoot(it)) }
         }
 }

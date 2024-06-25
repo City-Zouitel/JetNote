@@ -1,15 +1,21 @@
 package city.zouitel.database.mapper
 
-import city.zouitel.database.mapper.base.Mapper
 import city.zouitel.database.model.TagEntity as InTag
 import city.zouitel.repository.model.Tag as OutTag
 
-class TagMapper: Mapper.Base<InTag, OutTag> {
-    override fun toLocal(data: OutTag): InTag = with(data){
-        InTag(id, label, color)
-    }
+class TagMapper {
 
-    override fun readOnly(data: InTag): OutTag = with(data){
-        OutTag(id, label, color)
-    }
+    fun toRepo(tags: List<InTag>) = tags.map { toRepo(it) }
+
+    fun toRepo(tag: InTag) = OutTag(
+        id = tag.id,
+        label = tag.label,
+        color = tag.color
+    )
+
+    fun fromRepo(tag: OutTag) = InTag(
+        id = tag.id,
+        label = tag.label,
+        color = tag.color
+    )
 }

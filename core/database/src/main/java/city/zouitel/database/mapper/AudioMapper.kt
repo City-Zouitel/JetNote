@@ -1,15 +1,27 @@
 package city.zouitel.database.mapper
 
-import city.zouitel.database.mapper.base.Mapper
 import city.zouitel.repository.model.Audio as OutAudio
 import city.zouitel.database.model.AudioEntity as InAudio
 
-class AudioMapper: Mapper.Base<InAudio, OutAudio> {
-    override fun toLocal(data: OutAudio): InAudio = with(data) {
-        InAudio(id, title, path, uri, size, duration)
-    }
+class  AudioMapper {
 
-    override fun readOnly(data: InAudio): OutAudio = with(data) {
-        OutAudio(id, title, path, uri, size, duration)
-    }
+    fun toRepo(audios: List<InAudio>) = audios.map { toRepo(it) }
+
+    fun toRepo(audio: InAudio) = OutAudio(
+        id = audio.id,
+        title = audio.title,
+        path = audio.path,
+        uri = audio.uri,
+        size = audio.size,
+        duration = audio.duration
+    )
+
+    fun fromRepo(audio: OutAudio) = InAudio(
+        id = audio.id,
+        title = audio.title,
+        path = audio.path,
+        uri = audio.uri,
+        size = audio.size,
+        duration = audio.duration
+    )
 }

@@ -10,15 +10,15 @@ class DataDataSourceImpl(
     private val mapper: DataMapper
 ): DataDataSource {
     override suspend fun addData(data: OutData) {
-        dao.addNote(mapper.toLocal(data))
+        dao.addNote(mapper.fromRepo(data))
     }
 
     override suspend fun editData(data: OutData) {
-        dao.editNote(mapper.toLocal(data))
+        dao.editNote(mapper.fromRepo(data))
     }
 
     override suspend fun deleteData(data: OutData) {
-        dao.deleteNote(mapper.toLocal(data))
+        dao.deleteNote(mapper.fromRepo(data))
     }
 
     override suspend fun deleteAllTrashedData() {

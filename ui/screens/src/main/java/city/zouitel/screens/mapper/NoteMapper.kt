@@ -1,14 +1,13 @@
-package city.zouitel.widget.mapper
+package city.zouitel.screens.mapper
 
 import city.zouitel.links.mapper.LinkMapper
 import city.zouitel.note.mapper.DataMapper
-import city.zouitel.note.model.Note
 import city.zouitel.domain.model.Note as OutNote
 import city.zouitel.tags.mapper.TagMapper
 import city.zouitel.tasks.mapper.TaskMapper
-import city.zouitel.widget.model.WidgetNote as InNote
+import city.zouitel.note.model.Note as InNote
 
-class WidgetMapper(
+class NoteMapper(
     private val dataMapper: DataMapper,
     private val tagMapper: TagMapper,
     private val taskMapper: TaskMapper,

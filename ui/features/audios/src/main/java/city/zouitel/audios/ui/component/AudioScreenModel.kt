@@ -47,8 +47,8 @@ class AudioScreenModel (
 
     init {
         screenModelScope.launch(Dispatchers.IO) {
-            getAllAudios.invoke().collect { list ->
-                _allAudios.value = list.map { audio -> audioMapper.toView(audio) }
+            getAllAudios.invoke().collect { audios ->
+                _allAudios.value = audioMapper.fromDomain(audios)
             }
         }
     }

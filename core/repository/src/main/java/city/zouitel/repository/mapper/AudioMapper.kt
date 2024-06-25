@@ -1,15 +1,27 @@
 package city.zouitel.repository.mapper
 
-import city.zouitel.repository.mapper.base.Mapper
 import city.zouitel.repository.model.Audio as InAudio
 import city.zouitel.domain.model.Audio as OutAudio
 
-class AudioMapper: Mapper.Base<InAudio, OutAudio> {
-    override fun toRepository(data: OutAudio): InAudio = with(data) {
-        InAudio(id, title, path, uri, size, duration)
-    }
+class  AudioMapper {
 
-    override fun toDomain(data: InAudio): OutAudio = with(data) {
-        OutAudio(id, title, path, uri, size, duration)
-    }
+    fun toDomain(audios: List<InAudio>) = audios.map { toDomain(it) }
+
+    fun toDomain(audio: InAudio) = OutAudio(
+        id = audio.id,
+        title = audio.title,
+        path = audio.path,
+        uri = audio.uri,
+        size = audio.size,
+        duration = audio.duration
+    )
+
+    fun fromDomain(audio: OutAudio) = InAudio(
+        id = audio.id,
+        title = audio.title,
+        path = audio.path,
+        uri = audio.uri,
+        size = audio.size,
+        duration = audio.duration
+    )
 }

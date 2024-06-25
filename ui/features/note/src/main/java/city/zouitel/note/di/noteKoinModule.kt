@@ -1,7 +1,6 @@
 package city.zouitel.note.di
 
 import city.zouitel.note.mapper.DataMapper
-import city.zouitel.note.mapper.NoteMapper
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.systemDesign.CommonConstants.IMG_DIR
@@ -13,9 +12,6 @@ val noteKoinModule = module {
 
     factoryOf(::DataMapper)
     factoryOf(::WorkplaceScreenModel)
-    factory {
-        NoteMapper(get(), get(), get(), get())
-    }
     factory {
         DataScreenModel(get(), get(), get(), get(), get(), get(named(IMG_DIR)))
     }

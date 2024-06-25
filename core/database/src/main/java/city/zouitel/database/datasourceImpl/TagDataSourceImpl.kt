@@ -12,21 +12,17 @@ class TagDataSourceImpl(
     private val mapper: TagMapper
 ): TagDataSource {
     override val getAllLabels: Flow<List<OutTag>>
-        get() = dao.getAllTags().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllTags().map { tags -> mapper.toRepo(tags) }
 
     override suspend fun addTag(tag: OutTag) {
-        dao.addTag(mapper.toLocal(tag))
+        dao.addTag(mapper.fromRepo(tag))
     }
 
     override suspend fun updateTag(tag: OutTag) {
-        dao.updateTag(mapper.toLocal(tag))
+        dao.updateTag(mapper.fromRepo(tag))
     }
 
     override suspend fun deleteTag(tag: OutTag) {
-        dao.deleteTag(mapper.toLocal(tag))
+        dao.deleteTag(mapper.fromRepo(tag))
     }
 }

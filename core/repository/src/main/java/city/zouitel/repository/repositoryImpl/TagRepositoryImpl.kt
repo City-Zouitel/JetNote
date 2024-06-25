@@ -12,21 +12,17 @@ class TagRepositoryImpl(
     private val mapper: TagMapper
 ): TagRepository {
     override val getAllTags: Flow<List<OutTag>>
-        get() = dataSource.getAllLabels.map { list ->
-            list.map { tag ->
-                mapper.toDomain(tag)
-            }
-        }
+        get() = dataSource.getAllLabels.map { tags -> mapper.toDomain(tags) }
 
     override suspend fun addTag(tag: OutTag) {
-        dataSource.addTag(mapper.toRepository(tag))
+        dataSource.addTag(mapper.fromDomain(tag))
     }
 
     override suspend fun updateTag(tag: OutTag) {
-        dataSource.updateTag(mapper.toRepository(tag))
+        dataSource.updateTag(mapper.fromDomain(tag))
     }
 
     override suspend fun deleteTag(tag: OutTag) {
-        dataSource.deleteTag(mapper.toRepository(tag))
+        dataSource.deleteTag(mapper.fromDomain(tag))
     }
 }

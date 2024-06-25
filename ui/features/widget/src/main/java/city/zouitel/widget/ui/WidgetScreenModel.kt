@@ -37,9 +37,7 @@ class WidgetScreenModel(
 
     init {
         screenModelScope.launch(context = Dispatchers.IO) {
-            getAllNotes.invoke().collect { list ->
-                _allNotesById.value = list.map { note -> mapper.toView(note) }
-            }
+            getAllNotes.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
         }
     }
 

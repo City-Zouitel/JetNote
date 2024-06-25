@@ -1,15 +1,22 @@
 package city.zouitel.database.mapper
 
-import city.zouitel.database.mapper.base.Mapper
+import city.zouitel.repository.model.Task
 import city.zouitel.database.model.TaskEntity as InTask
 import city.zouitel.repository.model.Task as OutTask
 
-class TaskMapper: Mapper.Base<InTask, OutTask> {
-    override fun toLocal(data: OutTask): InTask = with(data){
-        InTask(id, item, isDone)
-    }
+class TaskMapper {
 
-    override fun readOnly(data: InTask): OutTask = with(data){
-        OutTask(id, item, isDone)
-    }
+    fun toRepo(tasks: List<InTask>) = tasks.map { toRepo(it) }
+
+    fun toRepo(task: InTask) = OutTask(
+        id = task.id,
+        item = task.item,
+        isDone = task.isDone
+    )
+
+    fun fromRepo(task: OutTask) = InTask(
+        id = task.id,
+        item = task.item,
+        isDone = task.isDone
+    )
 }

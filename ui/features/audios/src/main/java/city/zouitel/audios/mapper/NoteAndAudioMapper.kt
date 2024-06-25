@@ -4,12 +4,17 @@ import city.zouitel.audios.mapper.base.Mapper
 import city.zouitel.domain.model.NoteAndAudio as OutNoteAndAudio
 import city.zouitel.audios.model.NoteAndAudio as InNoteAndAudio
 
-class NoteAndAudioMapper: Mapper.Base<InNoteAndAudio, OutNoteAndAudio> {
-    override fun toView(data: OutNoteAndAudio): InNoteAndAudio = with(data) {
-        InNoteAndAudio(noteUid, audioId)
-    }
+class NoteAndAudioMapper {
 
-    override fun toDomain(data: InNoteAndAudio): OutNoteAndAudio = with(data) {
-        OutNoteAndAudio(noteUid, audioId)
-    }
+    fun fromDomain(notesAndAudio: List<OutNoteAndAudio>) = notesAndAudio.map { fromDomain(it) }
+
+    fun toDomain(noteAndAudio: InNoteAndAudio) = OutNoteAndAudio(
+        noteUid = noteAndAudio.noteUid,
+        audioId = noteAndAudio.audioId
+    )
+
+    fun fromDomain(noteAndAudio: OutNoteAndAudio) = InNoteAndAudio(
+        noteUid = noteAndAudio.noteUid,
+        audioId = noteAndAudio.audioId
+    )
 }

@@ -51,7 +51,7 @@ class DataScreenModel(
         }
     }
 
-    //delete all trashed notes.
+    //delete all removed notes.
     fun eraseNotes() {
         screenModelScope.launch(Dispatchers.IO) {
             eraseTrash.invoke()

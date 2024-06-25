@@ -13,22 +13,18 @@ class AudioDataSourceImpl(
     private val mapper: AudioMapper
 ): AudioDataSource {
     override val getAllAudios: Flow<List<OutAudio>>
-        get() = dao.getAllAudios().map { list ->
-            list.map { audio ->
-                mapper.readOnly(audio)
-            }
-        }
+        get() = dao.getAllAudios().map { audios -> mapper.toRepo(audios) }
 
     override suspend fun addAudio(audio: OutAudio) {
-        dao.addAudio(mapper.toLocal(audio))
+        dao.addAudio(mapper.fromRepo(audio))
     }
 
     override suspend fun updateAudio(audio: Audio) {
-        dao.updateAudio(mapper.toLocal(audio))
+        dao.updateAudio(mapper.fromRepo(audio))
     }
 
     override suspend fun deleteAudio(audio: OutAudio) {
-        dao.deleteAudio(mapper.toLocal(audio))
+        dao.deleteAudio(mapper.fromRepo(audio))
     }
 
 }

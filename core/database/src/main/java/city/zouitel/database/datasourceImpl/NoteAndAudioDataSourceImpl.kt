@@ -13,21 +13,17 @@ class NoteAndAudioDataSourceImpl(
     private val mapper: NoteAndAudioMapper
 ): NoteAndAudioDataSource {
     override val getAllNotesAndAudio: Flow<List<OutNoteAndAudio>>
-        get() = dao.getAllNotesAndAudios().map { list ->
-            list.map { noteAndAudio ->
-                mapper.readOnly(noteAndAudio)
-            }
-        }
+        get() = dao.getAllNotesAndAudios().map { notesAndAudio -> mapper.toRepo(notesAndAudio) }
 
     override suspend fun addNoteAndAudio(noteAndAudio: OutNoteAndAudio) {
-        dao.addNoteAndAudio(mapper.toLocal(noteAndAudio))
+        dao.addNoteAndAudio(mapper.fromRepo(noteAndAudio))
     }
 
     override suspend fun updateNoteAndAudio(noteAndAudio: NoteAndAudio) {
-        dao.updateNoteAndAudio(mapper.toLocal(noteAndAudio))
+        dao.updateNoteAndAudio(mapper.fromRepo(noteAndAudio))
     }
 
     override suspend fun deleteNoteAndAudio(noteAndAudio: OutNoteAndAudio) {
-        dao.deleteNoteAndAudio(mapper.toLocal(noteAndAudio))
+        dao.deleteNoteAndAudio(mapper.fromRepo(noteAndAudio))
     }
 }

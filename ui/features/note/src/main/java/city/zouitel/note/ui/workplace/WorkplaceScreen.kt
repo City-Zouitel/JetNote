@@ -58,7 +58,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.fastFirstOrNull
 import androidx.compose.ui.util.fastLastOrNull
 import androidx.core.net.toUri
 import cafe.adriel.voyager.core.screen.Screen
@@ -255,7 +254,7 @@ data class WorkplaceScreen(
                                     priority = uiState.priority,
                                     reminding = uiState.reminding,
                                     date = dateState.value.toString(),
-                                    trashed = 0,
+                                    removed = 0,
                                     color = uiState.backgroundColor,
                                     textColor = uiState.textColor
                                 )

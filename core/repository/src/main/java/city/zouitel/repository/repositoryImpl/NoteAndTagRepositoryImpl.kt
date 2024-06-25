@@ -13,17 +13,13 @@ class NoteAndTagRepositoryImpl(
     private val mapper: NoteAndTagMapper
 ): NoteAndTagRepository {
     override val getAllNotesAndTags: Flow<List<OutNoteAndTag>>
-        get() = dataSource.getAllNotesAndTags.map { list ->
-            list.map { noteAndTag ->
-                mapper.toDomain(noteAndTag)
-            }
-        }
+        get() = dataSource.getAllNotesAndTags.map { notesAndTag -> mapper.toDomain(notesAndTag) }
 
     override suspend fun addNoteAndTag(noteAndTag: OutNoteAndTag) {
-        dataSource.addNoteAndTag(mapper.toRepository(noteAndTag))
+        dataSource.addNoteAndTag(mapper.fromDomain(noteAndTag))
     }
 
     override suspend fun deleteNoteAndTag(noteAndTag: OutNoteAndTag) {
-        dataSource.deleteNoteAndTag(mapper.toRepository(noteAndTag))
+        dataSource.deleteNoteAndTag(mapper.fromDomain(noteAndTag))
     }
 }

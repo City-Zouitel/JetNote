@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.NoteUseCase
-import city.zouitel.note.mapper.NoteMapper
+import city.zouitel.screens.mapper.NoteMapper
 import city.zouitel.note.model.Data
 import city.zouitel.screens.state.UiState
 import city.zouitel.tags.model.Tag
@@ -62,39 +62,25 @@ class MainScreenModel(
     init {
         screenModelScope.apply {
             launch(Dispatchers.IO) {
-                getAllById.invoke().collect { list ->
-                    _allNotesById.value = list.map { note -> mapper.toView(note) }
-                }
+                getAllById.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllByName.invoke().collect { list ->
-                    _allNotesByName.value = list.map { note -> mapper.toView(note) }
-                }
+                getAllByName.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllByNewest.invoke().collect { list ->
-                    _allNotesByNewest.value = list.map { note -> mapper.toView(note) }
-                }
+                getAllByNewest.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllByOldest.invoke().collect { list ->
-                    _allNotesByOldest.value = list.map { note -> mapper.toView(note) }
-                }
+                getAllByOldest.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllTrashed.invoke().collect { list ->
-                    _allTrashedNotes.value = list.map { note -> mapper.toView(note) }
-                }
+                getAllTrashed.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllByPriority.invoke().collect { list ->
-                    _allNotesByPriority.value = list.map { note -> mapper.toView(note) }
-                }
+                getAllByPriority.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllReminding.invoke().collect { list ->
-                    _allRemindingNotes.value = list.map { note -> mapper.toView(note) }
-                }
+                getAllReminding.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
             }
         }
     }

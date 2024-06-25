@@ -309,7 +309,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                                             uid = it.dataEntity.uid,
                                             color = it.dataEntity.color,
                                             textColor = it.dataEntity.textColor,
-                                            trashed = 1
+                                            removed = 1
                                         )
                                     )
                                     undo.invoke(entity.dataEntity)
@@ -347,7 +347,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                                             uid = it.dataEntity.uid,
                                             color = it.dataEntity.color,
                                             textColor = it.dataEntity.textColor,
-                                            trashed = 1
+                                            removed = 1
                                         )
                                     )
 

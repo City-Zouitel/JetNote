@@ -12,9 +12,5 @@ class WidgetDataSourceImpl(
     private val mapper: WidgetMapper
 ): WidgetDataSource {
     override val getAllWidgetMainEntityById: Flow<List<OutNote>>
-        get() = dao.allWidgetEntitiesById().map { list ->
-            list.map { note ->
-                mapper.readOnly(note)
-            }
-        }
+        get() = dao.allWidgetEntitiesById().map { notes -> mapper.toRepo(notes) }
 }

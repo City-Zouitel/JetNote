@@ -33,8 +33,8 @@ class NoteAndTaskScreenModel(
 
     init {
         screenModelScope.launch {
-            getAll.invoke().collect { list ->
-                _getAllNotesAndTask.value = list.map { task -> mapper.toView(task) }
+            getAll.invoke().collect { notesAndTask ->
+                _getAllNotesAndTask.value = mapper.fromDomain(notesAndTask)
             }
         }
     }

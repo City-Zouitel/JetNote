@@ -4,12 +4,18 @@ import city.zouitel.domain.model.Task as OutTask
 import city.zouitel.tasks.mapper.base.Mapper
 import city.zouitel.tasks.model.Task as InTask
 
-class TaskMapper: Mapper.Base<InTask, OutTask> {
-    override fun toView(data: OutTask): InTask = with((data)) {
-        InTask(id, item, isDone)
-    }
+class TaskMapper {
+    fun fromDomain(tasks: List<OutTask>) = tasks.map { fromDomain(it) }
 
-    override fun toDomain(data: InTask): OutTask = with(data) {
-        OutTask(id, item, isDone)
-    }
+    fun toDomain(task: InTask) = OutTask(
+        id = task.id,
+        item = task.item,
+        isDone = task.isDone
+    )
+
+    fun fromDomain(task: OutTask) = InTask(
+        id = task.id,
+        item = task.item,
+        isDone = task.isDone
+    )
 }

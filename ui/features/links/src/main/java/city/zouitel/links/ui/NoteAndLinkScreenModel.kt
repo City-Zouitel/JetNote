@@ -31,8 +31,8 @@ class NoteAndLinkScreenModel(
 
     init {
         screenModelScope.launch(Dispatchers.IO) {
-            getAll.invoke().collect { list ->
-                _getAllNotesAndLinks.value = list.map { noteAndLink -> mapper.toView(noteAndLink) }
+            getAll.invoke().collect { notesAndLink ->
+                _getAllNotesAndLinks.value = mapper.fromDomain(notesAndLink)
             }
         }
     }

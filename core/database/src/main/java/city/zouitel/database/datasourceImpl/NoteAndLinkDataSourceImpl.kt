@@ -12,17 +12,13 @@ class NoteAndLinkDataSourceImpl(
     private val  mapper: NoteAndLinkMapper
 ): NoteAndLinkDataSource {
     override val getAllNotesAndLinks: Flow<List<OutNoteAndLink>>
-        get() = dao.getAllNotesAndLinks().map { list ->
-            list.map { noteAndLink ->
-                mapper.readOnly(noteAndLink)
-            }
-        }
+        get() = dao.getAllNotesAndLinks().map { notesAndLink -> mapper.toRepo(notesAndLink) }
 
     override suspend fun addNoteAndLink(noteAndLink: OutNoteAndLink) {
-        dao.addNoteAndLink(mapper.toLocal(noteAndLink))
+        dao.addNoteAndLink(mapper.fromRepo(noteAndLink))
     }
 
     override suspend fun deleteNoteAndLink(noteAndLink: OutNoteAndLink) {
-        dao.deleteNoteAndLink(mapper.toLocal(noteAndLink))
+        dao.deleteNoteAndLink(mapper.fromRepo(noteAndLink))
     }
 }

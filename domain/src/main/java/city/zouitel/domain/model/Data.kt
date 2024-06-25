@@ -12,6 +12,6 @@ data class Data(
     var color: Int = 0,
     var textColor: Int = 0x000000,
     var date: String = "",
-    var trashed: Int = 0,
+    var removed: Int = 0,
     var reminding: Long = 0L,
 )

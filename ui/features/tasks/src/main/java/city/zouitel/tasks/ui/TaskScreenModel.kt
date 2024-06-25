@@ -40,9 +40,7 @@ class TaskScreenModel(
 
     init {
         screenModelScope.launch {
-            getAll.invoke().collect { list ->
-                _getAllTaskList.value = list.map { task -> mapper.toView(task) }
-            }
+            getAll.invoke().collect { tasks -> _getAllTaskList.value =  mapper.fromDomain(tasks) }
         }
     }
 

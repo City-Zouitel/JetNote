@@ -61,16 +61,13 @@ class AudioListScreenModel(
         loadAudioFiles()
 
         screenModelScope.launch(Dispatchers.IO) {
-            getAllNotesAndAudios.invoke().collect { list ->
-                _allNotesAndAudios.value = list.map { noteAndAudio ->
-                    noteAndAudioMapper.toView(noteAndAudio)
-                }
+            getAllNotesAndAudios.invoke().collect { notesAndAudio ->
+                _allNotesAndAudios.value = noteAndAudioMapper.fromDomain(notesAndAudio)
             }
         }
     }
 
     private fun loadAudioFiles(query: String? = null) {
-//        loadAudioJob?.cancel()
         screenModelScope.launch(Dispatchers.IO) {
             runCatching {
                 _audioListUiState.value = _audioListUiState.value.copy(isLoadingAudios = true)
@@ -159,6 +156,4 @@ class AudioListScreenModel(
             _audioListUiState.value = _audioListUiState.value.copy(newAudio = isNew)
         }
     }
-
-
 }

@@ -39,9 +39,7 @@ class TagScreenModel(
 
     init {
         screenModelScope.launch(Dispatchers.IO) {
-            getAllTags.invoke().collect { list ->
-                _getAllTags.value = list.map { tag -> mapper.toView(tag) }
-            }
+            getAllTags.invoke().collect { tags -> _getAllTags.value = mapper.fromDomain(tags) }
         }
     }
 

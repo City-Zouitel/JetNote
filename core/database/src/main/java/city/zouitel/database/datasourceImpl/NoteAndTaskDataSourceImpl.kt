@@ -12,17 +12,13 @@ class NoteAndTaskDataSourceImpl(
     private val mapper: NoteAndTaskMapper
 ): NoteAndTaskDataSource {
     override val getAllNotesAndTask: Flow<List<OutNoteAndTask>>
-        get() = dao.getAllNoteAndTasks().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllNoteAndTasks().map { notesAndTask -> mapper.toRepo(notesAndTask) }
 
     override suspend fun addNoteAndTask(noteAndTask: OutNoteAndTask) {
-        dao.addNoteAndTask(mapper.toLocal(noteAndTask))
+        dao.addNoteAndTask(mapper.fromRepo(noteAndTask))
     }
 
     override suspend fun deleteNoteAndTask(noteAndTask: OutNoteAndTask) {
-        dao.deleteNoteAndTask(mapper.toLocal(noteAndTask))
+        dao.deleteNoteAndTask(mapper.fromRepo(noteAndTask))
     }
 }

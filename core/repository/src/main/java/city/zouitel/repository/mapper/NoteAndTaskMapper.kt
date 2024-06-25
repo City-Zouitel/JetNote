@@ -1,15 +1,19 @@
 package city.zouitel.repository.mapper
 
-import city.zouitel.repository.mapper.base.Mapper
 import city.zouitel.repository.model.NoteAndTask as InNoteAndTask
 import city.zouitel.domain.model.NoteAndTask as OutNoteAndTask
 
-class NoteAndTaskMapper: Mapper.Base<InNoteAndTask, OutNoteAndTask> {
-    override fun toRepository(data: OutNoteAndTask): InNoteAndTask = with(data){
-        InNoteAndTask(noteUid, todoId)
-    }
+class NoteAndTaskMapper {
 
-    override fun toDomain(data: InNoteAndTask): OutNoteAndTask = with(data){
-        OutNoteAndTask(noteUid, taskId)
-    }
+    fun toDomain(notesAndTasks: List<InNoteAndTask>) = notesAndTasks.map { toDomain(it) }
+
+    private fun toDomain(noteAndTask: InNoteAndTask) = OutNoteAndTask(
+        noteUid = noteAndTask.noteUid,
+        taskId = noteAndTask.taskId
+    )
+
+    fun fromDomain(noteAndTask: OutNoteAndTask) = InNoteAndTask(
+        noteUid = noteAndTask.noteUid,
+        taskId = noteAndTask.taskId
+    )
 }

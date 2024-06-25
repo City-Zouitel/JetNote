@@ -13,51 +13,23 @@ class NoteDataSourceImpl(
 ): NoteDataSource {
 
     override val getAllNotesById: Flow<List<OutNote>>
-        get() = dao.getAllNotesById().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllNotesById().map { notes -> mapper.toRepo(notes) }
 
     override val getAllNotesByName: Flow<List<OutNote>>
-        get() = dao.getAllNotesByName().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllNotesByName().map { notes -> mapper.toRepo(notes) }
 
     override val getAllNotesByNewest: Flow<List<OutNote>>
-        get() = dao.getAllNotesByNewest().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllNotesByNewest().map { notes -> mapper.toRepo(notes) }
 
     override val getAllNotesByOldest: Flow<List<OutNote>>
-        get() = dao.getAllNotesByOldest().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllNotesByOldest().map { notes -> mapper.toRepo(notes) }
 
     override val getAllTrashedNotes: Flow<List<OutNote>>
-        get() = dao.getAllTrashedNotes().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllTrashedNotes().map { notes -> mapper.toRepo(notes) }
 
     override val allNotesByPriority: Flow<List<OutNote>>
-        get() = dao.getAllNotesByPriority().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllNotesByPriority().map { notes -> mapper.toRepo(notes) }
 
     override val getAllRemindingNotes: Flow<List<OutNote>>
-        get() = dao.getAllRemindingNotes().map { list ->
-            list.map {
-                mapper.readOnly(it)
-            }
-        }
+        get() = dao.getAllRemindingNotes().map { notes -> mapper.toRepo(notes) }
 }

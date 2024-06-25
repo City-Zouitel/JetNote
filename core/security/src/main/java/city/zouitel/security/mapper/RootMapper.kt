@@ -3,10 +3,9 @@ package city.zouitel.security.mapper
 import city.zouitel.repository.model.Root as OutRoot
 import city.zouitel.security.model.Root as InRoot
 import city.zouitel.security.mapper.base.Mapper
+import city.zouitel.security.model.Root
 
-class RootMapper: Mapper.ReadOnly<InRoot, OutRoot> {
+class RootMapper {
 
-    override fun readOnly(data: InRoot): OutRoot = with(data) {
-        OutRoot(isDeviceRooted)
-    }
+    fun toRepo(root: InRoot) = OutRoot(isDeviceRooted = root.isDeviceRooted)
 }

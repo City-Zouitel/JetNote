@@ -1,15 +1,20 @@
 package city.zouitel.repository.mapper
 
-import city.zouitel.repository.mapper.base.Mapper
 import city.zouitel.repository.model.Task as InTask
 import city.zouitel.domain.model.Task as OutTask
 
-class TaskMapper: Mapper.Base<InTask, OutTask> {
-    override fun toRepository(data: OutTask): InTask = with(data){
-        InTask(id, item, isDone)
-    }
+class TaskMapper {
+    fun toDomain(tasks: List<InTask>) = tasks.map { toDomain(it) }
 
-    override fun toDomain(data: InTask): OutTask = with(data){
-        OutTask(id, item, isDone)
-    }
+    fun toDomain(task: InTask) = OutTask(
+        id = task.id,
+        item = task.item,
+        isDone = task.isDone
+    )
+
+    fun fromDomain(task: OutTask) = InTask(
+        id = task.id,
+        item = task.item,
+        isDone = task.isDone
+    )
 }

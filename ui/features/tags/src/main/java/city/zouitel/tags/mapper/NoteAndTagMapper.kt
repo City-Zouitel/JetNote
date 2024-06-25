@@ -4,12 +4,17 @@ import city.zouitel.domain.model.NoteAndTag as OutNoteAndTag
 import city.zouitel.tags.mapper.base.Mapper
 import city.zouitel.tags.model.NoteAndTag as InNoteAndTag
 
-class NoteAndTagMapper: Mapper.Base<InNoteAndTag, OutNoteAndTag> {
-    override fun toView(data: OutNoteAndTag): InNoteAndTag = with(data) {
-        InNoteAndTag(noteUid, labelId)
-    }
+class NoteAndTagMapper {
 
-    override fun toDomain(data: InNoteAndTag): OutNoteAndTag = with(data){
-        OutNoteAndTag(noteUid, labelId)
-    }
+    fun fromDomain(notesAndTag: List<OutNoteAndTag>) = notesAndTag.map { fromDomain(it) }
+
+    fun toDomain(noteAndTag: InNoteAndTag) = OutNoteAndTag(
+        noteUid = noteAndTag.noteUid,
+        labelId = noteAndTag.labelId
+    )
+
+    fun fromDomain(noteAndTag: OutNoteAndTag) = InNoteAndTag(
+        noteUid = noteAndTag.noteUid,
+        labelId = noteAndTag.labelId
+    )
 }

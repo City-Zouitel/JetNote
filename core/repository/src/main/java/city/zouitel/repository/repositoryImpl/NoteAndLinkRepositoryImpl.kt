@@ -12,17 +12,13 @@ class NoteAndLinkRepositoryImpl(
     private val mapper: NoteAndLinkMapper
 ): NoteAndLinkRepository {
     override val getAllNotesAndLinks: Flow<List<OutNoteAndLink>>
-        get() = dataSource.getAllNotesAndLinks.map { list ->
-            list.map { noteAndLink ->
-                mapper.toDomain(noteAndLink)
-            }
-        }
+        get() = dataSource.getAllNotesAndLinks.map { notesAndLink -> mapper.toDomain(notesAndLink) }
 
     override suspend fun addNoteAndLink(noteAndLink: OutNoteAndLink) {
-        dataSource.addNoteAndLink(mapper.toRepository(noteAndLink))
+        dataSource.addNoteAndLink(mapper.fromDomain(noteAndLink))
     }
 
     override suspend fun deleteNoteAndLink(noteAndLink: OutNoteAndLink) {
-        dataSource.deleteNoteAndLink(mapper.toRepository(noteAndLink))
+        dataSource.deleteNoteAndLink(mapper.fromDomain(noteAndLink))
     }
 }

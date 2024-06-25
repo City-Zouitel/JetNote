@@ -12,17 +12,13 @@ class LinkRepositoryImpl(
     private val mapper: LinkMapper
 ): LinkRepository {
     override val getAllLinks: Flow<List<OutLink>>
-        get() = dataSource.getAllLinks.map { list ->
-            list.map { link ->
-                mapper.toDomain(link)
-            }
-        }
+        get() = dataSource.getAllLinks.map { links -> mapper.toDomain(links) }
 
     override suspend fun addLink(link: OutLink) {
-        dataSource.addLink(mapper.toRepository(link))
+        dataSource.addLink(mapper.fromDomain(link))
     }
 
     override suspend fun deleteLink(link: OutLink) {
-        dataSource.deleteLink(mapper.toRepository(link))
+        dataSource.deleteLink(mapper.fromDomain(link))
     }
 }

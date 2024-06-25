@@ -63,8 +63,8 @@ class LinkScreenModel(
 
     init {
         screenModelScope.launch(Dispatchers.IO) {
-            getAll.invoke().collect { list ->
-                _getAllLinks.value = list.map { mapper.toView(it) }
+            getAll.invoke().collect { links ->
+                _getAllLinks.value = mapper.fromDomain(links)
             }
         }
     }

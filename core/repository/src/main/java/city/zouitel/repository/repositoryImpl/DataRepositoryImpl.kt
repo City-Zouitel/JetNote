@@ -10,15 +10,15 @@ class DataRepositoryImpl(
     private val mapper: DataMapper
 ): DataRepository {
     override suspend fun addData(data: OutData) {
-        dataSource.addData(mapper.toRepository(data))
+        dataSource.addData(mapper.fromDomain(data))
     }
 
     override suspend fun editData(data: OutData) {
-        dataSource.editData(mapper.toRepository(data))
+        dataSource.editData(mapper.fromDomain(data))
     }
 
     override suspend fun deleteData(data: OutData) {
-        dataSource.deleteData(mapper.toRepository(data))
+        dataSource.deleteData(mapper.fromDomain(data))
     }
 
     override suspend fun deleteAllTrashedData() {
