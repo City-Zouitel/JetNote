@@ -87,6 +87,7 @@ data class TagsScreen(val id: String): Screen {
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
+
         Scaffold(
             modifier = Modifier.navigationBarsPadding(),
             floatingActionButton = {

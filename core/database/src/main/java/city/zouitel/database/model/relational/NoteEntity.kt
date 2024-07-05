@@ -44,5 +44,14 @@ data class NoteEntity(
             entityColumn = "audioId"
         )
     )
-    val audioEntities: List<AudioEntity>
+    val audioEntities: List<AudioEntity>,
+    @Relation(
+        parentColumn = UUID, entityColumn = ID, entity = MediaEntity::class,
+        associateBy = Junction(
+            NoteAndMediaEntity::class,
+            parentColumn = "noteUid",
+            entityColumn = "mediaId"
+        )
+    )
+    val mediaEntities: List<MediaEntity>
 )

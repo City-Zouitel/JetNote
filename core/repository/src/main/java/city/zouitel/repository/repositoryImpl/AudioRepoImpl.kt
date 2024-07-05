@@ -2,16 +2,16 @@ package city.zouitel.repository.repositoryImpl
 
 import city.zouitel.domain.model.Audio
 import city.zouitel.domain.model.Audio as OutAudio
-import city.zouitel.domain.repository.AudioRepository
+import city.zouitel.domain.repository.AudioRepo
 import city.zouitel.repository.datasource.AudioDataSource
 import city.zouitel.repository.mapper.AudioMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class AudioRepositoryImpl(
+class AudioRepoImpl(
     private val dataSource: AudioDataSource,
     private val mapper: AudioMapper
-): AudioRepository {
+): AudioRepo {
     override val getAllAudios: Flow<List<OutAudio>>
         get() = dataSource.getAllAudios.map { audios ->  mapper.toDomain(audios) }
 

@@ -57,7 +57,7 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
 
     @Composable
     @SuppressLint("CoroutineCreationDuringComposition")
-    fun BasicAudio(
+    private fun BasicAudio(
         audioModel: AudioScreenModel,
         audioListModel: AudioListScreenModel,
         noteAndAudioModel: NoteAndAudioScreenModel

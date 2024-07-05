@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.camera)
     implementation(projects.ui.features.links)
+    implementation(projects.ui.features.media)
     implementation(projects.services.notifications)
 
     //AndroidX.
@@ -30,8 +31,6 @@ dependencies {
 
     //Accompanist.
     implementation(libs.accompanist.permissions)
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.flowlayout)
@@ -47,4 +46,8 @@ dependencies {
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)
+
+    //Coil.
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 }

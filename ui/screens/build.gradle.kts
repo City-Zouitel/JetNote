@@ -29,18 +29,20 @@ dependencies {
     api(projects.ui.features.quickNote)
     api(projects.ui.features.links)
     api(projects.ui.features.widget)
+    api(projects.ui.features.media)
     implementation(projects.root)
 
     //AndroidX.
     implementation(libs.constraintlayout)
+
+    //Compose.
+    implementation(libs.compose.material)
 
     //LiveData.
     implementation(libs.lifecycle.livedata)
 
     //Accompanist.
     implementation(libs.accompanist.permissions)
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.swiperefresh)

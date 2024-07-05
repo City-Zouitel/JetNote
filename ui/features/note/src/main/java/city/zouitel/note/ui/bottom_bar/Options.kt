@@ -6,6 +6,8 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -60,7 +62,7 @@ internal fun Options(
     dataStoreModel: DataStoreScreenModel,
     isShow: MutableState<Boolean>,
     id: String,
-    imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
+    imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
     workspaceModel: WorkplaceScreenModel,
 ) {
     val context = LocalContext.current
@@ -143,12 +145,9 @@ internal fun Options(
             leadingIcon = { Icon(painterResource(ADD_IMAGE_ICON), null) },
             onClick = {
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                runCatching {
-                    imageLaunch.launch("image/*")
-                }.onSuccess {
-                    isShow.value = false
-                }
-            }
+                imageLaunch.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                isShow.value = false
+            },
         )
         DropdownMenuItem(
             text = { Text(text = "Add Audio", fontSize = 18.sp) },
@@ -247,7 +246,11 @@ internal fun Options(
                             modifier = Modifier
                                 .size(20.dp)
                                 .clickable {
-                                    sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                                    sound.makeSound.invoke(
+                                        context,
+                                        KEY_CLICK,
+                                        thereIsSoundEffect.value
+                                    )
                                     workspaceModel.updatePriority(getPriorityOfColor(it.toArgb()))
                                 }
                         ) {

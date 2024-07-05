@@ -67,15 +67,15 @@ class DataScreenModel(
             }
     }
 
-    fun decodeBitmapImage (img: MutableState<Bitmap?>?, photo: MutableState<Bitmap?>?, uri: Uri, c:Context){
+    fun decodeBitmapImage (img: MutableState<Bitmap?>?, photo: MutableState<Bitmap?>?, uri: Uri?, context: Context){
         if (Build.VERSION.SDK_INT < 28) {
             runCatching {
-                img?.value = MediaStore.Images.Media.getBitmap(c.contentResolver,uri)
+                img?.value = MediaStore.Images.Media.getBitmap(context.contentResolver,uri)
             }
         } else {
             runCatching {
-                val source = ImageDecoder.createSource(c.contentResolver,uri)
-                img?.value = ImageDecoder.decodeBitmap(source)
+                val source = uri?.let { ImageDecoder.createSource(context.contentResolver, it) }
+                img?.value = source?.let { ImageDecoder.decodeBitmap(it) }
             }
         }
         photo?.value?.let { img?.value = it }

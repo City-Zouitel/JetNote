@@ -6,6 +6,7 @@ import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
 import city.zouitel.init.initializerKoinModule
 import city.zouitel.links.di.linksKoinModule
+import city.zouitel.media.di.mediaKoinModule
 import city.zouitel.screens.di.navigationKoinModule
 import city.zouitel.note.di.noteKoinModule
 import city.zouitel.notifications.di.notificationKoinModule
@@ -56,6 +57,7 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
                 navigationKoinModule,
                 initializerKoinModule,
                 rootKoinModule,
+                mediaKoinModule
             )
         }
 

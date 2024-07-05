@@ -1,10 +1,7 @@
 package city.zouitel.note.ui.workplace
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.icu.util.Calendar
-import android.net.Uri
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,8 +36,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -48,7 +43,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -59,7 +53,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastLastOrNull
-import androidx.core.net.toUri
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -74,7 +67,11 @@ import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.findUrlLink
-import city.zouitel.logic.getImgPath
+import city.zouitel.media.model.Media
+import city.zouitel.media.model.NoteAndMedia
+import city.zouitel.media.ui.MediaScreen
+import city.zouitel.media.ui.MediaScreenModel
+import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
@@ -85,7 +82,6 @@ import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons
-import city.zouitel.systemDesign.ImageDisplayed
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
@@ -95,10 +91,11 @@ import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import com.google.accompanist.flowlayout.FlowRow
-import java.io.File
 import java.util.Date
 import java.util.UUID
+import kotlin.random.Random
 
+@Suppress("NAME_SHADOWING")
 data class WorkplaceScreen(
     val id: String = UUID.randomUUID().toString(),
     val isNew: Boolean = true,
@@ -132,6 +129,8 @@ data class WorkplaceScreen(
             dataStoreModel = getScreenModel<DataStoreScreenModel>(),
             audioModel = getScreenModel<AudioScreenModel>(),
             noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>(),
+            mediaModel = getScreenModel<MediaScreenModel>(),
+            noteAndMediaModel = getScreenModel<NoteAndMediaScreenModel>(),
             workspaceModel = workspaceModel
         )
     }
@@ -151,23 +150,20 @@ data class WorkplaceScreen(
         dataStoreModel: DataStoreScreenModel,
         audioModel: AudioScreenModel,
         noteAndAudioModel: NoteAndAudioScreenModel,
+        mediaModel: MediaScreenModel,
+        noteAndMediaModel: NoteAndMediaScreenModel,
         workspaceModel: WorkplaceScreenModel
     ) {
         val navigator = LocalNavigator.current
         val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
-        val internalPath = context.filesDir.path
 
         val focusRequester by lazy { FocusRequester() }
         val sound by lazy { SoundEffect() }
-        val imageFile by lazy { id getImgPath context }
         val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
-        val bitImg by lazy { BitmapFactory.decodeFile(imageFile) }
 
         val titleState = rememberTextFieldState(title ?: "")
         val descriptionState = rememberTextFieldState(description ?: "")
-
-        val photoState = remember { mutableStateOf<Bitmap?>(bitImg) }
 
         val thereIsSoundEffect by remember(
             dataStoreModel,
@@ -194,21 +190,17 @@ data class WorkplaceScreen(
         val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
         val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
             .collectAsState()
+
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
 
-        var imageUriState by remember { mutableStateOf<Uri?>(File(imageFile).toUri()) }
-        val img by rememberSaveable { mutableStateOf(photoState) }
-
         val chooseImageLauncher =
-            rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-                imageUriState = it
-                dataModel::decodeBitmapImage.invoke(img, photoState, it!!, context)
-                img.value = photoState.value
-                dataModel::saveImageLocally.invoke(
-                    img.value,
-                    "$internalPath/${CommonConstants.IMG_DIR}",
-                    "$id.${CommonConstants.JPEG}"
-                )
+            rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+                uris.forEach { uri ->
+                    Random.nextLong().let {
+                        mediaModel.addMedia(Media(id = it, path = uri.toString()))
+                        noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))
+                    }
+                }
             }
 
         LaunchedEffect(Unit) {
@@ -310,7 +302,7 @@ data class WorkplaceScreen(
 
                 // display the image.
                 item {
-                    ImageDisplayed(media = img.value?.asImageBitmap())
+                    Navigator(MediaScreen(id = id, backgroundColor = uiState.backgroundColor))
                 }
 
                 // The Title.
@@ -348,7 +340,7 @@ data class WorkplaceScreen(
                     )
                 }
 
-                //display the media player.
+                //display the audio player.
                 item {
                     Spacer(modifier = Modifier.height(18.dp))
 

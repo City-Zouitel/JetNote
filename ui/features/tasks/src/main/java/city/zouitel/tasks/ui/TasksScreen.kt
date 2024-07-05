@@ -64,6 +64,7 @@ import kotlin.random.Random
 import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
 import city.zouitel.tasks.model.Task as InTask
 
+@Suppress("IMPLICIT_CAST_TO_ANY")
 data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
 
     @Composable

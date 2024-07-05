@@ -2,8 +2,12 @@ package city.zouitel.screens.main_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.waterfall
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -11,12 +15,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Scaffold
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.*
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -40,7 +40,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Density
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -50,6 +52,8 @@ import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.media.ui.MediaScreenModel
+import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreen
@@ -87,12 +91,16 @@ data class MainScreen(val isHome: Boolean): Screen {
             noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>(),
             linkModel = getScreenModel<LinkScreenModel>(),
             noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>(),
-            datastoreModel = getScreenModel<DataStoreScreenModel>()
+            datastoreModel = getScreenModel<DataStoreScreenModel>(),
+            mediaModel = getScreenModel<MediaScreenModel>(),
+            noteAndMediaModel = getScreenModel<NoteAndMediaScreenModel>(),
         )
     }
 
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter",
+        "UnusedMaterial3ScaffoldPaddingParameter"
+    )
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun Main(
         notificationModel: NotificationScreenModel,
@@ -106,7 +114,9 @@ data class MainScreen(val isHome: Boolean): Screen {
         noteAndAudioModel: NoteAndAudioScreenModel,
         linkModel: LinkScreenModel,
         noteAndLinkModel: NoteAndLinkScreenModel,
-        datastoreModel: DataStoreScreenModel
+        datastoreModel: DataStoreScreenModel,
+        mediaModel: MediaScreenModel,
+        noteAndMediaModel: NoteAndMediaScreenModel
     ) {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
@@ -153,12 +163,12 @@ data class MainScreen(val isHome: Boolean): Screen {
         val getBackgroundColor = MaterialTheme.colorScheme.surface.toArgb()
         val getTextColor = MaterialTheme.colorScheme.onSurface.toArgb()
 
-        val pullRefreshState = rememberPullRefreshState(
-            refreshing = uiState.isProcessing,
-            onRefresh = {
-                navigator.push(this)
-            }
-        )
+//        val pullRefreshState = rememberPullRefreshState(
+//            refreshing = uiState.isProcessing,
+//            onRefresh = {
+//                navigator.push(this)
+//            }
+//        )
 
         //undo snack-bar.
         val undo = UndoSnackbar(
@@ -199,7 +209,7 @@ data class MainScreen(val isHome: Boolean): Screen {
             },
             drawerState = drawerState
         ) {
-            Scaffold(
+            androidx.compose.material.Scaffold(
                 modifier = Modifier
                     .navigationBarsPadding()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -277,7 +287,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                     contentAlignment = Alignment.TopCenter,
                     modifier = Modifier
                         .fillMaxSize()
-                        .pullRefresh(state = pullRefreshState)
+//                        .pullRefresh(state = pullRefreshState)
                 ) {
                     if (currentLayout.value == CommonConstants.LIST) {
                         LazyColumn(
@@ -300,6 +310,8 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     homeModel = mainModel,
                                     isHomeScreen = uiState.isHomeScreen,
                                     noteEntity = entity,
+                                    mediaModel = mediaModel,
+                                    noteAndMediaModel = noteAndMediaModel
                                 ) {
                                     dataModel.editData(
                                         Data(
@@ -338,6 +350,8 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     homeModel = mainModel,
                                     isHomeScreen = uiState.isHomeScreen,
                                     noteEntity = entity,
+                                    mediaModel = mediaModel,
+                                    noteAndMediaModel = noteAndMediaModel
                                 ) {
                                     dataModel.editData(
                                         Data(
@@ -367,10 +381,10 @@ data class MainScreen(val isHome: Boolean): Screen {
                         }
                     }
 
-                    PullRefreshIndicator(
-                        refreshing = true,
-                        state = pullRefreshState,
-                    )
+//                    PullRefreshIndicator(
+//                        refreshing = true,
+//                        state = pullRefreshState,
+//                    )
                 }
             }
         }

@@ -3,40 +3,10 @@ package city.zouitel.database.di
 import androidx.room.Room
 import city.zouitel.database.Database
 import city.zouitel.database.Encryption
-import city.zouitel.database.datasourceImpl.DataDataSourceImpl
-import city.zouitel.database.datasourceImpl.LinkDataSourceImpl
-import city.zouitel.database.datasourceImpl.NoteAndLinkDataSourceImpl
-import city.zouitel.database.datasourceImpl.NoteAndTagDataSourceImpl
-import city.zouitel.database.datasourceImpl.NoteAndTaskDataSourceImpl
-import city.zouitel.database.datasourceImpl.NoteDataSourceImpl
-import city.zouitel.database.datasourceImpl.TagDataSourceImpl
-import city.zouitel.database.datasourceImpl.TaskDataSourceImpl
-import city.zouitel.database.datasourceImpl.WidgetDataSourceImpl
-import city.zouitel.database.datasourceImpl.AudioDataSourceImpl
-import city.zouitel.database.datasourceImpl.NoteAndAudioDataSourceImpl
-import city.zouitel.database.mapper.DataMapper
-import city.zouitel.database.mapper.LinkMapper
-import city.zouitel.database.mapper.NoteAndLinkMapper
-import city.zouitel.database.mapper.NoteAndTagMapper
-import city.zouitel.database.mapper.NoteAndTaskMapper
-import city.zouitel.database.mapper.NoteMapper
-import city.zouitel.database.mapper.TagMapper
-import city.zouitel.database.mapper.TaskMapper
-import city.zouitel.database.mapper.WidgetMapper
-import city.zouitel.database.mapper.AudioMapper
-import city.zouitel.database.mapper.NoteAndAudioMapper
+import city.zouitel.database.datasourceImpl.*
+import city.zouitel.database.mapper.*
 import city.zouitel.database.utils.Constants
-import city.zouitel.repository.datasource.AudioDataSource
-import city.zouitel.repository.datasource.DataDataSource
-import city.zouitel.repository.datasource.LinkDataSource
-import city.zouitel.repository.datasource.NoteAndLinkDataSource
-import city.zouitel.repository.datasource.NoteAndTagDataSource
-import city.zouitel.repository.datasource.NoteAndTaskDataSource
-import city.zouitel.repository.datasource.NoteDataSource
-import city.zouitel.repository.datasource.TagDataSource
-import city.zouitel.repository.datasource.TaskDataSource
-import city.zouitel.repository.datasource.WidgetDataSource
-import city.zouitel.repository.datasource.NoteAndAudioDataSource
+import city.zouitel.repository.datasource.*
 import net.sqlcipher.database.SupportFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
@@ -58,6 +28,8 @@ val databaseKoinModule = module {
     singleOf(::AudioDataSourceImpl) bind AudioDataSource::class
     singleOf(::NoteAndAudioDataSourceImpl) bind NoteAndAudioDataSource::class
     singleOf(::WidgetDataSourceImpl) bind WidgetDataSource::class
+    singleOf(::MediaDataSourceImpl) bind MediaDataSource::class
+    singleOf(::NoteAndMediaDataSourceImpl) bind NoteAndMediaDataSource::class
 
     //Dao's.
     single { get<Database>().getNoteDao() }
@@ -71,6 +43,8 @@ val databaseKoinModule = module {
     single { get<Database>().getNoteAndLinkDao() }
     single { get<Database>().getAudioDao() }
     single { get<Database>().getNoteAndAudioDao() }
+    single { get<Database>().getMediaDao() }
+    single { get<Database>().getNoteAndMediaDao() }
 
     //Mappers
     factoryOf(::DataMapper)
@@ -82,11 +56,13 @@ val databaseKoinModule = module {
     factoryOf(::NoteAndTagMapper)
     factoryOf(::NoteAndTaskMapper)
     factoryOf(::NoteAndAudioMapper)
+    factoryOf(::MediaMapper)
+    factoryOf(::NoteAndMediaMapper)
     factory {
-        NoteMapper(get(), get(), get(), get())
+        NoteMapper(get(), get(), get(), get(), get(), get())
     }
     factory {
-        WidgetMapper(get(), get(), get(), get())
+        WidgetMapper(get(), get(), get(), get(), get(), get())
     }
 
     //Database.
@@ -95,9 +71,10 @@ val databaseKoinModule = module {
             androidContext(),
             Database::class.java,
             Constants.DATABASE
-        ).openHelperFactory(
-                SupportFactory(Encryption(androidContext()).getCrypticPass())
-            )
+        )
+//            .openHelperFactory(
+//                SupportFactory(Encryption(androidContext()).getCrypticPass())
+//            )
             .fallbackToDestructiveMigration()
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()

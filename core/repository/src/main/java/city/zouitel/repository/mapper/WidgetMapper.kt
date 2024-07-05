@@ -7,7 +7,9 @@ class WidgetMapper(
     private val dataMapper: DataMapper,
     private val tagMapper: TagMapper,
     private val taskMapper: TaskMapper,
-    private val linkMapper: LinkMapper
+    private val linkMapper: LinkMapper,
+    private val audioMapper: AudioMapper,
+    private val mediaMapper: MediaMapper
 ) {
     fun toDomain(notes: List<InNote>) = notes.map { toDomain(it) }
 
@@ -16,7 +18,9 @@ class WidgetMapper(
             dataEntity = dataMapper.toDomain(dataEntity),
             tagEntities = tagEntities.map { tagMapper.toDomain(it) },
             taskEntities = taskEntities.map { taskMapper.toDomain(it) },
-            linkEntities = linkEntities.map { linkMapper.toDomain(it) }
+            linkEntities = linkEntities.map { linkMapper.toDomain(it) },
+            audioEntities = audioEntities.map { audioMapper.toDomain(it) },
+            mediaEntities = mediaEntities.map { mediaMapper.toDomain(it) }
         )
     }
 }

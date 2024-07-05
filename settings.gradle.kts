@@ -37,6 +37,7 @@ include(
     ":ui:features:tags",
     ":ui:features:tasks",
     ":ui:features:widget",
+    ":ui:features:media",
     ":ui:screens"
 )
 include(

@@ -1,7 +1,8 @@
 package city.zouitel.screens.main_screen
 
-import androidx.compose.material.ScaffoldState
+import androidx.compose.material.*
 import androidx.compose.material.SnackbarResult
+import androidx.compose.material3.*
 import androidx.compose.runtime.State
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
@@ -24,6 +25,7 @@ internal fun UndoSnackbar(
                 message = note.title + " " + TRASH_MESSAGE,
                 actionLabel = UNDO
             )
+
             when(snackbarResult)  {
                 SnackbarResult.Dismissed -> {} // Timber.d("Snackbar dismissed")
                 SnackbarResult.ActionPerformed -> {

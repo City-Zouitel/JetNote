@@ -4,12 +4,15 @@ import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -30,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.MiniAudioPlayer
@@ -38,6 +42,9 @@ import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.media.model.NoteAndMedia
+import city.zouitel.media.ui.MediaScreenModel
+import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
@@ -48,7 +55,6 @@ import city.zouitel.systemDesign.CommonIcons.ANGLE_DOWN_ICON
 import city.zouitel.systemDesign.CommonIcons.ANGLE_UP_ICON
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.RESET_ICON
-import city.zouitel.systemDesign.ImageDisplayed
 import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
@@ -60,6 +66,8 @@ import city.zouitel.screens.prioritizedNotePath
 import city.zouitel.systemDesign.CommonConstants.LIST
 import city.zouitel.systemDesign.CommonIcons.BELL_RING_ICON
 import city.zouitel.tasks.ui.TaskScreenModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -78,6 +86,8 @@ fun NoteCard(
     isHomeScreen: Boolean,
     noteEntity: Note,
     homeModel: MainScreenModel,
+    mediaModel: MediaScreenModel,
+    noteAndMediaModel: NoteAndMediaScreenModel,
     onSwipeNote: (Note) -> Unit,
 ) {
     val swipeState = rememberSwipeableActionsState()
@@ -110,7 +120,9 @@ fun NoteCard(
                 noteAndLinkModel = noteAndLinkModel,
                 noteEntity = noteEntity,
                 isHomeScreen = isHomeScreen,
-                mainModel = homeModel
+                mainModel = homeModel,
+                mediaModel = mediaModel,
+                noteAndMediaModel = noteAndMediaModel
             )
         }
     } else {
@@ -125,7 +137,9 @@ fun NoteCard(
             noteAndLinkModel = noteAndLinkModel,
             noteEntity = noteEntity,
             isHomeScreen = isHomeScreen,
-            mainModel = homeModel
+            mainModel = homeModel,
+            mediaModel = mediaModel,
+            noteAndMediaModel = noteAndMediaModel
         )
     }
 }
@@ -143,7 +157,9 @@ private fun Card(
     noteAndAudioModel: NoteAndAudioScreenModel,
     noteEntity: Note,
     isHomeScreen: Boolean,
-    mainModel: MainScreenModel
+    mainModel: MainScreenModel,
+    mediaModel: MediaScreenModel,
+    noteAndMediaModel: NoteAndMediaScreenModel
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.current
@@ -167,6 +183,19 @@ private fun Card(
 
     var todoListState by remember { mutableStateOf(false) }
 
+    val observeMedias by remember(mediaModel, mediaModel::allMedias).collectAsState()
+    val observeNotesAndMedia by remember(
+        noteAndMediaModel,
+        noteAndMediaModel::getAllNotesAndMedia
+    ).collectAsState()
+
+    val filteredMedias = observeMedias.filter {
+        observeNotesAndMedia.contains(
+            NoteAndMedia(note.uid, it.id)
+        )
+    }
+
+    val pagerState = rememberPagerState { filteredMedias.size }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -230,10 +259,41 @@ private fun Card(
 
     ) {
 
-        // display the image.
-        when (isHomeScreen) {
-            true, false -> {
-                ImageDisplayed(media = dataModel::imageDecoder.invoke(context, note.uid))
+        if (filteredMedias.isNotEmpty()) {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.background(Color(note.color))
+            ) { index ->
+                BadgedBox(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(note.color)),
+                    badge = {
+                        if (filteredMedias.count() > 1) {
+                            Badge(
+                                modifier = Modifier.padding(3.dp),
+                                contentColor = Color.White.copy(alpha = .5f),
+                                containerColor = Color.Black.copy(alpha = .5f)
+                            ) {
+                                Text(text = "${index + 1}/${filteredMedias.count()}")
+                            }
+                        }
+                    }
+                ) {
+                    Card(
+                        shape = AbsoluteRoundedCornerShape(15.dp),
+                        elevation = CardDefaults.cardElevation()
+                    ) {
+                        runCatching {
+                            AsyncImage(
+                                model = ImageRequest.Builder(context)
+                                    .data(filteredMedias[index].path)
+                                    .build(),
+                                contentDescription = null
+                            )
+                        }
+                    }
+                }
             }
         }
 
@@ -243,6 +303,7 @@ private fun Card(
             color = Color(note.textColor),
             modifier = Modifier.padding(3.dp)
         )
+
         Text(
             text = note.description ?: "",
             fontSize = 15.sp,

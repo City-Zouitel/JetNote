@@ -3,7 +3,7 @@ package city.zouitel.domain.repository
 import city.zouitel.domain.model.Audio
 import kotlinx.coroutines.flow.Flow
 
-interface AudioRepository {
+interface AudioRepo {
 
     val getAllAudios: Flow<List<Audio>>
 

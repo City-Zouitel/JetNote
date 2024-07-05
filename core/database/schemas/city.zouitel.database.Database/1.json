@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "cddfa9dc370b73ab53f9c894202b6dc5",
+    "identityHash": "c7cb924f82eda6b261d8857824000dbc",
     "entities": [
       {
         "tableName": "notes_table",
@@ -344,12 +344,71 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "media_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `is video` INTEGER NOT NULL, `media_path` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isVideo",
+            "columnName": "is video",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "media_path",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "note_and_media",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteUid` TEXT NOT NULL, `mediaId` INTEGER NOT NULL, PRIMARY KEY(`noteUid`, `mediaId`))",
+        "fields": [
+          {
+            "fieldPath": "noteUid",
+            "columnName": "noteUid",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaId",
+            "columnName": "mediaId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "noteUid",
+            "mediaId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cddfa9dc370b73ab53f9c894202b6dc5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c7cb924f82eda6b261d8857824000dbc')"
     ]
   }
 }

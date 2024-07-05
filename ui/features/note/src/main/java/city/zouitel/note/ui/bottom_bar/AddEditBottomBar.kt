@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -20,7 +21,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.note.utils.ColorsRow
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.systemDesign.CommonRow
@@ -49,7 +49,7 @@ import java.text.SimpleDateFormat
 fun AddEditBottomBar(
     dataStoreModel: DataStoreScreenModel,
     id: String,
-    imageLaunch: ManagedActivityResultLauncher<String, Uri?>,
+    imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
     workspaceModel: WorkplaceScreenModel,
     titleState: TextFieldState?,
     descriptionState: TextFieldState?,

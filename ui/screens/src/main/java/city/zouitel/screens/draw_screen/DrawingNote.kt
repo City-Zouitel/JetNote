@@ -9,8 +9,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,8 +40,8 @@ import io.getstream.sketchbook.Sketchbook
 import io.getstream.sketchbook.rememberSketchbookController
 import java.io.File
 
-@SuppressLint("RememberReturnType")
 @OptIn(ExperimentalMaterialApi::class)
+@SuppressLint("RememberReturnType")
 @Composable
 fun DrawingNote(
     viewModule: DataScreenModel,
@@ -81,7 +81,7 @@ fun DrawingNote(
                 CommonRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface)
+                        .background(MaterialTheme.colors.surface)
                         .height(60.dp)
                 ) {
                     //
@@ -93,13 +93,13 @@ fun DrawingNote(
                             .clickable {
                                 controller.undo()
                             },
-                        tint = if (controller.canUndo.value) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outline,
+                        tint = if (controller.canUndo.value) MaterialTheme.colors.onSurface else MaterialTheme.colors.primary,
                     )
                     //
                     Icon(
                         painter = painterResource(id = REDO_ICON),
                         contentDescription = null,
-                        tint = if (controller.canRedo.value) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outline,
+                        tint = if (controller.canRedo.value) MaterialTheme.colors.onSurface else MaterialTheme.colors.primary,
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
@@ -133,7 +133,7 @@ fun DrawingNote(
                     Icon(
                         painter = painterResource(id = ERASER_BLACK_ICON),
                         contentDescription = null,
-                        tint = if (eraseState) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outline,
+                        tint = if (eraseState) MaterialTheme.colors.onSurface else MaterialTheme.colors.primary,
                         modifier = Modifier.clickable {
                             eraseState = !eraseState
                             controller.setEraseMode(eraseState)
@@ -143,7 +143,7 @@ fun DrawingNote(
                     Icon(
                         painter = painterResource(id = DISK_ICON),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface,
+                        tint = MaterialTheme.colors.onSurface,
                         modifier = Modifier.clickable {
 
                             bitmap.value = controller.getSketchbookBitmap().asAndroidBitmap()
@@ -214,7 +214,7 @@ fun DrawingNote(
                 }
             }
         },
-        sheetBackgroundColor = MaterialTheme.colorScheme.surfaceVariant
+        backgroundColor = MaterialTheme.colors.surface
     ) {
         controller.setPaintColor(Color.Cyan)
         Sketchbook(

@@ -7,9 +7,7 @@ import city.zouitel.database.model.*
 
 @Database(
     version = 1,
-    autoMigrations = [
-//        AutoMigration(from = 1, to = 2)
-    ],
+    autoMigrations = [],
     entities = [
         DataEntity::class,
         TagEntity::class,
@@ -19,7 +17,9 @@ import city.zouitel.database.model.*
         LinkEntity::class,
         NoteAndLinkEntity::class,
         AudioEntity::class,
-        NoteAndAudioEntity::class
+        NoteAndAudioEntity::class,
+        MediaEntity::class,
+        NoteAndMediaEntity::class
     ],
     exportSchema = true
 )
@@ -35,4 +35,6 @@ abstract class Database:RoomDatabase() {
     abstract fun getNoteAndLinkDao(): NoteAndLinkDao
     abstract fun getAudioDao(): AudioDao
     abstract fun getNoteAndAudioDao(): NoteAndAudioDao
+    abstract fun getMediaDao(): MediaDao
+    abstract fun getNoteAndMediaDao(): NoteAndMediaDao
 }

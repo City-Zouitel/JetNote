@@ -18,8 +18,6 @@ dependencies {
 
     //Accompanist.
     implementation(libs.accompanist.permissions)
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.swiperefresh)

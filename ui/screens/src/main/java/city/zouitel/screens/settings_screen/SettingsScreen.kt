@@ -44,7 +44,9 @@ class SettingsScreen: Screen {
         )
     }
 
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter",
+        "UnusedMaterial3ScaffoldPaddingParameter"
+    )
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun Settings(

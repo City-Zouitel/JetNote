@@ -41,6 +41,7 @@
             <option value="$PROJECT_DIR$/ui/features/audios" />
             <option value="$PROJECT_DIR$/ui/features/camera" />
             <option value="$PROJECT_DIR$/ui/features/links" />
+            <option value="$PROJECT_DIR$/ui/features/media" />
             <option value="$PROJECT_DIR$/ui/features/note" />
             <option value="$PROJECT_DIR$/ui/features/quickNote" />
             <option value="$PROJECT_DIR$/ui/features/recorder" />

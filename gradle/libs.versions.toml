@@ -4,8 +4,8 @@ kotlin = "1.9.22"
 compilesdk-v = "34"
 minsdk-v = "26"
 targetsdk-v = "34"
-code-v = "573"
-name-v = "5.7.3"
+code-v = "580"
+name-v = "5.8.0"
 compose-v = "1.5.10"
 
 #Android.
@@ -115,6 +115,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-material = { group = "androidx.compose.material", name = "material" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
@@ -145,8 +146,8 @@ exoplayer-extension = { module = "com.google.android.exoplayer:extension-mediase
 
 #Accompanist.
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
-accompanist-pager_indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
+#accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
+#accompanist-pager_indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-navigation_animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }

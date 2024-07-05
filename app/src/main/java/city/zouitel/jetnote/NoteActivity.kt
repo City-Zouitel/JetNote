@@ -1,6 +1,9 @@
 package city.zouitel.jetnote
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,7 +43,8 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
             require(!isDeviceRooted.value.getOrNull()?.isDeviceRooted!!) {
                 "Cannot run JetNote on rooted device!".asLongToast()
             }
-            MainTheme(dataStoreModel) @Suppress("all") {
+
+            MainTheme(dataStoreModel) {
                 BottomSheetNavigator(
                     sheetShape = ShapeDefaults.Large,
                     sheetElevation = 150.dp
@@ -48,6 +52,7 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
                     Navigator(MainScreen(true))
                 }
             }
+
             IntentHandler(intent, navigator) {}
         }
     }
@@ -59,7 +64,7 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
 
     override fun onDestroy() {
         super.onDestroy()
-        linkScreenModel.urlPreview(this, null/*, null, null, null*/)?.cleanUp()
+        linkScreenModel.urlPreview(this, null)?.cleanUp()
         WidgetReceiver.updateBroadcast(this)
     }
 
