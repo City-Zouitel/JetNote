@@ -68,10 +68,6 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
         WidgetReceiver.updateBroadcast(this)
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-    }
-
     override fun onResume() {
         super.onResume()
         checkNoteActivityShortcut(this)

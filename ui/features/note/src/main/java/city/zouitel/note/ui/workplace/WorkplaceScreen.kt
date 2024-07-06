@@ -1,6 +1,7 @@
 package city.zouitel.note.ui.workplace
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.icu.util.Calendar
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -196,6 +197,7 @@ data class WorkplaceScreen(
         val chooseImageLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
                 uris.forEach { uri ->
+                    context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     Random.nextLong().let {
                         mediaModel.addMedia(Media(id = it, path = uri.toString()))
                         noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))

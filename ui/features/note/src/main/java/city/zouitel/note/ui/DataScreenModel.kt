@@ -66,24 +66,4 @@ class DataScreenModel(
                 it.flush()
             }
     }
-
-    fun decodeBitmapImage (img: MutableState<Bitmap?>?, photo: MutableState<Bitmap?>?, uri: Uri?, context: Context){
-        if (Build.VERSION.SDK_INT < 28) {
-            runCatching {
-                img?.value = MediaStore.Images.Media.getBitmap(context.contentResolver,uri)
-            }
-        } else {
-            runCatching {
-                val source = uri?.let { ImageDecoder.createSource(context.contentResolver, it) }
-                img?.value = source?.let { ImageDecoder.decodeBitmap(it) }
-            }
-        }
-        photo?.value?.let { img?.value = it }
-    }
-
-    fun imageDecoder(context: Context, uid:String): ImageBitmap? {
-        val path = File(imgPath, "$uid.$JPEG")
-        val bitImg = BitmapFactory.decodeFile(path.absolutePath)
-        return bitImg?.asImageBitmap()
-    }
 }

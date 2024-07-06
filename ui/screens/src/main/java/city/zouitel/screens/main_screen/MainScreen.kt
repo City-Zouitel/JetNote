@@ -133,7 +133,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                 remember(datastoreModel, datastoreModel::getOrdination).collectAsState().value
             ) {
                 CommonConstants.BY_NAME -> mainModel.allNotesByName.collectAsState()
-                CommonConstants.ORDER_BY_OLDEST -> mainModel.allNotesByOldest.collectAsState()
+                CommonConstants.ORDER_BY_OLDEST -> remember(mainModel, mainModel::allNotesByOldest).collectAsState()
                 CommonConstants.ORDER_BY_NEWEST -> mainModel.allNotesByNewest.collectAsState()
                 CommonConstants.ORDER_BY_PRIORITY -> mainModel.allNotesByPriority.collectAsState()
                 CommonConstants.ORDER_BY_REMINDER -> mainModel.allRemindingNotes.collectAsState()

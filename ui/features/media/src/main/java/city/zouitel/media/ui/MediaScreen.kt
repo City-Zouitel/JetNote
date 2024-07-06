@@ -92,6 +92,7 @@ data class MediaScreen(val id: String = "", val backgroundColor: Int = 0): Scree
                         ) {
                             runCatching {
                                 AsyncImage(
+                                    modifier = Modifier.fillMaxWidth(),
                                     model = ImageRequest.Builder(context)
                                         .data(filteredMedias[index].path)
                                         .build(),
