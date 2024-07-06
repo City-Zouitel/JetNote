@@ -1,12 +1,12 @@
 [versions]
 agp = "8.2.1"
-kotlin = "1.9.22"
+kotlin = "1.9.24"
 compilesdk-v = "34"
 minsdk-v = "26"
 targetsdk-v = "34"
 code-v = "591"
 name-v = "5.9.1"
-compose-v = "1.5.10"
+compose-v = "1.5.14"
 
 #Android.
 core-ktx = "1.13.1"
@@ -29,7 +29,7 @@ navigation-compose = "2.7.7"
 compose-constraintlayout = "1.1.0-alpha13"
 
 #Plugins.
-ksp = "1.9.23-1.0.20"
+ksp = "1.9.24-1.0.20"
 dependencyanalysis = "1.32.0"
 
 #KotlinX.

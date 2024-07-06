@@ -13,7 +13,7 @@ interface NoteRepository {
 
     val getAllNotesByOldest: Flow<List<OutNote>>
 
-    val getAllTrashedNotes: Flow<List<OutNote>>
+    val getAllRemovedNotes: Flow<List<OutNote>>
 
     val allNotesByPriority: Flow<List<OutNote>>
 

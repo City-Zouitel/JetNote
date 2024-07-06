@@ -23,7 +23,7 @@ class NoteRepositoryImpl(
     override val getAllNotesByOldest: Flow<List<OutNote>>
         get() = dataSource.getAllNotesByOldest.map { notes -> mapper.toDomain(notes) }
 
-    override val getAllTrashedNotes: Flow<List<OutNote>>
+    override val getAllRemovedNotes: Flow<List<OutNote>>
         get() = dataSource.getAllTrashedNotes.map { notes -> mapper.toDomain(notes) }
 
     override val allNotesByPriority: Flow<List<OutNote>>

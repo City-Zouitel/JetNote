@@ -29,18 +29,28 @@ import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.media.model.NoteAndMedia
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import coil.size.Scale
 
 data class MediaScreen(val id: String = "", val backgroundColor: Int = 0): Screen {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
 
+        Media(
+            mediaModel = getScreenModel<MediaScreenModel>(),
+            noteAndMediaModel = getScreenModel<NoteAndMediaScreenModel>()
+        )
+    }
+
+    @OptIn(ExperimentalFoundationApi::class)
+    @Composable
+    private fun Media(
+        mediaModel: MediaScreenModel,
+        noteAndMediaModel: NoteAndMediaScreenModel
+    ) {
         val context = LocalContext.current
         val vibe = LocalHapticFeedback.current
 
-        val mediaModel = getScreenModel<MediaScreenModel>()
-        val noteAndMediaModel = getScreenModel<NoteAndMediaScreenModel>()
         val observeMedias by remember(mediaModel, mediaModel::allMedias).collectAsState()
         val observeNotesAndMedia by remember(
             noteAndMediaModel,
@@ -92,7 +102,6 @@ data class MediaScreen(val id: String = "", val backgroundColor: Int = 0): Scree
                         ) {
                             runCatching {
                                 AsyncImage(
-                                    modifier = Modifier.fillMaxWidth(),
                                     model = ImageRequest.Builder(context)
                                         .data(filteredMedias[index].path)
                                         .build(),

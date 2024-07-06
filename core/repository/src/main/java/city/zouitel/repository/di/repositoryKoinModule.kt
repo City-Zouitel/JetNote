@@ -75,7 +75,7 @@ val repositoryKoinModule = module {
     factoryOf(NoteUseCase::GetAllRemindingNotes)
     factoryOf(NoteUseCase::GetAllNotesByOldest)
     factoryOf(NoteUseCase::GetAllNotesByPriority)
-    factoryOf(NoteUseCase::GetAllTrashedNotes)
+    factoryOf(NoteUseCase::GetAllRemovedNotes)
 
     factoryOf(TagUseCase::AddTag)
     factoryOf(TagUseCase::DeleteTag)

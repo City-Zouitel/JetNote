@@ -29,10 +29,10 @@ sealed class NoteUseCase {
         operator fun invoke() = repository.getAllNotesByOldest
     }
 
-    class GetAllTrashedNotes(
+    class GetAllRemovedNotes(
         private val repository: NoteRepository
     ): NoteUseCase() {
-        operator fun invoke() = repository.getAllTrashedNotes
+        operator fun invoke() = repository.getAllRemovedNotes
     }
 
     class GetAllNotesByPriority(

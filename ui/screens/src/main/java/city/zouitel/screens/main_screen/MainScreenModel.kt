@@ -21,7 +21,7 @@ class MainScreenModel(
     private val getAllByOldest: NoteUseCase.GetAllNotesByOldest,
     private val getAllByNewest: NoteUseCase.GetAllNotesByNewest,
     private val getAllByName: NoteUseCase.GetAllNotesByName,
-    private val getAllTrashed: NoteUseCase.GetAllTrashedNotes,
+    private val getAllRemoved: NoteUseCase.GetAllRemovedNotes,
     private val getAllByPriority: NoteUseCase.GetAllNotesByPriority,
     private val getAllReminding: NoteUseCase.GetAllRemindingNotes,
     private val mapper: NoteMapper
@@ -65,22 +65,22 @@ class MainScreenModel(
                 getAllById.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllByName.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
+                getAllByName.invoke().collect { notes -> _allNotesByName.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllByNewest.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
+                getAllByNewest.invoke().collect { notes -> _allNotesByNewest.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllByOldest.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
+                getAllByOldest.invoke().collect { notes -> _allNotesByOldest.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllTrashed.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
+                getAllRemoved.invoke().collect { notes -> _allTrashedNotes.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllByPriority.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
+                getAllByPriority.invoke().collect { notes -> _allNotesByPriority.value = mapper.fromDomain(notes) }
             }
             launch(Dispatchers.IO) {
-                getAllReminding.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
+                getAllReminding.invoke().collect { notes -> _allRemindingNotes.value = mapper.fromDomain(notes) }
             }
         }
     }

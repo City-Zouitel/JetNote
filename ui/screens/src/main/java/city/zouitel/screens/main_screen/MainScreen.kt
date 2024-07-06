@@ -62,6 +62,11 @@ import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.note_card.NoteCard
 import city.zouitel.screens.sound
 import city.zouitel.systemDesign.CommonConstants
+import city.zouitel.systemDesign.CommonConstants.BY_NAME
+import city.zouitel.systemDesign.CommonConstants.ORDER_BY_NEWEST
+import city.zouitel.systemDesign.CommonConstants.ORDER_BY_OLDEST
+import city.zouitel.systemDesign.CommonConstants.ORDER_BY_PRIORITY
+import city.zouitel.systemDesign.CommonConstants.ORDER_BY_REMINDER
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.tags.ui.NoteAndTagScreenModel
@@ -132,15 +137,15 @@ data class MainScreen(val isHome: Boolean): Screen {
             when (
                 remember(datastoreModel, datastoreModel::getOrdination).collectAsState().value
             ) {
-                CommonConstants.BY_NAME -> mainModel.allNotesByName.collectAsState()
-                CommonConstants.ORDER_BY_OLDEST -> remember(mainModel, mainModel::allNotesByOldest).collectAsState()
-                CommonConstants.ORDER_BY_NEWEST -> mainModel.allNotesByNewest.collectAsState()
-                CommonConstants.ORDER_BY_PRIORITY -> mainModel.allNotesByPriority.collectAsState()
-                CommonConstants.ORDER_BY_REMINDER -> mainModel.allRemindingNotes.collectAsState()
+                BY_NAME -> mainModel.allNotesByName.collectAsState()
+                ORDER_BY_OLDEST -> mainModel.allNotesByOldest.collectAsState()
+                ORDER_BY_NEWEST -> mainModel.allNotesByNewest.collectAsState()
+                ORDER_BY_PRIORITY -> mainModel.allNotesByPriority.collectAsState()
+                ORDER_BY_REMINDER -> mainModel.allRemindingNotes.collectAsState()
                 else -> mainModel.allNotesById.collectAsState()
             }
         } else {
-            remember(mainModel, mainModel::allTrashedNotes).collectAsState()
+            mainModel.allTrashedNotes.collectAsState()
         }
 
         val observerRemovedNotes = remember(mainModel, mainModel::allTrashedNotes).collectAsState()
