@@ -17,6 +17,8 @@ jobs:
           cache: gradle
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
       - name: Upload app to AppSweep with Gradle
         env:
           APPSWEEP_API_KEY: ${{ secrets.APP_SWEEP_SECRET_KEY }}
