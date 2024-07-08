@@ -31,7 +31,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 
-data class MediaScreen(val id: String = "", val backgroundColor: Int = 0): Screen {
+data class MediaScreen(val id: String, val backgroundColor: Int = 0): Screen {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     override fun Content() {
