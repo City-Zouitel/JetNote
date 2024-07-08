@@ -1,11 +1,10 @@
-import com.android.build.gradle.internal.scope.ProjectInfo.Companion.getBaseName
-
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.cityzouitel.androidApplication)
     alias(libs.plugins.ksp)
     alias(libs.plugins.licenses)
     alias(libs.plugins.enigma)
+    alias(libs.plugins.appsweep)
 }
 
 android {
