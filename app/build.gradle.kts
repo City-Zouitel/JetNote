@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.licenses)
     alias(libs.plugins.enigma)
-    alias(libs.plugins.appsweep)
+    id("com.guardsquare.appsweep") version "latest.release"
 }
 
 android {

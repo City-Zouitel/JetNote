@@ -205,7 +205,6 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 licenses = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "license" }
 enigma = { id = "com.chrisney.enigma", version.ref = "enigma" }
-appsweep = { id = "com.guardsquare.appsweep", version = "latest.release" }
 
 #Local.
 cityzouitel-androidLibrary = { id = "city.zouitel.android.library", version = "unspecified" }
