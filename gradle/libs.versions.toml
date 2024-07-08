@@ -4,8 +4,8 @@ kotlin = "1.9.24"
 compilesdk-v = "34"
 minsdk-v = "26"
 targetsdk-v = "34"
-code-v = "591"
-name-v = "5.9.1"
+code-v = "592"
+name-v = "5.9.2"
 compose-v = "1.5.14"
 
 #Android.

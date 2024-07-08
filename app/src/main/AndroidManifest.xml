@@ -37,7 +37,8 @@
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JetNote">
+        android:theme="@style/Theme.JetNote"
+        android:usesCleartextTraffic="false">
 
         <profileable
             android:shell="true"
