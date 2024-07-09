@@ -19,7 +19,7 @@ dependencies {
     //Accompanist.
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.systemuicontroller)
-    implementation(libs.accompanist.navigation.animation)
+//    implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.swiperefresh)
     implementation(libs.accompanist.flowlayout)
 
