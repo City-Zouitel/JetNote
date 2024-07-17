@@ -1,11 +1,11 @@
 [versions]
-agp = "8.2.1"
+agp = "8.2.2"
 kotlin = "1.9.24"
 compilesdk-v = "34"
 minsdk-v = "26"
 targetsdk-v = "34"
-code-v = "592"
-name-v = "5.9.2"
+code-v = "593"
+name-v = "5.9.3"
 compose-v = "1.5.14"
 
 #Android.

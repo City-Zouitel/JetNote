@@ -49,6 +49,7 @@ import androidx.compose.ui.util.fastAny
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
@@ -89,19 +90,19 @@ data class MainScreen(val isHome: Boolean): Screen {
 
         Main(
             mainModel = mainModel,
-            notificationModel = getScreenModel<NotificationScreenModel>(),
-            tagModel = getScreenModel<TagScreenModel>(),
-            noteAndTagModel = getScreenModel<NoteAndTagScreenModel>(),
-            taskModel = getScreenModel<TaskScreenModel>(),
-            noteAndTaskModel = getScreenModel<NoteAndTaskScreenModel>(),
-            dataModel = getScreenModel<DataScreenModel>(),
-            audioModel = getScreenModel<AudioScreenModel>(),
-            noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>(),
-            linkModel = getScreenModel<LinkScreenModel>(),
-            noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>(),
-            datastoreModel = getScreenModel<DataStoreScreenModel>(),
-            mediaModel = getScreenModel<MediaScreenModel>(),
-            noteAndMediaModel = getScreenModel<NoteAndMediaScreenModel>(),
+            notificationModel = getScreenModel(),
+            tagModel = getScreenModel(),
+            noteAndTagModel = getScreenModel(),
+            taskModel = getScreenModel(),
+            noteAndTaskModel = getScreenModel(),
+            dataModel = getScreenModel(),
+            audioModel = getScreenModel(),
+            noteAndAudioModel = getScreenModel(),
+            linkModel = getScreenModel(),
+            noteAndLinkModel = getScreenModel(),
+            datastoreModel = getScreenModel(),
+            mediaModel = getScreenModel(),
+            noteAndMediaModel = getScreenModel(),
         )
     }
 
@@ -204,6 +205,17 @@ data class MainScreen(val isHome: Boolean): Screen {
                     }
                 }
             }
+        }
+
+        if (uiState.isOptionsDialog) {
+            OptionsDialog(
+                data = uiState.selectedNote,
+                dataStoreModel = datastoreModel,
+                dataModel = dataModel,
+                mainModel = mainModel,
+                linkModel = linkModel,
+                noteAndLinkModel = noteAndLinkModel
+            )
         }
 
         ModalNavigationDrawer(
@@ -322,16 +334,27 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     noteAndMediaModel = noteAndMediaModel
                                 ) {
                                     dataModel.editData(
-                                        Data(
-                                            title = it.dataEntity.title,
-                                            description = it.dataEntity.description,
-                                            priority = it.dataEntity.priority,
-                                            uid = it.dataEntity.uid,
-                                            color = it.dataEntity.color,
-                                            textColor = it.dataEntity.textColor,
-                                            removed = 1
-                                        )
+                                        it.dataEntity.copy(removed = 1)
+//                                        Data(
+//                                            title = it.dataEntity.title,
+//                                            description = it.dataEntity.description,
+//                                            priority = it.dataEntity.priority,
+//                                            uid = it.dataEntity.uid,
+//                                            color = it.dataEntity.color,
+//                                            textColor = it.dataEntity.textColor,
+//                                            removed = 1
+//                                        )
                                     )
+                                    // to cancel the alarm manager reminding.
+                                    notificationModel.scheduleNotification(
+                                        context = context,
+                                        dateTime = it.dataEntity.reminding,
+                                        title = it.dataEntity.title,
+                                        message = it.dataEntity.description,
+                                        uid = it.dataEntity.uid,
+                                        onReset = { true }
+                                    )
+
                                     undo.invoke(entity.dataEntity)
                                 }
                             }
@@ -361,29 +384,19 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     mediaModel = mediaModel,
                                     noteAndMediaModel = noteAndMediaModel
                                 ) {
-                                    dataModel.editData(
-                                        Data(
-                                            title = it.dataEntity.title,
-                                            description = it.dataEntity.description,
-                                            priority = it.dataEntity.priority,
-                                            uid = it.dataEntity.uid,
-                                            color = it.dataEntity.color,
-                                            textColor = it.dataEntity.textColor,
-                                            removed = 1
-                                        )
-                                    )
+//                                    dataModel.editData(
+//                                        Data(
+//                                            title = it.dataEntity.title,
+//                                            description = it.dataEntity.description,
+//                                            priority = it.dataEntity.priority,
+//                                            uid = it.dataEntity.uid,
+//                                            color = it.dataEntity.color,
+//                                            textColor = it.dataEntity.textColor,
+//                                            removed = 1
+//                                        )
+//                                    )
 
-                                    // to cancel the alarm manager reminding.
-                                    notificationModel.scheduleNotification(
-                                        context = context,
-                                        dateTime = it.dataEntity.reminding,
-                                        title = it.dataEntity.title,
-                                        message = it.dataEntity.description,
-                                        uid = it.dataEntity.uid,
-                                        onReset = { true }
-                                    )
 
-                                    undo.invoke(entity.dataEntity)
                                 }
                             }
                         }

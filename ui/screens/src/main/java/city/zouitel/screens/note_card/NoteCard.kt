@@ -224,7 +224,8 @@ private fun Card(
                         )
                     )
                 } else if (!isHomeScreen && !uiState.isSelection) {
-                    /*show return note dialog.*/
+                    mainModel.updateOptionsDialog(true)
+                    mainModel.updateSelectedNote(note)
                 } else {
                     when {
                         !uiState.selectedNotes.contains(note) -> uiState.selectedNotes.add(note)
@@ -353,26 +354,26 @@ private fun Card(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (!isHomeScreen) {
-                IconButton(onClick = {
-                    dataModel.editData(
-                        Data(
-                            title = note.title,
-                            description = note.description,
-                            priority = note.priority,
-                            uid = note.uid,
-                            removed = 0,
-                            color = note.color,
-                            textColor = note.textColor
-                        )
-                    )
-                }) {
-                    Icon(
-                        painterResource(id = RESET_ICON), null,
-                        tint = Color(note.textColor)
-                    )
-                }
-            }
+//            if (!isHomeScreen) {
+//                IconButton(onClick = {
+//                    dataModel.editData(
+//                        Data(
+//                            title = note.title,
+//                            description = note.description,
+//                            priority = note.priority,
+//                            uid = note.uid,
+//                            removed = 0,
+//                            color = note.color,
+//                            textColor = note.textColor
+//                        )
+//                    )
+//                }) {
+//                    Icon(
+//                        painterResource(id = RESET_ICON), null,
+//                        tint = Color(note.textColor)
+//                    )
+//                }
+//            }
 
             //display the reminding chip.
             if (isHomeScreen && note.reminding != 0L) {

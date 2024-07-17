@@ -132,4 +132,16 @@ class MainScreenModel(
             _uiState.value = _uiState.value.copy(isHomeScreen = isHome)
         }
     }
+
+    fun updateOptionsDialog(isShow: Boolean) {
+        screenModelScope.launch {
+            _uiState.value = _uiState.value.copy(isOptionsDialog = isShow)
+        }
+    }
+
+    fun updateSelectedNote(data: Data?) {
+        screenModelScope.launch {
+            _uiState.value = _uiState.value.copy(selectedNote = data)
+        }
+    }
 }

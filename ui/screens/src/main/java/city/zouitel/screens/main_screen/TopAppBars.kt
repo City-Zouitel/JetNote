@@ -6,6 +6,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -312,32 +313,61 @@ internal fun RemovedSelectionTopAppBar(
 
     TopAppBar(
         navigationIcon = {
-            // wipe notes.
-            CommonPopupTip(message = "Wipe Notes") {
-                Icon(
-                    painter = painterResource(id = CommonIcons.REMOVE_ICON),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(7.dp)
-                        .combinedClickable(
-                            onLongClick = {
-                                it.showAlignBottom()
-                            }
-                        ) {
-                            sound.makeSound.invoke(
-                                context,
-                                CommonConstants.KEY_CLICK,
-                                thereIsSoundEffect.value
-                            )
-                            uiState.selectedNotes.forEach {
-                                dataModel.deleteData(it)
-                            }
-                            mainModel.clearSelectionNotes()
-                            mainModel.updateSelection(false)
-                        }
-                )
-            }
+            Row {
+                CommonRow {
+                    // wipe notes.
+                    CommonPopupTip(message = "Erase Notes") {
+                        Icon(
+                            painter = painterResource(id = CommonIcons.ERASER_ICON),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(7.dp)
+                                .combinedClickable(
+                                    onLongClick = {
+                                        it.showAlignBottom()
+                                    }
+                                ) {
+                                    sound.makeSound.invoke(
+                                        context,
+                                        CommonConstants.KEY_CLICK,
+                                        thereIsSoundEffect.value
+                                    )
 
+                                    uiState.selectedNotes.forEach {
+                                        dataModel.deleteData(it)
+                                    }
+                                    mainModel.clearSelectionNotes()
+                                    mainModel.updateSelection(false)
+                                }
+                        )
+                    }
+                    CommonPopupTip(message = "Rollback Notes") {
+                        Icon(
+                            painter = painterResource(id = CommonIcons.UNDO_ICON),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(25.dp)
+                                .combinedClickable(
+                                    onLongClick = {
+                                        it.showAlignBottom()
+                                    }
+                                ) {
+                                    sound.makeSound.invoke(
+                                        context,
+                                        CommonConstants.KEY_CLICK,
+                                        thereIsSoundEffect.value
+                                    )
+
+                                    uiState.selectedNotes.forEach {
+                                        dataModel.editData(it.copy(removed = 0))
+                                    }
+                                    mainModel.clearSelectionNotes()
+                                    mainModel.updateSelection(false)
+                                }
+                        )
+                    }
+                }
+            }
         },
         title = {},
         actions = {
@@ -349,5 +379,3 @@ internal fun RemovedSelectionTopAppBar(
         }
     )
 }
-
-

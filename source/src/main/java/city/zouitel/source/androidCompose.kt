@@ -10,6 +10,7 @@ internal fun Project.configureAndroidCompose(
     common.apply {
         buildFeatures {
             compose = true
+            buildConfig = true
         }
 
         composeOptions {
