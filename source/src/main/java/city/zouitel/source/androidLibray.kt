@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 fun Project.configureAndroidLibrary(
-    common: CommonExtension<*, *, *, *, *>,
+    common: CommonExtension<*, *, *, *, *, *>,
 ) {
     common.apply {
         compileSdk = libs.findVersion("compilesdk-v").get().requiredVersion.toInt()
@@ -52,6 +52,6 @@ fun Project.configureAndroidLibrary(
     }
 }
 
-private fun CommonExtension<*, *, *, *, *>.kotlinOptions (options: KotlinJvmOptions.() -> Unit) {
+private fun CommonExtension<*, *, *, *, *, *>.kotlinOptions (options: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", options)
 }

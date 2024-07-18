@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
 internal fun Project.configureAndroidCompose(
-    common: CommonExtension<*, *, *, *, *>
+    common: CommonExtension<*, *, *, *, *, *>
 ) {
     common.apply {
         buildFeatures {
