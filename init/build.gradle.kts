@@ -2,7 +2,6 @@
 plugins {
     alias(libs.plugins.cityzouitel.androidLibrary)
     alias(libs.plugins.cityzouitel.androidCompose)
-//    id("com.guardsquare.appsweep") version "latest.release"
 }
 
 android {
