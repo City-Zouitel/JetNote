@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.cityzouitel.androidNavigation)
     alias(libs.plugins.ksp)
     alias(libs.plugins.licenses)
+    id("com.guardsquare.appsweep") version "latest.release"
+
 }
 
 android {

@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.cityzouitel.androidLibrary)
     alias(libs.plugins.ksp)
+    id("com.guardsquare.appsweep") version "latest.release"
+
 }
 
 android {
