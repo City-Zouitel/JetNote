@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.dependencyanalysis) apply false
     alias(libs.plugins.licenses) apply false
     alias(libs.plugins.enigma) apply false
-    id("com.guardsquare.appsweep") version "latest.release"
 }
 
 buildscript {
