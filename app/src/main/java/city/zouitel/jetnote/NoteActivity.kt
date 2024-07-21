@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
@@ -34,8 +35,9 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
     private val dataStoreModel: DataStoreScreenModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             val navigator = LocalNavigator.current
             val isDeviceRooted = rootScreenModel.isDeviceRooted.collectAsState()
