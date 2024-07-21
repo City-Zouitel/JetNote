@@ -1,13 +1,12 @@
 # JetNote
 JetNote is modern note android application written by kotlin language and [jetpack-compose](https://github.com/JetBrains/compose-jb) toolkit. The app dealing with Room for Database, Koin dependency injection, Coroutine the non-blocking programming, Navigation-Compose, DataStore, ExoPlayer to play the recorded media in the app, CameraX to take and save picture, And more to make it good app that inspired by google app **keep Notes**.
 
-[![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
-[![Kotlin Version](https://img.shields.io/badge/Kotlin-v1.9.22-blue.svg)](https://kotlinlang.org)
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5.10-blueviolet)](https://developer.android.com/jetpack/androidx/releases/compose)
-[![Kotlin Coroutines Version](https://img.shields.io/badge/Coroutines-v1.7.3-yellow.svg)](https://kotlinlang.org/docs/reference/coroutines-overview.html)
-[![Gradle](https://img.shields.io/badge/Gradle-8.2.1-green)](https://gradle.org)
+[![Android Platform](https://img.shields.io/badge/Android-26+-34A853?logo=android)](https://www.android.com/)
+[![Kotlin Version](https://img.shields.io/badge/Kotlin-1.9.24-7F52FF?logo=kotlin)](https://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Compose-1.5.14-4285F4?logo=jetpackcompose)](https://developer.android.com/jetpack/androidx/releases/compose)
+[![Kotlin Coroutines Version](https://img.shields.io/badge/Coroutines-v1.8.1-yellow.svg)](https://kotlinlang.org/docs/reference/coroutines-overview.html)
+[![Gradle](https://img.shields.io/badge/Gradle-8.5.1-02303A?logo=gradle)](https://gradle.org)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Android Platform](https://img.shields.io/badge/Platform-Android-green.svg?style=flat)](https://www.android.com/)
 [![Android CI](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml/badge.svg)](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/city-zouitel/jetnote/badge)](https://www.codefactor.io/repository/github/city-zouitel/jetnote)
 [![Wakatime](https://wakatime.com/badge/user/218fee08-512f-4a26-b56d-104925a888b1/project/a2f2f997-6877-4090-9458-3ac93895d372.svg)](https://wakatime.com/badge/user/218fee08-512f-4a26-b56d-104925a888b1/project/a2f2f997-6877-4090-9458-3ac93895d372)
