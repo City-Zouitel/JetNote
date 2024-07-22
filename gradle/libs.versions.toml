@@ -58,7 +58,7 @@ exoplayer = "2.19.1"
 accompanist = "0.28.0"
 
 #CameraX.
-camerax = "1.3.1"
+camerax = "1.3.4"
 
 #Coil
 coil-compose = "2.7.0"
