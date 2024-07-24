@@ -26,5 +26,5 @@ dependencies {
     implementation(libs.lifecycle.compose.viewmodel)
 
     //Accompanist.
-    implementation(libs.accompanist.flowlayout)
+//    implementation(libs.accompanist.flowlayout)
 }

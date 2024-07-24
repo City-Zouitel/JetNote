@@ -27,6 +27,8 @@ appcompat = "1.7.0"
 material = "1.12.0"
 navigation-compose = "2.7.7"
 compose-constraintlayout = "1.1.0-alpha13"
+foundation = "1.7.0-beta05"
+ui = "1.7.0-beta05"
 
 #Plugins.
 ksp = "1.9.24-1.0.20"
@@ -109,6 +111,7 @@ android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
@@ -118,9 +121,10 @@ material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-material = { group = "androidx.compose.material", name = "material" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+#compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 compose-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "compose-constraintlayout" }
 lifecycle-compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 
 #Koin.
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-core" }
@@ -151,8 +155,8 @@ accompanist-permissions = { module = "com.google.accompanist:accompanist-permiss
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 #accompanist-navigation_animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanist" }
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
-accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
+#accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
+#accompanist-insets = { module = "com.google.accompanist:accompanist-insets", version.ref = "accompanist" }
 
 #CameraX.
 camerax-core = { module = "androidx.camera:camera-core", version.ref = "camerax" }

@@ -26,12 +26,13 @@ fun DependencyHandlerScope.androidUiTestDependencies(libs: VersionCatalog) {
 fun DependencyHandlerScope.androidComposeDependencies(libs: VersionCatalog) {
     add("implementation", platform(libs.findLibrary("compose-bom").get()))
     add("implementation", libs.findLibrary("activity-compose").get())
-    add("implementation", libs.findLibrary("ui").get())
+    add("implementation", libs.findLibrary("compose-ui").get())
     add("implementation", libs.findLibrary("ui-graphics").get())
     add("implementation", libs.findLibrary("ui-tooling").get())
     add("implementation", libs.findLibrary("material3").get())
-    add("implementation", libs.findLibrary("compose-navigation").get())
+//    add("implementation", libs.findLibrary("compose-navigation").get())
     add("implementation", libs.findLibrary("compose-constraintlayout").get())
+    add("implementation", libs.findLibrary("compose-foundation").get())
 
     // TODO: add bundles.
 }

@@ -6,9 +6,12 @@ import android.icu.util.Calendar
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ContextualFlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +22,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text2.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.KeyboardActionHandler
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Checkbox
@@ -34,6 +38,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -91,7 +96,6 @@ import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
-import com.google.accompanist.flowlayout.FlowRow
 import java.util.Date
 import java.util.UUID
 import kotlin.random.Random
@@ -137,7 +141,7 @@ data class WorkplaceScreen(
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
     @Composable
     private fun Workplace(
         notificationModel: NotificationScreenModel,
@@ -193,6 +197,16 @@ data class WorkplaceScreen(
             .collectAsState()
 
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
+
+        val filteredObservedTags by remember {
+            derivedStateOf {
+            observeLabels.filter {
+                observeNotesAndLabels.contains(
+                    NoteAndTag(id, it.id)
+                )
+            }
+        }
+            }
 
         val chooseImageLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
@@ -322,9 +336,10 @@ data class WorkplaceScreen(
                         textSize = 24.sp,
                         textColor = Color(uiState.textColor),
                         imeAction = ImeAction.Next,
-                        keyboardActions = KeyboardActions(
-                            onNext = { keyboardManager.moveFocus(FocusDirection.Next) }
-                        )
+//                        keyboardAction = KeyboardActions(onNext = { keyboardManager.moveFocus(FocusDirection.Next) })
+                    keyboardAction = {
+                        keyboardManager.moveFocus(FocusDirection.Next)
+                    }
                     )
                 }
 
@@ -426,28 +441,31 @@ data class WorkplaceScreen(
 
                 // display all added tags.
                 item {
-                    FlowRow {
-                        observeLabels.filter {
-                            observeNotesAndLabels.contains(
-                                NoteAndTag(id, it.id)
-                            )
-                        }.forEach {
-                            AssistChip(
+                    ContextualFlowRow(
+                        itemCount = filteredObservedTags.size,
+                        modifier = Modifier.animateContentSize()
+                    ) { index ->
+//                        observeLabels.filter {
+//                            observeNotesAndLabels.contains(
+//                                NoteAndTag(id, it.id)
+//                            )
+//                        }.forEach {
+                            ElevatedAssistChip(
                                 onClick = { },
                                 leadingIcon = {
                                     Icon(
                                         painter = painterResource(id = CommonIcons.CIRCLE_ICON_18),
                                         contentDescription = null,
-                                        tint = Color(it.color),
+                                        tint = Color(filteredObservedTags[index].color),
                                         modifier = Modifier.size(10.dp)
                                     )
                                 },
                                 label = {
-                                    it.label?.let { it1 -> Text(it1) }
+                                    filteredObservedTags[index].label?.let { it1 -> Text(it1) }
                                 }
                             )
                         }
-                    }
+//                    }
                 }
 
                 // display the todo list.

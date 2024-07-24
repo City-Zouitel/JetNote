@@ -33,7 +33,7 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.systemuicontroller)
 //    implementation(libs.accompanist.navigation.animation)
-    implementation(libs.accompanist.flowlayout)
+//    implementation(libs.accompanist.flowlayout)
 
     //Sketchbook.
     implementation (libs.sketchbook)

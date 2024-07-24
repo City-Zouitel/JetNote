@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -71,6 +72,7 @@ class HashTagsScreen: Screen {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
+        val scaffoldState = rememberScaffoldState()
 
         val focusRequester by lazy { FocusRequester() }
 
@@ -94,7 +96,8 @@ class HashTagsScreen: Screen {
             drawerState = drawerState,
             modifier = Modifier.navigationBarsPadding()
         ) {
-            Scaffold(
+            androidx.compose.material.Scaffold(
+                scaffoldState = scaffoldState,
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 topBar = {
                     CommonTopAppBar(

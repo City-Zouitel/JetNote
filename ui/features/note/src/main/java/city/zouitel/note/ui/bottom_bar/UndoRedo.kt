@@ -2,7 +2,7 @@ package city.zouitel.note.ui.bottom_bar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme

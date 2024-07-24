@@ -21,7 +21,7 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
 //    implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.swiperefresh)
-    implementation(libs.accompanist.flowlayout)
+//    implementation(libs.accompanist.flowlayout)
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)

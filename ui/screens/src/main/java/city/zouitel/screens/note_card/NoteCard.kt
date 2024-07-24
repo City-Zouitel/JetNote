@@ -72,6 +72,7 @@ import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
 import java.util.*
+import kotlin.math.absoluteValue
 
 @Composable
 fun NoteCard(
@@ -144,7 +145,7 @@ fun NoteCard(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 private fun Card(
     taskModel: TaskScreenModel,
@@ -323,20 +324,40 @@ private fun Card(
         }
 
         //display tags.
-        LazyRow {
-            items(items = labels) { label ->
+        ContextualFlowRow(
+            itemCount = labels.size,
+            maxLines = 1,
+            overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
+                expandIndicator = {
+                    AssistChip(
+                        modifier = Modifier.alpha(.4f),
+                        border = BorderStroke(0.dp, Color.Transparent),
+                        onClick = { },
+                        label = {
+                            Text("+${(totalItemCount - shownItemCount).absoluteValue}", fontSize = 11.sp)
+                        },
+                        colors = AssistChipDefaults.assistChipColors(
+                            labelColor = Color(note.textColor)
+                        ),
+                        shape = CircleShape
+                    )
+                },
+                collapseIndicator = { }
+            )
+        ) { index ->
+//            items(items = labels) { label ->
                 AssistChip(
-                    modifier = Modifier.alpha(.7f),
+                    modifier = Modifier.alpha(.4f),
                     border = BorderStroke(0.dp, Color.Transparent),
                     onClick = { },
                     label = {
-                        label.label?.let { Text(it, fontSize = 11.sp) }
+                        labels[index].label?.let { Text(it, fontSize = 11.sp) }
                     },
                     leadingIcon = {
                         Icon(
                             painter = painterResource(id = CIRCLE_ICON_18),
                             contentDescription = null,
-                            tint = Color(label.color),
+                            tint = Color(labels[index].color),
                             modifier = Modifier.size(10.dp)
                         )
                     },
@@ -346,7 +367,7 @@ private fun Card(
                     shape = CircleShape
                 )
                 Spacer(modifier = Modifier.width(3.dp))
-            }
+//            }
         }
 
         Row (

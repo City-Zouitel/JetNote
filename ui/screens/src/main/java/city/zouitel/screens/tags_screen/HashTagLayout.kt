@@ -3,10 +3,15 @@ package city.zouitel.screens.tags_screen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.ContextualFlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -14,18 +19,18 @@ import androidx.compose.ui.unit.dp
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.CROSS_CIRCLE_ICON
 import city.zouitel.tags.model.Tag
-import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
-import com.google.accompanist.flowlayout.FlowRow
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 internal fun HashTagLayout(
     tagModel: TagScreenModel,
     hashTags: Collection<Tag>,
 ) {
-    FlowRow(mainAxisSpacing = 3.dp) {
-        hashTags.forEach { label ->
+    val observeAllTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
+
+    ContextualFlowRow(itemCount = observeAllTags.size) { index ->
+//        hashTags.forEach { label ->
             ElevatedFilterChip(
                 selected = true,
                 onClick = {},
@@ -33,7 +38,7 @@ internal fun HashTagLayout(
                     Icon(
                         painter = painterResource(id = CIRCLE_ICON_18),
                         contentDescription = null,
-                        tint = Color(label.color),
+                        tint = Color(observeAllTags[index].color),
                         modifier = Modifier.size(10.dp)
                     )
                 },
@@ -42,25 +47,25 @@ internal fun HashTagLayout(
                         painterResource(CROSS_CIRCLE_ICON),
                         null,
                         modifier = Modifier.clickable {
-                            tagModel.deleteTag(label)
+                            tagModel.deleteTag(observeAllTags[index])
                         }
                     )
                 },
                 label = {
-                    label.label?.let {
+                    observeAllTags[index].label?.let {
                         Surface(
                             color = Color.Transparent,
                             modifier = Modifier.combinedClickable(
                                 onLongClick = {
-                                    tagModel.updateId(label.id)
+                                    tagModel.updateId(observeAllTags[index].id)
                                         .updateColorDialogState(true)
-                                        .updateLabel(label.label ?: "")
-                                        .updateColor(label.color)
+                                        .updateLabel(observeAllTags[index].label ?: "")
+                                        .updateColor(observeAllTags[index].color)
                                 },
                             ) {
-                                tagModel.updateId(label.id)
-                                    .updateLabel(label.label ?: "")
-                                    .updateColor(label.color)
+                                tagModel.updateId(observeAllTags[index].id)
+                                    .updateLabel(observeAllTags[index].label ?: "")
+                                    .updateColor(observeAllTags[index].color)
                             }
                         ) {
                             Text(it)
@@ -69,6 +74,6 @@ internal fun HashTagLayout(
                 },
                 shape = CircleShape
             )
-        }
+//        }
     }
 }

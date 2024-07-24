@@ -2,6 +2,7 @@ package city.zouitel.screens.main_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -312,7 +313,9 @@ data class MainScreen(val isHome: Boolean): Screen {
                     if (currentLayout.value == CommonConstants.LIST) {
                         LazyColumn(
                             state = listLayoutState,
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .animateContentSize()
+                                .fillMaxSize(),
                         ) {
                             items(
                                 items = filteredObserverLocalNotes,
@@ -361,7 +364,9 @@ data class MainScreen(val isHome: Boolean): Screen {
                         }
                     } else {
                         LazyVerticalStaggeredGrid(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .animateContentSize()
+                                .fillMaxSize(),
                             columns = StaggeredGridCells.Fixed(2),
                             state = gridLayoutState
                         ) {

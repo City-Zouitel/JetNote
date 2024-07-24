@@ -36,6 +36,7 @@ import city.zouitel.tags.ui.TagScreenModel
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun NavigationDrawer(
     tagModel: TagScreenModel,
@@ -45,7 +46,7 @@ fun NavigationDrawer(
     ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
-    val observeLabels = remember(tagModel,tagModel::getAllLTags).collectAsState()
+    val observeLabels by remember(tagModel, tagModel::getAllLTags).collectAsState()
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val scope = rememberCoroutineScope()
 
@@ -98,17 +99,17 @@ fun NavigationDrawer(
             }
 
             item {
-                com.google.accompanist.flowlayout.FlowRow(
-                    mainAxisSpacing = 3.dp
-                ) {
-                    observeLabels.value.forEach { tag ->
+                ContextualFlowRow(
+                    itemCount = observeLabels.size,
+                ) { index ->
+//                    observeLabels.value.forEach { tag ->
                         ElevatedFilterChip(
                             selected = true,
                             onClick = {
                                 scope.launch {
                                     sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                                    homeScreen.updateSearchTag(tag)
-                                    homeScreen.updateSearchTitle(tag.label ?: "")
+                                    homeScreen.updateSearchTag(observeLabels[index])
+                                    homeScreen.updateSearchTitle(observeLabels[index].label ?: "")
                                     drawerState.close()
                                 }
                             },
@@ -116,17 +117,17 @@ fun NavigationDrawer(
                                 Icon(
                                     painter = painterResource(id = CIRCLE_ICON_18),
                                     contentDescription = null,
-                                    tint = Color(tag.color),
+                                    tint = Color(observeLabels[index].color),
                                     modifier = Modifier.size(10.dp)
                                 )
                             },
                             label = {
-                                tag.label?.let { Text(it, fontSize = 11.sp) }
+                                observeLabels[index].label?.let { Text(it, fontSize = 11.sp) }
                             },
                             shape = CircleShape
                         )
                     }
-                }
+//                }
             }
 
             item {

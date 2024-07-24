@@ -1,8 +1,12 @@
 package city.zouitel.tags.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.ContextualFlowRow
+import androidx.compose.foundation.layout.ContextualFlowRowOverflow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -23,7 +27,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -38,6 +44,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
@@ -46,7 +53,6 @@ import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonIcons.FULL_LABEL_ICON
 import city.zouitel.systemDesign.CommonIcons.OUTLINE_LABEL_ICON
 import city.zouitel.tags.utils.DialogColors
-import com.google.accompanist.flowlayout.FlowRow
 import city.zouitel.tags.model.NoteAndTag as InNoteAndTag
 import city.zouitel.tags.model.Tag as InTag
 
@@ -63,7 +69,7 @@ data class TagsScreen(val id: String): Screen {
 
     @OptIn(
         ExperimentalComposeUiApi::class,
-        ExperimentalMaterial3Api::class
+        ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class
     )
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
@@ -77,6 +83,7 @@ data class TagsScreen(val id: String): Screen {
         val observeTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
         val observeNoteAndTag by remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
         val uiState by remember(tagModel, tagModel::uiState).collectAsState()
+        var maxLines by remember { mutableIntStateOf(3) }
 
         val focusRequester by lazy { FocusRequester() }
 
@@ -87,6 +94,7 @@ data class TagsScreen(val id: String): Screen {
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
+
 
         Scaffold(
             modifier = Modifier.navigationBarsPadding(),
@@ -112,51 +120,87 @@ data class TagsScreen(val id: String): Screen {
             ) {
                 item {
                     id.let { _id ->
-                        FlowRow(mainAxisSpacing = 3.dp) {
-                            observeTags.forEach { label ->
+                        ContextualFlowRow(
+                            modifier = Modifier.animateContentSize(),
+                            itemCount = observeTags.size,
+                            maxLines = maxLines,
+                            overflow = ContextualFlowRowOverflow
+                                .expandOrCollapseIndicator(
+                                expandIndicator = {
+                                    ElevatedFilterChip(
+                                        selected = true,
+                                        onClick = { maxLines += 2 },
+                                        label = {
+                                            Text("+${totalItemCount - shownItemCount}")
+                                        }
+                                    )
+                                },
+                                collapseIndicator = {
+                                    if(maxLines > 3)
+                                    ElevatedFilterChip(
+                                        selected = true,
+                                        onClick = { maxLines = 3 },
+                                        label = {
+                                            Text(Typography.times.toString())
+                                        }
+                                    )
+                                }
+                            )
+//                                .expandIndicator {
+//                                    val rem = totalItemCount - shownItemCount
+//                                    ElevatedFilterChip(
+//                                        selected = true,
+//                                        onClick = { if(rem >= 2) maxLines += 2 },
+//                                        label = {
+//                                            Text("+${rem}")
+//                                        }
+//                                    )
+//                                }
+                        ) { index ->
+//                            observeTags.forEach { label ->
                                 ElevatedFilterChip(
+                                    modifier = Modifier.padding(2.dp),
                                     selected = true,
-                                    modifier = Modifier,
                                     onClick = {
-                                        if (observeNoteAndTag.contains(InNoteAndTag(_id, label.id))) {
+                                        if (observeNoteAndTag.contains(InNoteAndTag(_id, observeTags[index].id))) {
                                             noteAndTagModel.deleteNoteAndTag(
                                                 InNoteAndTag(
                                                     noteUid = _id,
-                                                    labelId = label.id
+                                                    labelId = observeTags[index].id
                                                 )
                                             )
                                         } else {
                                             noteAndTagModel.addNoteAndTag(
                                                 InNoteAndTag(
                                                     noteUid = _id,
-                                                    labelId = label.id
+                                                    labelId = observeTags[index].id
                                                 )
                                             )
                                         }
                                     },
                                     leadingIcon = {
-                                        if (observeNoteAndTag.contains(InNoteAndTag(_id, label.id))
+                                        if (observeNoteAndTag.contains(InNoteAndTag(_id, observeTags[index].id))
                                         ) {
                                             Icon(
                                                 painterResource(FULL_LABEL_ICON), null,
-                                                tint = if (label.color == Color.Transparent.toArgb()) {
+                                                tint = if (observeTags[indexInLine].color == Color.Transparent.toArgb()) {
                                                     MaterialTheme.colorScheme.surfaceTint
-                                                } else Color(label.color)
+                                                } else Color(observeTags[index].color)
                                             )
                                         } else {
                                             Icon(
                                                 painterResource(OUTLINE_LABEL_ICON), null,
-                                                tint = if (label.color == Color.Transparent.toArgb()) {
+                                                tint = if (observeTags[index].color == Color.Transparent.toArgb()) {
                                                     MaterialTheme.colorScheme.surfaceTint
-                                                } else Color(label.color)
+                                                } else Color(observeTags[index].color)
                                             )
                                         }
                                     },
-                                    label = { label.label?.let { Text(it) } }
+                                    label = { observeTags[index].label?.let { Text(it) } }
                                 )
                             }
                         }
-                    }
+//                    }
                 }
 
                 item {
