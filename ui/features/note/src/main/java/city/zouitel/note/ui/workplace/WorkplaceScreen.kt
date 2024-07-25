@@ -44,6 +44,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -100,7 +101,6 @@ import java.util.Date
 import java.util.UUID
 import kotlin.random.Random
 
-@Suppress("NAME_SHADOWING")
 data class WorkplaceScreen(
     val id: String = UUID.randomUUID().toString(),
     val isNew: Boolean = true,
@@ -123,25 +123,25 @@ data class WorkplaceScreen(
         }
 
         Workplace(
-            notificationModel = getScreenModel<NotificationScreenModel>(),
-            dataModel = getScreenModel<DataScreenModel>(),
-            tagModel = getScreenModel<TagScreenModel>(),
-            noteAndTagModel = getScreenModel<NoteAndTagScreenModel>(),
-            taskModel = getScreenModel<TaskScreenModel>(),
-            noteAndTodoModel = getScreenModel<NoteAndTaskScreenModel>(),
-            linkModel = getScreenModel<LinkScreenModel>(),
-            noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>(),
-            dataStoreModel = getScreenModel<DataStoreScreenModel>(),
-            audioModel = getScreenModel<AudioScreenModel>(),
-            noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>(),
-            mediaModel = getScreenModel<MediaScreenModel>(),
-            noteAndMediaModel = getScreenModel<NoteAndMediaScreenModel>(),
+            notificationModel = getScreenModel(),
+            dataModel = getScreenModel(),
+            tagModel = getScreenModel(),
+            noteAndTagModel = getScreenModel(),
+            taskModel = getScreenModel(),
+            noteAndTodoModel = getScreenModel(),
+            linkModel = getScreenModel(),
+            noteAndLinkModel = getScreenModel(),
+            dataStoreModel = getScreenModel(),
+            audioModel = getScreenModel(),
+            noteAndAudioModel = getScreenModel(),
+            mediaModel = getScreenModel(),
+            noteAndMediaModel = getScreenModel(),
             workspaceModel = workspaceModel
         )
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
+    @OptIn(ExperimentalLayoutApi::class)
     @Composable
     private fun Workplace(
         notificationModel: NotificationScreenModel,
@@ -200,13 +200,13 @@ data class WorkplaceScreen(
 
         val filteredObservedTags by remember {
             derivedStateOf {
-            observeLabels.filter {
-                observeNotesAndLabels.contains(
-                    NoteAndTag(id, it.id)
-                )
+                observeLabels.filter {
+                    observeNotesAndLabels.contains(
+                        NoteAndTag(id, it.id)
+                    )
+                }
             }
         }
-            }
 
         val chooseImageLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
@@ -337,9 +337,9 @@ data class WorkplaceScreen(
                         textColor = Color(uiState.textColor),
                         imeAction = ImeAction.Next,
 //                        keyboardAction = KeyboardActions(onNext = { keyboardManager.moveFocus(FocusDirection.Next) })
-                    keyboardAction = {
-                        keyboardManager.moveFocus(FocusDirection.Next)
-                    }
+                        keyboardAction = {
+                            keyboardManager.moveFocus(FocusDirection.Next)
+                        }
                     )
                 }
 
@@ -443,32 +443,31 @@ data class WorkplaceScreen(
                 item {
                     ContextualFlowRow(
                         itemCount = filteredObservedTags.size,
-                        modifier = Modifier.animateContentSize()
+                        modifier = Modifier
+                            .animateContentSize()
+                            .padding(5.dp)
                     ) { index ->
-//                        observeLabels.filter {
-//                            observeNotesAndLabels.contains(
-//                                NoteAndTag(id, it.id)
-//                            )
-//                        }.forEach {
-                            ElevatedAssistChip(
-                                onClick = { },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = CommonIcons.CIRCLE_ICON_18),
-                                        contentDescription = null,
-                                        tint = Color(filteredObservedTags[index].color),
-                                        modifier = Modifier.size(10.dp)
-                                    )
-                                },
-                                label = {
-                                    filteredObservedTags[index].label?.let { it1 -> Text(it1) }
-                                }
-                            )
-                        }
-//                    }
+                        ElevatedAssistChip(
+                            modifier = Modifier
+                                .alpha(.5f)
+                                .padding(2.dp),
+                            onClick = { },
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = CommonIcons.CIRCLE_ICON_18),
+                                    contentDescription = null,
+                                    tint = Color(filteredObservedTags[index].color),
+                                    modifier = Modifier.size(10.dp)
+                                )
+                            },
+                            label = {
+                                filteredObservedTags[index].label?.let { it1 -> Text(it1) }
+                            }
+                        )
+                    }
                 }
 
-                // display the todo list.
+                // display the tasks list.
                 item {
                     observeTodoList.filter {
                         observeNoteAndTodo.contains(
