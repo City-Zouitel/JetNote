@@ -57,7 +57,7 @@ datastore-security = "1.0.0"
 exoplayer = "2.19.1"
 
 #Accompanist.
-accompanist = "0.28.0"
+accompanist = "0.34.0"
 
 #CameraX.
 camerax = "1.3.1"
