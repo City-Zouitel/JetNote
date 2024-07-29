@@ -382,7 +382,7 @@ private fun Card(
 //                            title = note.title,
 //                            description = note.description,
 //                            priority = note.priority,
-//                            uid = note.uid,
+//                            uid = note.uid,-
 //                            removed = 0,
 //                            color = note.color,
 //                            textColor = note.textColor
