@@ -330,11 +330,11 @@ private fun Card(
             overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
                 expandIndicator = {
                     AssistChip(
-                        modifier = Modifier.alpha(.4f),
+                        modifier = Modifier.alpha(.7f),
                         border = BorderStroke(0.dp, Color.Transparent),
                         onClick = { },
                         label = {
-                            Text("+${(totalItemCount - shownItemCount).absoluteValue}", fontSize = 11.sp)
+                            Text("+${(totalItemCount - (shownItemCount - 1))}", fontSize = 11.sp)
                         },
                         colors = AssistChipDefaults.assistChipColors(
                             labelColor = Color(note.textColor)
@@ -347,7 +347,7 @@ private fun Card(
         ) { index ->
 //            items(items = labels) { label ->
                 AssistChip(
-                    modifier = Modifier.alpha(.4f),
+                    modifier = Modifier.alpha(.7f),
                     border = BorderStroke(0.dp, Color.Transparent),
                     onClick = { },
                     label = {

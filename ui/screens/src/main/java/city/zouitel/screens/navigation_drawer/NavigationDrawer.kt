@@ -1,9 +1,11 @@
 package city.zouitel.screens.navigation_drawer
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -23,6 +25,7 @@ import city.zouitel.screens.sound
 import city.zouitel.screens.tags_screen.HashTagsScreen
 import city.zouitel.systemDesign.CommonConstants.APP_NAME
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
+import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.COMMENT_EXCLAMATION
@@ -35,6 +38,7 @@ import city.zouitel.systemDesign.CommonIcons.REMOVE_ICON
 import city.zouitel.tags.ui.TagScreenModel
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
+import kotlin.text.Typography
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -49,6 +53,7 @@ fun NavigationDrawer(
     val observeLabels by remember(tagModel, tagModel::getAllLTags).collectAsState()
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val scope = rememberCoroutineScope()
+    var maxLines by remember { mutableIntStateOf(3) }
 
     DismissibleDrawerSheet(
         modifier = Modifier
@@ -100,10 +105,39 @@ fun NavigationDrawer(
 
             item {
                 ContextualFlowRow(
+                    modifier = Modifier.animateContentSize(),
                     itemCount = observeLabels.size,
+                    maxLines = maxLines,
+                    overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
+                        expandIndicator = {
+                            ElevatedFilterChip(
+                                selected = true,
+                                shape = CircleShape,
+                                onClick = { maxLines += 1 },
+                                label = {
+                                    Text("+${totalItemCount - shownItemCount}")
+                                }
+                            )
+                        },
+                        collapseIndicator = {
+                            ElevatedFilterChip(
+                                selected = true,
+                                shape = CircleShape,
+                                onClick = { maxLines = 3 },
+                                label = {
+                                    Icon(
+                                        modifier = Modifier.size(15.dp),
+                                        painter = painterResource(CommonIcons.CROSS_ICON),
+                                        contentDescription = null
+                                    )
+                                }
+                            )
+                        }
+                    )
                 ) { index ->
 //                    observeLabels.value.forEach { tag ->
                         ElevatedFilterChip(
+                            modifier = Modifier.padding(1.5.dp),
                             selected = true,
                             onClick = {
                                 scope.launch {

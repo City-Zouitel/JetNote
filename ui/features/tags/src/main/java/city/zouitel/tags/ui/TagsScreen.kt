@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -124,8 +125,7 @@ data class TagsScreen(val id: String): Screen {
                             modifier = Modifier.animateContentSize(),
                             itemCount = observeTags.size,
                             maxLines = maxLines,
-                            overflow = ContextualFlowRowOverflow
-                                .expandOrCollapseIndicator(
+                            overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
                                 expandIndicator = {
                                     ElevatedFilterChip(
                                         selected = true,
@@ -136,71 +136,62 @@ data class TagsScreen(val id: String): Screen {
                                     )
                                 },
                                 collapseIndicator = {
-                                    if(maxLines > 3)
                                     ElevatedFilterChip(
                                         selected = true,
                                         onClick = { maxLines = 3 },
                                         label = {
-                                            Text(Typography.times.toString())
+                                            Icon(
+                                                modifier = Modifier.size(15.dp),
+                                                painter = painterResource(CommonIcons.CROSS_ICON),
+                                                contentDescription = null
+                                            )
                                         }
                                     )
                                 }
                             )
-//                                .expandIndicator {
-//                                    val rem = totalItemCount - shownItemCount
-//                                    ElevatedFilterChip(
-//                                        selected = true,
-//                                        onClick = { if(rem >= 2) maxLines += 2 },
-//                                        label = {
-//                                            Text("+${rem}")
-//                                        }
-//                                    )
-//                                }
                         ) { index ->
-//                            observeTags.forEach { label ->
-                                ElevatedFilterChip(
-                                    modifier = Modifier.padding(2.dp),
-                                    selected = true,
-                                    onClick = {
-                                        if (observeNoteAndTag.contains(InNoteAndTag(_id, observeTags[index].id))) {
-                                            noteAndTagModel.deleteNoteAndTag(
-                                                InNoteAndTag(
-                                                    noteUid = _id,
-                                                    labelId = observeTags[index].id
-                                                )
+                            ElevatedFilterChip(
+                                modifier = Modifier.padding(2.dp),
+                                selected = true,
+                                onClick = {
+                                    if (observeNoteAndTag.contains(InNoteAndTag(_id, observeTags[index].id))) {
+                                        noteAndTagModel.deleteNoteAndTag(
+                                            InNoteAndTag(
+                                                noteUid = _id,
+                                                labelId = observeTags[index].id
                                             )
-                                        } else {
-                                            noteAndTagModel.addNoteAndTag(
-                                                InNoteAndTag(
-                                                    noteUid = _id,
-                                                    labelId = observeTags[index].id
-                                                )
+                                        )
+                                    } else {
+                                        noteAndTagModel.addNoteAndTag(
+                                            InNoteAndTag(
+                                                noteUid = _id,
+                                                labelId = observeTags[index].id
                                             )
-                                        }
-                                    },
-                                    leadingIcon = {
-                                        if (observeNoteAndTag.contains(InNoteAndTag(_id, observeTags[index].id))
-                                        ) {
-                                            Icon(
-                                                painterResource(FULL_LABEL_ICON), null,
-                                                tint = if (observeTags[indexInLine].color == Color.Transparent.toArgb()) {
-                                                    MaterialTheme.colorScheme.surfaceTint
-                                                } else Color(observeTags[index].color)
-                                            )
-                                        } else {
-                                            Icon(
-                                                painterResource(OUTLINE_LABEL_ICON), null,
-                                                tint = if (observeTags[index].color == Color.Transparent.toArgb()) {
-                                                    MaterialTheme.colorScheme.surfaceTint
-                                                } else Color(observeTags[index].color)
-                                            )
-                                        }
-                                    },
-                                    label = { observeTags[index].label?.let { Text(it) } }
-                                )
-                            }
+                                        )
+                                    }
+                                },
+                                leadingIcon = {
+                                    if (observeNoteAndTag.contains(InNoteAndTag(_id, observeTags[index].id))
+                                    ) {
+                                        Icon(
+                                            painterResource(FULL_LABEL_ICON), null,
+                                            tint = if (observeTags[indexInLine].color == Color.Transparent.toArgb()) {
+                                                MaterialTheme.colorScheme.surfaceTint
+                                            } else Color(observeTags[index].color)
+                                        )
+                                    } else {
+                                        Icon(
+                                            painterResource(OUTLINE_LABEL_ICON), null,
+                                            tint = if (observeTags[index].color == Color.Transparent.toArgb()) {
+                                                MaterialTheme.colorScheme.surfaceTint
+                                            } else Color(observeTags[index].color)
+                                        )
+                                    }
+                                },
+                                label = { observeTags[index].label?.let { Text(it) } }
+                            )
                         }
-//                    }
+                    }
                 }
 
                 item {

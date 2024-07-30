@@ -114,10 +114,7 @@ class HashTagsScreen: Screen {
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
                     item {
-                        HashTagLayout(
-                            tagModel = tagModel,
-                            hashTags = observeTags
-                        )
+                        HashTagLayout(tagModel = tagModel)
                     }
 
                     item {

@@ -449,8 +449,8 @@ data class WorkplaceScreen(
                     ) { index ->
                         ElevatedAssistChip(
                             modifier = Modifier
-                                .alpha(.5f)
-                                .padding(2.dp),
+                                .alpha(.7f)
+                                .padding(1.5.dp),
                             onClick = { },
                             leadingIcon = {
                                 Icon(
