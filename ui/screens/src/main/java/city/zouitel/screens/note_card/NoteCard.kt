@@ -1,22 +1,42 @@
 package city.zouitel.screens.note_card
 
-import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.ContextualFlowRow
+import androidx.compose.foundation.layout.ContextualFlowRowOverflow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,7 +53,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.MiniAudioPlayer
@@ -45,41 +64,34 @@ import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.media.model.NoteAndMedia
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.media.ui.NoteAndMediaScreenModel
-import city.zouitel.note.ui.DataScreenModel
-import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
-import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
-import city.zouitel.systemDesign.CommonConstants.NON
-import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.CommonIcons.ANGLE_DOWN_ICON
-import city.zouitel.systemDesign.CommonIcons.ANGLE_UP_ICON
-import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
-import city.zouitel.systemDesign.CommonIcons.RESET_ICON
-import city.zouitel.tasks.ui.NoteAndTaskScreenModel
-import city.zouitel.tasks.model.NoteAndTask
-import city.zouitel.tasks.model.Task
-import city.zouitel.screens.sound
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.normalNotePath
 import city.zouitel.screens.prioritizedNotePath
+import city.zouitel.screens.sound
+import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.LIST
-import city.zouitel.systemDesign.CommonIcons.BELL_RING_ICON
+import city.zouitel.systemDesign.CommonConstants.NON
+import city.zouitel.systemDesign.CommonIcons.ANGLE_DOWN_ICON
+import city.zouitel.systemDesign.CommonIcons.ANGLE_UP_ICON
+import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
+import city.zouitel.systemDesign.DataStoreScreenModel
+import city.zouitel.tasks.model.NoteAndTask
+import city.zouitel.tasks.model.Task
+import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
-import java.util.*
-import kotlin.math.absoluteValue
 
 @Composable
 fun NoteCard(
     dataStoreModel: DataStoreScreenModel,
     taskModel: TaskScreenModel,
     noteAndTaskModel: NoteAndTaskScreenModel,
-    dataModel: DataScreenModel,
     audioModel: AudioScreenModel,
     noteAndAudioModel: NoteAndAudioScreenModel,
     linkModel: LinkScreenModel,
@@ -113,7 +125,6 @@ fun NoteCard(
             Card(
                 taskModel = taskModel,
                 noteAndTodoModel = noteAndTaskModel,
-                dataModel = dataModel,
                 audioModel = audioModel,
                 noteAndAudioModel = noteAndAudioModel,
                 dataStoreModel = dataStoreModel,
@@ -130,7 +141,6 @@ fun NoteCard(
         Card(
             taskModel = taskModel,
             noteAndTodoModel = noteAndTaskModel,
-            dataModel = dataModel,
             audioModel = audioModel,
             noteAndAudioModel = noteAndAudioModel,
             dataStoreModel = dataStoreModel,
@@ -150,7 +160,6 @@ fun NoteCard(
 private fun Card(
     taskModel: TaskScreenModel,
     noteAndTodoModel: NoteAndTaskScreenModel,
-    dataModel: DataScreenModel,
     dataStoreModel: DataStoreScreenModel,
     linkModel: LinkScreenModel,
     noteAndLinkModel: NoteAndLinkScreenModel,
@@ -330,7 +339,7 @@ private fun Card(
             overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
                 expandIndicator = {
                     AssistChip(
-                        modifier = Modifier.alpha(.7f),
+                        modifier = Modifier.alpha(.5f),
                         border = BorderStroke(0.dp, Color.Transparent),
                         onClick = { },
                         label = {
@@ -345,7 +354,6 @@ private fun Card(
                 collapseIndicator = { }
             )
         ) { index ->
-//            items(items = labels) { label ->
                 AssistChip(
                     modifier = Modifier.alpha(.7f),
                     border = BorderStroke(0.dp, Color.Transparent),
@@ -367,72 +375,6 @@ private fun Card(
                     shape = CircleShape
                 )
                 Spacer(modifier = Modifier.width(3.dp))
-//            }
-        }
-
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-//            if (!isHomeScreen) {
-//                IconButton(onClick = {
-//                    dataModel.editData(
-//                        Data(
-//                            title = note.title,
-//                            description = note.description,
-//                            priority = note.priority,
-//                            uid = note.uid,-
-//                            removed = 0,
-//                            color = note.color,
-//                            textColor = note.textColor
-//                        )
-//                    )
-//                }) {
-//                    Icon(
-//                        painterResource(id = RESET_ICON), null,
-//                        tint = Color(note.textColor)
-//                    )
-//                }
-//            }
-
-            //display the reminding chip.
-            if (isHomeScreen && note.reminding != 0L) {
-                note.reminding.let {
-                    runCatching {
-                        ElevatedAssistChip(
-                            modifier = Modifier.padding(5.dp),
-                            onClick = {},
-                            label = {
-                                Text(
-                                    DateFormat.format("yyyy-MM-dd HH:mm", Date(it)).toString(),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    textDecoration = if (it < Calendar.getInstance().time.time) {
-                                        TextDecoration.LineThrough
-                                    } else {
-                                        TextDecoration.None
-                                    },
-                                    color = MaterialTheme.colorScheme.surfaceVariant
-                                )
-                            },
-                            leadingIcon = {
-                                if (it >= Calendar.getInstance().time.time) {
-                                    Icon(
-                                        painterResource(BELL_RING_ICON),
-                                        null,
-                                        tint = MaterialTheme.colorScheme.surfaceVariant
-                                    )
-                                }
-                            },
-                            colors = AssistChipDefaults.assistChipColors(
-                                containerColor = Color(.6f, .6f, .6f, .5f)
-                            ),
-                            elevation = AssistChipDefaults.assistChipElevation()
-                        )
-                    }
-                }
-            }
         }
 
         // display link card.
@@ -523,7 +465,5 @@ private fun Card(
                 }
             }
         }
-//        Spacer(modifier = Modifier.height(15.dp))
     }
 }
-

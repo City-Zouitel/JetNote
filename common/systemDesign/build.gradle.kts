@@ -19,13 +19,11 @@ dependencies {
     //Accompanist.
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.systemuicontroller)
-//    implementation(libs.accompanist.navigation.animation)
     implementation(libs.accompanist.swiperefresh)
-//    implementation(libs.accompanist.flowlayout)
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)
 
     //Balloon.
-    implementation ("com.github.skydoves:balloon-compose:1.6.4")
+    implementation (libs.balloon.compose)
 }

@@ -1,12 +1,15 @@
-package city.zouitel.systemDesign
+package city.zouitel.note.utils
 
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.content.MediaType
+import androidx.compose.foundation.content.contentReceiver
+import androidx.compose.foundation.content.hasMediaType
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldState
@@ -26,8 +29,9 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CommonTextField(
+internal fun TextField(
     state: TextFieldState,
+    receiver: (Uri) -> Unit,
     modifier: Modifier,
     placeholder: String = "...",
     textSize: TextUnit = TextUnit(19f, TextUnitType.Sp),
@@ -50,7 +54,17 @@ fun CommonTextField(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .background(Color.Transparent),
+                .background(Color.Transparent)
+                .contentReceiver { content ->
+                    if(content.hasMediaType(MediaType.Image)) {
+                        val data = content.clipEntry.clipData
+                        for (index in 0 until data.itemCount) {
+                            val item = data.getItemAt(index)
+                            receiver.invoke(item.uri)
+                        }
+                    }
+                    content
+                },
             textStyle = TextStyle(
                 fontSize = textSize,
                 fontWeight = FontWeight.Normal,
@@ -59,7 +73,7 @@ fun CommonTextField(
             ),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
-                autoCorrect = false,
+                autoCorrectEnabled = false,
                 keyboardType = KeyboardType.Text,
                 imeAction = imeAction
             ),

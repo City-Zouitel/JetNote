@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -74,7 +75,7 @@ data class MediaScreen(val id: String, val backgroundColor: Int = 0): Screen {
                 ) { index ->
                     BadgedBox(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxSize()
                             .background(Color(backgroundColor)),
                         badge = {
                             if (filteredMedias.count() > 1) {

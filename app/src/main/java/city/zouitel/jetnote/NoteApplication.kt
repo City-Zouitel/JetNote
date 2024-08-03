@@ -1,6 +1,7 @@
 package city.zouitel.jetnote
 
 import android.app.Application
+import android.os.Build
 import city.zouitel.audios.di.audioPlayerKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
@@ -21,6 +22,8 @@ import city.zouitel.tasks.di.tasksKoinModule
 import city.zouitel.widget.di.widgetKoinModule
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import coil.memory.MemoryCache
 import coil.request.CachePolicy
 import com.karacca.beetle.Beetle
@@ -85,6 +88,13 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
                     .maxSizePercent(.5)
                     .weakReferencesEnabled(true)
                     .build()
+            }
+            .components {
+                if (Build.VERSION.SDK_INT >= 28) {
+                    add(ImageDecoderDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
+                }
             }
             .build()
     }

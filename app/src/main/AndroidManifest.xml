@@ -38,7 +38,8 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.JetNote"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="false"
+        tools:ignore="DataExtractionRules">
 
         <profileable
             android:shell="true"

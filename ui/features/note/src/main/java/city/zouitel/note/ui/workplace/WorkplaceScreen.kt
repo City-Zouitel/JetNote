@@ -3,11 +3,11 @@ package city.zouitel.note.ui.workplace
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.icu.util.Calendar
+import android.net.Uri
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ContextualFlowRow
@@ -21,10 +21,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -85,7 +82,7 @@ import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.RemindingNote
-import city.zouitel.systemDesign.CommonTextField
+import city.zouitel.note.utils.TextField
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons
@@ -212,10 +209,7 @@ data class WorkplaceScreen(
             rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
                 uris.forEach { uri ->
                     context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    Random.nextLong().let {
-                        mediaModel.addMedia(Media(id = it, path = uri.toString()))
-                        noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))
-                    }
+                    mediaInsert(mediaModel, noteAndMediaModel)
                 }
             }
 
@@ -323,8 +317,9 @@ data class WorkplaceScreen(
 
                 // The Title.
                 item {
-                    CommonTextField(
+                    TextField(
                         state = titleState,
+                        receiver = mediaInsert(mediaModel, noteAndMediaModel),
                         modifier = Modifier
                             .height(50.dp)
                             .focusRequester(focusRequester)
@@ -336,7 +331,6 @@ data class WorkplaceScreen(
                         textSize = 24.sp,
                         textColor = Color(uiState.textColor),
                         imeAction = ImeAction.Next,
-//                        keyboardAction = KeyboardActions(onNext = { keyboardManager.moveFocus(FocusDirection.Next) })
                         keyboardAction = {
                             keyboardManager.moveFocus(FocusDirection.Next)
                         }
@@ -345,8 +339,9 @@ data class WorkplaceScreen(
 
                 // The Description.
                 item {
-                    CommonTextField(
+                    TextField(
                         state = descriptionState,
+                        receiver = mediaInsert(mediaModel, noteAndMediaModel),
                         modifier = Modifier
                             .height(200.dp)
                             .onFocusEvent {
@@ -518,6 +513,16 @@ data class WorkplaceScreen(
                     )
                 }
             }
+        }
+    }
+
+    private fun mediaInsert(
+        mediaModel: MediaScreenModel,
+        noteAndMediaModel: NoteAndMediaScreenModel
+    ): (Uri) -> Unit = { uri ->
+        Random.nextLong().let {
+            mediaModel.addMedia(Media(id = it, path = uri.toString()))
+            noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))
         }
     }
 }

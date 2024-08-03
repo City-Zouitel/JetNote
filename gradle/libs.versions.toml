@@ -65,6 +65,7 @@ camerax = "1.3.1"
 #Coil
 coil-compose = "2.7.0"
 coil-svg = "2.6.0"
+coil-gif = "2.5.0"
 
 #License.
 license = "11.1.4"
@@ -85,6 +86,7 @@ amplituda = "2.2.2"
 #android-startup = "1.1.0"
 enigma = "1.0.0.8"
 media3 = "1.3.1"
+balloon-compose = "1.6.4"
 
 [libraries]
 #Kotlin.
@@ -167,6 +169,7 @@ camerax-extensions = { module = "androidx.camera:camera-extensions", version.ref
 #Coil.
 coil_compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
 coil_svg = { module = "io.coil-kt:coil-svg", version.ref = "coil-svg" }
+coil_gif = { module = "io.coil-kt:coil-gif", version.ref = "coil-gif" }
 
 #License.
 licenses = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "license" }
@@ -195,6 +198,7 @@ audiowaveform = { module = "com.github.lincollincol:compose-audiowaveform", vers
 amplituda = { module = "com.github.lincollincol:amplituda", version.ref = "amplituda" }
 #android-startup = { module = "io.github.idisfkj:android-startup", version.ref = "android-startup" }
 enigma = { module = "gradle.plugin.chrisney:enigma", version.ref = "enigma" }
+balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloon-compose" }
 
 [bundles]
 compose = ["ui", "ui-tooling-preview", "material3"]

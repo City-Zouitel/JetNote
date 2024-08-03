@@ -1,16 +1,10 @@
 package city.zouitel.screens.main_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.waterfall
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,7 +13,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.*
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -43,14 +36,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.util.fastAny
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
@@ -59,7 +48,6 @@ import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.media.ui.NoteAndMediaScreenModel
-import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
@@ -72,8 +60,8 @@ import city.zouitel.systemDesign.CommonConstants.ORDER_BY_NEWEST
 import city.zouitel.systemDesign.CommonConstants.ORDER_BY_OLDEST
 import city.zouitel.systemDesign.CommonConstants.ORDER_BY_PRIORITY
 import city.zouitel.systemDesign.CommonConstants.ORDER_BY_REMINDER
-import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tasks.ui.NoteAndTaskScreenModel
@@ -107,7 +95,8 @@ data class MainScreen(val isHome: Boolean): Screen {
         )
     }
 
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter",
+    @SuppressLint(
+        "UnusedMaterialScaffoldPaddingParameter",
         "UnusedMaterial3ScaffoldPaddingParameter"
     )
     @OptIn(ExperimentalMaterial3Api::class)
@@ -172,13 +161,6 @@ data class MainScreen(val isHome: Boolean): Screen {
 
         val getBackgroundColor = MaterialTheme.colorScheme.surface.toArgb()
         val getTextColor = MaterialTheme.colorScheme.onSurface.toArgb()
-
-//        val pullRefreshState = rememberPullRefreshState(
-//            refreshing = uiState.isProcessing,
-//            onRefresh = {
-//                navigator.push(this)
-//            }
-//        )
 
         //undo snack-bar.
         val undo = UndoSnackbar(
@@ -306,9 +288,7 @@ data class MainScreen(val isHome: Boolean): Screen {
             ) {
                 Box(
                     contentAlignment = Alignment.TopCenter,
-                    modifier = Modifier
-                        .fillMaxSize()
-//                        .pullRefresh(state = pullRefreshState)
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     if (currentLayout.value == CommonConstants.LIST) {
                         LazyColumn(
@@ -325,7 +305,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     dataStoreModel = datastoreModel,
                                     taskModel = taskModel,
                                     noteAndTaskModel = noteAndTaskModel,
-                                    dataModel = dataModel,
                                     audioModel = audioModel,
                                     noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
@@ -336,18 +315,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     mediaModel = mediaModel,
                                     noteAndMediaModel = noteAndMediaModel
                                 ) {
-                                    dataModel.editData(
-                                        it.dataEntity.copy(removed = 1)
-//                                        Data(
-//                                            title = it.dataEntity.title,
-//                                            description = it.dataEntity.description,
-//                                            priority = it.dataEntity.priority,
-//                                            uid = it.dataEntity.uid,
-//                                            color = it.dataEntity.color,
-//                                            textColor = it.dataEntity.textColor,
-//                                            removed = 1
-//                                        )
-                                    )
+                                    dataModel.editData(it.dataEntity.copy(removed = 1))
                                     // to cancel the alarm manager reminding.
                                     notificationModel.scheduleNotification(
                                         context = context,
@@ -378,7 +346,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     dataStoreModel = datastoreModel,
                                     taskModel = taskModel,
                                     noteAndTaskModel = noteAndTaskModel,
-                                    dataModel = dataModel,
                                     audioModel = audioModel,
                                     noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
@@ -389,28 +356,11 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     mediaModel = mediaModel,
                                     noteAndMediaModel = noteAndMediaModel
                                 ) {
-//                                    dataModel.editData(
-//                                        Data(
-//                                            title = it.dataEntity.title,
-//                                            description = it.dataEntity.description,
-//                                            priority = it.dataEntity.priority,
-//                                            uid = it.dataEntity.uid,
-//                                            color = it.dataEntity.color,
-//                                            textColor = it.dataEntity.textColor,
-//                                            removed = 1
-//                                        )
-//                                    )
-
 
                                 }
                             }
                         }
                     }
-
-//                    PullRefreshIndicator(
-//                        refreshing = true,
-//                        state = pullRefreshState,
-//                    )
                 }
             }
         }
