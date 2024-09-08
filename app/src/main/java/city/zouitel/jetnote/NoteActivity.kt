@@ -37,7 +37,6 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             val navigator = LocalNavigator.current
             val isDeviceRooted = rootScreenModel.isDeviceRooted.collectAsState()
@@ -79,4 +78,3 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
     override val coroutineContext: CoroutineContext
         get() = GlobalScope.coroutineContext
 }
-
