@@ -3,7 +3,6 @@ package city.zouitel.tags.ui
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ContextualFlowRow
 import androidx.compose.foundation.layout.ContextualFlowRowOverflow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -12,17 +11,14 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ElevatedFilterChip
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,21 +37,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonIcons.FULL_LABEL_ICON
 import city.zouitel.systemDesign.CommonIcons.OUTLINE_LABEL_ICON
+import city.zouitel.systemDesign.CommonTextField
+import city.zouitel.tags.model.Tag
 import city.zouitel.tags.utils.DialogColors
 import city.zouitel.tags.model.NoteAndTag as InNoteAndTag
-import city.zouitel.tags.model.Tag as InTag
 
 data class TagsScreen(val id: String): Screen {
 
@@ -63,14 +56,14 @@ data class TagsScreen(val id: String): Screen {
     override fun Content() {
 
         Tags(
-            tagModel = getScreenModel<TagScreenModel>(),
-            noteAndTagModel = getScreenModel<NoteAndTagScreenModel>(),
+            tagModel = getScreenModel(),
+            noteAndTagModel = getScreenModel(),
         )
     }
 
     @OptIn(
         ExperimentalComposeUiApi::class,
-        ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class
+        ExperimentalLayoutApi::class
     )
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
@@ -85,6 +78,7 @@ data class TagsScreen(val id: String): Screen {
         val observeNoteAndTag by remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
         val uiState by remember(tagModel, tagModel::uiState).collectAsState()
         var maxLines by remember { mutableIntStateOf(3) }
+        val fieldState = rememberTextFieldState(uiState.currentLabel)
 
         val focusRequester by lazy { FocusRequester() }
 
@@ -195,58 +189,35 @@ data class TagsScreen(val id: String): Screen {
                 }
 
                 item {
-                    OutlinedTextField(
+                    CommonTextField(
+                        state = fieldState,
+                        receiver = {},
                         modifier = Modifier
                             .focusRequester(focusRequester)
                             .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) },
-                        value = uiState.currentLabel,
-                        onValueChange = { tagModel.updateLabel(it) },
-                        singleLine = true,
-                        textStyle = TextStyle(
-                            fontSize = 19.sp,
-                            color = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface)
-                        ),
-                        placeholder = {
-                            Text(
-                                text = "Tag..",
-                                maxLines = 1,
-                                style = TextStyle(
-                                    fontSize = 17.sp,
-                                    color = Color.DarkGray
+                        placeholder = "Tag..",
+                        imeAction = ImeAction.Done,
+                        keyboardAction = {
+                            if (observeTags.any { it.id == uiState.currentId }) {
+                                tagModel.updateTag(
+                                    Tag(
+                                        id = uiState.currentId,
+                                        label = uiState.currentLabel,
+                                        color = uiState.currentColor
+                                    )
                                 )
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                if (observeTags.any { it.id == uiState.currentId }) {
-                                    tagModel.updateTag(
-                                        InTag(
-                                            id = uiState.currentId,
-                                            label = uiState.currentLabel,
-                                            color = uiState.currentColor
-                                        )
+                            } else {
+                                tagModel.addTag(
+                                    Tag(
+                                        label = fieldState.text.toString(),
+                                        color = uiState.currentColor
                                     )
-                                } else {
-                                    tagModel.addTag(
-                                        InTag(
-                                            label = uiState.currentLabel,
-                                            color = uiState.currentColor
-                                        )
-                                    )
-                                }.invokeOnCompletion {
-                                    tagModel.updateColor().updateId().updateLabel()
-                                }
+                                )
+                            }.invokeOnCompletion {
+                                tagModel.updateColor().updateId()
+                                fieldState.clearText()
                             }
-                        ),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedTextColor = Color.DarkGray,
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent
-                        )
+                        },
                     )
                 }
             }

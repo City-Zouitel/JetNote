@@ -2,14 +2,19 @@ package city.zouitel.screens.tags_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.*
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,23 +26,19 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
+import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.CommonTopAppBar
 import city.zouitel.systemDesign.DataStoreScreenModel
+import city.zouitel.tags.model.Tag
 import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tags.utils.DialogColors
-import city.zouitel.tags.model.Tag as InTag
 
 class HashTagsScreen: Screen {
 
@@ -65,7 +66,6 @@ class HashTagsScreen: Screen {
         mainModel: MainScreenModel
     ) {
         val keyboardManager = LocalFocusManager.current
-        val navigator = LocalNavigator.current
 
         val observeTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
         val uiState by remember(tagModel, tagModel::uiState).collectAsState()
@@ -73,6 +73,7 @@ class HashTagsScreen: Screen {
         val topAppBarState = rememberTopAppBarState()
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
         val scaffoldState = rememberScaffoldState()
+        val fieldState = rememberTextFieldState(uiState.currentLabel)
 
         val focusRequester by lazy { FocusRequester() }
 
@@ -118,59 +119,35 @@ class HashTagsScreen: Screen {
                     }
 
                     item {
-                        OutlinedTextField(
-                            modifier = Modifier
-                                .focusRequester(focusRequester)
-                                .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) }
-                                .clickable { navigator?.push(this@HashTagsScreen) },
+                        CommonTextField(
                             value = uiState.currentLabel,
                             onValueChange = { tagModel.updateLabel(it) },
-                            singleLine = true,
-                            textStyle = TextStyle(
-                                fontSize = 19.sp,
-                                color = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface)
-                            ),
-                            placeholder = {
-                                Text(
-                                    text = "#Tag..",
-                                    maxLines = 1,
-                                    style = TextStyle(
-                                        fontSize = 17.sp,
-                                        color = Color.DarkGray
+                            receiver = {},
+                            modifier = Modifier
+                                .focusRequester(focusRequester)
+                                .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) },
+                            placeholder = "#Tag..",
+                            imeAction = ImeAction.Done,
+                            keyboardActions = KeyboardActions {
+                                if (observeTags.any { it.id == uiState.currentId }) {
+                                    tagModel.updateTag(
+                                        Tag(
+                                            id = uiState.currentId,
+                                            label = uiState.currentLabel,
+                                            color = uiState.currentColor
+                                        )
                                     )
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Text,
-                                imeAction = ImeAction.Done
-                            ),
-                            keyboardActions = KeyboardActions(
-                                onDone = {
-                                    if (observeTags.any { it.id == uiState.currentId }) {
-                                        tagModel.updateTag(
-                                            InTag(
-                                                id = uiState.currentId,
-                                                label = uiState.currentLabel,
-                                                color = uiState.currentColor
-                                            )
+                                } else {
+                                    tagModel.addTag(
+                                        Tag(
+                                            label = fieldState.text.toString(),
+                                            color = uiState.currentColor
                                         )
-                                    } else {
-                                        tagModel.addTag(
-                                            InTag(
-                                                label = uiState.currentLabel,
-                                                color = uiState.currentColor
-                                            )
-                                        )
-                                    }.invokeOnCompletion {
-                                        tagModel.updateColor().updateId().updateLabel()
-                                    }
+                                    )
+                                }.invokeOnCompletion {
+                                    tagModel.updateColor().updateId().updateLabel()
                                 }
-                            ),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                focusedTextColor = Color.DarkGray,
-                                focusedBorderColor = Color.Transparent,
-                                unfocusedBorderColor = Color.Transparent
-                            )
+                            },
                         )
                     }
                 }

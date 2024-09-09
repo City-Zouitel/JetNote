@@ -12,10 +12,10 @@ fun Project.configureAndroidLibrary(
     common: CommonExtension<*, *, *, *, *, *>,
 ) {
     common.apply {
-        compileSdk = libs.findVersion("compilesdk-v").get().requiredVersion.toInt()
+        compileSdk = libs.findVersion("compileSdk-version").get().requiredVersion.toInt()
 
         defaultConfig {
-            minSdk = libs.findVersion("minsdk-v").get().requiredVersion.toInt()
+            minSdk = libs.findVersion("minSdk-version").get().requiredVersion.toInt()
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 

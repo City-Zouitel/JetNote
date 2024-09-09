@@ -37,9 +37,9 @@ gradlePlugin {
     }
 
     plugins {
-        register("android-navigation") {
-            id = "city.zouitel.android.navigation"
-            implementationClass = "AndroidNavigation"
+        register("compose-voyager") {
+            id = "city.zouitel.compose.voyager"
+            implementationClass = "ComposeVoyager"
         }
     }
 }

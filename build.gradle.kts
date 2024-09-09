@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.dependencyanalysis) apply false
     alias(libs.plugins.licenses) apply false
     alias(libs.plugins.enigma) apply false
+    alias(libs.plugins.composeCompiler) apply false
 }
 
 buildscript {

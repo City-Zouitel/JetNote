@@ -79,13 +79,13 @@ import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
+import city.zouitel.note.utils.TextField
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.RemindingNote
-import city.zouitel.note.utils.TextField
 import city.zouitel.systemDesign.CommonConstants
-import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
@@ -209,7 +209,10 @@ data class WorkplaceScreen(
             rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
                 uris.forEach { uri ->
                     context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    mediaInsert(mediaModel, noteAndMediaModel)
+                    Random.nextLong().let {
+                        mediaModel.addMedia(Media(id = it, path = uri.toString()))
+                        noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))
+                    }
                 }
             }
 
@@ -326,7 +329,6 @@ data class WorkplaceScreen(
                             .onFocusEvent {
                                 workspaceModel.updateTitleFieldFocused(it.isFocused)
                             },
-
                         placeholder = "Title",
                         textSize = 24.sp,
                         textColor = Color(uiState.textColor),

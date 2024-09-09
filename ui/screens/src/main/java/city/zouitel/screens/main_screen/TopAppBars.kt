@@ -29,11 +29,11 @@ import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.screens.copyNote
 import city.zouitel.screens.sound
+import city.zouitel.systemDesign.CommonConstants
+import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonPopupTip
 import city.zouitel.systemDesign.CommonRow
-import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.Open_Drawer
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
@@ -93,7 +93,7 @@ internal fun MainTopAppBar(
                 }
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
         scrollBehavior = scrollBehavior

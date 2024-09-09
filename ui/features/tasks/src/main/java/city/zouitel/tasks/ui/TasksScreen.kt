@@ -192,10 +192,10 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                                 }
                             }
                         ),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                        colors = TextFieldDefaults.colors(
                             focusedTextColor = Color.DarkGray,
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent
+//                            focusedBorderColor = Color.Transparent,
+//                            unfocusedBorderColor = Color.Transparent
                         )
                     )
                 }

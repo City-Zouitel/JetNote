@@ -1,13 +1,30 @@
 package city.zouitel.screens.navigation_drawer
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.ContextualFlowRow
+import androidx.compose.foundation.layout.ContextualFlowRowOverflow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.DismissibleDrawerSheet
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.ElevatedFilterChip
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -18,27 +35,26 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.logic.sharApp
 import city.zouitel.screens.about_screen.AboutScreen
-import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.main_screen.MainScreen
+import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.settings_screen.SettingsScreen
 import city.zouitel.screens.sound
 import city.zouitel.screens.tags_screen.HashTagsScreen
 import city.zouitel.systemDesign.CommonConstants.APP_NAME
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonIcons
-import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.COMMENT_EXCLAMATION
 import city.zouitel.systemDesign.CommonIcons.HOME_ICON
 import city.zouitel.systemDesign.CommonIcons.INTERROGATION_ICON
+import city.zouitel.systemDesign.CommonIcons.REMOVE_ICON
 import city.zouitel.systemDesign.CommonIcons.SETTINGS_ICON
 import city.zouitel.systemDesign.CommonIcons.SHARE_ICON
 import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
-import city.zouitel.systemDesign.CommonIcons.REMOVE_ICON
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.ui.TagScreenModel
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
-import kotlin.text.Typography
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -54,6 +70,7 @@ fun NavigationDrawer(
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val scope = rememberCoroutineScope()
     var maxLines by remember { mutableIntStateOf(3) }
+    val fieldState = rememberTextFieldState()
 
     DismissibleDrawerSheet(
         modifier = Modifier

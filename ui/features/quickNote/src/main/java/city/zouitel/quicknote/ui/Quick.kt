@@ -130,7 +130,7 @@ data class QuickScreen(
                                 ),
                                 keyboardOptions = KeyboardOptions(
                                     capitalization = KeyboardCapitalization.Sentences,
-                                    autoCorrect = false,
+                                    autoCorrectEnabled = false,
                                     keyboardType = KeyboardType.Text,
                                     imeAction = ImeAction.Default
                                 ),
@@ -138,9 +138,9 @@ data class QuickScreen(
                                     onDone = {
                                     }
                                 ),
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    focusedBorderColor = Color.Transparent,
-                                    unfocusedBorderColor = Color.Transparent
+                                colors = TextFieldDefaults.colors(
+//                                    focusedBorderColor = Color.Transparent,
+//                                    unfocusedBorderColor = Color.Transparent
                                 )
                             )
                         }

@@ -10,8 +10,8 @@ android {
     namespace = "city.zouitel.jetnote"
     defaultConfig {
         applicationId = "city.zouitel.jetnote"
-        versionCode = libs.versions.code.v.get().toInt()
-        versionName = libs.versions.name.v.get()
+        versionCode = libs.versions.code.version.get().toInt()
+        versionName = libs.versions.name.version.get()
     }
 
     buildTypes {
