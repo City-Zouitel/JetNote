@@ -1,6 +1,7 @@
 # JetNote
 JetNote is modern note android application written by kotlin language and [jetpack-compose](https://github.com/JetBrains/compose-jb) toolkit. The app dealing with Room for Database, Koin dependency injection, Coroutine the non-blocking programming, Navigation-Compose, DataStore, ExoPlayer to play the recorded media in the app, CameraX to take and save picture, And more to make it good app that inspired by google app **keep Notes**.
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ec77e62652e0437fb9d068f7443915da)](https://app.codacy.com/gh/City-Zouitel/JetNote?utm_source=github.com&utm_medium=referral&utm_content=City-Zouitel/JetNote&utm_campaign=Badge_Grade)
 [![Android Platform](https://img.shields.io/badge/Android-26+-34A853?logo=android)](https://www.android.com/)
 [![Kotlin Version](https://img.shields.io/badge/Kotlin-1.9.24-7F52FF?logo=kotlin)](https://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/Compose-1.5.14-4285F4?logo=jetpackcompose)](https://developer.android.com/jetpack/androidx/releases/compose)
