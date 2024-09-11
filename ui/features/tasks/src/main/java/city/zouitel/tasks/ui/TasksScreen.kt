@@ -1,7 +1,6 @@
 package city.zouitel.tasks.ui
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -14,18 +13,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,7 +40,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,6 +49,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonIcons.DELETE_OUTLINE_ICON
+import city.zouitel.systemDesign.CommonTextField
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import me.saket.swipe.rememberSwipeableActionsState
@@ -69,15 +64,12 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
     override fun Content() {
 
         Tasks(
-            taskModel = getScreenModel<TaskScreenModel>(),
-            noteAndTaskModel = getScreenModel<NoteAndTaskScreenModel>()
+            taskModel = getScreenModel(),
+            noteAndTaskModel = getScreenModel()
         )
     }
 
-    @OptIn(
-        ExperimentalComposeUiApi::class,
-        ExperimentalMaterial3Api::class
-    )
+    @OptIn(ExperimentalComposeUiApi::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     private fun Tasks(
@@ -88,11 +80,9 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
         val navigator = LocalNavigator.current
 
         val observeTaskList by remember(taskModel, taskModel::getAllTaskList).collectAsState()
-        val observeNoteAndTodoList by remember(
-            noteAndTaskModel,
-            noteAndTaskModel::getAllNotesAndTask
-        ).collectAsState()
+        val observeNoteAndTodoList by remember(noteAndTaskModel, noteAndTaskModel::getAllNotesAndTask).collectAsState()
         val uiState by remember(taskModel, taskModel::uiState).collectAsState()
+        val fieldState = rememberTextFieldState()
 
         val focusRequester by lazy { FocusRequester() }
 
@@ -143,60 +133,37 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                         )
                     }
                 }
+
                 item {
-                    OutlinedTextField(
+                    CommonTextField(
+                        state = fieldState,
+                        receiver = {},
                         modifier = Modifier
+                            .fillMaxWidth()
                             .focusRequester(focusRequester)
                             .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) },
-                        value = uiState.currentItem,
-                        onValueChange = { taskModel.updateItem(it) },
-                        singleLine = true,
-                        textStyle = TextStyle(
-                            fontSize = 19.sp,
-                            color = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface)
-                        ),
-                        placeholder = {
-                            Text(
-                                text = "Task..",
-                                maxLines = 1,
-                                style = TextStyle(
-                                    fontSize = 19.sp,
-                                    color = Color.DarkGray
-                                )
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                if (observeTaskList.any { it.id == uiState.currentId }) {
+                        placeholder = "Task..",
+                        imeAction = ImeAction.Done,
+                        keyboardAction = {
+                            if (observeTaskList.any { it.id == uiState.currentId }) {
                                     taskModel.updateTotoItem(
                                         InTask(
                                             uiState.currentId,
-                                            uiState.currentItem,
+                                            fieldState.text.toString(),
                                             false
                                         )
                                     )
                                 } else {
                                     Random.nextLong().let {
                                         taskModel.addTotoItem(
-                                            InTask(it, uiState.currentItem, false)
+                                            InTask(it, fieldState.text.toString(), false)
                                         )
                                         noteAndTaskModel.addNoteAndTaskItem(InNoteAndTask(id, it))
                                     }
-                                }.also {
-                                    taskModel.updateId()
-                                        .updateItem()
                                 }
-                            }
-                        ),
-                        colors = TextFieldDefaults.colors(
-                            focusedTextColor = Color.DarkGray,
-//                            focusedBorderColor = Color.Transparent,
-//                            unfocusedBorderColor = Color.Transparent
-                        )
+                            taskModel.updateId().updateItem()
+                            fieldState.clearText()
+                        }
                     )
                 }
             }
