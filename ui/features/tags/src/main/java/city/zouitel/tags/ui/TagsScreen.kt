@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.ContextualFlowRow
 import androidx.compose.foundation.layout.ContextualFlowRowOverflow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -193,6 +194,7 @@ data class TagsScreen(val id: String): Screen {
                         state = fieldState,
                         receiver = {},
                         modifier = Modifier
+                            .fillMaxWidth()
                             .focusRequester(focusRequester)
                             .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) },
                         placeholder = "Tag..",
