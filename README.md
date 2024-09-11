@@ -5,7 +5,7 @@ JetNote is modern note android application written by kotlin language and [jetpa
 [![Kotlin Version](https://img.shields.io/badge/Kotlin-1.9.24-7F52FF?logo=kotlin)](https://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/Compose-1.5.14-4285F4?logo=jetpackcompose)](https://developer.android.com/jetpack/androidx/releases/compose)
 [![Kotlin Coroutines Version](https://img.shields.io/badge/Coroutines-1.8.1-yellow.svg)](https://kotlinlang.org/docs/reference/coroutines-overview.html)
-[![Gradle](https://img.shields.io/badge/Gradle-8.5.1-02303A?logo=gradle)](https://gradle.org)
+[![Gradle](https://img.shields.io/badge/Gradle-8.5.2-02303A?logo=gradle)](https://gradle.org)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Android CI](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml/badge.svg)](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/city-zouitel/jetnote/badge)](https://www.codefactor.io/repository/github/city-zouitel/jetnote)
