@@ -3,10 +3,10 @@ package city.zouitel.screens.tags_screen
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,10 +56,11 @@ class HashTagsScreen: Screen {
         ExperimentalComposeUiApi::class,
         ExperimentalMaterial3Api::class
     )
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter",
+    @SuppressLint(
+        "UnusedMaterial3ScaffoldPaddingParameter",
         "UnusedMaterialScaffoldPaddingParameter"
     )
-     @Composable
+    @Composable
     private fun Tags(
         datastoreModel: DataStoreScreenModel,
         tagModel: TagScreenModel,
@@ -73,7 +74,6 @@ class HashTagsScreen: Screen {
         val topAppBarState = rememberTopAppBarState()
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(topAppBarState)
         val scaffoldState = rememberScaffoldState()
-        val fieldState = rememberTextFieldState(uiState.currentLabel)
 
         val focusRequester by lazy { FocusRequester() }
 
@@ -124,11 +124,12 @@ class HashTagsScreen: Screen {
                             onValueChange = { tagModel.updateLabel(it) },
                             receiver = {},
                             modifier = Modifier
+                                .fillMaxWidth()
                                 .focusRequester(focusRequester)
                                 .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) },
                             placeholder = "#Tag..",
                             imeAction = ImeAction.Done,
-                            keyboardActions = KeyboardActions {
+                            keyboardActions = KeyboardActions(onDone = {
                                 if (observeTags.any { it.id == uiState.currentId }) {
                                     tagModel.updateTag(
                                         Tag(
@@ -140,14 +141,14 @@ class HashTagsScreen: Screen {
                                 } else {
                                     tagModel.addTag(
                                         Tag(
-                                            label = fieldState.text.toString(),
+                                            label = uiState.currentLabel,
                                             color = uiState.currentColor
                                         )
                                     )
                                 }.invokeOnCompletion {
                                     tagModel.updateColor().updateId().updateLabel()
                                 }
-                            },
+                            }),
                         )
                     }
                 }
