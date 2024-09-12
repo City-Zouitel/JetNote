@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.cityzouitel.androidApplication)
     alias(libs.plugins.ksp)

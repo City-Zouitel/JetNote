@@ -53,7 +53,7 @@ dependencies {
     implementation (libs.sketchbook)
 
     //Balloon.
-    implementation ("com.github.skydoves:balloon-compose:1.6.4")
+    implementation (libs.balloon.compose)
 
     //Swipe.
     implementation (libs.swipe)

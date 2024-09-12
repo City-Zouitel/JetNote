@@ -21,4 +21,9 @@ dependencies {
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.tasks)
     implementation(projects.ui.features.links)
+    implementation(projects.ui.features.media)
+
+    //Coil.
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 }
