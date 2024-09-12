@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -173,6 +174,12 @@ internal fun SearchField(
     }
 
     Row {
+        Icon(
+            modifier = Modifier.padding(top = 20.dp),
+            painter = painterResource(id = CommonIcons.CIRCLE_ICON_18),
+            contentDescription = null,
+            tint = uiState.searchTag?.color?.let { Color(it) } ?: Color.Transparent
+        )
         CommonTextField(
             value = uiState.searchTitle,
             onValueChange = { mainModel.updateSearchTitle(it) },
@@ -192,70 +199,19 @@ internal fun SearchField(
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .clickable {
-                    sound.makeSound.invoke(
-                        context,
-                        CommonConstants.KEY_INVALID,
-                        thereIsSoundEffect.value
-                    )
+                        sound.makeSound.invoke(
+                            context,
+                            CommonConstants.KEY_INVALID,
+                            thereIsSoundEffect.value
+                        )
                         mainModel.updateSearchTitle("")
                         mainModel.updateSearchTag(null)
                         keyboardController?.hide()
                         keyboardManager.clearFocus(true)
-                }
+                    }
             )
         }
     }
-
-//    OutlinedTextField(
-//        modifier = Modifier.fillMaxWidth(),
-//        value = uiState.searchTitle,
-//        onValueChange = { mainModel.updateSearchTitle(it) },
-//        singleLine = true,
-//        textStyle = TextStyle(
-//            fontSize = 17.sp,
-//            color = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface)
-//        ),
-//        leadingIcon = {
-//            Icon(
-//                painter = painterResource(id = CommonIcons.CIRCLE_ICON_18),
-//                contentDescription = null,
-//                tint = uiState.searchTag?.color?.let { Color(it) } ?: Color.Transparent
-//            )
-//        },
-//        trailingIcon = {
-//            if (uiState.searchTitle.isNotEmpty() || uiState.searchTag != null) {
-//                Icon(
-//                    painter = painterResource(id = CommonIcons.CROSS_ICON),
-//                    contentDescription = null,
-//                    modifier = Modifier.clickable {
-//                        sound.makeSound.invoke(context, CommonConstants.KEY_INVALID, thereIsSoundEffect.value)
-//                        mainModel.updateSearchTitle("")
-//                        mainModel.updateSearchTag(null)
-//                        keyboardController?.hide()
-//                        keyboardManager.clearFocus(true)
-//                    }
-//                )
-//            }
-//        },
-//        placeholder = {
-//            Text(text = if (uiState.isHomeScreen) "Notes.." else "Removes..", fontSize = 17.sp, maxLines = 1)
-//        },
-//        keyboardOptions = KeyboardOptions(
-//            keyboardType = KeyboardType.Text,
-//            imeAction = ImeAction.Search
-//        ),
-//        keyboardActions = KeyboardActions(
-//            onSearch = {
-//                keyboardController?.hide()
-//                keyboardManager.clearFocus(true)
-//            }
-//        ),
-//        colors = TextFieldDefaults.colors(
-//            focusedTextColor = Color.DarkGray,
-//            focusedBorderColor = Color.Transparent,
-//            unfocusedBorderColor = Color.Transparent
-//        )
-//    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
