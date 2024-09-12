@@ -4,16 +4,18 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.ContextualFlowRow
 import androidx.compose.foundation.layout.ContextualFlowRowOverflow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.DismissibleDrawerSheet
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ElevatedFilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationDrawerItem
@@ -70,7 +72,6 @@ fun NavigationDrawer(
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val scope = rememberCoroutineScope()
     var maxLines by remember { mutableIntStateOf(3) }
-    val fieldState = rememberTextFieldState()
 
     DismissibleDrawerSheet(
         modifier = Modifier
@@ -137,24 +138,24 @@ fun NavigationDrawer(
                             )
                         },
                         collapseIndicator = {
-                            ElevatedFilterChip(
-                                selected = true,
-                                shape = CircleShape,
-                                onClick = { maxLines = 3 },
-                                label = {
-                                    Icon(
-                                        modifier = Modifier.size(15.dp),
-                                        painter = painterResource(CommonIcons.CROSS_ICON),
-                                        contentDescription = null
-                                    )
-                                }
-                            )
+                            if (maxLines > 3) {
+                                ElevatedFilterChip(
+                                    selected = true,
+                                    shape = CircleShape,
+                                    onClick = { maxLines = 3 },
+                                    label = {
+                                        Icon(
+                                            modifier = Modifier.size(15.dp),
+                                            painter = painterResource(CommonIcons.CROSS_ICON),
+                                            contentDescription = null
+                                        )
+                                    }
+                                )
+                            }
                         }
                     )
                 ) { index ->
-//                    observeLabels.value.forEach { tag ->
                         ElevatedFilterChip(
-                            modifier = Modifier.padding(1.5.dp),
                             selected = true,
                             onClick = {
                                 scope.launch {
@@ -168,17 +169,19 @@ fun NavigationDrawer(
                                 Icon(
                                     painter = painterResource(id = CIRCLE_ICON_18),
                                     contentDescription = null,
-                                    tint = Color(observeLabels[index].color),
                                     modifier = Modifier.size(10.dp)
                                 )
                             },
                             label = {
                                 observeLabels[index].label?.let { Text(it, fontSize = 11.sp) }
                             },
-                            shape = CircleShape
+                            shape = CircleShape,
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedLeadingIconColor = Color(observeLabels[index].color)
+                            )
                         )
+                    Spacer(Modifier.width(2.dp))
                     }
-//                }
             }
 
             item {

@@ -16,8 +16,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import city.zouitel.logic.asLongToast
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.CROSS_CIRCLE_ICON
 import city.zouitel.tags.ui.TagScreenModel
@@ -27,6 +29,7 @@ import city.zouitel.tags.ui.TagScreenModel
 internal fun HashTagLayout(
     tagModel: TagScreenModel,
 ) {
+    val context = LocalContext.current
     val observeAllTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
 
     ContextualFlowRow(
@@ -50,7 +53,8 @@ internal fun HashTagLayout(
                     painterResource(CROSS_CIRCLE_ICON),
                     null,
                     modifier = Modifier.clickable {
-                        tagModel.deleteTag(observeAllTags[index])
+//                        tagModel.deleteTag(observeAllTags[index])
+                        context.apply { "Dug! In process.".asLongToast() }
                     }
                 )
             },

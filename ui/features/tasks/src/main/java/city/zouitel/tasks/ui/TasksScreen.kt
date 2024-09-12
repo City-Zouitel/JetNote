@@ -121,9 +121,7 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                             task = task,
                             taskModel = taskModel,
                             onSwipe = {
-                                taskModel.deleteTotoItem(
-                                    InTask(id = task.id)
-                                )
+                                taskModel.deleteTotoItem(InTask(id = task.id))
                             },
                             onClick = {
                                 taskModel
