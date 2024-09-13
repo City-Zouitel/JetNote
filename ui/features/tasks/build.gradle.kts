@@ -16,7 +16,4 @@ dependencies {
 
     //AndroidX.
     implementation(libs.constraintlayout)
-
-    //Swipe.
-    implementation (libs.swipe)
 }
