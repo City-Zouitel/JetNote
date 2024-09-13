@@ -5,13 +5,13 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.NoteAndTaskUseCase
 import city.zouitel.tasks.mapper.NoteAndTaskMapper
 import city.zouitel.tasks.model.NoteAndTask
-import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
 
 class NoteAndTaskScreenModel(
     getAll: NoteAndTaskUseCase.GetAllNotesAndTask,
@@ -39,8 +39,10 @@ class NoteAndTaskScreenModel(
         }
     }
 
-    fun addNoteAndTaskItem(noteAndTodo: InNoteAndTask) = screenModelScope.launch(Dispatchers.IO) {
-        add.invoke(mapper.toDomain(noteAndTodo))
+    fun addNoteAndTaskItem(noteAndTodo: InNoteAndTask) {
+        screenModelScope.launch(Dispatchers.IO) {
+            add.invoke(mapper.toDomain(noteAndTodo))
+        }
     }
     fun deleteNoteAndTaskItem(noteAndTodo: InNoteAndTask) = screenModelScope.launch(Dispatchers.IO) {
         delete.invoke(mapper.toDomain(noteAndTodo))

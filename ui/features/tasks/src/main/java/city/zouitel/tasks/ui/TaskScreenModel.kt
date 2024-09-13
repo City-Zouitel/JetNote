@@ -1,20 +1,17 @@
 package city.zouitel.tasks.ui
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.TaskUseCase
 import city.zouitel.tasks.mapper.TaskMapper
 import city.zouitel.tasks.state.UiState
-import city.zouitel.tasks.model.Task as InTask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import city.zouitel.tasks.model.Task as InTask
 
 class TaskScreenModel(
     private val getAll: TaskUseCase.GetAllTaskItems,
@@ -68,7 +65,6 @@ class TaskScreenModel(
         }
         return this
     }
-
 
     fun updateItem(item: String = ""): TaskScreenModel {
         screenModelScope.launch {

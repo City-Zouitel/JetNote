@@ -1,8 +1,8 @@
 package city.zouitel.tasks.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.text.input.clearText
-import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.FloatingActionButton
@@ -48,11 +47,8 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
-import city.zouitel.systemDesign.CommonIcons.DELETE_OUTLINE_ICON
+import city.zouitel.systemDesign.CommonSwipeItem
 import city.zouitel.systemDesign.CommonTextField
-import me.saket.swipe.SwipeAction
-import me.saket.swipe.SwipeableActionsBox
-import me.saket.swipe.rememberSwipeableActionsState
 import kotlin.random.Random
 import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
 import city.zouitel.tasks.model.Task as InTask
@@ -70,7 +66,10 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @SuppressLint(
+        "UnusedMaterial3ScaffoldPaddingParameter",
+        "UnusedMaterialScaffoldPaddingParameter"
+    )
     @Composable
     private fun Tasks(
         taskModel: TaskScreenModel,
@@ -80,11 +79,13 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
         val navigator = LocalNavigator.current
 
         val observeTaskList by remember(taskModel, taskModel::getAllTaskList).collectAsState()
-        val observeNoteAndTodoList by remember(noteAndTaskModel, noteAndTaskModel::getAllNotesAndTask).collectAsState()
+        val observeNoteAndTodoList by remember(
+            noteAndTaskModel,
+            noteAndTaskModel::getAllNotesAndTask
+        ).collectAsState()
         val uiState by remember(taskModel, taskModel::uiState).collectAsState()
-        val fieldState = rememberTextFieldState()
 
-        val focusRequester by lazy { FocusRequester() }
+        val focusRequester = remember { FocusRequester() }
 
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
@@ -108,6 +109,7 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
         ) {
             LazyColumn(
                 modifier = Modifier
+                    .animateContentSize()
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.surface)
                     .padding(top = 25.dp)
@@ -117,24 +119,69 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                             InNoteAndTask(id, task.id)
                         )
                     ) {
-                        TaskItem(
-                            task = task,
-                            taskModel = taskModel,
-                            onSwipe = {
-                                taskModel.deleteTotoItem(InTask(id = task.id))
-                            },
+                        CommonSwipeItem(
                             onClick = {
                                 taskModel
                                     .updateId(task.id)
                                     .updateItem(task.item ?: "")
+                            },
+                            onSwipeLeft = {
+                                taskModel.deleteTotoItem(InTask(id = task.id))
+                            },
+                            onSwipeRight = {
+                                taskModel.updateTotoItem(
+                                    InTask(
+                                        id = task.id,
+                                        item = task.item,
+                                        isDone = !task.isDone
+                                    )
+                                )
                             }
-                        )
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = task.isDone,
+                                    onCheckedChange = {
+                                        taskModel.updateTotoItem(
+                                            InTask(
+                                                id = task.id,
+                                                item = task.item,
+                                                isDone = !task.isDone
+                                            )
+                                        )
+                                    },
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = Color.Gray
+                                    )
+                                )
+
+                                Spacer(modifier = Modifier.width(16.dp))
+
+                                task.item?.let { item ->
+
+                                    BasicText(
+                                        text = AnnotatedString(item),
+                                        style = TextStyle(
+                                            fontSize = 18.sp,
+                                            textDecoration =
+                                            if (task.isDone) {
+                                                TextDecoration.LineThrough
+                                            } else {
+                                                TextDecoration.None
+                                            },
+                                            color = if (task.isDone) Color.Gray else MaterialTheme.colorScheme.onSurface
+                                        )
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
 
                 item {
                     CommonTextField(
-                        state = fieldState,
+                        value = uiState.currentItem,
+                        onValueChange = { taskModel.updateItem(it) },
                         receiver = {},
                         modifier = Modifier
                             .fillMaxWidth()
@@ -142,96 +189,30 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                             .onFocusEvent { keyboardManager.moveFocus(FocusDirection.Enter) },
                         placeholder = "Task..",
                         imeAction = ImeAction.Done,
-                        keyboardAction = {
+                        keyboardActions = KeyboardActions {
+
                             if (observeTaskList.any { it.id == uiState.currentId }) {
-                                    taskModel.updateTotoItem(
-                                        InTask(
-                                            uiState.currentId,
-                                            fieldState.text.toString(),
-                                            false
-                                        )
+                                taskModel.updateTotoItem(
+                                    InTask(
+                                        uiState.currentId,
+                                        uiState.currentItem,
+                                        false
                                     )
-                                } else {
-                                    Random.nextLong().let {
-                                        taskModel.addTotoItem(
-                                            InTask(it, fieldState.text.toString(), false)
-                                        )
-                                        noteAndTaskModel.addNoteAndTaskItem(InNoteAndTask(id, it))
-                                    }
+                                )
+                            } else {
+                                Random.nextLong().let {
+                                    taskModel.addTotoItem(
+                                        InTask(it, uiState.currentItem, false)
+                                    )
+
+                                    noteAndTaskModel.addNoteAndTaskItem(
+                                        InNoteAndTask(id, it)
+                                    )
                                 }
+                            }
                             taskModel.updateId().updateItem()
-                            fieldState.clearText()
                         }
                     )
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun TaskItem(
-        task: InTask,
-        taskModel: TaskScreenModel,
-        onSwipe: () -> Unit,
-        onClick: () -> Unit,
-    ) {
-        val swipeState = rememberSwipeableActionsState()
-        val action = SwipeAction(
-            onSwipe = {
-                onSwipe.invoke()
-            },
-            icon = {
-                Icon(painterResource(DELETE_OUTLINE_ICON), null)
-            },
-            background = Color.Red
-        )
-
-        SwipeableActionsBox(
-            modifier = Modifier,
-            backgroundUntilSwipeThreshold = Color.Transparent,
-            endActions = listOf(action),
-            swipeThreshold = 100.dp,
-            state = swipeState
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onClick.invoke() },
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Checkbox(
-                    checked = task.isDone,
-                    onCheckedChange = {
-                        taskModel.updateTotoItem(
-                            InTask(
-                                id = task.id,
-                                item = task.item,
-                                isDone = !task.isDone
-                            )
-                        )
-                    },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color.Gray
-                    )
-                )
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                task.item?.let { item ->
-
-                    ClickableText(
-                        text = AnnotatedString(item),
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            textDecoration =
-                            if (task.isDone) {
-                                TextDecoration.LineThrough
-                            } else {
-                                TextDecoration.None
-                            },
-                            color = if (task.isDone) Color.Gray else MaterialTheme.colorScheme.onSurface
-                        )
-                    ) { onClick.invoke() }
                 }
             }
         }
