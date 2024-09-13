@@ -26,9 +26,7 @@ import city.zouitel.tags.ui.TagScreenModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
-internal fun HashTagLayout(
-    tagModel: TagScreenModel,
-) {
+internal fun HashTagLayout(tagModel: TagScreenModel) {
     val context = LocalContext.current
     val observeAllTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
 

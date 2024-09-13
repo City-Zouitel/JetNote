@@ -1,5 +1,6 @@
 package city.zouitel.screens.tags_screen
 
+//noinspection UsingMaterialAndMaterial3Libraries
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
