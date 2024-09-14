@@ -86,7 +86,7 @@ amplituda = "2.2.2"
 #android-startup = "1.1.0"
 enigma = "1.0.0.8"
 media3 = "1.4.1"
-balloon-compose = "1.6.4"
+balloon-compose = "1.6.7"
 
 [libraries]
 #Kotlin.
