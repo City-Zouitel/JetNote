@@ -60,9 +60,7 @@ val callNumber: (Context, String) -> Unit = { context, number ->
 }
 
 val findUrlLink: (String?) -> List<String>? = {
-    it?.split(' ')?.filter { str ->
-        str.matches("https?://.+".toRegex())
-    }
+    it?.split(' ')?.filter { str -> str.matches("https?://.+".toRegex()) }
 }
 
 val getPriorityOfColor: (argb: Int) -> String = {

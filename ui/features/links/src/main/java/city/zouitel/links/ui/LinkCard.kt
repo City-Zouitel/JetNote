@@ -14,11 +14,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import city.zouitel.links.model.Link
+import city.zouitel.systemDesign.CommonSwipeItem
 import coil.compose.AsyncImage
 import city.zouitel.links.model.NoteAndLink as InNoteAndLink
-import me.saket.swipe.SwipeAction
-import me.saket.swipe.SwipeableActionsBox
-import me.saket.swipe.rememberSwipeableActionsState
 
 @Composable
 fun LinkCard(
@@ -29,58 +27,36 @@ fun LinkCard(
     link: Link,
 ) {
     val uriHand = LocalUriHandler.current
-    val swipeState = rememberSwipeableActionsState()
-
-    val action = SwipeAction(
-        onSwipe = {
-            linkScreenModel.deleteLink(link)
-            noteAndLinkScreenModel.deleteNoteAndLink(
-                InNoteAndLink(noteUid, link.id)
-            )
-        },
-        icon = {},
-        background = Color.Transparent
-    )
 
     if (isSwipe) {
-        SwipeableActionsBox(
-            modifier = Modifier,
-            backgroundUntilSwipeThreshold = Color.Transparent,
-            endActions = listOf(action),
-            swipeThreshold = 100.dp,
-            state = swipeState
-        ) {
-            LinkCard(
-                swipeable = isSwipe,
-            link = link
-            ) {
+        CommonSwipeItem(
+            onSwipeLeft = {
+                linkScreenModel.deleteLink(link)
+                noteAndLinkScreenModel.deleteNoteAndLink(
+                    InNoteAndLink(noteUid, link.id)
+                )
+            },
+            onSwipeRight = {
                 uriHand.openUri(link.url)
             }
+        ) {
+            LinkCard(isSwipe = isSwipe, link = link)
         }
     } else {
-        LinkCard(
-            swipeable = isSwipe,
-            link = link
-        ) {
-            uriHand.openUri(link.url)
-        }
+        LinkCard(isSwipe = isSwipe, link = link)
     }
 }
 
 @Composable
 private fun LinkCard(
-    swipeable: Boolean,
+    isSwipe: Boolean,
     link: Link,
-    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(if (swipeable) 20.dp else 0.dp),
-        shape = if (swipeable) RoundedCornerShape(15.dp) else RoundedCornerShape(0.dp),
-        onClick = {
-            onClick.invoke()
-        },
+            .padding(if (isSwipe) 20.dp else 0.dp),
+        shape = if (isSwipe) RoundedCornerShape(15.dp) else RoundedCornerShape(0.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(.6f, .6f, .6f, .5f)
         )
@@ -119,4 +95,3 @@ private fun LinkCard(
         }
     }
 }
-
