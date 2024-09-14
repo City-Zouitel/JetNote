@@ -18,9 +18,11 @@ import androidx.compose.ui.graphics.Color
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CommonSwipeItem(
-    onClick: () -> Unit,
-    onSwipeLeft: () -> Unit,
-    onSwipeRight: () -> Unit,
+    enableRightDirection: Boolean = true,
+    enableLeftDirection: Boolean = true,
+    onClick: () -> Unit = {},
+    onSwipeLeft: () -> Unit = {},
+    onSwipeRight: () -> Unit = {},
     content: @Composable RowScope.() -> Unit
     ) {
 
@@ -48,6 +50,8 @@ fun CommonSwipeItem(
 
     SwipeToDismissBox(
         state = state,
+        enableDismissFromStartToEnd = enableRightDirection,
+        enableDismissFromEndToStart = enableLeftDirection,
         backgroundContent = {
             val backgroundColor = animateColorAsState(
                 targetValue = when (state.targetValue) {

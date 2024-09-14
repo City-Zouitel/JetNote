@@ -10,8 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Fill
@@ -31,17 +30,13 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.audios.model.Audio
 import city.zouitel.audios.model.NoteAndAudio
-import city.zouitel.audios.ui.list.AudioListScreenModel
 import city.zouitel.systemDesign.CommonRow
-import city.zouitel.systemDesign.CommonIcons
+import city.zouitel.systemDesign.CommonSwipeItem
 import com.linc.audiowaveform.AudioWaveform
 import com.linc.audiowaveform.model.AmplitudeType
 import com.linc.audiowaveform.model.WaveformAlignment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.saket.swipe.SwipeAction
-import me.saket.swipe.SwipeableActionsBox
-import me.saket.swipe.rememberSwipeableActionsState
 import java.io.File
 
 data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
@@ -49,9 +44,8 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
     override fun Content() {
 
         BasicAudio(
-            audioModel = getScreenModel<AudioScreenModel>(),
-            audioListModel = getScreenModel<AudioListScreenModel>(),
-            noteAndAudioModel = getScreenModel<NoteAndAudioScreenModel>()
+            audioModel = getScreenModel(),
+            noteAndAudioModel = getScreenModel()
         )
     }
 
@@ -59,15 +53,10 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
     @SuppressLint("CoroutineCreationDuringComposition")
     private fun BasicAudio(
         audioModel: AudioScreenModel,
-        audioListModel: AudioListScreenModel,
         noteAndAudioModel: NoteAndAudioScreenModel
     ) {
-
         val scope = rememberCoroutineScope()
-        val swipeState = rememberSwipeableActionsState()
-
         val uiState by remember(audioModel, audioModel::audioUiState).collectAsState()
-
         var processState by remember { mutableFloatStateOf(0f) }
 
         LaunchedEffect(audio.path) {
@@ -75,12 +64,10 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
         }
 
         scope.launch {
-
             while (uiState.isPlaying && processState <= 1f) {
                 delay(audio.duration / 100)
                 processState += .011f
             }
-
             when {
                 processState >= 1f -> {
                     processState = 0f
@@ -92,24 +79,12 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
             if (uiState.isPlaying) audioModel.playMedia() else audioModel.pauseMedia()
         }
 
-        val swipeAction = SwipeAction(
-            onSwipe = {
+        CommonSwipeItem(
+            enableRightDirection = false,
+            onSwipeLeft = {
                 File(audio.path).delete()
-//                audioListModel.deleteAudio(audio)
                 noteAndAudioModel.deleteNoteAndAudio(NoteAndAudio(id, audio.id))
-            },
-            icon = {
-                Icon(painterResource(CommonIcons.DELETE_OUTLINE_ICON), null)
-            },
-            background = Color.Red
-        )
-
-        SwipeableActionsBox(
-            modifier = Modifier.clip(ShapeDefaults.Medium),
-            backgroundUntilSwipeThreshold = Color.Transparent,
-            swipeThreshold = 100.dp,
-            state = swipeState,
-            endActions = listOf(swipeAction)
+            }
         ) {
             Card(
                 modifier = Modifier.padding(10.dp),
