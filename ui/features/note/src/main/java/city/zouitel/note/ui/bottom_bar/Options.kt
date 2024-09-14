@@ -39,7 +39,6 @@ import city.zouitel.logic.getPriorityOfColor
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.KEY_STANDARD
-import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons.ADD_IMAGE_ICON
 import city.zouitel.systemDesign.CommonIcons.CAMERA_ICON
 import city.zouitel.systemDesign.CommonIcons.CASSETTE_ICON
@@ -47,6 +46,7 @@ import city.zouitel.systemDesign.CommonIcons.GESTURE_ICON
 import city.zouitel.systemDesign.CommonIcons.LIST_CHECK_ICON
 import city.zouitel.systemDesign.CommonIcons.MIC_ICON
 import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.RationalDialog
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.listOfPriorityColors

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Checkbox
@@ -49,6 +48,8 @@ import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonSwipeItem
 import city.zouitel.systemDesign.CommonTextField
+import city.zouitel.tasks.model.NoteAndTask
+import city.zouitel.tasks.model.Task
 import kotlin.random.Random
 import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
 import city.zouitel.tasks.model.Task as InTask
@@ -114,69 +115,68 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                     .background(MaterialTheme.colorScheme.surface)
                     .padding(top = 25.dp)
             ) {
-                items(observeTaskList) { task ->
-                    if (observeNoteAndTodoList.contains(
-                            InNoteAndTask(id, task.id)
-                        )
-                    ) {
-                        CommonSwipeItem(
-                            onClick = {
-                                taskModel
-                                    .updateId(task.id)
-                                    .updateItem(task.item ?: "")
-                            },
-                            onSwipeLeft = {
-                                taskModel.deleteTotoItem(InTask(id = task.id))
-                            },
-                            onSwipeRight = {
-                                taskModel.updateTotoItem(
-                                    InTask(
-                                        id = task.id,
-                                        item = task.item,
-                                        isDone = !task.isDone
+                observeTaskList
+                    .filter { observeNoteAndTodoList.contains(NoteAndTask(id, it.id)) }
+                    .forEach { task ->
+                        item {
+                            CommonSwipeItem(
+                                onClick = {
+                                    taskModel
+                                        .updateId(task.id)
+                                        .updateItem(task.item ?: "")
+                                },
+                                onSwipeLeft = {
+                                    taskModel.deleteTotoItem(Task(id = task.id))
+                                },
+                                onSwipeRight = {
+                                    taskModel.updateTotoItem(
+                                        Task(
+                                            id = task.id,
+                                            item = task.item,
+                                            isDone = !task.isDone
+                                        )
                                     )
-                                )
-                            }
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Checkbox(
-                                    checked = task.isDone,
-                                    onCheckedChange = {
-                                        taskModel.updateTotoItem(
-                                            InTask(
-                                                id = task.id,
-                                                item = task.item,
-                                                isDone = !task.isDone
+                                }
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Checkbox(
+                                        checked = task.isDone,
+                                        onCheckedChange = {
+                                            taskModel.updateTotoItem(
+                                                Task(
+                                                    id = task.id,
+                                                    item = task.item,
+                                                    isDone = !task.isDone
+                                                )
+                                            )
+                                        },
+                                        colors = CheckboxDefaults.colors(
+                                            checkedColor = Color.Gray
+                                        )
+                                    )
+
+                                    Spacer(modifier = Modifier.width(16.dp))
+
+                                    task.item?.let { item ->
+
+                                        BasicText(
+                                            text = AnnotatedString(item),
+                                            style = TextStyle(
+                                                fontSize = 18.sp,
+                                                textDecoration =
+                                                if (task.isDone) {
+                                                    TextDecoration.LineThrough
+                                                } else {
+                                                    TextDecoration.None
+                                                },
+                                                color = if (task.isDone) Color.Gray else MaterialTheme.colorScheme.onSurface
                                             )
                                         )
-                                    },
-                                    colors = CheckboxDefaults.colors(
-                                        checkedColor = Color.Gray
-                                    )
-                                )
-
-                                Spacer(modifier = Modifier.width(16.dp))
-
-                                task.item?.let { item ->
-
-                                    BasicText(
-                                        text = AnnotatedString(item),
-                                        style = TextStyle(
-                                            fontSize = 18.sp,
-                                            textDecoration =
-                                            if (task.isDone) {
-                                                TextDecoration.LineThrough
-                                            } else {
-                                                TextDecoration.None
-                                            },
-                                            color = if (task.isDone) Color.Gray else MaterialTheme.colorScheme.onSurface
-                                        )
-                                    )
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
                 item {
                     CommonTextField(
