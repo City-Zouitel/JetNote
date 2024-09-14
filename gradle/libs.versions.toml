@@ -42,7 +42,7 @@ coroutines = "1.8.1"
 koin-core = "3.5.6"
 koin-compose = "3.5.6"
 koin-android = "3.5.6"
-koin-worker = "3.5.0"
+koin-worker = "3.5.6"
 koin-test = "3.5.6"
 koin-gradle = "3.5.0"
 
