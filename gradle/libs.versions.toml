@@ -75,7 +75,7 @@ voyager = "1.0.0"
 
 #Others.
 sketchbook = "1.0.4"
-swipe = "1.1.1"
+swipe = "1.3.0"
 global-exception = "1.0.1"
 url-preview = "1.0.1"
 beetle = "2.0.1"
