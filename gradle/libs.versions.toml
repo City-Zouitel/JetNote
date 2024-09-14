@@ -42,7 +42,7 @@ coroutines = "1.8.1"
 koin-core = "3.5.6"
 koin-compose = "3.5.6"
 koin-android = "3.5.6"
-koin-worker = "3.5.0"
+koin-worker = "3.5.6"
 koin-test = "3.5.6"
 koin-gradle = "3.5.0"
 
@@ -75,7 +75,7 @@ voyager = "1.0.0"
 
 #Others.
 sketchbook = "1.0.4"
-swipe = "1.1.1"
+#swipe = "1.1.1"
 global-exception = "1.0.1"
 url-preview = "1.0.1"
 beetle = "2.0.1"
@@ -189,7 +189,7 @@ media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "medi
 #Others.
 url_preview = { module = "tw.com.oneup.www:Baha-UrlPreview", version.ref = "url-preview" }
 beetle = { module = "com.karacca:beetle", version.ref = "beetle" }
-swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
+#swipe = { module = "me.saket.swipe:swipe", version.ref = "swipe" }
 #globalexception = { module = "com.github.emirhankolver:GlobalExceptionHandler", version.ref = "global-exception" }
 sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
 sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "sqlcipher" }
