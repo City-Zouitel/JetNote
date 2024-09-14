@@ -5,7 +5,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -30,7 +29,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.media.model.NoteAndMedia
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.size.Scale
 
 data class MediaScreen(val id: String, val backgroundColor: Int = 0): Screen {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -38,8 +36,8 @@ data class MediaScreen(val id: String, val backgroundColor: Int = 0): Screen {
     override fun Content() {
 
         Media(
-            mediaModel = getScreenModel<MediaScreenModel>(),
-            noteAndMediaModel = getScreenModel<NoteAndMediaScreenModel>()
+            mediaModel = getScreenModel(),
+            noteAndMediaModel = getScreenModel()
         )
     }
 

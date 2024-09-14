@@ -2,7 +2,6 @@ package city.zouitel.note.ui.workplace
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.icu.util.Calendar
 import android.net.Uri
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -35,7 +34,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,7 +55,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
@@ -83,7 +80,6 @@ import city.zouitel.reminder.ui.RemindingNote
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
@@ -153,21 +149,14 @@ data class WorkplaceScreen(
         noteAndMediaModel: NoteAndMediaScreenModel,
         workspaceModel: WorkplaceScreenModel
     ) {
-        val navigator = LocalNavigator.current
         val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
 
         val focusRequester by lazy { FocusRequester() }
-        val sound by lazy { SoundEffect() }
-        val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
 
         val titleState = rememberTextFieldState(title ?: "")
         val descriptionState = rememberTextFieldState(description ?: "")
 
-        val thereIsSoundEffect by remember(
-            dataStoreModel,
-            dataStoreModel::getSound
-        ).collectAsState()
         val observeNotesAndLabels by remember(
             noteAndTagModel,
             noteAndTagModel::getAllNotesAndTags
@@ -215,7 +204,7 @@ data class WorkplaceScreen(
 
         LaunchedEffect(Unit) {
             kotlin.runCatching {
-//                focusRequester.requestFocus()
+                focusRequester.requestFocus()
             }
         }
 

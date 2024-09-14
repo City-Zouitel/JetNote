@@ -76,6 +76,7 @@ import city.zouitel.systemDesign.CommonConstants.NON
 import city.zouitel.systemDesign.CommonIcons.ANGLE_DOWN_ICON
 import city.zouitel.systemDesign.CommonIcons.ANGLE_UP_ICON
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
+import city.zouitel.systemDesign.CommonSwipeItem
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
@@ -83,9 +84,6 @@ import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import me.saket.swipe.SwipeAction
-import me.saket.swipe.SwipeableActionsBox
-import me.saket.swipe.rememberSwipeableActionsState
 
 @Composable
 fun NoteCard(
@@ -103,24 +101,14 @@ fun NoteCard(
     noteAndMediaModel: NoteAndMediaScreenModel,
     onSwipeNote: (Note) -> Unit,
 ) {
-    val swipeState = rememberSwipeableActionsState()
     val currentLayout = remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
 
-    val action = SwipeAction(
-        onSwipe = {
-            onSwipeNote.invoke(noteEntity)
-        },
-        icon = {},
-        background = Color.Red
-    )
-
     if (currentLayout.value == LIST) {
-        SwipeableActionsBox(
-            modifier = Modifier,
-            backgroundUntilSwipeThreshold = Color.Transparent,
-            endActions = listOf(action),
-            swipeThreshold = 100.dp,
-            state = swipeState
+        CommonSwipeItem(
+            enableRightDirection = false,
+            onSwipeLeft = {
+                onSwipeNote.invoke(noteEntity)
+            }
         ) {
             Card(
                 taskModel = taskModel,
@@ -245,8 +233,7 @@ private fun Card(
                 uiState.selectedNotes.ifEmpty {
                     mainModel.updateSelection(false)
                 }
-            }
-            .drawBehind {
+            }.drawBehind {
                 if (note.priority.equals(NON, true)) {
                     normalNotePath(note)
                 } else {
@@ -269,7 +256,6 @@ private fun Card(
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
 
     ) {
-
         if (filteredMedias.isNotEmpty()) {
             HorizontalPager(
                 state = pagerState,
