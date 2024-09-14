@@ -21,9 +21,6 @@ dependencies {
     //WorkManager.
     implementation(libs.workmanager)
 
-    //Swipe.
-    implementation(libs.swipe)
-
     //Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)

@@ -39,10 +39,7 @@ dependencies {
     implementation (libs.sketchbook)
 
     //Balloon.
-    implementation ("com.github.skydoves:balloon-compose:1.6.4")
-
-    //Swipe.
-    implementation (libs.swipe)
+    implementation (libs.balloon.compose)
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)

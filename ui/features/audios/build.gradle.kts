@@ -22,9 +22,6 @@ dependencies {
     //Accompanist.
     implementation(libs.accompanist.permissions)
 
-    //Swipe.
-    implementation(libs.swipe)
-
     //Sliders.
     implementation(libs.audiowaveform)
     implementation(libs.amplituda)
