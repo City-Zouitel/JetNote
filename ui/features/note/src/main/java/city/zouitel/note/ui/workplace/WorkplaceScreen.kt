@@ -26,12 +26,10 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ElevatedAssistChip
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -76,9 +74,8 @@ import city.zouitel.media.model.NoteAndMedia
 import city.zouitel.media.ui.MediaScreen
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.media.ui.NoteAndMediaScreenModel
-import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
-import city.zouitel.note.ui.bottom_bar.AddEditBottomBar
+import city.zouitel.note.ui.bottom_bar.BottomBar
 import city.zouitel.note.utils.TextField
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.recoder.ui.RecorderScreen
@@ -224,60 +221,12 @@ data class WorkplaceScreen(
 
         Scaffold(
             modifier = Modifier.navigationBarsPadding(),
-            floatingActionButton = {
-                FloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.outlineVariant,
-                    contentColor = contentColorFor(
-                        backgroundColor = MaterialTheme.colorScheme.outlineVariant
-                    ),
-                    onClick = {
-                        sound.makeSound.invoke(
-                            context,
-                            CommonConstants.KEY_STANDARD,
-                            thereIsSoundEffect
-                        )
-
-                        if (isNew) {
-                            dataModel.addData(
-                                Data(
-                                    uid = id,
-                                    title = titleState.text.toString(),
-                                    description = descriptionState.text.toString(),
-                                    priority = uiState.priority,
-                                    reminding = uiState.reminding,
-                                    date = dateState.value.toString(),
-                                    color = uiState.backgroundColor,
-                                    textColor = uiState.textColor
-                                )
-                            )
-                        } else {
-                            dataModel.editData(
-                                Data(
-                                    uid = id,
-                                    title = titleState.text.toString(),
-                                    description = descriptionState.text.toString(),
-                                    priority = uiState.priority,
-                                    reminding = uiState.reminding,
-                                    date = dateState.value.toString(),
-                                    removed = 0,
-                                    color = uiState.backgroundColor,
-                                    textColor = uiState.textColor
-                                )
-                            )
-                        }
-                        navigator?.pop()
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(id = if (isNew) CommonIcons.DONE_ICON else CommonIcons.EDIT_ICON),
-                        null
-                    )
-                }
-            },
             bottomBar = {
-                AddEditBottomBar(
+                BottomBar(
+                    isNew = isNew,
                     id = id,
                     dataStoreModel = dataStoreModel,
+                    dataModel = dataModel,
                     imageLaunch = chooseImageLauncher,
                     workspaceModel = workspaceModel,
                     titleState = titleState,

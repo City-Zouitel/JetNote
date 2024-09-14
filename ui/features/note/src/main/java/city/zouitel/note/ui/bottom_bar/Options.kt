@@ -9,6 +9,7 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +18,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +43,8 @@ import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.KEY_STANDARD
 import city.zouitel.systemDesign.CommonIcons.ADD_IMAGE_ICON
+import city.zouitel.systemDesign.CommonIcons.BELL_ICON
+import city.zouitel.systemDesign.CommonIcons.BELL_RING_ICON_24
 import city.zouitel.systemDesign.CommonIcons.CAMERA_ICON
 import city.zouitel.systemDesign.CommonIcons.CASSETTE_ICON
 import city.zouitel.systemDesign.CommonIcons.GESTURE_ICON
@@ -55,7 +60,7 @@ import city.zouitel.tasks.ui.TasksScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalFoundationApi::class)
 @SuppressLint("SuspiciousIndentation", "UnrememberedMutableState")
 @Composable
 internal fun Options(
@@ -115,9 +120,26 @@ internal fun Options(
             navBottomSheet.show(AudioListScreen(id))
         }
     }
-
+    val reminderPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberMultiplePermissionsState(
+            permissions = listOf(
+                permission.POST_NOTIFICATIONS,
+            )
+        ) {
+            context.run {
+                workspaceModel.updateRemindingDialog(true)
+            }
+        }
+    } else {
+        rememberMultiplePermissionsState(
+            permissions = listOf()
+        ) {
+            workspaceModel.updateRemindingDialog(true)
+        }
+    }
     val recorderRationalDialog = remember { mutableStateOf(false) }
     val readMediaRationalDialog = remember { mutableStateOf(false) }
+    val reminderRationalDialog = remember { mutableStateOf(false) }
 
     RationalDialog(
         showRationalDialog = recorderRationalDialog,
@@ -128,7 +150,13 @@ internal fun Options(
     RationalDialog(
         showRationalDialog = readMediaRationalDialog,
         permissionState = readMediaPermissions,
-        permissionName = "audio record"
+        permissionName = "local media"
+    )
+
+    RationalDialog(
+        showRationalDialog = reminderRationalDialog,
+        permissionState = readMediaPermissions,
+        permissionName = "alarm manager"
     )
 
     DropdownMenu(
@@ -273,6 +301,33 @@ internal fun Options(
             },
             onClick = {
                 sound.makeSound(context, KEY_STANDARD, thereIsSoundEffect.value)
+            }
+        )
+        DropdownMenuItem(
+            text = {
+                Text(text = "Reminder", fontSize = 18.sp)
+            },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(
+                        if (uiState.reminding != 0L) BELL_RING_ICON_24 else BELL_ICON
+                    ),
+                    contentDescription = null,
+                    tint = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surfaceVariant)
+                )
+            },
+            onClick = {
+                sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                if (!reminderPermissions.allPermissionsGranted) {
+                    if (reminderPermissions.shouldShowRationale) {
+                        reminderRationalDialog.value = true
+                    } else {
+                        reminderPermissions.launchMultiplePermissionRequest()
+                    }
+                } else {
+                    workspaceModel.updateRemindingDialog(true)
+                }
+                isShow.value = false
             }
         )
     }

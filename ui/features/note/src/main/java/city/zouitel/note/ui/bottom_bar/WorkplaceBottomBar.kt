@@ -1,13 +1,13 @@
 package city.zouitel.note.ui.bottom_bar
 
-import android.Manifest
 import android.annotation.SuppressLint
+import android.icu.util.Calendar
 import android.net.Uri
-import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.input.TextFieldState
@@ -21,23 +21,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import city.zouitel.note.utils.ColorsRow
+import cafe.adriel.voyager.navigator.LocalNavigator
+import city.zouitel.note.model.Data
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
-import city.zouitel.systemDesign.CommonRow
+import city.zouitel.note.utils.ColorsRow
+import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.FOCUS_NAVIGATION
-import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreScreenModel
+import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonIcons.ADD_CIRCLE_ICON
-import city.zouitel.systemDesign.CommonIcons.BELL_ICON
-import city.zouitel.systemDesign.CommonIcons.BELL_RING_ICON_24
 import city.zouitel.systemDesign.CommonPopupTip
-import city.zouitel.systemDesign.RationalDialog
+import city.zouitel.systemDesign.CommonRow
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.listOfBackgroundColors
 import city.zouitel.systemDesign.listOfTextColors
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import java.text.SimpleDateFormat
 
 @SuppressLint("SimpleDateFormat")
 @OptIn(
@@ -46,8 +45,10 @@ import java.text.SimpleDateFormat
     ExperimentalPermissionsApi::class
 )
 @Composable
-fun AddEditBottomBar(
+internal fun BottomBar(
+    isNew: Boolean,
     dataStoreModel: DataStoreScreenModel,
+    dataModel: DataScreenModel,
     id: String,
     imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
     workspaceModel: WorkplaceScreenModel,
@@ -56,39 +57,13 @@ fun AddEditBottomBar(
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
+    val navigator = LocalNavigator.current
+    val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
+    val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
 
     val showOptionsMenu = remember { mutableStateOf(false) }
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
-    val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
-
     val sound by lazy { SoundEffect() }
-
-    val formatter = SimpleDateFormat("dd-MM-yyyy hh:mm")
-
-    val permissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        rememberMultiplePermissionsState(
-            permissions = listOf(
-                Manifest.permission.POST_NOTIFICATIONS,
-            )
-        ) {
-            context.run {
-                workspaceModel.updateRemindingDialog(true)
-            }
-        }
-    } else {
-        rememberMultiplePermissionsState(
-            permissions = listOf()
-        ) {
-            workspaceModel.updateRemindingDialog(true)
-        }
-    }
-    val showRationalDialog = remember { mutableStateOf(false) }
-
-    RationalDialog(
-        showRationalDialog = showRationalDialog,
-        permissionState = permissionState,
-        permissionName = "post notification"
-    )
 
     Column {
         Row {
@@ -98,7 +73,6 @@ fun AddEditBottomBar(
                     .background(MaterialTheme.colorScheme.surface)
                     .height(50.dp)
             ) {
-
                 CommonPopupTip(message = "More Options") {
                     Icon(
                         painter = painterResource(id = ADD_CIRCLE_ICON),
@@ -122,47 +96,56 @@ fun AddEditBottomBar(
                     )
                 }
 
-                CommonPopupTip(
-                    message = if (uiState.reminding != 0L) {
-                        formatter.format(uiState.reminding)
-                    } else {
-                        "Reminding"
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(
-                            if (uiState.reminding != 0L) BELL_RING_ICON_24 else BELL_ICON
-                        ),
-                        contentDescription = null,
-                        tint = contentColorFor(backgroundColor = MaterialTheme.colorScheme.surfaceVariant),
-                        modifier = Modifier
-                            .combinedClickable(
-                                onLongClick = {
-                                    // To make vibration.
-                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    it.showAlignTop()
-                                }
-                            ) {
-                                sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                                if (!permissionState.allPermissionsGranted) {
-                                    if (permissionState.shouldShowRationale) {
-                                        showRationalDialog.value = true
-                                    } else {
-                                        permissionState.launchMultiplePermissionRequest()
-                                    }
-                                } else {
-                                    workspaceModel.updateRemindingDialog(true)
-                                }
-                            }
-                    )
-                }
-
                 // undo
                 UndoRedo(
                     dataStoreModel = dataStoreModel,
                     workspaceModel = workspaceModel,
                     titleState = titleState,
                     descriptionState = descriptionState,
+                )
+
+                // save.
+                Icon(
+                    painter = painterResource(id = if (isNew) CommonIcons.DONE_ICON else CommonIcons.EDIT_ICON),
+                    contentDescription = null,
+                    modifier = Modifier.clickable {
+
+                        sound.makeSound.invoke(
+                            context,
+                            CommonConstants.KEY_STANDARD,
+                            thereIsSoundEffect.value
+                        )
+
+                        if (isNew) {
+                            dataModel.addData(
+                                Data(
+                                    uid = id,
+                                    title = titleState?.text.toString(),
+                                    description = descriptionState?.text.toString(),
+                                    priority = uiState.priority,
+                                    reminding = uiState.reminding,
+                                    date = dateState.value.toString(),
+                                    color = uiState.backgroundColor,
+                                    textColor = uiState.textColor
+                                )
+                            )
+                        } else {
+                            dataModel.editData(
+                                Data(
+                                    uid = id,
+                                    title = titleState?.text.toString(),
+                                    description = descriptionState?.text.toString(),
+                                    priority = uiState.priority,
+                                    reminding = uiState.reminding,
+                                    date = dateState.value.toString(),
+                                    removed = 0,
+                                    color = uiState.backgroundColor,
+                                    textColor = uiState.textColor
+                                )
+                            )
+                        }
+                        navigator?.pop()
+                    }
                 )
             }
         }
@@ -193,8 +176,3 @@ fun AddEditBottomBar(
         }
     }
 }
-
-
-
-
-
