@@ -7,13 +7,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,12 +25,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.screens.sound
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
@@ -248,10 +244,9 @@ internal fun Layout(datastoreModel: DataStoreScreenModel) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun BroomData(
-    homeModel: MainScreenModel,
-) {
+internal fun BroomData(homeModel: MainScreenModel) {
     val haptic = LocalHapticFeedback.current
+    val navBottomSheet = LocalBottomSheetNavigator.current
 
     CommonPopupTip(message = "Wipe All Notes") { balloonWindow ->
         Icon(
@@ -266,7 +261,8 @@ internal fun BroomData(
                         balloonWindow.showAlignBottom()
                     }
                 ) {
-                    homeModel.updateErasing(true)
+                    /*homeModel.updateErasing(true)*/
+                    navBottomSheet.show(EraseScreen {})
                 }
         )
     }
@@ -298,50 +294,5 @@ internal fun SelectionsCount(
         text = uiState.selectedNotes.count().toString(),
         fontSize = 24.sp,
         modifier = Modifier.padding(5.dp)
-    )
-}
-
-@Composable
-internal fun EraseDialog(
-    dataStoreModel: DataStoreScreenModel,
-    homeModel: MainScreenModel,
-    confirmation : () -> Unit,
-) {
-    val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
-
-    AlertDialog(
-        onDismissRequest = { homeModel.updateErasing(false) },
-        confirmButton = {
-            ClickableText(
-                text = AnnotatedString("Confirm"),
-                style = TextStyle(
-                    color = MaterialTheme.colorScheme.surfaceTint,
-                    fontSize = 17.sp
-                ),
-                onClick = {
-                    sound.makeSound.invoke(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-                    confirmation.invoke()
-                    homeModel.updateErasing(false)                }
-            )
-        },
-        dismissButton = {
-            ClickableText(
-                text = AnnotatedString("Cancel"),
-                style = TextStyle(
-                    color = MaterialTheme.colorScheme.surfaceTint,
-                    fontSize = 17.sp
-                ),
-                onClick = {
-                    sound.makeSound.invoke(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-                    homeModel.updateErasing(false)                }
-            )
-        },
-        title = {
-            Text(text = "Empty Notes?")
-        },
-        text = {
-            Text(text = "All notes in trash will be permanently deleted.")
-        }
     )
 }

@@ -22,10 +22,12 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.note.utils.ColorsRow
+import city.zouitel.note.utils.listOfTextColors
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.FOCUS_NAVIGATION
 import city.zouitel.systemDesign.CommonIcons
@@ -35,7 +37,6 @@ import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.listOfBackgroundColors
-import city.zouitel.systemDesign.listOfTextColors
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 @SuppressLint("SimpleDateFormat")
@@ -53,15 +54,17 @@ internal fun BottomBar(
     imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
     workspaceModel: WorkplaceScreenModel,
     titleState: TextFieldState?,
-    descriptionState: TextFieldState?,
+    descriptionState: TextFieldState?
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
     val navigator = LocalNavigator.current
+    val navBottomSheet = LocalBottomSheetNavigator.current
+
     val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
     val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
 
-    val showOptionsMenu = remember { mutableStateOf(false) }
+//    val showOptionsMenu = remember { mutableStateOf(false) }
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val sound by lazy { SoundEffect() }
 
@@ -86,12 +89,14 @@ internal fun BottomBar(
                                     it.showAlignTop()
                                 }
                             ) {
-                                showOptionsMenu.value = !showOptionsMenu.value
-                                sound.makeSound.invoke(
-                                    context,
-                                    FOCUS_NAVIGATION,
-                                    thereIsSoundEffect.value
-                                )
+//                                showOptionsMenu.value = !showOptionsMenu.value
+                                sound.makeSound.invoke(context, FOCUS_NAVIGATION, thereIsSoundEffect.value)
+                                navBottomSheet.show(OptionsScreen(
+                                    id = id,
+                                    titleState = titleState,
+                                    descriptionState = descriptionState,
+                                    imageLaunch = imageLaunch
+                                ))
                             }
                     )
                 }
@@ -104,12 +109,10 @@ internal fun BottomBar(
                     descriptionState = descriptionState,
                 )
 
-                // save.
                 Icon(
                     painter = painterResource(id = if (isNew) CommonIcons.DONE_ICON else CommonIcons.EDIT_ICON),
                     contentDescription = null,
                     modifier = Modifier.clickable {
-
                         sound.makeSound.invoke(
                             context,
                             CommonConstants.KEY_STANDARD,
@@ -151,13 +154,15 @@ internal fun BottomBar(
         }
 
         // more options menu.
-        Options(
-            dataStoreModel = dataStoreModel,
-            isShow = showOptionsMenu,
-            id = id,
-            imageLaunch = imageLaunch,
-            workspaceModel = workspaceModel,
-        )
+//        Options(
+//            id = id,
+//            descriptionState = descriptionState,
+//            titleState = titleState,
+//            dataStoreModel = dataStoreModel,
+//            isShow = showOptionsMenu,
+//            imageLaunch = imageLaunch,
+//            workspaceModel = workspaceModel,
+//        )
 
         // row of background colors.
         ColorsRow(
