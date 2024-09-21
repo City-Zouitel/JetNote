@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import city.zouitel.logic.asLongToast
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.CROSS_CIRCLE_ICON
+import city.zouitel.systemDesign.CommonPopupTip
+import city.zouitel.tags.model.Tag
 import city.zouitel.tags.ui.TagScreenModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
@@ -29,6 +31,7 @@ import city.zouitel.tags.ui.TagScreenModel
 internal fun HashTagLayout(tagModel: TagScreenModel) {
     val context = LocalContext.current
     val observeAllTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
+    val uiState by remember(tagModel, tagModel::uiState).collectAsState()
 
     ContextualFlowRow(
         modifier = Modifier.animateContentSize(),
@@ -57,23 +60,46 @@ internal fun HashTagLayout(tagModel: TagScreenModel) {
                 )
             },
             label = {
-                observeAllTags[index].label?.let {
-                    Surface(
-                        color = Color.Transparent,
-                        modifier = Modifier.combinedClickable(
-                            onLongClick = {
+                observeAllTags[index].label?.let { tag ->
+                    CommonPopupTip(
+                        color = {
+                            tagModel
+                                .updateTag(
+                                    Tag(
+                                        id = uiState.currentId,
+                                        label = uiState.currentLabel,
+                                        color = it
+                                    )
+                                )
+                                .invokeOnCompletion {
+                                    tagModel
+                                        .updateId()
+                                        .updateColorDialogState()
+                                        .updateColor()
+                                        .updateLabel()
+                                }
+                        }
+                    ) { window ->
+                        Surface(
+                            color = Color.Transparent,
+                            modifier = Modifier.combinedClickable(
+                                onLongClick = {
+
+                                    tagModel.updateId(observeAllTags[index].id)
+//                                        .updateColorDialogState(true)
+                                        .updateLabel(observeAllTags[index].label ?: "")
+                                        .updateColor(observeAllTags[index].color)
+                                    window.showAlignTop()
+
+                                },
+                            ) {
                                 tagModel.updateId(observeAllTags[index].id)
-                                    .updateColorDialogState(true)
                                     .updateLabel(observeAllTags[index].label ?: "")
                                     .updateColor(observeAllTags[index].color)
-                            },
+                            }
                         ) {
-                            tagModel.updateId(observeAllTags[index].id)
-                                .updateLabel(observeAllTags[index].label ?: "")
-                                .updateColor(observeAllTags[index].color)
+                            Text(tag)
                         }
-                    ) {
-                        Text(it)
                     }
                 }
             },

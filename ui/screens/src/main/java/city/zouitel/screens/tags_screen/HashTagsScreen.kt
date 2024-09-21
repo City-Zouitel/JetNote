@@ -39,7 +39,6 @@ import city.zouitel.systemDesign.CommonTopAppBar
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.model.Tag
 import city.zouitel.tags.ui.TagScreenModel
-import city.zouitel.tags.utils.DialogColors
 
 class HashTagsScreen: Screen {
 
@@ -78,9 +77,9 @@ class HashTagsScreen: Screen {
 
         val focusRequester by lazy { FocusRequester() }
 
-        if (uiState.isColorsDialog) {
-            DialogColors(tagModel = tagModel)
-        }
+//        if (uiState.isColorsDialog) {
+//            DialogColors(tagModel = tagModel)
+//        }
 
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
@@ -106,7 +105,7 @@ class HashTagsScreen: Screen {
                         datastoreModel = datastoreModel,
                         drawerState = drawerState,
                         scrollBehavior = scrollBehavior,
-                        title = "Tags"
+                        title = "#Tags"
                     )
                 }
             ) {

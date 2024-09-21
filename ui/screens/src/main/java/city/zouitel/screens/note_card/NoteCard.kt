@@ -36,6 +36,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.MiniAudioPlayer
@@ -67,6 +69,7 @@ import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.model.Note
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.screens.main_screen.MainScreenModel
+import city.zouitel.screens.main_screen.OptionsScreen
 import city.zouitel.screens.normalNotePath
 import city.zouitel.screens.prioritizedNotePath
 import city.zouitel.screens.sound
@@ -84,6 +87,7 @@ import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import kotlinx.coroutines.launch
 
 @Composable
 fun NoteCard(
@@ -160,8 +164,9 @@ private fun Card(
     noteAndMediaModel: NoteAndMediaScreenModel
 ) {
     val context = LocalContext.current
-    val navigator = LocalNavigator.current
     val haptic = LocalHapticFeedback.current
+    val navigator = LocalNavigator.current
+    val navBottomSheet = LocalBottomSheetNavigator.current
 
     val note = noteEntity.dataEntity
     val labels = noteEntity.tagEntities
@@ -180,6 +185,7 @@ private fun Card(
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     var todoListState by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     val observeMedias by remember(mediaModel, mediaModel::allMedias).collectAsState()
     val observeNotesAndMedia by remember(
@@ -222,8 +228,10 @@ private fun Card(
                         )
                     )
                 } else if (!isHomeScreen && !uiState.isSelection) {
-                    mainModel.updateOptionsDialog(true)
-                    mainModel.updateSelectedNote(note)
+                    scope.launch {
+                        mainModel.updateSelectedNote(note)
+                        navBottomSheet.show(OptionsScreen())
+                    }
                 } else {
                     when {
                         !uiState.selectedNotes.contains(note) -> uiState.selectedNotes.add(note)

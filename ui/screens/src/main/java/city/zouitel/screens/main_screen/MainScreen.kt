@@ -43,7 +43,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
-import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.media.ui.MediaScreenModel
@@ -147,8 +146,7 @@ data class MainScreen(val isHome: Boolean): Screen {
         val filteredObserverLocalNotes by remember(observerNotes.value) {
             derivedStateOf {
                 observerNotes.value.filter {
-                    it.dataEntity.title?.contains(uiState.searchTitle, true)
-                            ?: true || it.tagEntities.contains(uiState.searchTag)
+                    it.dataEntity.title?.contains(uiState.searchTitle, true) != false || it.tagEntities.contains(uiState.searchTag)
                 }
             }
         }
@@ -170,36 +168,36 @@ data class MainScreen(val isHome: Boolean): Screen {
             removedNotesState = observerRemovedNotes
         )
 
-        if (uiState.isErase) {
-            EraseDialog(dataStoreModel = datastoreModel, homeModel = mainModel) {
-                dataModel.eraseNotes()
-                observerRemovedNotes.value.forEach { entity ->
-                    entity.linkEntities.forEach { link ->
-                        linkModel.deleteLink(link)
-                        noteAndLinkModel.deleteNoteAndLink(
-                            NoteAndLink(
-                                noteUid = entity.dataEntity.uid,
-                                linkId = link.id
-                            )
-                        )
-                    }
-                    entity.taskEntities.forEach {
-                        // TODO: need finishing.
-                    }
-                }
-            }
-        }
+//        if (uiState.isErase) {
+//            EraseDialog(dataStoreModel = datastoreModel, homeModel = mainModel) {
+//                dataModel.eraseNotes()
+//                observerRemovedNotes.value.forEach { entity ->
+//                    entity.linkEntities.forEach { link ->
+//                        linkModel.deleteLink(link)
+//                        noteAndLinkModel.deleteNoteAndLink(
+//                            NoteAndLink(
+//                                noteUid = entity.dataEntity.uid,
+//                                linkId = link.id
+//                            )
+//                        )
+//                    }
+//                    entity.taskEntities.forEach {
+//                        // TODO: need finishing.
+//                    }
+//                }
+//            }
+//        }
 
-        if (uiState.isOptionsDialog) {
-            OptionsDialog(
-                data = uiState.selectedNote,
-                dataStoreModel = datastoreModel,
-                dataModel = dataModel,
-                mainModel = mainModel,
-                linkModel = linkModel,
-                noteAndLinkModel = noteAndLinkModel
-            )
-        }
+//        if (uiState.isOptionsDialog) {
+//            OptionsDialog(
+//                data = uiState.selectedNote,
+//                dataStoreModel = datastoreModel,
+//                dataModel = dataModel,
+//                mainModel = mainModel,
+//                linkModel = linkModel,
+//                noteAndLinkModel = noteAndLinkModel
+//            )
+//        }
 
         ModalNavigationDrawer(
             drawerContent = {

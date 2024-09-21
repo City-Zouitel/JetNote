@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -40,6 +41,9 @@ import city.zouitel.audios.ui.list.AudioListScreen
 import city.zouitel.logic.getColorOfPriority
 import city.zouitel.logic.getPriorityOfColor
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
+import city.zouitel.note.utils.RationalDialog
+import city.zouitel.note.utils.listOfPriorityColors
+import city.zouitel.reminder.ui.ReminderScreen
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.KEY_STANDARD
 import city.zouitel.systemDesign.CommonIcons.ADD_IMAGE_ICON
@@ -52,9 +56,7 @@ import city.zouitel.systemDesign.CommonIcons.LIST_CHECK_ICON
 import city.zouitel.systemDesign.CommonIcons.MIC_ICON
 import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.RationalDialog
 import city.zouitel.systemDesign.SoundEffect
-import city.zouitel.systemDesign.listOfPriorityColors
 import city.zouitel.tags.ui.TagsScreen
 import city.zouitel.tasks.ui.TasksScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -64,11 +66,13 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 @SuppressLint("SuspiciousIndentation", "UnrememberedMutableState")
 @Composable
 internal fun Options(
+    id: String,
+    titleState: TextFieldState?,
+    descriptionState: TextFieldState?,
     dataStoreModel: DataStoreScreenModel,
     isShow: MutableState<Boolean>,
-    id: String,
     imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
-    workspaceModel: WorkplaceScreenModel,
+    workspaceModel: WorkplaceScreenModel
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
@@ -102,7 +106,6 @@ internal fun Options(
             }
         }
     }
-
     val readMediaPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         rememberMultiplePermissionsState(
             permissions =  listOf(
@@ -126,9 +129,7 @@ internal fun Options(
                 permission.POST_NOTIFICATIONS,
             )
         ) {
-            context.run {
-                workspaceModel.updateRemindingDialog(true)
-            }
+            workspaceModel.updateRemindingDialog(true)
         }
     } else {
         rememberMultiplePermissionsState(
@@ -137,6 +138,7 @@ internal fun Options(
             workspaceModel.updateRemindingDialog(true)
         }
     }
+
     val recorderRationalDialog = remember { mutableStateOf(false) }
     val readMediaRationalDialog = remember { mutableStateOf(false) }
     val reminderRationalDialog = remember { mutableStateOf(false) }
@@ -175,7 +177,7 @@ internal fun Options(
                 sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                 imageLaunch.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 isShow.value = false
-            },
+            }
         )
         DropdownMenuItem(
             text = { Text(text = "Add Audio", fontSize = 18.sp) },
@@ -230,21 +232,7 @@ internal fun Options(
                     contentDescription = null
                 )
             },
-            onClick = {
-//                navController.navigate(
-//                    route = DRAW_ROUTE + "/" +
-//                            note.title + "/" +
-//                            note.description + "/" +
-//                            note.backgroundColor + "/" +
-//                            note.textColor + "/" +
-//                            note.priority + "/" +
-//                            note.uid + "/" +
-//                            note.audioDuration + "/" +
-//                            note.reminding
-//                )
-                sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                isShow.value = false
-            },
+            onClick = {},
             enabled = false
         )
         DropdownMenuItem(
@@ -325,7 +313,15 @@ internal fun Options(
                         reminderPermissions.launchMultiplePermissionRequest()
                     }
                 } else {
-                    workspaceModel.updateRemindingDialog(true)
+                    navBottomSheet.show(
+                        ReminderScreen(
+                            id = id,
+                            title = titleState?.text.toString(),
+                            message = descriptionState?.text.toString()
+                        ) { value ->
+                            workspaceModel.updateRemindingValue(value)
+                        }
+                    )
                 }
                 isShow.value = false
             }
