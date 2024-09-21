@@ -56,6 +56,7 @@ import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.BasicAudioScreen
@@ -76,7 +77,6 @@ import city.zouitel.note.ui.bottom_bar.BottomBar
 import city.zouitel.note.utils.TextField
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.recoder.ui.RecorderScreen
-import city.zouitel.reminder.ui.RemindingNote
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.DataStoreScreenModel
@@ -151,6 +151,7 @@ data class WorkplaceScreen(
     ) {
         val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
+        val navBottomSheet = LocalBottomSheetNavigator.current
 
         val focusRequester by lazy { FocusRequester() }
 
@@ -204,7 +205,7 @@ data class WorkplaceScreen(
 
         LaunchedEffect(Unit) {
             kotlin.runCatching {
-                focusRequester.requestFocus()
+                if (isNew) focusRequester.requestFocus()
             }
         }
 
@@ -224,26 +225,26 @@ data class WorkplaceScreen(
             }
         ) {
             // recording dialog visibility.
-            if (uiState.recordedDialogState) {
-                Navigator(RecorderScreen(id) { workspaceModel.updateRecorderDialog(false) })
-            }
+//            if (uiState.recordedDialogState) {
+//                Navigator(RecorderScreen(id) { workspaceModel.updateRecorderDialog(false) })
+//            }
 
             // reminding dialog visibility.
-            if (uiState.remindingDialogState) {
-                RemindingNote(
-                    dataStoreModel = dataStoreModel,
-                    notificationModel = notificationModel,
-                    title = titleState.text.toString(),
-                    message = descriptionState.text.toString(),
-                    uid = id,
-                    dialogState = { state ->
-                        workspaceModel.updateRemindingDialog(state)
-                    },
-                    remindingValue = { value ->
-                        workspaceModel.updateRemindingValue(value)
-                    }
-                )
-            }
+//            if (uiState.remindingDialogState) {
+//                RemindingNote(
+//                    dataStoreModel = dataStoreModel,
+//                    notificationModel = notificationModel,
+//                    title = titleState.text.toString(),
+//                    message = descriptionState.text.toString(),
+//                    uid = id,
+//                    dialogState = { state ->
+//                        workspaceModel.updateRemindingDialog(state)
+//                    },
+//                    remindingValue = { value ->
+//                        workspaceModel.updateRemindingValue(value)
+//                    }
+//                )
+//            }
 
             LazyColumn(
                 Modifier

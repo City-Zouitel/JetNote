@@ -3,15 +3,15 @@ package city.zouitel.note.state
 import android.net.Uri
 import city.zouitel.systemDesign.CommonConstants
 
-internal data class UiState(
+internal data class WorkplaceUiState(
     val priority: String = CommonConstants.NONE,
-    val remindingDialogState: Boolean = false,
+    val textColor: Int = 0,
+    val backgroundColor: Int = 0,
     val reminding: Long = 0L,
+    val remindingDialogState: Boolean = false,
     val recordedDialogState: Boolean = false,
-    val photo: Uri? = null, // TODO:
     val isTitleFieldFocused: Boolean = false,
     val isDescriptionFieldFocused: Boolean = false,
-    val isFocused: Boolean = false, // TODO:  
-    val backgroundColor: Int = 0,
-    val textColor: Int = 0
+    val photo: Uri? = null, // TODO:
+    val isFocused: Boolean = false // TODO:
 )
