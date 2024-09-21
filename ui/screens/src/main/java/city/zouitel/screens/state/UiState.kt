@@ -11,11 +11,11 @@ internal data class UiState(
     val expandedSortMenu: Boolean = false,
     val isProcessing: Boolean = false,
     val isSelection: Boolean = false,
-    val selectedNotes: SnapshotStateList<Data> = mutableStateListOf(),
     val isErase: Boolean = false,
     val isEraseDialog: Boolean = false,
     val isHomeScreen: Boolean = true,
     val isOptionsDialog: Boolean = false,
+    val selectedNotes: SnapshotStateList<Data> = mutableStateListOf(),
     val selectedNote: Data? = null
 ) {
 

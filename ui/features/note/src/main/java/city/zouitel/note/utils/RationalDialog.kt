@@ -1,4 +1,4 @@
-package city.zouitel.systemDesign
+package city.zouitel.note.utils
 
 import android.Manifest
 import android.content.Intent

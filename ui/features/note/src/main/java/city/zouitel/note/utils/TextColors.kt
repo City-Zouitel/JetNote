@@ -1,4 +1,4 @@
-package city.zouitel.systemDesign
+package city.zouitel.note.utils
 
 import androidx.compose.ui.graphics.Color
 

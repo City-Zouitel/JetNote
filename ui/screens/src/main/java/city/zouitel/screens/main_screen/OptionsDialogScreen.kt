@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -25,28 +24,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.note.model.Data
-import city.zouitel.note.model.Note
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
-import city.zouitel.systemDesign.CommonConstants.KEY_STANDARD
-import city.zouitel.systemDesign.CommonConstants.NON
-import city.zouitel.systemDesign.CommonIcons.CALENDAR_ICON
-import city.zouitel.systemDesign.CommonIcons.CLOCK_ICON
 import city.zouitel.systemDesign.CommonIcons.ERASER_ICON
-import city.zouitel.systemDesign.CommonIcons.REFRESH_ICON
 import city.zouitel.systemDesign.CommonIcons.UNDO_ICON
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.SoundEffect
-import java.util.Date
 
-    @Composable
+@Composable
      fun OptionsDialog(
         data: Data?,
         dataStoreModel: DataStoreScreenModel,
@@ -82,18 +72,7 @@ import java.util.Date
                         onClick = {
                             sound.makeSound(context, KEY_CLICK, soundEffect.value)
                             uiState.selectedNote?.copy(removed = 0)?.let {
-                                dataModel.editData(
-                                    it
-                        //                                Data(
-                        //                                    title = uiState.selectedNote?.title,
-                        //                                    description = uiState.selectedNote?.description,
-                        //                                    priority = uiState.selectedNote?.priority ?: NON,
-                        //                                    uid = uiState.selectedNote?.uid ?: "",
-                        //                                    removed = 0,
-                        //                                    color = uiState.selectedNote?.color ?: 0,
-                        //                                    textColor = uiState.selectedNote?.textColor ?: 0
-                        //                                )
-                                )
+                                dataModel.editData(it)
                             }
                             mainModel.updateOptionsDialog(false)
                         }) {

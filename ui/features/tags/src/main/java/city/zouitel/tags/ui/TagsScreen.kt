@@ -48,7 +48,6 @@ import city.zouitel.systemDesign.CommonIcons.FULL_LABEL_ICON
 import city.zouitel.systemDesign.CommonIcons.OUTLINE_LABEL_ICON
 import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.tags.model.Tag
-import city.zouitel.tags.utils.DialogColors
 import city.zouitel.tags.model.NoteAndTag as InNoteAndTag
 
 data class TagsScreen(val id: String): Screen {
@@ -83,9 +82,9 @@ data class TagsScreen(val id: String): Screen {
 
         val focusRequester by lazy { FocusRequester() }
 
-        if (uiState.isColorsDialog) {
-            DialogColors(tagModel = tagModel)
-        }
+//        if (uiState.isColorsDialog) {
+//            DialogColors(tagModel = tagModel)
+//        }
 
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
