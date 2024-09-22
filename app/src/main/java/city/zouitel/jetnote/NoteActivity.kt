@@ -1,9 +1,5 @@
 package city.zouitel.jetnote
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
@@ -44,6 +39,8 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
             require(!isDeviceRooted.value.getOrNull()?.isDeviceRooted!!) {
                 "Cannot run JetNote on rooted device!".asLongToast()
             }
+
+            hideSystemUI(window)
 
             MainTheme(dataStoreModel) {
                 BottomSheetNavigator(
