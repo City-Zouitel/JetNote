@@ -17,7 +17,7 @@ dependencies {
     //AndroidX.
     implementation(libs.constraintlayout)
     implementation(libs.glance)
-    implementation(projects.ui.features.note)
+    implementation(projects.ui.features.workplace)
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.tasks)
     implementation(projects.ui.features.links)

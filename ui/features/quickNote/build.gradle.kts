@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
     implementation(projects.core.datastore)
-    implementation(projects.ui.features.note)
+    implementation(projects.ui.features.workplace)
     implementation(projects.ui.features.links)
 
     //AndroidX.

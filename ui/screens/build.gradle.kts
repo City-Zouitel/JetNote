@@ -25,7 +25,7 @@ dependencies {
     api(projects.ui.features.tasks)
     api(projects.ui.features.audios)
     api(projects.ui.features.reminder)
-    api(projects.ui.features.note)
+    api(projects.ui.features.workplace)
     api(projects.ui.features.quickNote)
     api(projects.ui.features.links)
     api(projects.ui.features.widget)

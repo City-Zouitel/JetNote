@@ -27,7 +27,7 @@ include(
 )
 include(":domain")
 include(
-    ":ui:features:note",
+    ":ui:features:workplace",
     ":ui:features:quickNote",
     ":ui:features:camera",
     ":ui:features:links",
