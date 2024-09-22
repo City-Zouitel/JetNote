@@ -19,7 +19,6 @@ dependencies {
     //Accompanist.
     implementation(libs.accompanist.permissions)
     implementation(libs.accompanist.systemuicontroller)
-    implementation(libs.accompanist.swiperefresh)
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)
