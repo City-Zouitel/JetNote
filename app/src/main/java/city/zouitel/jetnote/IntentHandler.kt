@@ -1,3 +1,5 @@
+@file:Suppress("CONTEXT_RECEIVERS_DEPRECATED")
+
 package city.zouitel.jetnote
 
 import android.annotation.SuppressLint

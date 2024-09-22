@@ -1,5 +1,6 @@
 package city.zouitel.init
 
+import android.os.Build
 import androidx.compose.ui.platform.ComposeView
 import city.zouitel.systemDesign.CommonConstants.IMG_DIR
 import city.zouitel.systemDesign.CommonConstants.MEDIA_DIR
@@ -41,5 +42,11 @@ val initializerKoinModule = module {
         val file = File(androidContext().filesDir.path, MEDIA_DIR)
         if (!file.exists()) file.mkdirs()
         file.path
+    }
+
+    single<Unit>(named("HideUiSystemBars")) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            HideUiSystemBars(androidContext())
+        }
     }
 }

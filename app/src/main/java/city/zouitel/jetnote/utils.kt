@@ -1,29 +1,29 @@
 package city.zouitel.jetnote
 
-import android.view.View
+import android.annotation.SuppressLint
+import android.os.Build
 import android.view.Window
+import android.view.WindowInsets
+import android.view.WindowInsetsController
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 
+@Composable
+@SuppressLint("WrongConstant")
 internal fun hideSystemUI(window: Window) {
+    val view = LocalView.current
+    val window = window
+    val controller = WindowCompat.getInsetsController(window, view)
 
-    WindowCompat.setDecorFitsSystemWindows(window, false)
-    WindowInsetsControllerCompat(window, View(window.context)).let { controller ->
-        controller.hide(WindowInsetsCompat.Type.systemBars())
-        controller.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    controller.apply {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            hide(WindowInsets.Type.systemBars())
+            systemBarsBehavior =
+                WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 }
-    /*
-    fun showSystemUI() {
-        WindowCompat.setDecorFitsSystemWindows(window, true)
-        WindowInsetsControllerCompat(
-            window,
-            mainContainer
-        ).show(WindowInsetsCompat.Type.systemBars())
-    }
-*/
 
     /*
     fun void() {
