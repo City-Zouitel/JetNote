@@ -8,6 +8,7 @@ object CommonIcons {
     val CAMERA_ICON = R.drawable.camera_24
     val DASHBOARD_ICON = R.drawable.ic_baseline_dashboard_24
     val DONE_ICON = R.drawable.check_24
+    val DONE_ICON_18 = R.drawable.check_18
     val EDIT_ICON = R.drawable.pencil_24
     val GESTURE_ICON = R.drawable.ic_baseline_gesture_24
     val MIC_ICON = R.drawable.microphone_24

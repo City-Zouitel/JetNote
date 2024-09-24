@@ -2,7 +2,7 @@ package city.zouitel.systemDesign
 
 
 object CommonConstants {
-    const val APP_VERSION = "6.2.0"
+    const val APP_VERSION = "6.2.1"
     const val APP_NAME = "JetNote"
     const val NONE = "unspecified"
 
@@ -25,12 +25,6 @@ object CommonConstants {
     const val NEWEST_ORDER = "Newest"
     const val PRIORITY_ORDER = "Priority"
     const val REMINDING_ORDER = "Reminding"
-    const val BY_NAME = "ORDER_BY_NAME"
-    const val ORDER_BY_OLDEST = "ORDER_BY_OLDEST"
-    const val ORDER_BY_NEWEST = "ORDER_BY_NEWEST"
-    const val ORDER_BY_PRIORITY = "ORDER_BY_PRIORITY"
-    const val ORDER_BY_REMINDER = "ORDER_BY_REMINDER"
-    const val BY_ID = "ORDER_BY_ID"
 
     const val NON = "NON"
 
@@ -44,7 +38,12 @@ object CommonConstants {
     const val KEY_INVALID = 9
     const val FOCUS_NAVIGATION = 12
 
-    const val GRID = "GRID_LAYOUT"
-    const val LIST = "list-layout"
+    const val GRID = "Grid"
+    const val LIST = "List"
 
+    const val DARK = "dark-theme"
+    const val LIGHT = "light-theme"
+
+    const val TITLE_SIZE = 20
+    const val DESCRIPTION_SIZE = 16
 }
