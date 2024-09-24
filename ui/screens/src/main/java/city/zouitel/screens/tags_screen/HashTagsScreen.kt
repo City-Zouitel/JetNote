@@ -34,6 +34,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
+import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
 import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.CommonTopAppBar
 import city.zouitel.systemDesign.DataStoreScreenModel
@@ -44,11 +45,11 @@ class HashTagsScreen: Screen {
 
     @Composable
     override fun Content() {
-
         Tags(
-            datastoreModel = getScreenModel<DataStoreScreenModel>(),
-            tagModel = getScreenModel<TagScreenModel>(),
-            mainModel = getScreenModel<MainScreenModel>()
+            datastoreModel = getScreenModel(),
+            tagModel = getScreenModel(),
+            mainModel = getScreenModel(),
+            navigationDrawerModel = getScreenModel()
         )
     }
 
@@ -64,7 +65,8 @@ class HashTagsScreen: Screen {
     private fun Tags(
         datastoreModel: DataStoreScreenModel,
         tagModel: TagScreenModel,
-        mainModel: MainScreenModel
+        mainModel: MainScreenModel,
+        navigationDrawerModel: NavigationDrawerScreenModel
     ) {
         val keyboardManager = LocalFocusManager.current
 
@@ -77,24 +79,21 @@ class HashTagsScreen: Screen {
 
         val focusRequester by lazy { FocusRequester() }
 
-//        if (uiState.isColorsDialog) {
-//            DialogColors(tagModel = tagModel)
-//        }
-
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
         }
 
         ModalNavigationDrawer(
+            drawerState = drawerState,
             drawerContent = {
                 NavigationDrawer(
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = mainModel
+                    homeScreen = mainModel,
+                    navigationDrawerModel = navigationDrawerModel
                 )
             },
-            drawerState = drawerState,
             modifier = Modifier.navigationBarsPadding()
         ) {
             androidx.compose.material.Scaffold(

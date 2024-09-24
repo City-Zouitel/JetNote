@@ -51,14 +51,15 @@ import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
+import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
 import city.zouitel.screens.note_card.NoteCard
 import city.zouitel.screens.sound
 import city.zouitel.systemDesign.CommonConstants
-import city.zouitel.systemDesign.CommonConstants.BY_NAME
-import city.zouitel.systemDesign.CommonConstants.ORDER_BY_NEWEST
-import city.zouitel.systemDesign.CommonConstants.ORDER_BY_OLDEST
-import city.zouitel.systemDesign.CommonConstants.ORDER_BY_PRIORITY
-import city.zouitel.systemDesign.CommonConstants.ORDER_BY_REMINDER
+import city.zouitel.systemDesign.CommonConstants.NAME_ORDER
+import city.zouitel.systemDesign.CommonConstants.NEWEST_ORDER
+import city.zouitel.systemDesign.CommonConstants.OLDEST_ORDER
+import city.zouitel.systemDesign.CommonConstants.PRIORITY_ORDER
+import city.zouitel.systemDesign.CommonConstants.REMINDING_ORDER
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.ui.NoteAndTagScreenModel
@@ -91,6 +92,7 @@ data class MainScreen(val isHome: Boolean): Screen {
             datastoreModel = getScreenModel(),
             mediaModel = getScreenModel(),
             noteAndMediaModel = getScreenModel(),
+            navigationDrawerModel = getScreenModel()
         )
     }
 
@@ -114,7 +116,8 @@ data class MainScreen(val isHome: Boolean): Screen {
         noteAndLinkModel: NoteAndLinkScreenModel,
         datastoreModel: DataStoreScreenModel,
         mediaModel: MediaScreenModel,
-        noteAndMediaModel: NoteAndMediaScreenModel
+        noteAndMediaModel: NoteAndMediaScreenModel,
+        navigationDrawerModel: NavigationDrawerScreenModel
     ) {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
@@ -130,11 +133,11 @@ data class MainScreen(val isHome: Boolean): Screen {
             when (
                 remember(datastoreModel, datastoreModel::getOrdination).collectAsState().value
             ) {
-                BY_NAME -> mainModel.allNotesByName.collectAsState()
-                ORDER_BY_OLDEST -> mainModel.allNotesByOldest.collectAsState()
-                ORDER_BY_NEWEST -> mainModel.allNotesByNewest.collectAsState()
-                ORDER_BY_PRIORITY -> mainModel.allNotesByPriority.collectAsState()
-                ORDER_BY_REMINDER -> mainModel.allRemindingNotes.collectAsState()
+                NAME_ORDER -> mainModel.allNotesByName.collectAsState()
+                OLDEST_ORDER -> mainModel.allNotesByOldest.collectAsState()
+                NEWEST_ORDER -> mainModel.allNotesByNewest.collectAsState()
+                PRIORITY_ORDER -> mainModel.allNotesByPriority.collectAsState()
+                REMINDING_ORDER -> mainModel.allRemindingNotes.collectAsState()
                 else -> mainModel.allNotesById.collectAsState()
             }
         } else {
@@ -168,47 +171,17 @@ data class MainScreen(val isHome: Boolean): Screen {
             removedNotesState = observerRemovedNotes
         )
 
-//        if (uiState.isErase) {
-//            EraseDialog(dataStoreModel = datastoreModel, homeModel = mainModel) {
-//                dataModel.eraseNotes()
-//                observerRemovedNotes.value.forEach { entity ->
-//                    entity.linkEntities.forEach { link ->
-//                        linkModel.deleteLink(link)
-//                        noteAndLinkModel.deleteNoteAndLink(
-//                            NoteAndLink(
-//                                noteUid = entity.dataEntity.uid,
-//                                linkId = link.id
-//                            )
-//                        )
-//                    }
-//                    entity.taskEntities.forEach {
-//                        // TODO: need finishing.
-//                    }
-//                }
-//            }
-//        }
-
-//        if (uiState.isOptionsDialog) {
-//            OptionsDialog(
-//                data = uiState.selectedNote,
-//                dataStoreModel = datastoreModel,
-//                dataModel = dataModel,
-//                mainModel = mainModel,
-//                linkModel = linkModel,
-//                noteAndLinkModel = noteAndLinkModel
-//            )
-//        }
-
         ModalNavigationDrawer(
+            drawerState = drawerState,
             drawerContent = {
                 NavigationDrawer(
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = mainModel
+                    homeScreen = mainModel,
+                    navigationDrawerModel = navigationDrawerModel
                 )
-            },
-            drawerState = drawerState
+            }
         ) {
             androidx.compose.material.Scaffold(
                 modifier = Modifier

@@ -1,13 +1,12 @@
 package city.zouitel.screens.main_screen
 
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.NoteUseCase
 import city.zouitel.note.model.Data
 import city.zouitel.screens.mapper.NoteMapper
-import city.zouitel.screens.state.UiState
+import city.zouitel.screens.state.MainScreenUiState
 import city.zouitel.tags.model.Tag
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,14 +27,14 @@ class MainScreenModel(
     private val mapper: NoteMapper
 ): ScreenModel {
 
-    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
-        UiState()
+    private val _uiState: MutableStateFlow<MainScreenUiState> = MutableStateFlow(
+        MainScreenUiState()
     )
-    internal val uiState: StateFlow<UiState> = _uiState
+    internal val uiState: StateFlow<MainScreenUiState> = _uiState
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(),
-            UiState()
+            MainScreenUiState()
         )
 
     // for observing the dataEntity changes.

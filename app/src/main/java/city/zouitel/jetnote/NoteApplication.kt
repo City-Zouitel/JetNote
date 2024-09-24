@@ -8,13 +8,13 @@ import city.zouitel.datastore.datastoreKoinModule
 import city.zouitel.init.initializerKoinModule
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.media.di.mediaKoinModule
-import city.zouitel.screens.di.navigationKoinModule
 import city.zouitel.note.di.noteKoinModule
 import city.zouitel.notifications.di.notificationKoinModule
 import city.zouitel.quicknote.di.quickNoteKoinModule
 import city.zouitel.recoder.di.recorderKoinModule
 import city.zouitel.repository.di.repositoryKoinModule
 import city.zouitel.root.di.rootKoinModule
+import city.zouitel.screens.di.screensKoinModule
 import city.zouitel.security.di.securityKoinModule
 import city.zouitel.systemDesign.di.commonSystemDesignKoinModule
 import city.zouitel.tags.di.tagsKoinModule
@@ -57,7 +57,7 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
                 widgetKoinModule,
                 notificationKoinModule,
                 commonSystemDesignKoinModule,
-                navigationKoinModule,
+                screensKoinModule,
                 initializerKoinModule,
                 rootKoinModule,
                 mediaKoinModule

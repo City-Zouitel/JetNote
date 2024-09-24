@@ -5,7 +5,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import city.zouitel.note.model.Data
 import city.zouitel.tags.model.Tag
 
-internal data class UiState(
+internal data class MainScreenUiState(
     val searchTitle: String = "",
     val searchTag: Tag? = null,
     val expandedSortMenu: Boolean = false,
@@ -19,7 +19,7 @@ internal data class UiState(
     val selectedNote: Data? = null
 ) {
 
-    fun addSelectedNote(note: Data): UiState {
+    fun addSelectedNote(note: Data): MainScreenUiState {
         selectedNotes.add(note)
         return this
     }

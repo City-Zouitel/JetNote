@@ -1,8 +1,6 @@
 package city.zouitel.screens.settings_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -12,22 +10,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
+import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
 import city.zouitel.screens.sound
-import city.zouitel.systemDesign.AdaptingRowBetween
+import city.zouitel.systemDesign.CommonConstants.DARK
+import city.zouitel.systemDesign.CommonConstants.DEFAULT_ORDER
+import city.zouitel.systemDesign.CommonConstants.GRID
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
+import city.zouitel.systemDesign.CommonConstants.LIGHT
+import city.zouitel.systemDesign.CommonConstants.LIST
+import city.zouitel.systemDesign.CommonConstants.NAME_ORDER
+import city.zouitel.systemDesign.CommonConstants.NEWEST_ORDER
+import city.zouitel.systemDesign.CommonConstants.OLDEST_ORDER
+import city.zouitel.systemDesign.CommonConstants.PRIORITY_ORDER
+import city.zouitel.systemDesign.CommonConstants.REMINDING_ORDER
 import city.zouitel.systemDesign.CommonTopAppBar
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.ui.TagScreenModel
@@ -38,9 +42,10 @@ class SettingsScreen: Screen {
     override fun Content() {
 
         Settings(
-            tagModel = getScreenModel<TagScreenModel>(),
-            datastoreModel = getScreenModel<DataStoreScreenModel>(),
-            mainScreen = getScreenModel<MainScreenModel>()
+            tagModel = getScreenModel(),
+            datastoreModel = getScreenModel(),
+            mainScreen = getScreenModel(),
+            navigationDrawerModel = getScreenModel()
         )
     }
 
@@ -51,8 +56,9 @@ class SettingsScreen: Screen {
     @Composable
     private fun Settings(
         tagModel: TagScreenModel,
-        datastoreModel: DataStoreScreenModel,
-        mainScreen: MainScreenModel
+        navigationDrawerModel: NavigationDrawerScreenModel,
+        mainScreen: MainScreenModel,
+        datastoreModel: DataStoreScreenModel
     ) {
 
         val navigator = LocalNavigator.currentOrThrow
@@ -60,6 +66,10 @@ class SettingsScreen: Screen {
 
         val isDarkTheme = remember(datastoreModel, datastoreModel::getTheme).collectAsState()
         val thereIsSoundEffect = remember(datastoreModel, datastoreModel::getSound).collectAsState()
+        val currentLayout = remember(datastoreModel, datastoreModel::getLayout).collectAsState()
+
+        val currentOrder = remember(datastoreModel, datastoreModel::getOrdination).collectAsState()
+
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
         val lazyListState = rememberLazyListState()
@@ -74,7 +84,8 @@ class SettingsScreen: Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = mainScreen
+                    homeScreen = mainScreen,
+                    navigationDrawerModel = navigationDrawerModel
                 )
             },
             modifier = Modifier.navigationBarsPadding()
@@ -102,13 +113,12 @@ class SettingsScreen: Screen {
                         PreferenceItem(
                             title = "Dark Mode",
                             description = "This application following the system mode by default.",
-                            active = isDarkTheme.value == "DARK"
-                        ) {
-                            sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                            datastoreModel.setTheme(
-                                if (isDarkTheme.value == "DARK") "LITE" else "DARK"
-                            )
-                        }
+                            checked = isDarkTheme.value == DARK,
+                            onChecked = {
+                                sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                                datastoreModel.setTheme(if (isDarkTheme.value == DARK) LIGHT else DARK)
+                            }
+                        )
                     }
 
                     item {
@@ -118,11 +128,51 @@ class SettingsScreen: Screen {
                     item {
                         PreferenceItem(
                             title = "Sound Effect",
-                            description = "Make effectSound when any key is pressed.",
-                            active = thereIsSoundEffect.value
-                        ) {
+                            description = "Make sound effect when any key is pressed.",
+                            checked = thereIsSoundEffect.value,
+                            onChecked = {
+                                sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                                datastoreModel.setSound(!thereIsSoundEffect.value)
+                            }
+                        )
+                    }
+
+                    item {
+                        HorizontalDivider(modifier = Modifier.padding(10.dp))
+                    }
+
+                    item {
+                        PreferenceItem(
+                            title = "Layout",
+                            description = "Grade layout is the default mode.",
+                            currentItem = currentLayout.value,
+                            items = listOf(GRID, LIST)
+                        ) { layout ->
                             sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                            datastoreModel.setSound(!thereIsSoundEffect.value)
+                            datastoreModel.setLayout(layout)
+                        }
+                    }
+
+                    item {
+                        HorizontalDivider(modifier = Modifier.padding(10.dp))
+                    }
+
+                    item {
+                        PreferenceItem(
+                            title = "Sort Notes By",
+                            description = "",
+                            items = listOf(
+                                NAME_ORDER,
+                                DEFAULT_ORDER,
+                                OLDEST_ORDER,
+                                NEWEST_ORDER,
+                                PRIORITY_ORDER,
+                                REMINDING_ORDER
+                            ),
+                            currentItem = currentOrder.value
+                        ) { order ->
+                            sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                            datastoreModel.setOrdination(order)
                         }
                     }
 
@@ -133,59 +183,14 @@ class SettingsScreen: Screen {
                     item {
                         PreferenceItem(
                             title = "Licenses",
-                            description = "Public repositories on GitHub are often used to share open source software."
+                            description = "Public repositories on GitHub are often used to share open source software.",
+                            checked = null,
                         ) {
                             sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
                             navigator.push(Licenses())
                         }
                     }
                 }
-            }
-        }
-    }
-
-    @Composable
-    private fun PreferenceItem(
-        title: String,
-        description: String? = null,
-        active: Boolean = false,
-        onItemClick: () -> Unit = { },
-    ) {
-        Column(
-            modifier = Modifier
-                .clickable { onItemClick() }
-                .padding(start = 32.dp, top = 8.dp, end = 16.dp, bottom = 8.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Center,
-        ) {
-            AdaptingRowBetween(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = title,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-
-                Canvas(
-                    modifier = Modifier
-                        .size(10.dp)
-                ) {
-                    drawArc(
-                        color = if (active) Color.Green else Color.Transparent,
-                        startAngle = 1f,
-                        sweepAngle = 360f,
-                        useCenter = true,
-                        style = Fill
-                    )
-                }
-            }
-            if (description != null) {
-                Text(
-                    text = description,
-                    Modifier.alpha(.5f),
-                    color = MaterialTheme.colorScheme.onSurface
-                )
             }
         }
     }

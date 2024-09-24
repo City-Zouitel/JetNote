@@ -20,7 +20,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -28,11 +27,12 @@ import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.screens.R
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
+import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
 import city.zouitel.screens.sound
 import city.zouitel.systemDesign.CommonConstants
-import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonTopAppBar
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.ui.TagScreenModel
 import coil.compose.AsyncImage
 
@@ -40,14 +40,11 @@ class AboutScreen: Screen {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     override fun Content() {
-        val tagModel = getScreenModel<TagScreenModel>()
-        val datastoreModel = getScreenModel<DataStoreScreenModel>()
-        val mainScreen = getScreenModel<MainScreenModel>()
-
         About(
-            datastoreModel = datastoreModel,
-            tagModel = tagModel,
-            homeScreen = mainScreen
+            datastoreModel = getScreenModel(),
+            tagModel = getScreenModel(),
+            homeScreen = getScreenModel(),
+            navigationDrawerModel = getScreenModel()
         )
     }
 
@@ -59,7 +56,8 @@ class AboutScreen: Screen {
     private fun About(
         datastoreModel: DataStoreScreenModel,
         tagModel: TagScreenModel,
-        homeScreen: MainScreenModel
+        homeScreen: MainScreenModel,
+        navigationDrawerModel: NavigationDrawerScreenModel
     ) {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
@@ -74,7 +72,8 @@ class AboutScreen: Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = homeScreen
+                    homeScreen = homeScreen,
+                    navigationDrawerModel = navigationDrawerModel
                 )
             },
             modifier = Modifier.navigationBarsPadding()
