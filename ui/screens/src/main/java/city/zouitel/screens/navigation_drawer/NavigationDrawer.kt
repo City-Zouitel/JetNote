@@ -1,5 +1,6 @@
 package city.zouitel.screens.navigation_drawer
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.ContextualFlowRow
 import androidx.compose.foundation.layout.ContextualFlowRowOverflow
@@ -39,11 +40,13 @@ import city.zouitel.logic.sharApp
 import city.zouitel.screens.about_screen.AboutScreen
 import city.zouitel.screens.main_screen.MainScreen
 import city.zouitel.screens.main_screen.MainScreenModel
+import city.zouitel.screens.navigation_drawer.NoteScreens.*
 import city.zouitel.screens.settings_screen.SettingsScreen
 import city.zouitel.screens.sound
 import city.zouitel.screens.tags_screen.HashTagsScreen
 import city.zouitel.systemDesign.CommonConstants.APP_NAME
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
+import city.zouitel.systemDesign.CommonConstants.TITLE_SIZE
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.COMMENT_EXCLAMATION
@@ -63,9 +66,10 @@ import kotlinx.coroutines.launch
 fun NavigationDrawer(
     tagModel: TagScreenModel,
     dataStoreModel: DataStoreScreenModel,
+    navigationDrawerModel: NavigationDrawerScreenModel,
     drawerState: DrawerState,
     homeScreen: MainScreenModel
-    ) {
+) {
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
     val observeLabels by remember(tagModel, tagModel::getAllLTags).collectAsState()
@@ -74,6 +78,7 @@ fun NavigationDrawer(
     var maxLines by remember { mutableIntStateOf(3) }
 
     DismissibleDrawerSheet(
+        drawerState = drawerState,
         modifier = Modifier
             .padding(end = 100.dp)
             .systemBarsPadding(),
@@ -84,41 +89,40 @@ fun NavigationDrawer(
                 Text(
                     text = APP_NAME,
                     fontSize = 30.sp,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(15.dp)
                 )
-                HorizontalDivider()
-            }
-            item {
-                NavigationDrawerItem(
-                    label = { Text("Notes") },
-                    icon = { Icon(painterResource(HOME_ICON), null) },
-                    selected = false,
-                    onClick = {
-                        scope.launch {
-                            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                            navigator.push(MainScreen(true))
-                            drawerState.close()
-                        }
-                    }
-                )
-            }
-            item {
-                HorizontalDivider()
             }
 
+            item { HorizontalDivider() }
+
             item {
-                NavigationDrawerItem(
-                    label = { Text("Tags") },
-                    icon = { Icon(painterResource(TAGS_ICON), null) },
-                    selected = false,
-                    onClick = {
-                        scope.launch {
-                            sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                            navigator.push(HashTagsScreen())
-                            drawerState.close()
-                        }
+                NavItem(
+                    navigationDrawerModel = navigationDrawerModel,
+                    screen = MAIN_SCREEN,
+                    icon = HOME_ICON
+                ) {
+                    scope.launch {
+                        drawerState.close()
+                        navigationDrawerModel.updateCurrentScreen(MAIN_SCREEN)
                     }
-                )
+                    navigator.push(MainScreen(isHome = true))
+                }
+            }
+
+            item { HorizontalDivider() }
+
+            item {
+                NavItem(
+                    navigationDrawerModel = navigationDrawerModel,
+                    screen = TAGS_SCREEN,
+                    icon = TAGS_ICON
+                ) {
+                    scope.launch {
+                        drawerState.close()
+                        navigationDrawerModel.updateCurrentScreen(TAGS_SCREEN)
+                    }
+                    navigator.push(HashTagsScreen())
+                }
             }
 
             item {
@@ -155,79 +159,76 @@ fun NavigationDrawer(
                         }
                     )
                 ) { index ->
-                        ElevatedFilterChip(
-                            selected = true,
-                            onClick = {
-                                scope.launch {
-                                    sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                                    homeScreen.updateSearchTag(observeLabels[index])
-                                    homeScreen.updateSearchTitle(observeLabels[index].label ?: "")
-                                    drawerState.close()
-                                }
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    painter = painterResource(id = CIRCLE_ICON_18),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(10.dp)
-                                )
-                            },
-                            label = {
-                                observeLabels[index].label?.let { Text(it, fontSize = 11.sp) }
-                            },
-                            shape = CircleShape,
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedLeadingIconColor = Color(observeLabels[index].color)
+                    ElevatedFilterChip(
+                        selected = true,
+                        onClick = {
+                            scope.launch {
+                                sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+                                homeScreen.updateSearchTag(observeLabels[index])
+                                homeScreen.updateSearchTitle(observeLabels[index].label ?: "")
+                                drawerState.close()
+                            }
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(id = CIRCLE_ICON_18),
+                                contentDescription = null,
+                                modifier = Modifier.size(10.dp)
                             )
+                        },
+                        label = {
+                            observeLabels[index].label?.let { Text(it, fontSize = 11.sp) }
+                        },
+                        shape = CircleShape,
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedLeadingIconColor = Color(observeLabels[index].color)
                         )
+                    )
                     Spacer(Modifier.width(2.dp))
+                }
+            }
+
+            item { HorizontalDivider() }
+
+            item {
+                NavItem(
+                    navigationDrawerModel = navigationDrawerModel,
+                    screen = SETTINGS_SCREEN,
+                    icon = SETTINGS_ICON
+                ) {
+                    scope.launch {
+                        drawerState.close()
+                        navigationDrawerModel.updateCurrentScreen(SETTINGS_SCREEN)
                     }
+                    navigator.push(SettingsScreen())
+                }
             }
 
             item {
-                HorizontalDivider()
+                NavItem(
+                    navigationDrawerModel = navigationDrawerModel,
+                    screen = REMOVED_SCREEN,
+                    icon = REMOVE_ICON
+                ) {
+                    scope.launch {
+                        drawerState.close()
+                        navigationDrawerModel.updateCurrentScreen(REMOVED_SCREEN)
+                    }
+                    navigator.push(MainScreen(false))
+                }
             }
+
+            item { HorizontalDivider() }
 
             item {
                 NavigationDrawerItem(
-                    label = { Text("Settings") },
-                    icon = { Icon(painterResource(SETTINGS_ICON), null) },
-                    selected = false,
-                    onClick = {
-                        scope.launch {
-                            sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                            navigator.push(SettingsScreen())
-                            drawerState.close()
-                        }
-                    }
-                )
-            }
-
-            item {
-                NavigationDrawerItem(
-                    label = { Text("Removed") },
-                    icon = { Icon(painterResource(REMOVE_ICON), null) },
-                    selected = false,
-                    onClick = {
-                        scope.launch {
-                            sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
-                            navigator.push(MainScreen(false))
-                            drawerState.close()
-                        }
-                    }
-                )
-            }
-
-            item {
-                HorizontalDivider()
-                NavigationDrawerItem(
-                    label = { Text("Share This App") },
+                    label = { Text("Share This App", fontSize = TITLE_SIZE.sp) },
                     icon = { Icon(painterResource(SHARE_ICON), null) },
                     selected = false,
                     onClick = {
                         scope.launch {
-                            sharApp(context,"[COMING SOON.]")
-                            sound.makeSound(context, KEY_CLICK,thereIsSoundEffect.value)
+                            sharApp(context, "[COMING SOON.]")
+                            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
                             drawerState.close()
                         }
                     }
@@ -236,11 +237,11 @@ fun NavigationDrawer(
 
             item {
                 NavigationDrawerItem(
-                    label = { Text("Feedback & Help") },
+                    label = { Text("Feedback & Help", fontSize = TITLE_SIZE.sp) },
                     icon = { Icon(painterResource(COMMENT_EXCLAMATION), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound.invoke(context, KEY_CLICK,thereIsSoundEffect.value)
+                        sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
                         scope.launch {
                             Beetle.startFeedback()
                             drawerState.close()
@@ -250,19 +251,34 @@ fun NavigationDrawer(
             }
 
             item {
-                NavigationDrawerItem(
-                    label = { Text("About") },
-                    icon = { Icon(painterResource(INTERROGATION_ICON), null) },
-                    selected = false,
-                    onClick = {
-                        scope.launch {
-                            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                            navigator.push(AboutScreen())
-                            drawerState.close()
-                        }
+                NavItem(
+                    navigationDrawerModel = navigationDrawerModel,
+                    screen = ABOUT_SCREEN,
+                    icon = INTERROGATION_ICON
+                ) {
+                    scope.launch {
+                        drawerState.close()
+                        navigationDrawerModel.updateCurrentScreen(ABOUT_SCREEN)
                     }
-                )
+                    navigator.push(AboutScreen())
+                }
             }
         }
     }
+}
+
+@Composable
+private fun NavItem(
+    navigationDrawerModel: NavigationDrawerScreenModel,
+    screen: NoteScreens,
+    @DrawableRes icon: Int,
+    onClick: () -> Unit
+) {
+    val uiState = remember(navigationDrawerModel, navigationDrawerModel::uiState).collectAsState()
+    NavigationDrawerItem(
+        label = { Text(screen.screen, fontSize = TITLE_SIZE.sp) },
+        icon = { Icon(painterResource(icon), null) },
+        selected = uiState.value.currentScreen == screen,
+        onClick = onClick
+    )
 }

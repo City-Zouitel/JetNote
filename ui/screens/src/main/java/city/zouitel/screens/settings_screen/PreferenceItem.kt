@@ -26,10 +26,12 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import city.zouitel.systemDesign.CommonConstants.DESCRIPTION_SIZE
+import city.zouitel.systemDesign.CommonConstants.TITLE_SIZE
 import city.zouitel.systemDesign.CommonIcons
 
 @Composable
-fun PreferenceItem(
+internal fun PreferenceItem(
     title: String,
     description: String?,
     checked: Boolean?,
@@ -50,7 +52,7 @@ fun PreferenceItem(
             Text(
                 modifier = Modifier.weight(.9f),
                 text = title,
-                fontSize = 23.sp,
+                fontSize = TITLE_SIZE.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
@@ -68,13 +70,13 @@ fun PreferenceItem(
             }
         }
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         AnimatedVisibility(description.isNullOrEmpty().not()) {
             Text(
                 text = description!!,
                 modifier = Modifier.alpha(.5f),
-                fontSize = 15.sp,
+                fontSize = DESCRIPTION_SIZE.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
@@ -83,7 +85,7 @@ fun PreferenceItem(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PreferenceItem(
+internal fun PreferenceItem(
     title: String,
     description: String?,
     items: List<String>,
@@ -103,18 +105,18 @@ fun PreferenceItem(
             Text(
                 modifier = Modifier.weight(.9f),
                 text = title,
-                fontSize = 23.sp,
+                fontSize = TITLE_SIZE.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         AnimatedVisibility(description.isNullOrEmpty().not()) {
             Text(
                 text = description!!,
                 modifier = Modifier.alpha(.5f),
-                fontSize = 15.sp,
+                fontSize = DESCRIPTION_SIZE.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
@@ -126,7 +128,7 @@ fun PreferenceItem(
             itemCount = items.size
         ) { index ->
             FilledTonalButton(
-                modifier = Modifier.padding(2.dp),
+                modifier = Modifier.padding(1.5.dp),
                 onClick = {
                     onItemClicked.invoke(items[index])
                 }
@@ -134,16 +136,14 @@ fun PreferenceItem(
                 AnimatedVisibility(items[index] == currentItem) {
                     Icon(painter = painterResource(CommonIcons.DONE_ICON_18), null)
 
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(25.dp))
                 }
 
                 Text(
                     text = items[index],
-                    fontSize = 18.sp
+                    fontSize = DESCRIPTION_SIZE.sp
                 )
             }
         }
     }
-
-
 }

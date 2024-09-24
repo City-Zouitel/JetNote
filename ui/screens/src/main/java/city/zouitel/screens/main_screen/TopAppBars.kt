@@ -4,10 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -75,21 +73,8 @@ internal fun MainTopAppBar(
         },
         actions = {
             AnimatedVisibility(uiState.searchTitle.isEmpty() && uiState.searchTag == null) {
-                CommonRow(
-                    Modifier.padding(start = 10.dp, end = 10.dp),
-                ) {
-                    if (uiState.isHomeScreen) {
-                        SortBy(
-                            dataStoreModel = datastoreModel,
-                            mainModel = mainModel
-                        )
-                    } else {
-                        BroomData(homeModel = mainModel)
-                    }
-
-                    Spacer(modifier = Modifier.width(5.dp))
-
-                    Layout(datastoreModel)
+                AnimatedVisibility(uiState.isHomeScreen.not()) {
+                    BroomData()
                 }
             }
         },

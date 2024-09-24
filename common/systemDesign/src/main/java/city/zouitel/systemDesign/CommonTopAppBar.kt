@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import city.zouitel.systemDesign.CommonConstants.TITLE_SIZE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +31,7 @@ fun CommonTopAppBar(
                 }
             }
         },
-        title = { Text(title, fontSize = 22.sp, modifier = Modifier.padding(start = 15.dp)) },
+        title = { Text(title, fontSize = TITLE_SIZE.sp, modifier = Modifier.padding(start = 15.dp)) },
         scrollBehavior = scrollBehavior
     )
 }
