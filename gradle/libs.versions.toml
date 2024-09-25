@@ -36,7 +36,7 @@ dependencyanalysis = "2.0.1"
 
 #KotlinX.
 serialization = "1.7.1"
-coroutines = "1.9.0-RC"
+coroutines = "1.9.0"
 
 #Koin.
 koin-core = "3.5.6"
