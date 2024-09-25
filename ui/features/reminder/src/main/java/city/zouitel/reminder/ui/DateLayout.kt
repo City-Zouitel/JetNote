@@ -13,6 +13,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import city.zouitel.systemDesign.CommonConstants.TITLE_SIZE
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -40,7 +41,7 @@ internal fun DateLayout(
                     dateDialog.value = false
                     selectedDate.value = dateState.selectedDateMillis!!
                 }) {
-                Text(text = "Select", fontSize = 16.sp)
+                Text(text = "Confirm", fontSize = 16.sp)
             }
 
         },
@@ -52,17 +53,17 @@ internal fun DateLayout(
                     onAction.invoke()
                     dateDialog.value = false
                 }) {
-                Text(text = "Cancel", fontSize = 16.sp)
+                Text(text = "Dismiss", fontSize = 16.sp)
             }
         }
     ) {
-
         DatePicker(
             state = dateState,
             title = {
                 Text(
                     modifier = Modifier.padding(15.dp),
-                    text = "Select date"
+                    text = "Select date",
+                    fontSize = TITLE_SIZE.sp
                 )
             },
             headline = {

@@ -48,13 +48,13 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 @Composable
 internal fun BottomBar(
     isNew: Boolean,
+    id: String,
+    titleState: TextFieldState?,
+    descriptionState: TextFieldState?,
     dataStoreModel: DataStoreScreenModel,
     dataModel: DataScreenModel,
-    id: String,
     imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
-    workspaceModel: WorkplaceScreenModel,
-    titleState: TextFieldState?,
-    descriptionState: TextFieldState?
+    workspaceModel: WorkplaceScreenModel
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
@@ -64,7 +64,6 @@ internal fun BottomBar(
     val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
     val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
 
-//    val showOptionsMenu = remember { mutableStateOf(false) }
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
     val sound by lazy { SoundEffect() }
 
@@ -89,7 +88,6 @@ internal fun BottomBar(
                                     it.showAlignTop()
                                 }
                             ) {
-//                                showOptionsMenu.value = !showOptionsMenu.value
                                 sound.makeSound.invoke(context, FOCUS_NAVIGATION, thereIsSoundEffect.value)
                                 navBottomSheet.show(OptionsScreen(
                                     id = id,
@@ -152,17 +150,6 @@ internal fun BottomBar(
                 )
             }
         }
-
-        // more options menu.
-//        Options(
-//            id = id,
-//            descriptionState = descriptionState,
-//            titleState = titleState,
-//            dataStoreModel = dataStoreModel,
-//            isShow = showOptionsMenu,
-//            imageLaunch = imageLaunch,
-//            workspaceModel = workspaceModel,
-//        )
 
         // row of background colors.
         ColorsRow(
