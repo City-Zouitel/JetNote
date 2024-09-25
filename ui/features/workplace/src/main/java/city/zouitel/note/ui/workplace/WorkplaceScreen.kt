@@ -6,6 +6,8 @@ import android.net.Uri
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -56,7 +58,6 @@ import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.BasicAudioScreen
@@ -75,8 +76,6 @@ import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.BottomBar
 import city.zouitel.note.utils.TextField
-import city.zouitel.notifications.viewmodel.NotificationScreenModel
-import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.DataStoreScreenModel
@@ -102,6 +101,7 @@ data class WorkplaceScreen(
     val reminding: Long = 0
 ): Screen {
 
+    @OptIn(ExperimentalSharedTransitionApi::class)
     @Composable
     override fun Content() {
         val workspaceModel = getScreenModel<WorkplaceScreenModel>()
@@ -112,29 +112,29 @@ data class WorkplaceScreen(
                 .updatePriority(priority)
         }
 
-        Workplace(
-            notificationModel = getScreenModel(),
-            dataModel = getScreenModel(),
-            tagModel = getScreenModel(),
-            noteAndTagModel = getScreenModel(),
-            taskModel = getScreenModel(),
-            noteAndTodoModel = getScreenModel(),
-            linkModel = getScreenModel(),
-            noteAndLinkModel = getScreenModel(),
-            dataStoreModel = getScreenModel(),
-            audioModel = getScreenModel(),
-            noteAndAudioModel = getScreenModel(),
-            mediaModel = getScreenModel(),
-            noteAndMediaModel = getScreenModel(),
-            workspaceModel = workspaceModel
-        )
+        SharedTransitionScope {
+            Workplace(
+                dataModel = getScreenModel(),
+                tagModel = getScreenModel(),
+                noteAndTagModel = getScreenModel(),
+                taskModel = getScreenModel(),
+                noteAndTodoModel = getScreenModel(),
+                linkModel = getScreenModel(),
+                noteAndLinkModel = getScreenModel(),
+                dataStoreModel = getScreenModel(),
+                audioModel = getScreenModel(),
+                noteAndAudioModel = getScreenModel(),
+                mediaModel = getScreenModel(),
+                noteAndMediaModel = getScreenModel(),
+                workspaceModel = workspaceModel
+            )
+        }
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalLayoutApi::class)
+    @OptIn(ExperimentalLayoutApi::class, ExperimentalSharedTransitionApi::class)
     @Composable
-    private fun Workplace(
-        notificationModel: NotificationScreenModel,
+    private fun SharedTransitionScope.Workplace(
         dataModel: DataScreenModel,
         tagModel: TagScreenModel,
         noteAndTagModel: NoteAndTagScreenModel,
@@ -151,7 +151,6 @@ data class WorkplaceScreen(
     ) {
         val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
-        val navBottomSheet = LocalBottomSheetNavigator.current
 
         val focusRequester by lazy { FocusRequester() }
 
@@ -224,28 +223,6 @@ data class WorkplaceScreen(
                 )
             }
         ) {
-            // recording dialog visibility.
-//            if (uiState.recordedDialogState) {
-//                Navigator(RecorderScreen(id) { workspaceModel.updateRecorderDialog(false) })
-//            }
-
-            // reminding dialog visibility.
-//            if (uiState.remindingDialogState) {
-//                RemindingNote(
-//                    dataStoreModel = dataStoreModel,
-//                    notificationModel = notificationModel,
-//                    title = titleState.text.toString(),
-//                    message = descriptionState.text.toString(),
-//                    uid = id,
-//                    dialogState = { state ->
-//                        workspaceModel.updateRemindingDialog(state)
-//                    },
-//                    remindingValue = { value ->
-//                        workspaceModel.updateRemindingValue(value)
-//                    }
-//                )
-//            }
-
             LazyColumn(
                 Modifier
                     .background(Color(uiState.backgroundColor))
@@ -254,7 +231,10 @@ data class WorkplaceScreen(
 
                 // display the image.
                 item {
-                    Navigator(MediaScreen(id = id, backgroundColor = uiState.backgroundColor))
+                    Navigator(MediaScreen(
+                        id = id,
+                        backgroundColor = uiState.backgroundColor,
+                    ))
                 }
 
                 // The Title.

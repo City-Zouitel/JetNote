@@ -1,6 +1,7 @@
 package city.zouitel.media.ui
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -30,22 +31,25 @@ import city.zouitel.media.model.NoteAndMedia
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
-data class MediaScreen(val id: String, val backgroundColor: Int = 0): Screen {
+data class MediaScreen(
+    val id: String,
+    val backgroundColor: Int = 0,
+): Screen {
+    @OptIn(ExperimentalSharedTransitionApi::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     override fun Content() {
-
         Media(
             mediaModel = getScreenModel(),
-            noteAndMediaModel = getScreenModel()
+            noteAndMediaModel = getScreenModel(),
         )
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
     @Composable
     private fun Media(
         mediaModel: MediaScreenModel,
-        noteAndMediaModel: NoteAndMediaScreenModel
+        noteAndMediaModel: NoteAndMediaScreenModel,
     ) {
         val context = LocalContext.current
         val vibe = LocalHapticFeedback.current
@@ -66,7 +70,8 @@ data class MediaScreen(val id: String, val backgroundColor: Int = 0): Screen {
 
         if (filteredMedias.isNotEmpty()) {
             Card(
-                colors = CardDefaults.cardColors(containerColor = Color(backgroundColor))
+                colors = CardDefaults.cardColors(containerColor = Color(backgroundColor)),
+                modifier = Modifier
             ) {
                 HorizontalPager(
                     state = pagerState,

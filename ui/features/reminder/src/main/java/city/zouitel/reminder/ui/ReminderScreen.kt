@@ -44,12 +44,10 @@ data class ReminderScreen(
 ): Screen {
     @Composable
     override fun Content() {
-
         Reminder(
             dataStoreModel = getScreenModel(),
             notificationModel = getScreenModel()
         )
-
     }
 
     @OptIn(ExperimentalMaterial3Api::class)

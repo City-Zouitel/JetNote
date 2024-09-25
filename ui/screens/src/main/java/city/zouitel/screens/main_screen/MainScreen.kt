@@ -1,6 +1,9 @@
 package city.zouitel.screens.main_screen
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -69,6 +72,7 @@ import city.zouitel.tasks.ui.TaskScreenModel
 
 data class MainScreen(val isHome: Boolean): Screen {
 
+    @OptIn(ExperimentalSharedTransitionApi::class)
     @Composable
     override fun Content() {
         val mainModel = getScreenModel<MainScreenModel>()
@@ -77,23 +81,25 @@ data class MainScreen(val isHome: Boolean): Screen {
             mainModel.updateScreen(isHome)
         }
 
-        Main(
-            mainModel = mainModel,
-            notificationModel = getScreenModel(),
-            tagModel = getScreenModel(),
-            noteAndTagModel = getScreenModel(),
-            taskModel = getScreenModel(),
-            noteAndTaskModel = getScreenModel(),
-            dataModel = getScreenModel(),
-            audioModel = getScreenModel(),
-            noteAndAudioModel = getScreenModel(),
-            linkModel = getScreenModel(),
-            noteAndLinkModel = getScreenModel(),
-            datastoreModel = getScreenModel(),
-            mediaModel = getScreenModel(),
-            noteAndMediaModel = getScreenModel(),
-            navigationDrawerModel = getScreenModel()
-        )
+        SharedTransitionLayout {
+            Main(
+                mainModel = mainModel,
+                notificationModel = getScreenModel(),
+                tagModel = getScreenModel(),
+                noteAndTagModel = getScreenModel(),
+                taskModel = getScreenModel(),
+                noteAndTaskModel = getScreenModel(),
+                dataModel = getScreenModel(),
+                audioModel = getScreenModel(),
+                noteAndAudioModel = getScreenModel(),
+                linkModel = getScreenModel(),
+                noteAndLinkModel = getScreenModel(),
+                datastoreModel = getScreenModel(),
+                mediaModel = getScreenModel(),
+                noteAndMediaModel = getScreenModel(),
+                navigationDrawerModel = getScreenModel(),
+            )
+        }
     }
 
     @SuppressLint(
@@ -117,7 +123,7 @@ data class MainScreen(val isHome: Boolean): Screen {
         datastoreModel: DataStoreScreenModel,
         mediaModel: MediaScreenModel,
         noteAndMediaModel: NoteAndMediaScreenModel,
-        navigationDrawerModel: NavigationDrawerScreenModel
+        navigationDrawerModel: NavigationDrawerScreenModel,
     ) {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
