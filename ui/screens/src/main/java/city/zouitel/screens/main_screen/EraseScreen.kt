@@ -23,7 +23,7 @@ import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.note.ui.DataScreenModel
-import city.zouitel.screens.sound
+import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonBottomSheet
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonOptionItem

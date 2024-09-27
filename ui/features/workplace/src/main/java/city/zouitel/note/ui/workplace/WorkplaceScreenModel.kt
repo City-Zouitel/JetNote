@@ -27,9 +27,9 @@ class WorkplaceScreenModel: ScreenModel {
         }
     }
 
-    fun updatePriority(property: String): WorkplaceScreenModel {
+    fun updatePriority(priority: String): WorkplaceScreenModel {
         screenModelScope.launch {
-            _uiState.value = _uiState.value.copy(priority = property)
+            _uiState.value = _uiState.value.copy(priority = priority)
         }
         return this
     }

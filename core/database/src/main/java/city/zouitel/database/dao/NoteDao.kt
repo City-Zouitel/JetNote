@@ -26,10 +26,10 @@ interface NoteDao {
     fun getAllNotesByName():Flow<List<NoteEntity>>
 
     @Transaction
-@Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY CASE " +
-            "WHEN PRIORITY LIKE 'URGENT' THEN 1 " +
-            "WHEN PRIORITY LIKE 'IMPORTANT' THEN 2 " +
-            "WHEN PRIORITY LIKE 'NORMAL' THEN 3 " +
+    @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY CASE " +
+            "WHEN PRIORITY LIKE 'URG' THEN 1 " +
+            "WHEN PRIORITY LIKE 'HIG' THEN 2 " +
+            "WHEN PRIORITY LIKE 'MED' THEN 3 " +
             "WHEN PRIORITY LIKE 'LOW' THEN 4 " +
             "WHEN PRIORITY LIKE 'NON' THEN 5 " +
             "END")
@@ -42,6 +42,4 @@ interface NoteDao {
     @Transaction
     @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY REMINDING DESC")
     fun getAllRemindingNotes(): Flow<List<NoteEntity>>
-
-
 }

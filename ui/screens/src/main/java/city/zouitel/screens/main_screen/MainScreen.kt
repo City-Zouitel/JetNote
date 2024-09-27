@@ -1,7 +1,6 @@
 package city.zouitel.screens.main_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.animateContentSize
@@ -53,10 +52,14 @@ import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
+import city.zouitel.screens.main_screen.utils.HomeSelectionTopAppBar
+import city.zouitel.screens.main_screen.utils.MainTopAppBar
+import city.zouitel.screens.main_screen.utils.RemovedSelectionTopAppBar
+import city.zouitel.screens.main_screen.utils.UndoSnackbar
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
 import city.zouitel.screens.note_card.NoteCard
-import city.zouitel.screens.sound
+import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.NAME_ORDER
 import city.zouitel.systemDesign.CommonConstants.NEWEST_ORDER

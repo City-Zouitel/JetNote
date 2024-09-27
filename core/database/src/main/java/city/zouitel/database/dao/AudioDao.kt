@@ -14,6 +14,7 @@ interface AudioDao {
 
     @Query("SELECT * FROM AUDIOS_TABLE")
     fun getAllAudios(): Flow<List<AudioEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addAudio(audioEntity: AudioEntity)
 

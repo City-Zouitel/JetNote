@@ -1,6 +1,5 @@
-package city.zouitel.screens
+package city.zouitel.screens.note_card
 
-import android.content.Context
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -12,15 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
 import city.zouitel.logic.getColorOfPriority
 import city.zouitel.note.model.Data
-import city.zouitel.note.ui.DataScreenModel
-import city.zouitel.systemDesign.CommonConstants
-import city.zouitel.systemDesign.SoundEffect
-import java.io.File
-import java.util.UUID
-
-internal val sound = SoundEffect()
-
-
 
 val DrawScope.prioritizedNotePath: (Data) -> Unit get() = {
     clipPath(
@@ -68,30 +58,3 @@ val DrawScope.normalNotePath: (Data) -> Unit get() = {
         )
     }
 }
-
-fun copyNote(
-    ctx: Context,
-    dataScreenModel: DataScreenModel,
-    note: Data,
-    uid: UUID,
-    onAction : () -> Unit
-) {
-    dataScreenModel.addData(
-        note.copy(uid = uid.toString())
-    )
-    //
-    "${ctx.filesDir.path}/${CommonConstants.IMG_DIR}/".apply {
-        File("$this${note.uid}.${CommonConstants.JPEG}").let {
-            if (it.exists()) it.copyTo(File("${this}${uid}.${CommonConstants.JPEG}"))
-        }
-    }
-    //
-    "${ctx.filesDir.path}/${CommonConstants.REC_DIR}/".apply {
-        File("$this${note.uid}.${CommonConstants.MP3}").let {
-            if (it.exists()) it.copyTo(File("$this${uid}.${CommonConstants.MP3}"))
-        }
-    }
-    //
-    onAction.invoke()
-}
-

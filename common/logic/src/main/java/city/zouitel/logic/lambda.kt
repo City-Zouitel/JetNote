@@ -3,11 +3,10 @@ package city.zouitel.logic
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import city.zouitel.logic.Constants.IMPORTANT
+import city.zouitel.logic.Constants.HIG
 import city.zouitel.logic.Constants.LOW
-import city.zouitel.logic.Constants.NON
-import city.zouitel.logic.Constants.NORMAL
-import city.zouitel.logic.Constants.URGENT
+import city.zouitel.logic.Constants.MED
+import city.zouitel.logic.Constants.URG
 
 val sharNote: (Context, String, String, then: () -> Unit) -> Unit = { context, title, description, then ->
     context.startActivity(
@@ -63,24 +62,14 @@ val findUrlLink: (String?) -> List<String>? = {
     it?.split(' ')?.filter { str -> str.matches("https?://.+".toRegex()) }
 }
 
-val getPriorityOfColor: (argb: Int) -> String = {
-    when (it) {
-        -65536 -> URGENT
-        -256 -> IMPORTANT
-        -16711936 -> NORMAL
-        -16711681 -> LOW
-        else -> NON
-    }
-}
-
 //
 val getColorOfPriority: (color: String) -> Int = {
     when (it) {
-        URGENT -> -65536
-        IMPORTANT -> -256
-        NORMAL -> -16711936
-        LOW -> -16711681
-        else -> 0
+        URG -> 0xffff2800.toInt()
+        HIG -> 0xffff8c00.toInt()
+        MED -> 0xffffef00.toInt()
+        LOW -> 0xff32cd32.toInt()
+        else -> 0xffc0c0c0.toInt()
     }
 }
 

@@ -28,7 +28,7 @@ import city.zouitel.screens.R
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
-import city.zouitel.screens.sound
+import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonTopAppBar

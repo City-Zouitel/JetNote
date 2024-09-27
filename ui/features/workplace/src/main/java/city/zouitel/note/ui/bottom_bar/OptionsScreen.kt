@@ -6,14 +6,26 @@ import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
@@ -23,6 +35,7 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.list.AudioListScreen
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
+import city.zouitel.note.utils.PriorityColorsList.*
 import city.zouitel.note.utils.RationalDialog
 import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.ReminderScreen
@@ -48,11 +61,11 @@ data class OptionsScreen(
     val id: String,
     val titleState: TextFieldState?,
     val descriptionState: TextFieldState?,
+    val priorityState: MutableState<String>,
     val imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
 ): Screen {
     @Composable
     override fun Content() {
-
         Options(
             dataStoreModel = getScreenModel(),
             workspaceModel = getScreenModel()
@@ -283,9 +296,48 @@ data class OptionsScreen(
                     }
                 }
                 item {
-
+                    PriorityRow {
+                        workspaceModel.updatePriority(it)
+                        priorityState.value = it
+                    }
                 }
             }
         }))
+    }
+
+    @Composable
+    private fun PriorityRow(onClick: (String) -> Unit) {
+        val priorities = arrayOf(NON, LOW, MED, HIG, URG)
+
+        LazyRow(modifier = Modifier.animateContentSize()) {
+            items(priorities) { priority ->
+                AnimatedVisibility(true) {
+                    if (priorityState.value == priority.priority) {
+                        FilledTonalButton(
+                            enabled = true,
+                            onClick = {
+                                onClick.invoke(priority.priority)
+                            },
+                            colors = ButtonDefaults.filledTonalButtonColors(
+                                containerColor = priority.color,
+                            ),
+                        ) {
+                            Text(priority.priority, color = MaterialTheme.colorScheme.background)
+                        }
+                    } else {
+                        FilledTonalIconButton(
+                            enabled = true,
+                            onClick = {
+                                onClick.invoke(priority.priority)
+                            },
+                            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                containerColor = priority.color,
+                            ),
+                        ) {
+                        }
+                    }
+                }
+            }
+        }
     }
 }

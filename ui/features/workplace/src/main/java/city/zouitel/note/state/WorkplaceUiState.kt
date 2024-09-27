@@ -1,10 +1,10 @@
 package city.zouitel.note.state
 
 import android.net.Uri
-import city.zouitel.systemDesign.CommonConstants
+import city.zouitel.note.utils.PriorityColorsList
 
 internal data class WorkplaceUiState(
-    val priority: String = CommonConstants.NONE,
+    val priority: String = PriorityColorsList.NON.priority,
     val textColor: Int = 0,
     val backgroundColor: Int = 0,
     val reminding: Long = 0L,
@@ -14,4 +14,8 @@ internal data class WorkplaceUiState(
     val isDescriptionFieldFocused: Boolean = false,
     val photo: Uri? = null, // TODO:
     val isFocused: Boolean = false // TODO:
-)
+) {
+  init {
+//      println(priority)
+  }
+}

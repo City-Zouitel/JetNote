@@ -20,7 +20,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
-import city.zouitel.screens.sound
+import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants.DARK
 import city.zouitel.systemDesign.CommonConstants.DEFAULT_ORDER
 import city.zouitel.systemDesign.CommonConstants.GRID

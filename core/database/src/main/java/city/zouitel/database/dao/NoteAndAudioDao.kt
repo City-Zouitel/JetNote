@@ -23,5 +23,4 @@ interface NoteAndAudioDao {
 
     @Delete
     suspend fun deleteNoteAndAudio(noteAndAudio: NoteAndAudioEntity)
-
 }

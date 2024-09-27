@@ -54,7 +54,8 @@ internal fun BottomBar(
     dataStoreModel: DataStoreScreenModel,
     dataModel: DataScreenModel,
     imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
-    workspaceModel: WorkplaceScreenModel
+    workspaceModel: WorkplaceScreenModel,
+    priorityState: MutableState<String>
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
@@ -93,7 +94,8 @@ internal fun BottomBar(
                                     id = id,
                                     titleState = titleState,
                                     descriptionState = descriptionState,
-                                    imageLaunch = imageLaunch
+                                    imageLaunch = imageLaunch,
+                                    priorityState = priorityState
                                 ))
                             }
                     )
@@ -109,7 +111,7 @@ internal fun BottomBar(
 
                 Icon(
                     painter = painterResource(id = if (isNew) CommonIcons.DONE_ICON else CommonIcons.EDIT_ICON),
-                    contentDescription = null,
+                    contentDescription = "Add/Edit",
                     modifier = Modifier.clickable {
                         sound.makeSound.invoke(
                             context,
@@ -123,7 +125,7 @@ internal fun BottomBar(
                                     uid = id,
                                     title = titleState?.text.toString(),
                                     description = descriptionState?.text.toString(),
-                                    priority = uiState.priority,
+                                    priority = priorityState.value,
                                     reminding = uiState.reminding,
                                     date = dateState.value.toString(),
                                     color = uiState.backgroundColor,
@@ -136,7 +138,7 @@ internal fun BottomBar(
                                     uid = id,
                                     title = titleState?.text.toString(),
                                     description = descriptionState?.text.toString(),
-                                    priority = uiState.priority,
+                                    priority = priorityState.value,
                                     reminding = uiState.reminding,
                                     date = dateState.value.toString(),
                                     removed = 0,

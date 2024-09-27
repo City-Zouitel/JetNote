@@ -36,6 +36,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -76,7 +77,6 @@ import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.BottomBar
 import city.zouitel.note.utils.TextField
-import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.model.NoteAndTag
@@ -97,7 +97,7 @@ data class WorkplaceScreen(
     val description: String? = null,
     val backgroundColor: Int = 0,
     val textColor: Int = 0,
-    val priority: String = CommonConstants.NON,
+    val priority: String = "NON",
     val reminding: Long = 0
 ): Screen {
 
@@ -109,7 +109,6 @@ data class WorkplaceScreen(
         LaunchedEffect(!isNew) {
             workspaceModel.updateTextColor(textColor)
                 .updateBackgroundColor(backgroundColor)
-                .updatePriority(priority)
         }
 
         SharedTransitionScope {
@@ -180,6 +179,7 @@ data class WorkplaceScreen(
             .collectAsState()
 
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
+        val priorityState = remember { mutableStateOf(priority) }
 
         val filteredObservedTags by remember {
             derivedStateOf {
@@ -220,6 +220,7 @@ data class WorkplaceScreen(
                     workspaceModel = workspaceModel,
                     titleState = titleState,
                     descriptionState = descriptionState,
+                    priorityState = priorityState
                 )
             }
         ) {

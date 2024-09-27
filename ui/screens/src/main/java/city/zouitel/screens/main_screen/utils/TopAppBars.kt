@@ -1,4 +1,4 @@
-package city.zouitel.screens.main_screen
+package city.zouitel.screens.main_screen.utils
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -25,8 +25,8 @@ import city.zouitel.logic.sharNote
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
-import city.zouitel.screens.copyNote
-import city.zouitel.screens.sound
+import city.zouitel.screens.main_screen.MainScreenModel
+import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonPopupTip

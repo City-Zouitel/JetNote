@@ -70,9 +70,7 @@ import city.zouitel.note.model.Note
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.main_screen.OptionsScreen
-import city.zouitel.screens.normalNotePath
-import city.zouitel.screens.prioritizedNotePath
-import city.zouitel.screens.sound
+import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.LIST
 import city.zouitel.systemDesign.CommonConstants.NON

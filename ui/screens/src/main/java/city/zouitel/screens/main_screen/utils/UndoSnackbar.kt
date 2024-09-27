@@ -1,12 +1,11 @@
-package city.zouitel.screens.main_screen
+package city.zouitel.screens.main_screen.utils
 
 import androidx.compose.material.*
 import androidx.compose.material.SnackbarResult
-import androidx.compose.material3.*
 import androidx.compose.runtime.State
-import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
+import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonConstants.TRASH_MESSAGE
 import city.zouitel.systemDesign.CommonConstants.UNDO
 import kotlinx.coroutines.CoroutineScope

@@ -1,14 +1,11 @@
-package city.zouitel.screens.main_screen
+package city.zouitel.screens.main_screen.utils
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -16,20 +13,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import city.zouitel.screens.sound
+import city.zouitel.screens.main_screen.MainScreenModel
+import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
-import city.zouitel.systemDesign.CommonPopupTip
 import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.DataStoreScreenModel
 
@@ -88,59 +81,4 @@ internal fun SearchField(
             )
         }
     }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-internal fun BroomData() {
-    val haptic = LocalHapticFeedback.current
-    val navBottomSheet = LocalBottomSheetNavigator.current
-
-    CommonPopupTip(message = "Wipe All Notes") { balloonWindow ->
-        Icon(
-            painterResource(CommonIcons.BROOM_ICON),
-            null,
-            modifier = Modifier
-                .padding(5.dp)
-                .combinedClickable(
-                    onLongClick = {
-                        // To make vibration.
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        balloonWindow.showAlignBottom()
-                    }
-                ) {
-                    /*homeModel.updateErasing(true)*/
-                    navBottomSheet.show(EraseScreen {})
-                }
-        )
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-internal fun SelectionsCount(
-    mainModel: MainScreenModel
-) {
-    val uiState by remember(mainModel, mainModel::uiState).collectAsState()
-
-    CommonPopupTip(message = "Cancel") {
-        Icon(
-            painter = painterResource(id = CommonIcons.CROSS_ICON),
-            contentDescription = null,
-            modifier = Modifier.combinedClickable(
-                onLongClick = {
-                    it.showAlignBottom()
-                }
-            ) {
-                mainModel.updateSelection(false)
-                mainModel.clearSelectionNotes()
-            }
-        )
-    }
-    // number of selected notes.
-    Text(
-        text = uiState.selectedNotes.count().toString(),
-        fontSize = 24.sp,
-        modifier = Modifier.padding(5.dp)
-    )
 }
