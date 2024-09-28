@@ -63,15 +63,6 @@ val findUrlLink: (String?) -> List<String>? = {
 }
 
 //
-val getColorOfPriority: (color: String) -> Int = {
-    when (it) {
-        URG -> 0xffff2800.toInt()
-        HIG -> 0xffff8c00.toInt()
-        MED -> 0xffffef00.toInt()
-        LOW -> 0xff32cd32.toInt()
-        else -> 0xffc0c0c0.toInt()
-    }
-}
 
 //@JvmName("filterBadWordsString")
 //fun MutableState<String?>.filterBadWords(): MutableState<String?> {

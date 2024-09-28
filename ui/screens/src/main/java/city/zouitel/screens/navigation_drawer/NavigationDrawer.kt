@@ -42,8 +42,8 @@ import city.zouitel.screens.main_screen.MainScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NoteScreens.*
 import city.zouitel.screens.settings_screen.SettingsScreen
-import city.zouitel.screens.utils.sound
 import city.zouitel.screens.tags_screen.HashTagsScreen
+import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants.APP_NAME
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.TITLE_SIZE

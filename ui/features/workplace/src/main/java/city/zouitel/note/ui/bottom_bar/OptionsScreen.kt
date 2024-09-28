@@ -311,8 +311,8 @@ data class OptionsScreen(
 
         LazyRow(modifier = Modifier.animateContentSize()) {
             items(priorities) { priority ->
-                AnimatedVisibility(true) {
-                    if (priorityState.value == priority.priority) {
+                if (priorityState.value == priority.priority) {
+                    AnimatedVisibility(true) {
                         FilledTonalButton(
                             enabled = true,
                             onClick = {
@@ -324,17 +324,17 @@ data class OptionsScreen(
                         ) {
                             Text(priority.priority, color = MaterialTheme.colorScheme.background)
                         }
-                    } else {
-                        FilledTonalIconButton(
-                            enabled = true,
-                            onClick = {
-                                onClick.invoke(priority.priority)
-                            },
-                            colors = IconButtonDefaults.filledTonalIconButtonColors(
-                                containerColor = priority.color,
-                            ),
-                        ) {
-                        }
+                    }
+                } else {
+                    FilledTonalIconButton(
+                        enabled = true,
+                        onClick = {
+                            onClick.invoke(priority.priority)
+                        },
+                        colors = IconButtonDefaults.filledTonalIconButtonColors(
+                            containerColor = priority.color,
+                        ),
+                    ) {
                     }
                 }
             }

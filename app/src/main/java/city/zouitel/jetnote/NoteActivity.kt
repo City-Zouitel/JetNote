@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
-import cafe.adriel.voyager.transitions.ScaleTransition
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.logic.asLongToast
 import city.zouitel.root.RootScreenModel
@@ -49,9 +48,7 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
                     sheetShape = ShapeDefaults.Large,
                     sheetElevation = 150.dp
                 ) {
-                    Navigator(MainScreen(true)) {
-                        ScaleTransition(it)
-                    }
+                    Navigator(MainScreen(true))
                 }
             }
 
