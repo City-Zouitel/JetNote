@@ -9,10 +9,13 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
-import city.zouitel.logic.getColorOfPriority
+import city.zouitel.logic.Constants.HIG
+import city.zouitel.logic.Constants.LOW
+import city.zouitel.logic.Constants.MED
+import city.zouitel.logic.Constants.URG
 import city.zouitel.note.model.Data
 
-val DrawScope.prioritizedNotePath: (Data) -> Unit get() = {
+internal val DrawScope.prioritizedNotePath: (Data) -> Unit get() = {
     clipPath(
         Path().apply {
             lineTo(size.width, 0f)
@@ -41,7 +44,7 @@ val DrawScope.prioritizedNotePath: (Data) -> Unit get() = {
     }
 }
 
-val DrawScope.normalNotePath: (Data) -> Unit get() = {
+internal val DrawScope.normalNotePath: (Data) -> Unit get() = {
     clipPath(
         Path().apply {
             lineTo(size.width, 0f)
@@ -56,5 +59,15 @@ val DrawScope.normalNotePath: (Data) -> Unit get() = {
             size = size,
             cornerRadius = CornerRadius(15.dp.toPx())
         )
+    }
+}
+
+private val getColorOfPriority: (color: String) -> Int = {
+    when (it) {
+        URG -> 0xffff2800.toInt()
+        HIG -> 0xffffa500.toInt()
+        MED -> 0xffffef00.toInt()
+        LOW -> 0xff32cd32.toInt()
+        else -> 0xffc0c0c0.toInt()
     }
 }
