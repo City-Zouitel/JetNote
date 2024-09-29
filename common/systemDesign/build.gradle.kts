@@ -11,7 +11,7 @@ android {
 
 dependencies {
     //Modules.
-    implementation(projects.core.datastore)
+    implementation(projects.core.local.datastore)
 
     //AndroidX.
     implementation(libs.constraintlayout)

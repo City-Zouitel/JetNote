@@ -14,7 +14,7 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
-    implementation(projects.core.datastore)
+    implementation(projects.core.local.datastore)
     implementation(projects.ui.features.workplace)
     implementation(projects.ui.features.links)
 

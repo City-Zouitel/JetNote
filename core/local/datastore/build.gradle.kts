@@ -8,7 +8,7 @@ android {
 }
 dependencies {
     //Modules.
-    implementation(projects.core.repository)
+    implementation(projects.core.local.repository)
 
     //DataStore.
     implementation (libs.datastore)

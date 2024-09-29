@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
     implementation(projects.domain)
-    implementation(projects.core.datastore)
+    implementation(projects.core.local.datastore)
     implementation(projects.ui.features.reminder)
     implementation(projects.ui.features.recorder)
     implementation(projects.ui.features.tasks)

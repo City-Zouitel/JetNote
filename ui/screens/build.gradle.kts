@@ -13,8 +13,8 @@ android {
 
 dependencies {
     //Modules.
-    implementation(projects.core.datastore)
-    implementation(projects.core.database)
+    implementation(projects.core.local.datastore)
+    implementation(projects.core.local.database)
     implementation(projects.domain)
     implementation(projects.services.notifications)
     implementation(projects.common.systemDesign)

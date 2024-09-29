@@ -14,7 +14,7 @@ ksp {
 
 dependencies {
     //Modules.
-    implementation(projects.core.repository)
+    implementation(projects.core.local.repository)
 
     //Room.
     implementation(libs.roomkts)

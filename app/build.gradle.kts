@@ -28,9 +28,9 @@ enigma.injectFakeKeys = true
 
 dependencies {
     //Modules.
-    implementation(projects.core.database)
-    implementation(projects.core.datastore)
-    implementation(projects.core.repository)
+    implementation(projects.core.local.database)
+    implementation(projects.core.local.datastore)
+    implementation(projects.core.local.repository)
     implementation(projects.core.security)
     implementation(projects.domain)
     implementation(projects.init)

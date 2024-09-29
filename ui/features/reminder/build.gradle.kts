@@ -13,7 +13,7 @@ dependencies {
     //Modules.
     implementation(projects.common.systemDesign)
     implementation(projects.services.notifications)
-    implementation(projects.core.datastore)
+    implementation(projects.core.local.datastore)
 
     //AndroidX.
     implementation(libs.constraintlayout)

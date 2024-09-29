@@ -14,7 +14,7 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
-    implementation(projects.core.datastore)
+    implementation(projects.core.local.datastore)
 
     //AndroidX.
     implementation(libs.constraintlayout)

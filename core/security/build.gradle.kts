@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.repository)
+    implementation(projects.core.local.repository)
 }
