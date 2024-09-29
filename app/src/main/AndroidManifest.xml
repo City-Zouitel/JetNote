@@ -19,7 +19,8 @@
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -39,7 +40,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JetNote"
         android:usesCleartextTraffic="false"
-        tools:ignore="DataExtractionRules">
+        tools:ignore="DataExtractionRules"
+        android:exported="true">
 
         <profileable
             android:shell="true"
@@ -53,30 +55,33 @@
         <activity
             android:name=".NoteActivity"
             android:exported="true"
-            android:label="JetNote"
             android:screenOrientation="unspecified"
-            android:theme="@style/Theme.JetNote">
+            android:theme="@style/Theme.JetNote"
+            tools:ignore="DiscouragedApi">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <!--  -->
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
 
             <!-- Sending simple data to this app by shareSheet -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <!-- -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="geo" />
             </intent-filter>
         </activity>
 
@@ -86,7 +91,6 @@
             android:theme="@style/Theme.JetNote.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.QUICK_VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
