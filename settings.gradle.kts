@@ -22,9 +22,10 @@ rootProject.name = "JetNote"
 
 include(":app")
 include(
-    ":core:database",
-    ":core:repository",
-    ":core:datastore",
+    ":core:local:database",
+    ":core:local:repository",
+    ":core:local:datastore",
+    ":core:network:ai",
     ":core:security"
 )
 include(":domain")
