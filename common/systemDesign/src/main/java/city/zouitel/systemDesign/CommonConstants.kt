@@ -19,8 +19,8 @@ object CommonConstants {
     const val JPEG = "jpeg"
     const val GIF = "gif"
 
-    const val NAME_ORDER = "Name"
     const val DEFAULT_ORDER = "Default"
+    const val NAME_ORDER = "Name"
     const val OLDEST_ORDER = "Oldest"
     const val NEWEST_ORDER = "Newest"
     const val PRIORITY_ORDER = "Priority"

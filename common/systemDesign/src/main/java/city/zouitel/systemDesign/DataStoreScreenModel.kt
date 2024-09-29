@@ -4,8 +4,8 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.datastore.DataStoreRepo
 import city.zouitel.systemDesign.CommonConstants.DARK
+import city.zouitel.systemDesign.CommonConstants.DEFAULT_ORDER
 import city.zouitel.systemDesign.CommonConstants.GRID
-import city.zouitel.systemDesign.CommonConstants.NAME_ORDER
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +36,7 @@ class DataStoreScreenModel(
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(),
-            NAME_ORDER
+            DEFAULT_ORDER
         )
 
     val getTheme: StateFlow<String> = dataStoreRepo.getTheme
