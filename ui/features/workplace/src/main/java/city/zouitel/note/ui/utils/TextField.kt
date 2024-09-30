@@ -1,4 +1,4 @@
-package city.zouitel.note.utils
+package city.zouitel.note.ui.utils
 
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi

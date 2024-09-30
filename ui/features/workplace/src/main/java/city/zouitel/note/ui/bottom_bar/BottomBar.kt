@@ -26,8 +26,8 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
-import city.zouitel.note.utils.ColorsRow
-import city.zouitel.note.utils.listOfTextColors
+import city.zouitel.note.ui.utils.ColorsRow
+import city.zouitel.note.ui.utils.listOfTextColors
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.FOCUS_NAVIGATION
 import city.zouitel.systemDesign.CommonIcons

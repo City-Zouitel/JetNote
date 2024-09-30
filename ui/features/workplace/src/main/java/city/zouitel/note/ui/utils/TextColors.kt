@@ -1,4 +1,4 @@
-package city.zouitel.note.utils
+package city.zouitel.note.ui.utils
 
 import androidx.compose.ui.graphics.Color
 

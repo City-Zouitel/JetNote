@@ -26,9 +26,12 @@
             <option value="$PROJECT_DIR$/common/logic" />
             <option value="$PROJECT_DIR$/common/systemDesign" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/core/database" />
-            <option value="$PROJECT_DIR$/core/datastore" />
-            <option value="$PROJECT_DIR$/core/repository" />
+            <option value="$PROJECT_DIR$/core/local" />
+            <option value="$PROJECT_DIR$/core/local/database" />
+            <option value="$PROJECT_DIR$/core/local/datastore" />
+            <option value="$PROJECT_DIR$/core/local/repository" />
+            <option value="$PROJECT_DIR$/core/network" />
+            <option value="$PROJECT_DIR$/core/network/ai" />
             <option value="$PROJECT_DIR$/core/security" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/init" />

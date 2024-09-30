@@ -1,7 +1,7 @@
 package city.zouitel.note.state
 
 import android.net.Uri
-import city.zouitel.note.utils.PriorityColorsList
+import city.zouitel.note.ui.utils.PriorityColorsList
 
 internal data class WorkplaceUiState(
     val priority: String = PriorityColorsList.NON.priority,

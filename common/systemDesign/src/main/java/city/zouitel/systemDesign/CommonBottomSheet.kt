@@ -1,6 +1,5 @@
 package city.zouitel.systemDesign
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,9 +32,12 @@ data class CommonBottomSheet(val content: @Composable () -> Unit): Screen {
                 thickness = 5.dp,
                 color = MaterialTheme.colorScheme.onSurface
             )
+
             Spacer(modifier = Modifier.height(12.dp))
+
             content.invoke()
-            Spacer(modifier = Modifier.height(100.dp))
+
+            Spacer(modifier = Modifier.height(30.dp))
         }
     }
 }

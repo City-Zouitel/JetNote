@@ -34,9 +34,9 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.list.AudioListScreen
+import city.zouitel.note.ui.utils.PriorityColorsList.*
+import city.zouitel.note.ui.utils.RationalScreen
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
-import city.zouitel.note.utils.PriorityColorsList.*
-import city.zouitel.note.utils.RationalDialog
 import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.ReminderScreen
 import city.zouitel.systemDesign.CommonBottomSheet
@@ -163,23 +163,26 @@ data class OptionsScreen(
         val readMediaRationalDialog = remember { mutableStateOf(false) }
         val reminderRationalDialog = remember { mutableStateOf(false) }
 
-        RationalDialog(
-            showRationalDialog = recorderRationalDialog,
-            permissionState = recorderPermissions,
-            permissionName = "audio record"
-        )
+//        RationalDialog(
+//            showRationalDialog = recorderRationalDialog,
+//            permissionState = recorderPermissions,
+//            permissionName = "audio record"
+//        )
 
-        RationalDialog(
-            showRationalDialog = readMediaRationalDialog,
-            permissionState = readMediaPermissions,
-            permissionName = "local media"
-        )
 
-        RationalDialog(
-            showRationalDialog = reminderRationalDialog,
-            permissionState = readMediaPermissions,
-            permissionName = "alarm manager"
-        )
+//        RationalDialog(
+//            showRationalDialog = readMediaRationalDialog,
+//            permissionState = readMediaPermissions,
+//            permissionName = "local media"
+//        )
+
+
+//        RationalDialog(
+//            showRationalDialog = reminderRationalDialog,
+//            permissionState = readMediaPermissions,
+//            permissionName = "alarm manager"
+//        )
+
 
         Navigator(CommonBottomSheet({
             LazyColumn {
@@ -205,7 +208,13 @@ data class OptionsScreen(
                         }.invokeOnCompletion {
                             if (!readMediaPermissions.allPermissionsGranted) {
                                 if (readMediaPermissions.shouldShowRationale) {
-                                    readMediaRationalDialog.value = true
+//                                    readMediaRationalDialog.value = true
+                                    navBottomSheet.show(
+                                    RationalScreen(
+                                        permissionState = reminderPermissions,
+                                        permissionName = "local media"
+                                    )
+                                    )
                                 } else {
                                     readMediaPermissions.launchMultiplePermissionRequest()
                                 }
@@ -235,6 +244,10 @@ data class OptionsScreen(
 //                                recorderRationalDialog.value = true
 //                            } else {
 //                                recorderPermissions.launchMultiplePermissionRequest()
+//                RationalScreen(
+//                    permissionState = readMediaPermissions,
+//                    permissionName = "audio record"
+//                )
 //                            }
 //                        } else {
 //                            navBottomSheet.show(RecorderScreen(id) {})
@@ -277,7 +290,13 @@ data class OptionsScreen(
                         }.invokeOnCompletion {
                             if (!reminderPermissions.allPermissionsGranted) {
                                 if (reminderPermissions.shouldShowRationale) {
-                                    reminderRationalDialog.value = true
+//                                    reminderRationalDialog.value = true
+                                    navBottomSheet.show(
+                                        RationalScreen(
+                                            permissionState = readMediaPermissions,
+                                            permissionName = "alarm manager"
+                                        )
+                                    )
                                 } else {
                                     reminderPermissions.launchMultiplePermissionRequest()
                                 }

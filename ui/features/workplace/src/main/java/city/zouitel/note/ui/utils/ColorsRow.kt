@@ -1,4 +1,4 @@
-package city.zouitel.note.utils
+package city.zouitel.note.ui.utils
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
