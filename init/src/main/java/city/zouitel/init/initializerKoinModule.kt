@@ -32,21 +32,9 @@ val initializerKoinModule = module {
         file.path
     }
 
-//    single<String>(named(LINK_DIR)) {
-//        val file = File(androidContext().filesDir.path, LINK_DIR)
-//        if (!file.exists()) file.mkdirs()
-//        file.path
-//    }
-
     single<String>(named(MEDIA_DIR)) {
         val file = File(androidContext().filesDir.path, MEDIA_DIR)
         if (!file.exists()) file.mkdirs()
         file.path
-    }
-
-    single<Unit>(named("HideUiSystemBars")) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            HideUiSystemBars(androidContext())
-        }
     }
 }
