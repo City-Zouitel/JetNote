@@ -42,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
@@ -72,6 +73,7 @@ import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
+import com.skydoves.cloudy.cloudy
 
 data class MainScreen(val isHome: Boolean): Screen {
 
@@ -130,6 +132,7 @@ data class MainScreen(val isHome: Boolean): Screen {
     ) {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
+        val navBottomSheet = LocalBottomSheetNavigator.current
 
         val uiState by remember(mainModel, mainModel::uiState).collectAsState()
         val currentLayout = remember(datastoreModel, datastoreModel::getLayout).collectAsState()
@@ -195,7 +198,8 @@ data class MainScreen(val isHome: Boolean): Screen {
             androidx.compose.material.Scaffold(
                 modifier = Modifier
                     .navigationBarsPadding()
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
+                    .nestedScroll(scrollBehavior.nestedScrollConnection)
+                    .cloudy(enabled = navBottomSheet.isVisible),
                 scaffoldState = scaffoldState,
                 backgroundColor = MaterialTheme.colorScheme.surface,
                 topBar = {
