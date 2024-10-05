@@ -4,8 +4,8 @@ kotlin = "2.0.0"
 compileSdk-version = "35"
 minSdk-version = "26"
 targetSdk-version = "34"
-code-version = "622"
-name-version = "6.2.2"
+code-version = "630"
+name-version = "6.3.0"
 compose-version = "1.5.14"
 
 #Android.
@@ -87,6 +87,7 @@ amplituda = "2.2.2"
 enigma = "1.0.0.8"
 media3 = "1.4.1"
 balloon-compose = "1.6.7"
+cloudy = "0.2.3"
 
 [libraries]
 #Kotlin.
@@ -199,6 +200,7 @@ amplituda = { module = "com.github.lincollincol:amplituda", version.ref = "ampli
 #android-startup = { module = "io.github.idisfkj:android-startup", version.ref = "android-startup" }
 enigma = { module = "gradle.plugin.chrisney:enigma", version.ref = "enigma" }
 balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloon-compose" }
+compose-cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
 
 [bundles]
 compose = ["ui", "ui-tooling-preview", "material3"]
