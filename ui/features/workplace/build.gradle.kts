@@ -40,6 +40,8 @@ dependencies {
 
     //Balloon.
     implementation (libs.balloon.compose)
+    //Cloudy.
+    implementation(libs.compose.cloudy)
 
     //Baha-UrlPreview.
     implementation(libs.url.preview)

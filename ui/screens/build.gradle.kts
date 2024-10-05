@@ -50,6 +50,8 @@ dependencies {
 
     //Balloon.
     implementation (libs.balloon.compose)
+    //Cloudy.
+    implementation(libs.compose.cloudy)
 
     //Coil.
     implementation(libs.coil.compose)
