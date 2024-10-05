@@ -59,6 +59,7 @@ import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.BasicAudioScreen
@@ -86,6 +87,7 @@ import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
+import com.skydoves.cloudy.cloudy
 import java.util.Date
 import java.util.UUID
 import kotlin.random.Random
@@ -131,9 +133,9 @@ data class WorkplaceScreen(
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalLayoutApi::class, ExperimentalSharedTransitionApi::class)
+    @OptIn(ExperimentalLayoutApi::class)
     @Composable
-    private fun SharedTransitionScope.Workplace(
+    private fun Workplace(
         dataModel: DataScreenModel,
         tagModel: TagScreenModel,
         noteAndTagModel: NoteAndTagScreenModel,
@@ -150,6 +152,7 @@ data class WorkplaceScreen(
     ) {
         val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
+        val navBottomSheet = LocalBottomSheetNavigator.current
 
         val focusRequester by lazy { FocusRequester() }
 
@@ -209,7 +212,9 @@ data class WorkplaceScreen(
         }
 
         Scaffold(
-            modifier = Modifier.navigationBarsPadding(),
+            modifier = Modifier
+                .navigationBarsPadding()
+                .cloudy(enabled = navBottomSheet.isVisible),
             bottomBar = {
                 BottomBar(
                     isNew = isNew,

@@ -8,6 +8,9 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -27,6 +30,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -34,7 +39,11 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.list.AudioListScreen
-import city.zouitel.note.ui.utils.PriorityColorsList.*
+import city.zouitel.note.ui.utils.PriorityColorsList.HIG
+import city.zouitel.note.ui.utils.PriorityColorsList.LOW
+import city.zouitel.note.ui.utils.PriorityColorsList.MED
+import city.zouitel.note.ui.utils.PriorityColorsList.NON
+import city.zouitel.note.ui.utils.PriorityColorsList.URG
 import city.zouitel.note.ui.utils.RationalScreen
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.recoder.ui.RecorderScreen
@@ -290,7 +299,6 @@ data class OptionsScreen(
                         }.invokeOnCompletion {
                             if (!reminderPermissions.allPermissionsGranted) {
                                 if (reminderPermissions.shouldShowRationale) {
-//                                    reminderRationalDialog.value = true
                                     navBottomSheet.show(
                                         RationalScreen(
                                             permissionState = readMediaPermissions,
@@ -315,6 +323,8 @@ data class OptionsScreen(
                     }
                 }
                 item {
+                    Spacer(modifier = Modifier.width(16.dp))
+
                     PriorityRow {
                         workspaceModel.updatePriority(it)
                         priorityState.value = it
@@ -333,6 +343,7 @@ data class OptionsScreen(
                 if (priorityState.value == priority.priority) {
                     AnimatedVisibility(true) {
                         FilledTonalButton(
+                            modifier = Modifier.height(34.dp),
                             enabled = true,
                             onClick = {
                                 onClick.invoke(priority.priority)
@@ -341,11 +352,16 @@ data class OptionsScreen(
                                 containerColor = priority.color,
                             ),
                         ) {
-                            Text(priority.priority, color = MaterialTheme.colorScheme.background)
+                            Text(
+                                text = priority.priority,
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.background
+                            )
                         }
                     }
                 } else {
                     FilledTonalIconButton(
+                        modifier = Modifier.height(34.dp),
                         enabled = true,
                         onClick = {
                             onClick.invoke(priority.priority)
