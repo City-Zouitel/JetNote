@@ -6,7 +6,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.Composable
-import cafe.adriel.voyager.navigator.Navigator
 import city.zouitel.logic.asShortToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -18,7 +17,6 @@ internal interface IntentHandler: CoroutineScope {
     @Composable
     fun IntentHandler(
         intent: Intent,
-        navigator: Navigator?,
         composer: (@Composable () -> Unit) -> Unit
     ) {
         intent.apply {
@@ -48,11 +46,9 @@ internal interface IntentHandler: CoroutineScope {
                         // TODO:
                     }
                 }
-
             }
             removeCategory(Intent.CATEGORY_DEFAULT)
             action = null
         }
     }
-
 }

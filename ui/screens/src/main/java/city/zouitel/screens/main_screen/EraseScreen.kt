@@ -54,7 +54,7 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
         val context = LocalContext.current
         val navBottom = LocalBottomSheetNavigator.current
 
-        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
         val observerRemovedNotes = remember(mainModel, mainModel::allTrashedNotes).collectAsState()
         val scope = rememberCoroutineScope()
 

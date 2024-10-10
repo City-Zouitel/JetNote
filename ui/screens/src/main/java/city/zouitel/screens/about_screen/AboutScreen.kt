@@ -154,7 +154,7 @@ class AboutScreen: Screen {
 
         val uri = LocalUriHandler.current
         val ctx = LocalContext.current
-        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
 
         Opensource(
             text = "Project Source",

@@ -65,7 +65,7 @@ internal fun BottomBar(
     val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
     val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
 
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
     val sound by lazy { SoundEffect() }
 
     Column {

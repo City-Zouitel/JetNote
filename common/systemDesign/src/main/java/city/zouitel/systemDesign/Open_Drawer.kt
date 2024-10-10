@@ -3,7 +3,6 @@ package city.zouitel.systemDesign
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,7 +25,7 @@ fun Open_Drawer(
     val haptic = LocalHapticFeedback.current
 
     val scope = rememberCoroutineScope()
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
 
     CommonPopupTip(message = "Navigation Drawer") {
         Icon(

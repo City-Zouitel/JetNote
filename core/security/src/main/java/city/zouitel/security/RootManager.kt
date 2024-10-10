@@ -8,13 +8,12 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.nio.charset.Charset
 
-class RootChecker(private val context: Context) {
+class RootManager(private val context: Context) {
     private val rootFiles = arrayOf(
         "/system/app/Superuser.apk",
         "/sbin/su",

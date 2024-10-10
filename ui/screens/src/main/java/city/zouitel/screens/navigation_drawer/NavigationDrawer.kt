@@ -73,7 +73,7 @@ fun NavigationDrawer(
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
     val observeLabels by remember(tagModel, tagModel::getAllLTags).collectAsState()
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
     val scope = rememberCoroutineScope()
     var maxLines by remember { mutableIntStateOf(3) }
 

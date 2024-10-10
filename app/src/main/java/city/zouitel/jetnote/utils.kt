@@ -11,9 +11,8 @@ import androidx.core.view.WindowCompat
 
 @Composable
 @SuppressLint("WrongConstant")
-internal fun hideSystemUI(window: Window) {
+internal fun HideSystemUI(window: Window) {
     val view = LocalView.current
-    val window = window
     val controller = WindowCompat.getInsetsController(window, view)
 
     controller.apply {

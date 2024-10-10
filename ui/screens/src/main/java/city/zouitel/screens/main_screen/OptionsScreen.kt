@@ -48,7 +48,7 @@ class OptionsScreen: Screen {
         val context = LocalContext.current
         val navBottomSheet = LocalBottomSheetNavigator.current
 
-        val soundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+        val soundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
         val observerRemovedNotes = remember(mainModel, mainModel::allTrashedNotes).collectAsState()
         val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 

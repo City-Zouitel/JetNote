@@ -1,8 +1,6 @@
 package city.zouitel.screens.main_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -77,7 +75,6 @@ import com.skydoves.cloudy.cloudy
 
 data class MainScreen(val isHome: Boolean): Screen {
 
-    @OptIn(ExperimentalSharedTransitionApi::class)
     @Composable
     override fun Content() {
         val mainModel = getScreenModel<MainScreenModel>()
@@ -86,25 +83,23 @@ data class MainScreen(val isHome: Boolean): Screen {
             mainModel.updateScreen(isHome)
         }
 
-        SharedTransitionLayout {
-            Main(
-                mainModel = mainModel,
-                notificationModel = getScreenModel(),
-                tagModel = getScreenModel(),
-                noteAndTagModel = getScreenModel(),
-                taskModel = getScreenModel(),
-                noteAndTaskModel = getScreenModel(),
-                dataModel = getScreenModel(),
-                audioModel = getScreenModel(),
-                noteAndAudioModel = getScreenModel(),
-                linkModel = getScreenModel(),
-                noteAndLinkModel = getScreenModel(),
-                datastoreModel = getScreenModel(),
-                mediaModel = getScreenModel(),
-                noteAndMediaModel = getScreenModel(),
-                navigationDrawerModel = getScreenModel(),
-            )
-        }
+        Main(
+            mainModel = mainModel,
+            notificationModel = getScreenModel(),
+            tagModel = getScreenModel(),
+            noteAndTagModel = getScreenModel(),
+            taskModel = getScreenModel(),
+            noteAndTaskModel = getScreenModel(),
+            dataModel = getScreenModel(),
+            audioModel = getScreenModel(),
+            noteAndAudioModel = getScreenModel(),
+            linkModel = getScreenModel(),
+            noteAndLinkModel = getScreenModel(),
+            datastoreModel = getScreenModel(),
+            mediaModel = getScreenModel(),
+            noteAndMediaModel = getScreenModel(),
+            navigationDrawerModel = getScreenModel(),
+        )
     }
 
     @SuppressLint(
@@ -114,18 +109,18 @@ data class MainScreen(val isHome: Boolean): Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun Main(
+        mainModel: MainScreenModel,
+        datastoreModel: DataStoreScreenModel,
         notificationModel: NotificationScreenModel,
         tagModel: TagScreenModel,
         noteAndTagModel: NoteAndTagScreenModel,
         taskModel: TaskScreenModel,
         noteAndTaskModel: NoteAndTaskScreenModel,
-        mainModel: MainScreenModel,
         dataModel: DataScreenModel,
         audioModel: AudioScreenModel,
         noteAndAudioModel: NoteAndAudioScreenModel,
         linkModel: LinkScreenModel,
         noteAndLinkModel: NoteAndLinkScreenModel,
-        datastoreModel: DataStoreScreenModel,
         mediaModel: MediaScreenModel,
         noteAndMediaModel: NoteAndMediaScreenModel,
         navigationDrawerModel: NavigationDrawerScreenModel,
@@ -136,7 +131,7 @@ data class MainScreen(val isHome: Boolean): Screen {
 
         val uiState by remember(mainModel, mainModel::uiState).collectAsState()
         val currentLayout = remember(datastoreModel, datastoreModel::getLayout).collectAsState()
-        val thereIsSoundEffect = remember(datastoreModel, datastoreModel::getSound).collectAsState()
+        val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isSound).collectAsState()
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scaffoldState = rememberScaffoldState()
 

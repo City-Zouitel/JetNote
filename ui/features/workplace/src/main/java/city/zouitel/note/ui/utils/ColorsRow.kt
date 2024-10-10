@@ -30,7 +30,7 @@ fun ColorsRow(
 
     val currentColor = remember { mutableStateOf(Color.White) }
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
 
     val sound = SoundEffect()
 

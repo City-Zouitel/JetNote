@@ -169,7 +169,7 @@ private fun Card(
     val note = noteEntity.dataEntity
     val labels = noteEntity.tagEntities
 
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
     val observeTodoList = remember(taskModel, taskModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoModel, noteAndTodoModel::getAllNotesAndTask).collectAsState()

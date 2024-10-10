@@ -15,7 +15,7 @@ import city.zouitel.recoder.di.recorderKoinModule
 import city.zouitel.repository.di.repositoryKoinModule
 import city.zouitel.root.di.rootKoinModule
 import city.zouitel.screens.di.screensKoinModule
-import city.zouitel.security.di.securityKoinModule
+import city.zouitel.security.di.rootCheckerKoinModule
 import city.zouitel.systemDesign.di.commonSystemDesignKoinModule
 import city.zouitel.tags.di.tagsKoinModule
 import city.zouitel.tasks.di.tasksKoinModule
@@ -46,7 +46,7 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
                 databaseKoinModule,
                 datastoreKoinModule,
                 repositoryKoinModule,
-                securityKoinModule,
+                rootCheckerKoinModule,
                 audioPlayerKoinModule,
                 linksKoinModule,
                 noteKoinModule,

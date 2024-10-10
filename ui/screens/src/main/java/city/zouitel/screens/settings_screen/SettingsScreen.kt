@@ -1,13 +1,23 @@
 package city.zouitel.screens.settings_screen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.*
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -64,11 +74,12 @@ class SettingsScreen: Screen {
         val navigator = LocalNavigator.currentOrThrow
         val context = LocalContext.current
 
-        val isDarkTheme = remember(datastoreModel, datastoreModel::getTheme).collectAsState()
-        val thereIsSoundEffect = remember(datastoreModel, datastoreModel::getSound).collectAsState()
-        val currentLayout = remember(datastoreModel, datastoreModel::getLayout).collectAsState()
-
-        val currentOrder = remember(datastoreModel, datastoreModel::getOrdination).collectAsState()
+        val themeState by remember(datastoreModel, datastoreModel::getTheme).collectAsState()
+        val soundState by remember(datastoreModel, datastoreModel::isSound).collectAsState()
+        val layoutState = remember(datastoreModel, datastoreModel::getLayout).collectAsState()
+        val orderState = remember(datastoreModel, datastoreModel::getOrdination).collectAsState()
+        val screenshotState by remember(datastoreModel, datastoreModel::getScreenshotBlock).collectAsState()
+        val appLockState by remember(datastoreModel, datastoreModel::isLockMode).collectAsState()
 
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
@@ -113,49 +124,43 @@ class SettingsScreen: Screen {
                         PreferenceItem(
                             title = "Dark Mode",
                             description = "This application following the system mode by default.",
-                            checked = isDarkTheme.value == DARK,
+                            checked = themeState == DARK,
                             onChecked = {
-                                sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                                datastoreModel.setTheme(if (isDarkTheme.value == DARK) LIGHT else DARK)
+                                sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                                datastoreModel.setTheme(if (themeState == DARK) LIGHT else DARK)
                             }
                         )
                     }
 
-                    item {
-                        HorizontalDivider(modifier = Modifier.padding(10.dp))
-                    }
+                    item { HorizontalDivider(modifier = Modifier.padding(10.dp)) }
 
                     item {
                         PreferenceItem(
                             title = "Sound Effect",
                             description = "Make sound effect when any key is pressed.",
-                            checked = thereIsSoundEffect.value,
+                            checked = soundState,
                             onChecked = {
-                                sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-                                datastoreModel.setSound(!thereIsSoundEffect.value)
+                                sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                                datastoreModel.setSound(!soundState)
                             }
                         )
                     }
 
-                    item {
-                        HorizontalDivider(modifier = Modifier.padding(10.dp))
-                    }
+                    item { HorizontalDivider(modifier = Modifier.padding(10.dp)) }
 
                     item {
                         PreferenceItem(
                             title = "Layout",
                             description = "Grade layout is the default mode.",
-                            currentItem = currentLayout.value,
+                            currentItem = layoutState.value,
                             items = listOf(GRID, LIST)
                         ) { layout ->
-                            sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound.invoke(context, KEY_CLICK, soundState)
                             datastoreModel.setLayout(layout)
                         }
                     }
 
-                    item {
-                        HorizontalDivider(modifier = Modifier.padding(10.dp))
-                    }
+                    item { HorizontalDivider(modifier = Modifier.padding(10.dp)) }
 
                     item {
                         PreferenceItem(
@@ -169,16 +174,45 @@ class SettingsScreen: Screen {
                                 PRIORITY_ORDER,
                                 REMINDING_ORDER
                             ),
-                            currentItem = currentOrder.value
+                            currentItem = orderState.value
                         ) { order ->
-                            sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound.invoke(context, KEY_CLICK, soundState)
                             datastoreModel.setOrdination(order)
                         }
                     }
 
+                    item { HorizontalDivider(modifier = Modifier.padding(10.dp)) }
+
                     item {
-                        HorizontalDivider(modifier = Modifier.padding(10.dp))
+                        PreferenceItem(
+                            title = "Block Screenshots",
+                            description = "By enable this feature you cannot take screenshots of this app.",
+                            checked = screenshotState,
+                            onChecked = {
+                                sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                                datastoreModel.setScreenshotBlock(it)
+                            }
+                        )
                     }
+
+                    item { HorizontalDivider(modifier = Modifier.padding(10.dp)) }
+
+                    item {
+                        PreferenceItem(
+                            title = "Lock Mode",
+                            description = "This feature enhances the security of your app by requiring" +
+                                    " users to authenticate before they can access its content." +
+                                    " This is typically achieved using the device's built-in security features," +
+                                    " such as fingerprint authentication, PIN, or pattern unlock.",
+                            checked = appLockState,
+                            onChecked = {
+                                sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                                datastoreModel.setLockMode(it)
+                            }
+                        )
+                    }
+
+                    item { HorizontalDivider(modifier = Modifier.padding(10.dp)) }
 
                     item {
                         PreferenceItem(
@@ -186,7 +220,7 @@ class SettingsScreen: Screen {
                             description = "Public repositories on GitHub are often used to share open source software.",
                             checked = null,
                         ) {
-                            sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.makeSound.invoke(context, KEY_CLICK, soundState)
                             navigator.push(Licenses())
                         }
                     }

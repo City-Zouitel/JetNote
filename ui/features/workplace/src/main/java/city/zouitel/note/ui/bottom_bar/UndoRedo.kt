@@ -29,7 +29,7 @@ fun UndoRedo(
     descriptionState: TextFieldState?,
 ) {
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
     val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
     val sound = SoundEffect()
 

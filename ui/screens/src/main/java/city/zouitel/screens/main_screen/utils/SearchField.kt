@@ -35,7 +35,7 @@ internal fun SearchField(
     val keyboardController = LocalSoftwareKeyboardController.current
     val keyboardManager = LocalFocusManager.current
 
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     LaunchedEffect(Unit) {

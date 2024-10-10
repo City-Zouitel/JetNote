@@ -1,19 +1,18 @@
 package city.zouitel.jetnote
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.ShapeDefaults
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.logic.asLongToast
-import city.zouitel.root.RootScreenModel
+import city.zouitel.root.RootCheckerHandler
 import city.zouitel.screens.main_screen.MainScreen
+import city.zouitel.security.appLock.LockModeHandler
+import city.zouitel.security.screenshot.ScreenshotHandler
 import city.zouitel.shortcuts.checkNoteActivityShortcut
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.MainTheme
@@ -23,27 +22,23 @@ import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import kotlin.coroutines.CoroutineContext
 
-class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
+class NoteActivity : AppCompatActivity(), KoinComponent, IntentHandler {
 
     private val linkScreenModel: LinkScreenModel by inject()
-    private val rootScreenModel: RootScreenModel by inject()
     private val dataStoreModel: DataStoreScreenModel by inject()
+    private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            val navigator = LocalNavigator.current
-            val isDeviceRooted = rootScreenModel.isDeviceRooted.collectAsState()
-
-            require(!isDeviceRooted.value.getOrNull()?.isDeviceRooted!!) {
-                "Cannot run JetNote on rooted device!".asLongToast()
-            }
-
-            hideSystemUI(window)
+            Navigator(RootCheckerHandler())
+            LockModeHandler(dataStoreModel)
+            ScreenshotHandler(window, dataStoreModel)
+            HideSystemUI(window)
+            IntentHandler(intent) {}
 
             MainTheme(dataStoreModel) {
-
                 BottomSheetNavigator(
                     sheetShape = ShapeDefaults.Large,
                     sheetElevation = 150.dp
@@ -51,8 +46,6 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
                     Navigator(MainScreen(true))
                 }
             }
-
-            IntentHandler(intent, navigator) {}
         }
     }
 
@@ -65,6 +58,8 @@ class NoteActivity : ComponentActivity(), KoinComponent, IntentHandler {
         super.onDestroy()
         linkScreenModel.urlPreview(this, null)?.cleanUp()
         WidgetReceiver.updateBroadcast(this)
+        // Cancel the scope when the activity is destroyed
+        activityScope.cancel()
     }
 
     override fun onResume() {

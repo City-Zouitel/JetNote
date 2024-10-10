@@ -61,7 +61,7 @@ data class ReminderScreen(
 
         val calendar = Calendar.getInstance()
 
-        val soundEffect = remember(dataStoreModel, dataStoreModel::getSound).collectAsState()
+        val soundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
         val sound = SoundEffect()
 
         val dateState = rememberDatePickerState(

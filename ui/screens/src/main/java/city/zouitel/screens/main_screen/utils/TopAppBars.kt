@@ -101,7 +101,7 @@ internal fun HomeSelectionTopAppBar(
 
     val context = LocalContext.current
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
-    val thereIsSoundEffect = remember(datastoreModel, datastoreModel::getSound).collectAsState()
+    val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isSound).collectAsState()
     val newUid by lazy { UUID.randomUUID() }
     val observeNotesAndLabels =
         remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
@@ -293,7 +293,7 @@ internal fun RemovedSelectionTopAppBar(
     dataModel: DataScreenModel
 ) {
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(datastoreModel, datastoreModel::getSound).collectAsState()
+    val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isSound).collectAsState()
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     TopAppBar(
