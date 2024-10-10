@@ -56,7 +56,7 @@
             android:name=".NoteActivity"
             android:exported="true"
             android:screenOrientation="unspecified"
-            android:theme="@style/Theme.JetNote"
+            android:theme="@style/AppTheme"
             tools:ignore="DiscouragedApi">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
