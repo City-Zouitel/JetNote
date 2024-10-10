@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKeys
-import city.zouitel.datastore.Cons.DS_FILE
+import city.zouitel.datastore.Constants.DS_FILE
 import io.github.osipxd.security.crypto.createEncrypted
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext

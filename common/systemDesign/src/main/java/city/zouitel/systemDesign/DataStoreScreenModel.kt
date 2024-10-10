@@ -25,7 +25,7 @@ class DataStoreScreenModel(
             GRID
         )
 
-    val getSound: StateFlow<Boolean> = dataStoreRepo.getSound
+    val isSound: StateFlow<Boolean> = dataStoreRepo.isSound
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(),
@@ -44,6 +44,20 @@ class DataStoreScreenModel(
             screenModelScope,
             SharingStarted.WhileSubscribed(),
             DARK
+        )
+
+    val isLockMode: StateFlow<Boolean> = dataStoreRepo.isLockMode
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            false
+        )
+
+    val getScreenshotBlock: StateFlow<Boolean> = dataStoreRepo.isScreenshotBlock
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            false
         )
 
     fun setSound(sound: Boolean) {
@@ -66,6 +80,18 @@ class DataStoreScreenModel(
     fun setTheme(theme: String) {
         screenModelScope.launch(Dispatchers.IO) {
             dataStoreRepo.setTheme(theme)
+        }
+    }
+
+    fun setLockMode(isLocked: Boolean) {
+        screenModelScope.launch(Dispatchers.IO) {
+            dataStoreRepo.setLockMode(isLocked)
+        }
+    }
+
+    fun setScreenshotBlock(isBlocked: Boolean) {
+        screenModelScope.launch(Dispatchers.IO) {
+            dataStoreRepo.setScreenshotBlock(isBlocked)
         }
     }
 }

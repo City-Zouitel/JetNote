@@ -10,7 +10,11 @@ interface DataStoreRepo {
 
     val getTheme: Flow<String>
 
-    val getSound: Flow<Boolean>
+    val isSound: Flow<Boolean>
+
+    val isLockMode: Flow<Boolean>
+
+    val isScreenshotBlock: Flow<Boolean>
 
     suspend fun setLayout(layout: String)
 
@@ -19,4 +23,8 @@ interface DataStoreRepo {
     suspend fun setTheme(theme: String)
 
     suspend fun setSound(sound: Boolean)
+
+    suspend fun setLockMode(isLocked: Boolean)
+
+    suspend fun setScreenshotBlock(isBlocked: Boolean)
 }
