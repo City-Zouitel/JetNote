@@ -39,6 +39,7 @@ dependencies {
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
     implementation(projects.root)
+    implementation(projects.security)
     api(projects.ui.screens)
 
     //Lifecycle.

@@ -31,6 +31,7 @@ dependencies {
     api(projects.ui.features.widget)
     api(projects.ui.features.media)
     implementation(projects.root)
+    implementation(projects.security)
 
     //AndroidX.
     implementation(libs.constraintlayout)

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.cityzouitel.androidLibrary)
     alias(libs.plugins.cityzouitel.composeVoyager)
+    alias(libs.plugins.cityzouitel.androidCompose )
 }
 
 android {
@@ -8,5 +9,7 @@ android {
 }
 
 dependencies {
+    //Modules.
+    implementation(projects.common.logic)
     implementation(projects.domain)
 }
