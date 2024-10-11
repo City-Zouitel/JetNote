@@ -32,7 +32,7 @@ foundation = "1.7.2"
 ui = "1.7.2"
 
 #Plugins.
-ksp = "2.0.0-1.0.24"
+ksp = "2.0.21-1.0.25"
 dependencyanalysis = "2.0.1"
 
 #KotlinX.
