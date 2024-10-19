@@ -25,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -49,6 +48,7 @@ import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.ReminderScreen
 import city.zouitel.systemDesign.CommonBottomSheet
+import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonIcons.ADD_IMAGE_ICON
 import city.zouitel.systemDesign.CommonIcons.BELL_ICON
@@ -71,6 +71,7 @@ data class OptionsScreen(
     val titleState: TextFieldState?,
     val descriptionState: TextFieldState?,
     val priorityState: MutableState<String>,
+    val reminderState: MutableState<Long>,
     val imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
 ): Screen {
     @Composable
@@ -91,7 +92,7 @@ data class OptionsScreen(
         val navigator = LocalNavigator.currentOrThrow
         val navBottomSheet = LocalBottomSheetNavigator.current
 
-        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
+        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
         val scope = rememberCoroutineScope()
 
@@ -147,8 +148,9 @@ data class OptionsScreen(
                         id = id,
                         title = titleState?.text.toString(),
                         message = descriptionState?.text.toString()
-                    ) { value ->
-                        workspaceModel.updateRemindingValue(value)
+                    ) {
+//                        workspaceModel.updateRemindingValue(value)
+                        reminderState.value = it
                     }
                 )
             }
@@ -161,37 +163,13 @@ data class OptionsScreen(
                         id = id,
                         title = titleState?.text.toString(),
                         message = descriptionState?.text.toString()
-                    ) { value ->
-                        workspaceModel.updateRemindingValue(value)
+                    ) {
+//                        workspaceModel.updateRemindingValue(value)
+                        reminderState.value = it
                     }
                 )
             }
         }
-
-        val recorderRationalDialog = remember { mutableStateOf(false) }
-        val readMediaRationalDialog = remember { mutableStateOf(false) }
-        val reminderRationalDialog = remember { mutableStateOf(false) }
-
-//        RationalDialog(
-//            showRationalDialog = recorderRationalDialog,
-//            permissionState = recorderPermissions,
-//            permissionName = "audio record"
-//        )
-
-
-//        RationalDialog(
-//            showRationalDialog = readMediaRationalDialog,
-//            permissionState = readMediaPermissions,
-//            permissionName = "local media"
-//        )
-
-
-//        RationalDialog(
-//            showRationalDialog = reminderRationalDialog,
-//            permissionState = readMediaPermissions,
-//            permissionName = "alarm manager"
-//        )
-
 
         Navigator(CommonBottomSheet({
             LazyColumn {
@@ -200,7 +178,7 @@ data class OptionsScreen(
                         name = "Add Image",
                         icon = ADD_IMAGE_ICON
                     ) {
-                        sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                         navBottomSheet.hide()
                         imageLaunch.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     }
@@ -211,13 +189,12 @@ data class OptionsScreen(
                         icon = CASSETTE_ICON
                     ) {
                         scope.launch {
-                            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+                            sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                             navBottomSheet.hide()
                             delay(200)
                         }.invokeOnCompletion {
                             if (!readMediaPermissions.allPermissionsGranted) {
                                 if (readMediaPermissions.shouldShowRationale) {
-//                                    readMediaRationalDialog.value = true
                                     navBottomSheet.show(
                                     RationalScreen(
                                         permissionState = reminderPermissions,
@@ -274,7 +251,7 @@ data class OptionsScreen(
                         name = "Tags",
                         icon = TAGS_ICON
                     ) {
-                        sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                         navigator.push(TagsScreen(id = id))
                     }
                 }
@@ -283,16 +260,16 @@ data class OptionsScreen(
                         name = "Task List",
                         icon = LIST_CHECK_ICON
                     ) {
-                        sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                         navigator.push(TasksScreen(id = id))
                     }
                 }
                 item {
                     CommonOptionItem(
                         name = "Reminder",
-                        icon = if (uiState.reminding != 0L) BELL_RING_ICON_24 else BELL_ICON
+                        icon = if (reminderState.value != 0L) BELL_RING_ICON_24 else BELL_ICON
                     ) {
-                        sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
                         scope.launch {
                             navBottomSheet.hide()
                             delay(200)
@@ -314,8 +291,9 @@ data class OptionsScreen(
                                         id = id,
                                         title = titleState?.text.toString(),
                                         message = descriptionState?.text.toString()
-                                    ) { value ->
-                                        workspaceModel.updateRemindingValue(value)
+                                    ) {
+//                                        workspaceModel.updateRemindingValue(value)
+                                        reminderState.value = it
                                     }
                                 )
                             }

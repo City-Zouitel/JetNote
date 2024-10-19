@@ -16,6 +16,7 @@ import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonBottomSheet
+import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonIcons.ERASER_ICON
 import city.zouitel.systemDesign.CommonIcons.UNDO_ICON
@@ -48,7 +49,7 @@ class OptionsScreen: Screen {
         val context = LocalContext.current
         val navBottomSheet = LocalBottomSheetNavigator.current
 
-        val soundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
+        val isMute by remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
         val observerRemovedNotes = remember(mainModel, mainModel::allTrashedNotes).collectAsState()
         val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
@@ -62,7 +63,7 @@ class OptionsScreen: Screen {
                     icon = UNDO_ICON
                 ) {
                     scope.launch {
-                        sound.makeSound(context, KEY_CLICK, soundEffect.value)
+                        city.zouitel.screens.utils.sound.performSoundEffect(context, CommonConstants.KEY_CLICK, isMute)
                         uiState.selectedNote?.copy(removed = 0)?.let {
                             dataModel.editData(it)
                         }
@@ -74,8 +75,7 @@ class OptionsScreen: Screen {
                     name = "Erase",
                     icon = ERASER_ICON
                 ) {
-                    sound.makeSound(context, KEY_CLICK, soundEffect.value)
-
+                    city.zouitel.screens.utils.sound.performSoundEffect(context, CommonConstants.KEY_CLICK, isMute)
                     uiState.selectedNote?.let { dataModel.deleteData(it) }
 
                     observerRemovedNotes.value.forEach { entity ->
