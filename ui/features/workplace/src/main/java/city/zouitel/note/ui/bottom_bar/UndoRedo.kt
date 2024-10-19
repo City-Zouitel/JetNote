@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
+import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons.REDO_ICON
@@ -29,14 +30,14 @@ fun UndoRedo(
     descriptionState: TextFieldState?,
 ) {
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
     val sound = SoundEffect()
 
     IconButton(
         modifier = Modifier.size(23.dp),
         onClick = {
-            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+            sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
             if (uiState.isTitleFieldFocused) titleState?.undoState?.undo()
             else if (uiState.isDescriptionFieldFocused) descriptionState?.undoState?.undo()
             else throw Exception("there is no field is focused!!")
@@ -54,8 +55,7 @@ fun UndoRedo(
     IconButton(
         modifier = Modifier.size(23.dp),
         onClick = {
-            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-
+            sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
             if (uiState.isTitleFieldFocused) titleState.undoState.redo()
             else if (uiState.isDescriptionFieldFocused) descriptionState.undoState.redo()
             else throw Exception("there is no field is focused!!")

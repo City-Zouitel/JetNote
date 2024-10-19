@@ -101,7 +101,7 @@ internal fun HomeSelectionTopAppBar(
 
     val context = LocalContext.current
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
-    val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isSound).collectAsState()
+    val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isMute).collectAsState()
     val newUid by lazy { UUID.randomUUID() }
     val observeNotesAndLabels =
         remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
@@ -126,11 +126,7 @@ internal fun HomeSelectionTopAppBar(
                                     it.showAlignBottom()
                                 }
                             ) {
-                                sound.makeSound.invoke(
-                                    context,
-                                    CommonConstants.KEY_CLICK,
-                                    thereIsSoundEffect.value
-                                )
+                                sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                                 uiState.selectedNotes.forEach {
                                     dataModel.editData(
                                         Data(
@@ -144,7 +140,7 @@ internal fun HomeSelectionTopAppBar(
                                         )
                                     )
 
-                                    // to cancel the alarm manager reminding.
+                                    // to cancel the alarm manager reminder.
                                     notificationModel.scheduleNotification(
                                         context = context,
                                         dateTime = it.reminding,
@@ -174,11 +170,7 @@ internal fun HomeSelectionTopAppBar(
                                             it.showAlignBottom()
                                         }
                                     ) {
-                                        sound.makeSound.invoke(
-                                            context,
-                                            CommonConstants.KEY_CLICK,
-                                            thereIsSoundEffect.value
-                                        )
+                                        sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
 
                                         sharNote(
                                             context,
@@ -202,12 +194,7 @@ internal fun HomeSelectionTopAppBar(
                                             it.showAlignBottom()
                                         }
                                     ) {
-                                        sound.makeSound.invoke(
-                                            context,
-                                            CommonConstants.KEY_CLICK,
-                                            thereIsSoundEffect.value
-                                        )
-
+                                        sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                                         copyNote(
                                             context,
                                             dataModel,
@@ -293,7 +280,7 @@ internal fun RemovedSelectionTopAppBar(
     dataModel: DataScreenModel
 ) {
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isSound).collectAsState()
+    val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isMute).collectAsState()
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     TopAppBar(
@@ -312,12 +299,7 @@ internal fun RemovedSelectionTopAppBar(
                                         it.showAlignBottom()
                                     }
                                 ) {
-                                    sound.makeSound.invoke(
-                                        context,
-                                        CommonConstants.KEY_CLICK,
-                                        thereIsSoundEffect.value
-                                    )
-
+                                    sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                                     uiState.selectedNotes.forEach {
                                         dataModel.deleteData(it)
                                     }
@@ -337,12 +319,7 @@ internal fun RemovedSelectionTopAppBar(
                                         it.showAlignBottom()
                                     }
                                 ) {
-                                    sound.makeSound.invoke(
-                                        context,
-                                        CommonConstants.KEY_CLICK,
-                                        thereIsSoundEffect.value
-                                    )
-
+                                    sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                                     uiState.selectedNotes.forEach {
                                         dataModel.editData(it.copy(removed = 0))
                                     }
