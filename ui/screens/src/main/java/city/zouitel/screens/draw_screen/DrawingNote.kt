@@ -24,8 +24,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonRow
-import city.zouitel.systemDesign.CommonConstants.ADD_ROUTE
-import city.zouitel.systemDesign.CommonConstants.EDIT_ROUTE
 import city.zouitel.systemDesign.CommonConstants.IMG_DIR
 import city.zouitel.systemDesign.CommonConstants.JPEG
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON
@@ -52,7 +50,7 @@ import java.io.File
 //    uid: String,
 //    textColor: Int,
 //    audioDuration: Int?,
-//    reminding: Long?
+//    reminder: Long?
 //) {
 //    val context = LocalContext.current
 //    val sheetState = rememberBottomSheetScaffoldState()
@@ -159,7 +157,7 @@ import java.io.File
 ////                                            textColor + "/" +
 ////                                            priority + "/" +
 ////                                            audioDuration + "/" +
-////                                            reminding
+////                                            reminder
 ////                                )
 ////                            } ?: navController.navigate(
 ////                                route = ADD_ROUTE + "/" +
