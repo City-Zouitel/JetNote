@@ -1,11 +1,6 @@
 package city.zouitel.init
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import city.zouitel.systemDesign.CommonConstants.IMG_DIR
-import city.zouitel.systemDesign.CommonConstants.MEDIA_DIR
 import city.zouitel.systemDesign.CommonConstants.REC_DIR
 import net.sqlcipher.database.SQLiteDatabase
 import org.koin.android.ext.koin.androidContext
@@ -28,15 +23,15 @@ val initializerKoinModule = module {
         file.path
     }
 
-    single<String>(named(IMG_DIR)) {
-        val file = File(androidContext().filesDir.path, IMG_DIR)
-        if (!file.exists()) file.mkdirs()
-        file.path
-    }
+//    single<String>(named(IMG_DIR)) {
+//        val file = File(androidContext().filesDir.path, IMG_DIR)
+//        if (!file.exists()) file.mkdirs()
+//        file.path
+//    }
 
-    single<String>(named(MEDIA_DIR)) {
-        val file = File(androidContext().filesDir.path, MEDIA_DIR)
-        if (!file.exists()) file.mkdirs()
-        file.path
-    }
+//    single<String>(named(MEDIA_DIR)) {
+//        val file = File(androidContext().filesDir.path, MEDIA_DIR)
+//        if (!file.exists()) file.mkdirs()
+//        file.path
+//    }
 }
