@@ -18,11 +18,11 @@ fun copyNote(
         note.copy(uid = uid.toString())
     )
     //
-    "${ctx.filesDir.path}/${CommonConstants.IMG_DIR}/".apply {
-        File("$this${note.uid}.${CommonConstants.JPEG}").let {
-            if (it.exists()) it.copyTo(File("${this}${uid}.${CommonConstants.JPEG}"))
-        }
-    }
+//    "${ctx.filesDir.path}/${CommonConstants.IMG_DIR}/".apply {
+//        File("$this${note.uid}.${CommonConstants.JPEG}").let {
+//            if (it.exists()) it.copyTo(File("${this}${uid}.${CommonConstants.JPEG}"))
+//        }
+//    }
     //
     "${ctx.filesDir.path}/${CommonConstants.REC_DIR}/".apply {
         File("$this${note.uid}.${CommonConstants.MP3}").let {
