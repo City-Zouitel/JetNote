@@ -40,7 +40,11 @@ import city.zouitel.logic.sharApp
 import city.zouitel.screens.about_screen.AboutScreen
 import city.zouitel.screens.main_screen.MainScreen
 import city.zouitel.screens.main_screen.MainScreenModel
-import city.zouitel.screens.navigation_drawer.NoteScreens.*
+import city.zouitel.screens.navigation_drawer.NoteScreens.ABOUT_SCREEN
+import city.zouitel.screens.navigation_drawer.NoteScreens.MAIN_SCREEN
+import city.zouitel.screens.navigation_drawer.NoteScreens.REMOVED_SCREEN
+import city.zouitel.screens.navigation_drawer.NoteScreens.SETTINGS_SCREEN
+import city.zouitel.screens.navigation_drawer.NoteScreens.TAGS_SCREEN
 import city.zouitel.screens.settings_screen.SettingsScreen
 import city.zouitel.screens.tags_screen.HashTagsScreen
 import city.zouitel.screens.utils.sound
@@ -73,7 +77,7 @@ fun NavigationDrawer(
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
     val observeLabels by remember(tagModel, tagModel::getAllLTags).collectAsState()
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
+    val isMute by remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val scope = rememberCoroutineScope()
     var maxLines by remember { mutableIntStateOf(3) }
 
@@ -163,7 +167,7 @@ fun NavigationDrawer(
                         selected = true,
                         onClick = {
                             scope.launch {
-                                sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
+                                sound.performSoundEffect(context, KEY_CLICK, isMute)
                                 homeScreen.updateSearchTag(observeLabels[index])
                                 homeScreen.updateSearchTitle(observeLabels[index].label ?: "")
                                 drawerState.close()
@@ -227,9 +231,8 @@ fun NavigationDrawer(
                     selected = false,
                     onClick = {
                         scope.launch {
+                            sound.performSoundEffect(context, KEY_CLICK, isMute)
                             sharApp(context, "[COMING SOON.]")
-                            sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-                            drawerState.close()
                         }
                     }
                 )
@@ -241,7 +244,7 @@ fun NavigationDrawer(
                     icon = { Icon(painterResource(COMMENT_EXCLAMATION), null) },
                     selected = false,
                     onClick = {
-                        sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.performSoundEffect(context, KEY_CLICK, isMute)
                         scope.launch {
                             Beetle.startFeedback()
                             drawerState.close()
