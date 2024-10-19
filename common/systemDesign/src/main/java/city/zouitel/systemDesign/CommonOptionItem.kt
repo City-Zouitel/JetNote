@@ -25,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CommonOptionItem(
     name: String,
@@ -62,7 +61,6 @@ fun CommonOptionItem(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CommonOptionItem(
     onConfirm: () -> Unit,

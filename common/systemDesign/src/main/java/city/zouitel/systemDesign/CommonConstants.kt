@@ -12,8 +12,6 @@ object CommonConstants {
     const val LINK_DIR = "links-directory"
 
     const val BASE_URI = "app://city.zouitel.jetnote"
-    const val ADD_ROUTE = "add-screen"
-    const val EDIT_ROUTE = "edit-screen"
 
     const val MP3 = "mp3"
     const val JPEG = "jpeg"
