@@ -25,11 +25,11 @@ class DataStoreScreenModel(
             GRID
         )
 
-    val isSound: StateFlow<Boolean> = dataStoreRepo.isSound
+    val isMute: StateFlow<Boolean> = dataStoreRepo.isMute
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(),
-            false
+            true
         )
 
     val getOrdination: StateFlow<String> = dataStoreRepo.getOrdination
@@ -60,9 +60,9 @@ class DataStoreScreenModel(
             false
         )
 
-    fun setSound(sound: Boolean) {
+    fun setMute(isMute: Boolean) {
         screenModelScope.launch(Dispatchers.IO) {
-            dataStoreRepo.setSound(sound)
+            dataStoreRepo.setMute(isMute)
         }
     }
     fun setOrdination(order: String) {

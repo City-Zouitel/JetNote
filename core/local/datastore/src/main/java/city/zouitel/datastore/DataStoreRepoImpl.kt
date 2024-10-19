@@ -27,9 +27,9 @@ class DataStoreRepoImpl(
             .catch { emit(emptyPreferences()) }
             .map { it[Keys.THEME_KEY] ?: Constants.DARK }
 
-    override val isSound: Flow<Boolean>
+    override val isMute: Flow<Boolean>
         get() = dataStore.data
-            .map { it[Keys.SOUND_KEY] ?: false }
+            .map { it[Keys.MUTE_KEY] ?: true }
 
     override val isLockMode: Flow<Boolean>
         get() = dataStore.data
@@ -51,8 +51,8 @@ class DataStoreRepoImpl(
         dataStore.edit { it[Keys.THEME_KEY] = theme }
     }
 
-    override suspend fun setSound(sound: Boolean) {
-        dataStore.edit { it[Keys.SOUND_KEY] = sound }
+    override suspend fun setMute(isMute: Boolean) {
+        dataStore.edit { it[Keys.MUTE_KEY] = isMute }
     }
 
     override suspend fun setLockMode(isLocked: Boolean) {
