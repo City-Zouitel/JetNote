@@ -6,8 +6,6 @@ import android.net.Uri
 import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -100,10 +98,9 @@ data class WorkplaceScreen(
     val backgroundColor: Int = 0,
     val textColor: Int = 0,
     val priority: String = "NON",
-    val reminding: Long = 0
+    val reminder: Long = 0
 ): Screen {
 
-    @OptIn(ExperimentalSharedTransitionApi::class)
     @Composable
     override fun Content() {
         val workspaceModel = getScreenModel<WorkplaceScreenModel>()
@@ -113,23 +110,21 @@ data class WorkplaceScreen(
                 .updateBackgroundColor(backgroundColor)
         }
 
-        SharedTransitionScope {
-            Workplace(
-                dataModel = getScreenModel(),
-                tagModel = getScreenModel(),
-                noteAndTagModel = getScreenModel(),
-                taskModel = getScreenModel(),
-                noteAndTodoModel = getScreenModel(),
-                linkModel = getScreenModel(),
-                noteAndLinkModel = getScreenModel(),
-                dataStoreModel = getScreenModel(),
-                audioModel = getScreenModel(),
-                noteAndAudioModel = getScreenModel(),
-                mediaModel = getScreenModel(),
-                noteAndMediaModel = getScreenModel(),
-                workspaceModel = workspaceModel
-            )
-        }
+        Workplace(
+            dataModel = getScreenModel(),
+            tagModel = getScreenModel(),
+            noteAndTagModel = getScreenModel(),
+            taskModel = getScreenModel(),
+            noteAndTodoModel = getScreenModel(),
+            linkModel = getScreenModel(),
+            noteAndLinkModel = getScreenModel(),
+            dataStoreModel = getScreenModel(),
+            audioModel = getScreenModel(),
+            noteAndAudioModel = getScreenModel(),
+            mediaModel = getScreenModel(),
+            noteAndMediaModel = getScreenModel(),
+            workspaceModel = workspaceModel
+        )
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -183,6 +178,7 @@ data class WorkplaceScreen(
 
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
         val priorityState = remember { mutableStateOf(priority) }
+        val reminderState = remember { mutableStateOf(reminder) }
 
         val filteredObservedTags by remember {
             derivedStateOf {
@@ -225,7 +221,8 @@ data class WorkplaceScreen(
                     workspaceModel = workspaceModel,
                     titleState = titleState,
                     descriptionState = descriptionState,
-                    priorityState = priorityState
+                    priorityState = priorityState,
+                    reminderState = reminderState
                 )
             }
         ) {
@@ -320,10 +317,10 @@ data class WorkplaceScreen(
                     }
                 }
 
-                // display reminding chip.
-                if (uiState.reminding != 0L) {
+                // display reminder chip.
+                if (reminderState.value != 0L) {
                     item {
-                        uiState.reminding.let {
+                        reminderState.value.let {
                             runCatching {
                                 ElevatedAssistChip(
                                     modifier = Modifier.padding(start = 15.dp),

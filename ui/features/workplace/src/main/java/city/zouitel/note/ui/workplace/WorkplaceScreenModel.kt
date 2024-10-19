@@ -21,12 +21,6 @@ class WorkplaceScreenModel: ScreenModel {
             WorkplaceUiState()
         )
 
-    fun updateRecorderDialog(value: Boolean) {
-        screenModelScope.launch {
-            _uiState.value = _uiState.value.copy(recordedDialogState = value)
-        }
-    }
-
     fun updatePriority(priority: String): WorkplaceScreenModel {
         screenModelScope.launch {
             _uiState.value = _uiState.value.copy(priority = priority)
@@ -46,18 +40,6 @@ class WorkplaceScreenModel: ScreenModel {
             _uiState.value = _uiState.value.copy(textColor = color)
         }
         return this
-    }
-
-    fun updateRemindingDialog(value: Boolean) {
-        screenModelScope.launch {
-            _uiState.value = _uiState.value.copy(remindingDialogState = value)
-        }
-    }
-
-    fun updateRemindingValue(value: Long) {
-        screenModelScope.launch {
-            _uiState.value = _uiState.value.copy(reminding = value)
-        }
     }
 
     fun updateTitleFieldFocused(value: Boolean) {
