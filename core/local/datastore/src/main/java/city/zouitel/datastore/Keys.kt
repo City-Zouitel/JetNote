@@ -7,7 +7,7 @@ object Keys {
     val LAYOUT_KEY = stringPreferencesKey(Constants.LAYOUT)
     val ORDINATION_KEY = stringPreferencesKey(Constants.ORDINATION)
     val THEME_KEY = stringPreferencesKey(Constants.THEME)
-    val SOUND_KEY = booleanPreferencesKey(Constants.SOUND)
+    val MUTE_KEY = booleanPreferencesKey(Constants.MUTE)
     val LOCK_MODE_KEY = booleanPreferencesKey(Constants.LOCK_MODE)
     val SCREENSHOT_BLOCK_KEY = booleanPreferencesKey(Constants.SCREENSHOT_BLOCK  )
 }
