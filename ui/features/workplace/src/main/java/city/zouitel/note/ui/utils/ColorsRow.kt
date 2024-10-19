@@ -30,7 +30,7 @@ fun ColorsRow(
 
     val currentColor = remember { mutableStateOf(Color.White) }
     val context = LocalContext.current
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
+    val isMute = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
 
     val sound = SoundEffect()
 
@@ -48,7 +48,7 @@ fun ColorsRow(
                 modifier = Modifier
                     .size(27.dp)
                     .clickable {
-                        sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
+                        sound.performSoundEffect(context, KEY_CLICK, isMute.value)
                         currentColor.value = it
                         onAction.invoke(it.toArgb())
                     }
