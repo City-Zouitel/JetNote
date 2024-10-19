@@ -25,7 +25,7 @@ fun Open_Drawer(
     val haptic = LocalHapticFeedback.current
 
     val scope = rememberCoroutineScope()
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
+    val isMute = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
 
     CommonPopupTip(message = "Navigation Drawer") {
         Icon(
@@ -39,7 +39,7 @@ fun Open_Drawer(
                 }
             ) {
                 scope.launch {
-                    SoundEffect().makeSound.invoke(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
+                    SoundEffect().performSoundEffect(context, CommonConstants.KEY_CLICK, isMute.value)
                     drawerState.open()
                 }
             }
