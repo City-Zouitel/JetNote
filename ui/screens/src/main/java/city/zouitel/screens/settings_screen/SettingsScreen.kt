@@ -75,7 +75,7 @@ class SettingsScreen: Screen {
         val context = LocalContext.current
 
         val themeState by remember(datastoreModel, datastoreModel::getTheme).collectAsState()
-        val soundState by remember(datastoreModel, datastoreModel::isSound).collectAsState()
+        val isMute by remember(datastoreModel, datastoreModel::isMute).collectAsState()
         val layoutState = remember(datastoreModel, datastoreModel::getLayout).collectAsState()
         val orderState = remember(datastoreModel, datastoreModel::getOrdination).collectAsState()
         val screenshotState by remember(datastoreModel, datastoreModel::getScreenshotBlock).collectAsState()
@@ -126,7 +126,7 @@ class SettingsScreen: Screen {
                             description = "This application following the system mode by default.",
                             checked = themeState == DARK,
                             onChecked = {
-                                sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                                sound.performSoundEffect(context, KEY_CLICK, isMute)
                                 datastoreModel.setTheme(if (themeState == DARK) LIGHT else DARK)
                             }
                         )
@@ -136,12 +136,12 @@ class SettingsScreen: Screen {
 
                     item {
                         PreferenceItem(
-                            title = "Sound Effect",
+                            title = "Is Mute",
                             description = "Make sound effect when any key is pressed.",
-                            checked = soundState,
+                            checked = isMute,
                             onChecked = {
-                                sound.makeSound.invoke(context, KEY_CLICK, soundState)
-                                datastoreModel.setSound(!soundState)
+                                sound.performSoundEffect(context, KEY_CLICK, isMute)
+                                datastoreModel.setMute(!isMute)
                             }
                         )
                     }
@@ -155,7 +155,7 @@ class SettingsScreen: Screen {
                             currentItem = layoutState.value,
                             items = listOf(GRID, LIST)
                         ) { layout ->
-                            sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                            sound.performSoundEffect(context, KEY_CLICK, isMute)
                             datastoreModel.setLayout(layout)
                         }
                     }
@@ -176,7 +176,7 @@ class SettingsScreen: Screen {
                             ),
                             currentItem = orderState.value
                         ) { order ->
-                            sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                            sound.performSoundEffect(context, KEY_CLICK, isMute)
                             datastoreModel.setOrdination(order)
                         }
                     }
@@ -189,7 +189,7 @@ class SettingsScreen: Screen {
                             description = "By enable this feature you cannot take screenshots of this app.",
                             checked = screenshotState,
                             onChecked = {
-                                sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                                sound.performSoundEffect(context, KEY_CLICK, isMute)
                                 datastoreModel.setScreenshotBlock(it)
                             }
                         )
@@ -206,7 +206,7 @@ class SettingsScreen: Screen {
                                     " such as fingerprint authentication, PIN, or pattern unlock.",
                             checked = appLockState,
                             onChecked = {
-                                sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                                sound.performSoundEffect(context, KEY_CLICK, isMute)
                                 datastoreModel.setLockMode(it)
                             }
                         )
@@ -220,7 +220,7 @@ class SettingsScreen: Screen {
                             description = "Public repositories on GitHub are often used to share open source software.",
                             checked = null,
                         ) {
-                            sound.makeSound.invoke(context, KEY_CLICK, soundState)
+                            sound.performSoundEffect(context, KEY_CLICK, isMute)
                             navigator.push(Licenses())
                         }
                     }
