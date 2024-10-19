@@ -131,7 +131,7 @@ data class MainScreen(val isHome: Boolean): Screen {
 
         val uiState by remember(mainModel, mainModel::uiState).collectAsState()
         val currentLayout = remember(datastoreModel, datastoreModel::getLayout).collectAsState()
-        val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isSound).collectAsState()
+        val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isMute).collectAsState()
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         val scaffoldState = rememberScaffoldState()
 
@@ -244,11 +244,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                                 )
                             },
                             onClick = {
-                                sound.makeSound.invoke(
-                                    context,
-                                    CommonConstants.KEY_STANDARD,
-                                    thereIsSoundEffect.value
-                                )
+                                sound.performSoundEffect(context, CommonConstants.KEY_STANDARD, thereIsSoundEffect.value)
                                 navigator.push(
                                     WorkplaceScreen(
                                         backgroundColor = getBackgroundColor,
@@ -295,7 +291,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     noteAndMediaModel = noteAndMediaModel
                                 ) {
                                     dataModel.editData(it.dataEntity.copy(removed = 1))
-                                    // to cancel the alarm manager reminding.
+                                    // to cancel the alarm manager reminder.
                                     notificationModel.scheduleNotification(
                                         context = context,
                                         dateTime = it.dataEntity.reminding,
