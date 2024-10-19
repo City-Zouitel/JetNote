@@ -54,7 +54,7 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
         val context = LocalContext.current
         val navBottom = LocalBottomSheetNavigator.current
 
-        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
+        val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
         val observerRemovedNotes = remember(mainModel, mainModel::allTrashedNotes).collectAsState()
         val scope = rememberCoroutineScope()
 
@@ -83,11 +83,7 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
                     CommonOptionItem(
                         onConfirm = {
                             scope.launch {
-                                sound.makeSound.invoke(
-                                    context,
-                                    CommonConstants.KEY_CLICK,
-                                    thereIsSoundEffect.value
-                                )
+                                sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
 
                                 dataModel.eraseNotes()
 
@@ -123,11 +119,7 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
 
                         },
                         onDismiss = {
-                            sound.makeSound.invoke(
-                                context,
-                                CommonConstants.KEY_CLICK,
-                                thereIsSoundEffect.value
-                            )
+                            sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                             navBottom.hide()
                         }
                     )
