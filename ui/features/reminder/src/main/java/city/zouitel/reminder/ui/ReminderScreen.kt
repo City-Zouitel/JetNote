@@ -10,6 +10,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,7 +22,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
-import city.zouitel.reminder.utils.Cons.SINGLE_DAY
+import city.zouitel.reminder.utils.Constants.SINGLE_DAY
 import city.zouitel.systemDesign.CommonBottomSheet
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.KEY_STANDARD
@@ -61,7 +62,7 @@ data class ReminderScreen(
 
         val calendar = Calendar.getInstance()
 
-        val soundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
+        val isMute by remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
         val sound = SoundEffect()
 
         val dateState = rememberDatePickerState(
@@ -93,7 +94,7 @@ data class ReminderScreen(
                 dateState = dateState,
                 dateDialog = datePickerDialog
             ) {
-                sound.makeSound(context, KEY_CLICK, soundEffect.value)
+                sound.performSoundEffect(context, KEY_CLICK, isMute)
             }
         }
 
@@ -103,7 +104,7 @@ data class ReminderScreen(
                 timeState = timeState,
                 timePickerDialog = timePickerDialog
             ) {
-                sound.makeSound(context, KEY_CLICK, soundEffect.value)
+                sound.performSoundEffect(context, KEY_CLICK, isMute)
             }
         }
 
@@ -119,7 +120,7 @@ data class ReminderScreen(
                         name = dateFormat.format(Date(selectedDate.longValue)),
                         icon = CALENDAR_ICON
                     ) {
-                        sound.makeSound(context, KEY_CLICK, soundEffect.value)
+                        sound.performSoundEffect(context, KEY_CLICK, isMute)
                         datePickerDialog.value = true
                     }
                 }
@@ -128,7 +129,7 @@ data class ReminderScreen(
                         name = "at " + timeFormat.format(Date(selectedTime.longValue)),
                         icon = CLOCK_ICON
                     ) {
-                        sound.makeSound(context, KEY_CLICK, soundEffect.value)
+                        sound.performSoundEffect(context, KEY_CLICK, isMute)
                         timePickerDialog.value = true
                     }
                 }
@@ -138,7 +139,7 @@ data class ReminderScreen(
                 item {
                     CommonOptionItem(
                         onConfirm = {
-                            sound.makeSound(context, KEY_STANDARD, soundEffect.value)
+                            sound.performSoundEffect(context, KEY_STANDARD, isMute)
                             runCatching {
                                 notificationModel.scheduleNotification(
                                     context = context,
@@ -158,7 +159,7 @@ data class ReminderScreen(
                             navBottomSheet.hide()
                         },
                         onDismiss = {
-                            sound.makeSound(context, KEY_CLICK, soundEffect.value)
+                            sound.performSoundEffect(context, KEY_CLICK, isMute)
                             dateTime = 0
                             navBottomSheet.hide()
                         }
