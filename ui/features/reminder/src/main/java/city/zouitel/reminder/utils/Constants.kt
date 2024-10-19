@@ -1,6 +1,6 @@
 package city.zouitel.reminder.utils
 
-object Cons {
+object Constants {
 
     const val SINGLE_DAY = 86_400_000
 }
