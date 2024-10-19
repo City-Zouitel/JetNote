@@ -71,6 +71,7 @@ import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.main_screen.OptionsScreen
 import city.zouitel.screens.utils.sound
+import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.LIST
 import city.zouitel.systemDesign.CommonConstants.NON
@@ -169,7 +170,7 @@ private fun Card(
     val note = noteEntity.dataEntity
     val labels = noteEntity.tagEntities
 
-    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isSound).collectAsState()
+    val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val observeTodoList = remember(taskModel, taskModel::getAllTaskList).collectAsState()
     val observeNoteAndTodo =
         remember(noteAndTodoModel, noteAndTodoModel::getAllNotesAndTask).collectAsState()
@@ -196,8 +197,8 @@ private fun Card(
             NoteAndMedia(note.uid, it.id)
         )
     }
-
     val pagerState = rememberPagerState { filteredMedias.size }
+    
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -210,8 +211,7 @@ private fun Card(
                     mainModel.updateSelection(true)
                 }
             ) {
-                sound.makeSound.invoke(context, KEY_CLICK, thereIsSoundEffect.value)
-
+                sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                 if (isHomeScreen && !uiState.isSelection) {
                     navigator?.push(
                         WorkplaceScreen(
@@ -222,7 +222,7 @@ private fun Card(
                             backgroundColor = note.color,
                             textColor = note.textColor,
                             priority = note.priority,
-                            reminding = note.reminding
+                            reminder = note.reminding
                         )
                     )
                 } else if (!isHomeScreen && !uiState.isSelection) {
