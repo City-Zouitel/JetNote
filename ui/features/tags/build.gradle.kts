@@ -24,6 +24,7 @@ dependencies {
 
     //Lifecycle.
     implementation(libs.lifecycle.compose.viewmodel)
+    implementation(project(":common:logic"))
 
     //Accompanist.
 //    implementation(libs.accompanist.flowlayout)
