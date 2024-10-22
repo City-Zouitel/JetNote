@@ -43,7 +43,7 @@ class TagScreenModel(
 
     fun sendEvent(event: UiEvent<InTag>) {
         when(event) {
-            is UiEvent.Insert<InTag> -> {
+            is UiEvent.Insert -> {
                 screenModelScope.launch(Dispatchers.IO) {
                     add.invoke(mapper.toDomain(event.data))
                 }
