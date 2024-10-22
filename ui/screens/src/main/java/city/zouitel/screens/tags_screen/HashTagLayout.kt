@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material3.ElevatedFilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import city.zouitel.logic.UiEvent
 import city.zouitel.logic.asLongToast
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.CROSS_CIRCLE_ICON
@@ -63,21 +67,21 @@ internal fun HashTagLayout(tagModel: TagScreenModel) {
                 observeAllTags[index].label?.let { tag ->
                     CommonPopupTip(
                         color = {
-                            tagModel
-                                .updateTag(
-                                    Tag(
+                            tagModel.sendEvent(
+                                UiEvent.Update(
+                                    data = Tag(
                                         id = uiState.currentId,
                                         label = uiState.currentLabel,
                                         color = it
                                     )
                                 )
-                                .invokeOnCompletion {
-                                    tagModel
-                                        .updateId()
-                                        .updateColorDialogState()
-                                        .updateColor()
-                                        .updateLabel()
-                                }
+                            )
+                            tagModel
+                                .updateId()
+                                .updateColorDialogState()
+                                .updateColor()
+                                .updateLabel()
+
                         }
                     ) { window ->
                         Surface(
@@ -86,7 +90,6 @@ internal fun HashTagLayout(tagModel: TagScreenModel) {
                                 onLongClick = {
 
                                     tagModel.updateId(observeAllTags[index].id)
-//                                        .updateColorDialogState(true)
                                         .updateLabel(observeAllTags[index].label ?: "")
                                         .updateColor(observeAllTags[index].color)
                                     window.showAlignTop()

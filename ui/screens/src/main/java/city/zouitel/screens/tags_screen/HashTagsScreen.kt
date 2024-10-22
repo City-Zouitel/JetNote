@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import city.zouitel.logic.UiEvent
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
@@ -129,24 +130,26 @@ class HashTagsScreen: Screen {
                             placeholder = "#Tag..",
                             imeAction = ImeAction.Done,
                             keyboardActions = KeyboardActions(onDone = {
-                                if (observeTags.any { it.id == uiState.currentId }) {
-                                    tagModel.updateTag(
-                                        Tag(
-                                            id = uiState.currentId,
-                                            label = uiState.currentLabel,
-                                            color = uiState.currentColor
+                                if (observeTags.any { it.id == uiState.currentId })
+                                    tagModel.sendEvent(
+                                        UiEvent.Update(
+                                            data = Tag(
+                                                id = uiState.currentId,
+                                                label = uiState.currentLabel,
+                                                color = uiState.currentColor
+                                            )
+                                        )
+                                    ) else {
+                                    tagModel.sendEvent(
+                                        UiEvent.Insert(
+                                            Tag(
+                                                label = uiState.currentLabel,
+                                                color = uiState.currentColor
+                                            )
                                         )
                                     )
-                                } else {
-                                    tagModel.addTag(
-                                        Tag(
-                                            label = uiState.currentLabel,
-                                            color = uiState.currentColor
-                                        )
-                                    )
-                                }.invokeOnCompletion {
-                                    tagModel.updateColor().updateId().updateLabel()
                                 }
+                                tagModel.updateColor().updateId().updateLabel()
                             }),
                         )
                     }
