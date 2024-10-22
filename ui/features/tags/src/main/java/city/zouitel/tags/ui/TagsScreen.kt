@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import city.zouitel.logic.UiEvent
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonIcons.FULL_LABEL_ICON
 import city.zouitel.systemDesign.CommonIcons.OUTLINE_LABEL_ICON
@@ -75,16 +76,15 @@ data class TagsScreen(val id: String): Screen {
         val navigator = LocalNavigator.current
 
         val observeTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
-        val observeNoteAndTag by remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
+        val observeNoteAndTag by remember(
+            noteAndTagModel,
+            noteAndTagModel::getAllNotesAndTags
+        ).collectAsState()
         val uiState by remember(tagModel, tagModel::uiState).collectAsState()
         var maxLines by remember { mutableIntStateOf(3) }
         val fieldState = rememberTextFieldState(uiState.currentLabel)
 
         val focusRequester by lazy { FocusRequester() }
-
-//        if (uiState.isColorsDialog) {
-//            DialogColors(tagModel = tagModel)
-//        }
 
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
@@ -147,7 +147,13 @@ data class TagsScreen(val id: String): Screen {
                                 modifier = Modifier.padding(2.dp),
                                 selected = true,
                                 onClick = {
-                                    if (observeNoteAndTag.contains(InNoteAndTag(_id, observeTags[index].id))) {
+                                    if (observeNoteAndTag.contains(
+                                            InNoteAndTag(
+                                                _id,
+                                                observeTags[index].id
+                                            )
+                                        )
+                                    ) {
                                         noteAndTagModel.deleteNoteAndTag(
                                             InNoteAndTag(
                                                 noteUid = _id,
@@ -164,7 +170,12 @@ data class TagsScreen(val id: String): Screen {
                                     }
                                 },
                                 leadingIcon = {
-                                    if (observeNoteAndTag.contains(InNoteAndTag(_id, observeTags[index].id))
+                                    if (observeNoteAndTag.contains(
+                                            InNoteAndTag(
+                                                _id,
+                                                observeTags[index].id
+                                            )
+                                        )
                                     ) {
                                         Icon(
                                             painterResource(FULL_LABEL_ICON), null,
@@ -199,24 +210,27 @@ data class TagsScreen(val id: String): Screen {
                         imeAction = ImeAction.Done,
                         keyboardAction = {
                             if (observeTags.any { it.id == uiState.currentId }) {
-                                tagModel.updateTag(
-                                    Tag(
-                                        id = uiState.currentId,
-                                        label = uiState.currentLabel,
-                                        color = uiState.currentColor
+                                tagModel.sendEvent(
+                                    UiEvent.Update(
+                                        data = Tag(
+                                            id = uiState.currentId,
+                                            label = uiState.currentLabel,
+                                            color = uiState.currentColor
+                                        )
                                     )
                                 )
                             } else {
-                                tagModel.addTag(
-                                    Tag(
-                                        label = fieldState.text.toString(),
-                                        color = uiState.currentColor
+                                tagModel.sendEvent(
+                                    UiEvent.Insert(
+                                        data = Tag(
+                                            label = fieldState.text.toString(),
+                                            color = uiState.currentColor
+                                        )
                                     )
                                 )
-                            }.invokeOnCompletion {
-                                tagModel.updateColor().updateId()
-                                fieldState.clearText()
                             }
+                            tagModel.updateColor().updateId()
+                            fieldState.clearText()
                         },
                     )
                 }
