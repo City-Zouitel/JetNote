@@ -3,8 +3,10 @@ package city.zouitel.tags.ui
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.TagUseCase
-import city.zouitel.logic.UiEvent
+import city.zouitel.logic.events.UiEvent
+import city.zouitel.logic.events.UiEventHandler
 import city.zouitel.tags.mapper.TagMapper
+import city.zouitel.tags.model.Tag
 import city.zouitel.tags.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +22,7 @@ class TagScreenModel(
     private val update: TagUseCase.UpdateTag,
     private val delete: TagUseCase.DeleteTag,
     private val mapper: TagMapper
-): ScreenModel {
+): ScreenModel, UiEventHandler<Tag> {
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState>
@@ -31,34 +33,31 @@ class TagScreenModel(
                 UiState()
             )
 
-    private val _getAllTags = MutableStateFlow<List<InTag>>(emptyList())
-    val getAllLTags: StateFlow<List<InTag>> = _getAllTags.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
+    private val _getAllTags: MutableStateFlow<List<Tag>> = MutableStateFlow(emptyList())
+    val getAllLTags: StateFlow<List<InTag>>
+        get() = _getAllTags
+            .stateIn(
+                screenModelScope,
+                SharingStarted.WhileSubscribed(),
+                emptyList()
+            )
 
     init {
-        screenModelScope.launch(Dispatchers.IO) {
+        performUiEvent {
             getAllTags.invoke().collect { tags -> _getAllTags.value = mapper.fromDomain(tags) }
         }
     }
 
-
-    fun sendEvent(event: UiEvent<InTag>) {
+    override fun sendUiEvent(event: UiEvent<InTag>) {
         when(event) {
-            is UiEvent.Insert -> {
-                screenModelScope.launch(Dispatchers.IO) {
-                    add.invoke(mapper.toDomain(event.data))
-                }
-            }
-            is UiEvent.Delete -> {
-                screenModelScope.launch(Dispatchers.IO) {
-                    delete.invoke(mapper.toDomain(event.data))
-                }
-            }
-            is UiEvent.Update -> {
-                screenModelScope.launch(Dispatchers.IO) {
-                    update.invoke(mapper.toDomain(event.data))
-                }
-            }
+            is UiEvent.Insert -> performUiEvent { add.invoke(mapper.toDomain(event.data)) }
+            is UiEvent.Delete -> performUiEvent { delete.invoke(mapper.toDomain(event.data)) }
+            is UiEvent.Update -> performUiEvent { update.invoke(mapper.toDomain(event.data)) }
         }
+    }
+
+    override fun performUiEvent(action: suspend () -> Unit) {
+        screenModelScope.launch(Dispatchers.IO) { action.invoke() }
     }
 
     fun updateId(id: Long = 0L): TagScreenModel {
