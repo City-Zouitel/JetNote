@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import city.zouitel.logic.UiEvent
 import city.zouitel.logic.asLongToast
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.CROSS_CIRCLE_ICON
 import city.zouitel.systemDesign.CommonPopupTip
@@ -67,7 +67,7 @@ internal fun HashTagLayout(tagModel: TagScreenModel) {
                 observeAllTags[index].label?.let { tag ->
                     CommonPopupTip(
                         color = {
-                            tagModel.sendEvent(
+                            tagModel.sendUiEvent(
                                 UiEvent.Update(
                                     data = Tag(
                                         id = uiState.currentId,

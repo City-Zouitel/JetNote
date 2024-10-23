@@ -32,7 +32,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.logic.UiEvent
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
@@ -131,7 +131,7 @@ class HashTagsScreen: Screen {
                             imeAction = ImeAction.Done,
                             keyboardActions = KeyboardActions(onDone = {
                                 if (observeTags.any { it.id == uiState.currentId })
-                                    tagModel.sendEvent(
+                                    tagModel.sendUiEvent(
                                         UiEvent.Update(
                                             data = Tag(
                                                 id = uiState.currentId,
@@ -140,7 +140,7 @@ class HashTagsScreen: Screen {
                                             )
                                         )
                                     ) else {
-                                    tagModel.sendEvent(
+                                    tagModel.sendUiEvent(
                                         UiEvent.Insert(
                                             Tag(
                                                 label = uiState.currentLabel,
