@@ -67,6 +67,7 @@ import city.zouitel.links.ui.CacheLinks
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.logic.findUrlLink
 import city.zouitel.media.model.Media
 import city.zouitel.media.model.NoteAndMedia
@@ -400,13 +401,7 @@ data class WorkplaceScreen(
                             Checkbox(
                                 checked = todo.isDone,
                                 onCheckedChange = {
-                                    taskModel.updateTotoItem(
-                                        Task(
-                                            id = todo.id,
-                                            item = todo.item,
-                                            isDone = !todo.isDone
-                                        )
-                                    )
+                                    taskModel.sendUiEvent(UiEvent.Update(Task(id = todo.id, item = todo.item, isDone = !todo.isDone)))
                                 },
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = Color.Gray,
