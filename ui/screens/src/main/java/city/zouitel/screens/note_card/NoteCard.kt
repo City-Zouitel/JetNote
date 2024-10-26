@@ -63,6 +63,7 @@ import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.media.model.NoteAndMedia
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.media.ui.NoteAndMediaScreenModel
@@ -72,7 +73,6 @@ import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.main_screen.OptionsScreen
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
-import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.LIST
 import city.zouitel.systemDesign.CommonConstants.NON
 import city.zouitel.systemDesign.CommonIcons.ANGLE_DOWN_ICON
@@ -419,13 +419,7 @@ private fun Card(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(selected = todo.isDone, onClick = {
-                                taskModel.updateTotoItem(
-                                    Task(
-                                        id = todo.id,
-                                        item = todo.item,
-                                        isDone = !todo.isDone
-                                    )
-                                )
+                                taskModel.sendUiEvent(UiEvent.Update(Task(todo.id, todo.item, !todo.isDone)))
                             },
                                 colors = RadioButtonDefaults.colors(
                                 selectedColor = Color.Gray,
