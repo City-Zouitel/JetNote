@@ -3,6 +3,8 @@ package city.zouitel.tasks.ui
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.NoteAndTaskUseCase
+import city.zouitel.logic.events.UiEvent
+import city.zouitel.logic.events.UiEventHandler
 import city.zouitel.tasks.mapper.NoteAndTaskMapper
 import city.zouitel.tasks.model.NoteAndTask
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +20,7 @@ class NoteAndTaskScreenModel(
     private val add: NoteAndTaskUseCase.AddNoteAndTask,
     private val delete: NoteAndTaskUseCase.DeleteNoteAndTask,
     private val mapper: NoteAndTaskMapper
-): ScreenModel {
+): ScreenModel, UiEventHandler<NoteAndTask> {
 
     private val _getAllNotesAndTask: MutableStateFlow<List<NoteAndTask>> = MutableStateFlow(
         emptyList()
@@ -32,9 +34,8 @@ class NoteAndTaskScreenModel(
             )
 
     init {
-        screenModelScope.launch {
-            getAll.invoke().collect { notesAndTask ->
-                _getAllNotesAndTask.value = mapper.fromDomain(notesAndTask)
+        performUiEvent {
+            getAll().collect { notesAndTask -> _getAllNotesAndTask.value = mapper.fromDomain(notesAndTask)
             }
         }
     }
@@ -44,7 +45,16 @@ class NoteAndTaskScreenModel(
             add.invoke(mapper.toDomain(noteAndTodo))
         }
     }
-    fun deleteNoteAndTaskItem(noteAndTodo: InNoteAndTask) = screenModelScope.launch(Dispatchers.IO) {
-        delete.invoke(mapper.toDomain(noteAndTodo))
+
+    override fun sendUiEvent(event: UiEvent<NoteAndTask>) {
+        when(event) {
+            is UiEvent.Delete -> performUiEvent { delete(mapper.toDomain(event.data)) }
+            is UiEvent.Insert -> performUiEvent { add(mapper.toDomain(event.data)) }
+            is UiEvent.Update -> throw Exception("Not implemented")
+        }
+    }
+
+    override fun performUiEvent(action: suspend () -> Unit) {
+        screenModelScope.launch(Dispatchers.IO) { action.invoke() }
     }
 }

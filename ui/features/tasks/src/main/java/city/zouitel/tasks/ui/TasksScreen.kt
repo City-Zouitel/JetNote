@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonSwipeItem
@@ -126,29 +127,18 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                                         .updateItem(task.item ?: "")
                                 },
                                 onSwipeLeft = {
-                                    taskModel.deleteTotoItem(Task(id = task.id))
+                                    taskModel.sendUiEvent(UiEvent.Delete(Task(id = task.id)))
                                 },
                                 onSwipeRight = {
-                                    taskModel.updateTotoItem(
-                                        Task(
-                                            id = task.id,
-                                            item = task.item,
-                                            isDone = !task.isDone
-                                        )
-                                    )
+                                    taskModel.sendUiEvent(UiEvent.Update(Task(id = task.id, item = task.item, isDone = !task.isDone)))
                                 }
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Checkbox(
                                         checked = task.isDone,
                                         onCheckedChange = {
-                                            taskModel.updateTotoItem(
-                                                Task(
-                                                    id = task.id,
-                                                    item = task.item,
-                                                    isDone = !task.isDone
-                                                )
-                                            )
+                                            taskModel.sendUiEvent(UiEvent.Update(Task(id = task.id, item = task.item, isDone = !task.isDone)))
+
                                         },
                                         colors = CheckboxDefaults.colors(
                                             checkedColor = Color.Gray
@@ -192,22 +182,11 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                         keyboardActions = KeyboardActions {
 
                             if (observeTaskList.any { it.id == uiState.currentId }) {
-                                taskModel.updateTotoItem(
-                                    InTask(
-                                        uiState.currentId,
-                                        uiState.currentItem,
-                                        false
-                                    )
-                                )
+                                taskModel.sendUiEvent(UiEvent.Update(InTask(uiState.currentId, uiState.currentItem, false)))
                             } else {
                                 Random.nextLong().let {
-                                    taskModel.addTotoItem(
-                                        InTask(it, uiState.currentItem, false)
-                                    )
-
-                                    noteAndTaskModel.addNoteAndTaskItem(
-                                        InNoteAndTask(id, it)
-                                    )
+                                    taskModel.sendUiEvent(UiEvent.Insert(InTask(it, uiState.currentItem, false)))
+                                    noteAndTaskModel.sendUiEvent(UiEvent.Insert(InNoteAndTask(id, it)))
                                 }
                             }
                             taskModel.updateId().updateItem()
