@@ -46,7 +46,7 @@ class NoteAndTagScreenModel(
     override fun sendUiEvent(event: UiEvent<NoteAndTag>) {
         when (event) {
             is UiEvent.Insert -> performUiEvent { add.invoke(mapper.toDomain(event.data)) }
-            is UiEvent.Delete -> performUiEvent { delete.invoke(mapper.toDomain(event.data)) }
+            is UiEvent.Delete -> performUiEvent { runCatching { delete.invoke(mapper.toDomain(event.data)) } }
             is UiEvent.Update -> throw Exception("Not implemented")
         }
     }

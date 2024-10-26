@@ -152,42 +152,18 @@ data class TagsScreen(val id: String): Screen {
                                 modifier = Modifier.padding(2.dp),
                                 selected = true,
                                 onClick = {
-//                                    if (observeNoteAndTag.contains(InNoteAndTag(_id, observeTags[index].id))) {
-//                                        noteAndTagModel.sendUiEvent(
-//                                            UiEvent.Delete(
-//                                            InNoteAndTag(
-//                                                noteUid = _id,
-//                                                labelId = observeTags[index].id
-//                                            )
-//                                        ))
-//                                    } else {
-//                                        noteAndTagModel.sendUiEvent(
-//                                            UiEvent.Insert(
-//                                            InNoteAndTag(
-//                                                noteUid = _id,
-//                                                labelId = observeTags[index].id
-//                                            )
-//                                        ))
-//                                    }
-                                    val uiEvent = when {
-                                        observeNoteAndTag.contains(noteAndTag) -> UiEvent.Delete(noteAndTag)
-                                        else -> UiEvent.Insert(noteAndTag)
-                                    }
                                     runCatching {
+                                        val uiEvent = when {
+                                            observeNoteAndTag.contains(noteAndTag) -> UiEvent.Delete(noteAndTag)
+                                            else -> UiEvent.Insert(noteAndTag)
+                                        }
                                         noteAndTagModel.sendUiEvent(uiEvent)
                                     }.onFailure {
                                         context.run { it.message?.asLongToast() }
                                     }
                                 },
                                 leadingIcon = {
-                                    if (observeNoteAndTag.contains(
-//                                            InNoteAndTag(
-//                                                _id,
-//                                                observeTags[index].id
-//                                            )
-                                        noteAndTag
-                                        )
-                                    ) {
+                                    if (observeNoteAndTag.contains(noteAndTag)) {
                                         Icon(
                                             painterResource(FULL_LABEL_ICON), null,
                                             tint = if (observeTags[indexInLine].color == Color.Transparent.toArgb()) {

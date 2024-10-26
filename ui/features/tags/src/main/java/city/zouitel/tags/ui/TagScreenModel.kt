@@ -49,9 +49,9 @@ class TagScreenModel(
     }
 
     override fun sendUiEvent(event: UiEvent<InTag>) {
-        when(event) {
+        when (event) {
             is UiEvent.Insert -> performUiEvent { add.invoke(mapper.toDomain(event.data)) }
-            is UiEvent.Delete -> performUiEvent { delete.invoke(mapper.toDomain(event.data)) }
+            is UiEvent.Delete -> performUiEvent { runCatching { delete.invoke(mapper.toDomain(event.data)) } }
             is UiEvent.Update -> performUiEvent { update.invoke(mapper.toDomain(event.data)) }
         }
     }
