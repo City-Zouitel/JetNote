@@ -12,6 +12,7 @@ android {
 dependencies {
     //Modules.
     implementation(projects.common.systemDesign)
+    implementation(projects.common.logic)
     implementation(projects.domain)
 
     //AndroidX.
