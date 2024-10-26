@@ -213,19 +213,14 @@ internal fun HomeSelectionTopAppBar(
                                                     )
                                                 }
                                                 .forEach {
-//                                                    noteAndTagModel.addNoteAndTag(
-//                                                        NoteAndTag(
-//                                                            newUid.toString(),
-//                                                            it.id
-//                                                        )
-//                                                    )
                                                     noteAndTagModel.sendUiEvent(
                                                         UiEvent.Insert(
-                                                        NoteAndTag(
-                                                            newUid.toString(),
-                                                            it.id
+                                                            NoteAndTag(
+                                                                newUid.toString(),
+                                                                it.id
+                                                            )
                                                         )
-                                                    ))
+                                                    )
                                                 }
 
                                             // copy each todo item.
@@ -242,17 +237,17 @@ internal fun HomeSelectionTopAppBar(
                                                     Random
                                                         .nextLong()
                                                         .let {
-                                                            taskModel.addTotoItem(
-                                                                Task(
-                                                                    it,
-                                                                    todo.item,
-                                                                    todo.isDone
+                                                            taskModel.sendUiEvent(
+                                                                UiEvent.Insert(
+                                                                    Task(it, todo.item, todo.isDone)
                                                                 )
                                                             )
-                                                            noteAndTaskModel.addNoteAndTaskItem(
-                                                                NoteAndTask(
-                                                                    newUid.toString(),
-                                                                    it
+                                                            noteAndTaskModel.sendUiEvent(
+                                                                UiEvent.Insert(
+                                                                    NoteAndTask(
+                                                                        newUid.toString(),
+                                                                        it
+                                                                    )
                                                                 )
                                                             )
                                                         }
