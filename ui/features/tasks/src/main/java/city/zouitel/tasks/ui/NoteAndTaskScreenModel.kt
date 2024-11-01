@@ -50,7 +50,7 @@ class NoteAndTaskScreenModel(
         when(event) {
             is UiEvent.Delete -> performUiEvent { delete(mapper.toDomain(event.data)) }
             is UiEvent.Insert -> performUiEvent { add(mapper.toDomain(event.data)) }
-            is UiEvent.Update -> throw Exception("Not implemented")
+            else -> throw Exception("Not implemented")
         }
     }
 

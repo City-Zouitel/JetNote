@@ -48,6 +48,7 @@ class TaskScreenModel(
             is UiEvent.Update -> performUiEvent { update(mapper.toDomain(event.data)) }
             is UiEvent.Delete -> performUiEvent { delete(mapper.toDomain(event.data)) }
             is UiEvent.Insert -> performUiEvent { add(mapper.toDomain(event.data)) }
+            else -> throw Exception("Not implemented")
         }
     }
 
