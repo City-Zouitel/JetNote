@@ -129,15 +129,28 @@ internal fun HomeSelectionTopAppBar(
                             ) {
                                 sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                                 uiState.selectedNotes.forEach {
-                                    dataModel.editData(
-                                        Data(
-                                            title = it.title,
-                                            description = it.description,
-                                            priority = it.priority,
-                                            uid = it.uid,
-                                            color = it.color,
-                                            textColor = it.textColor,
-                                            removed = 1
+//                                    dataModel.editData(
+//                                        Data(
+//                                            title = it.title,
+//                                            description = it.description,
+//                                            priority = it.priority,
+//                                            uid = it.uid,
+//                                            color = it.color,
+//                                            textColor = it.textColor,
+//                                            removed = 1
+//                                        )
+//                                    )
+                                    dataModel.sendUiEvent(
+                                        UiEvent.Update(
+                                            Data(
+                                                title = it.title,
+                                                description = it.description,
+                                                priority = it.priority,
+                                                uid = it.uid,
+                                                color = it.color,
+                                                textColor = it.textColor,
+                                                removed = 1
+                                            )
                                         )
                                     )
 
@@ -298,14 +311,11 @@ internal fun RemovedSelectionTopAppBar(
                             modifier = Modifier
                                 .padding(7.dp)
                                 .combinedClickable(
-                                    onLongClick = {
-                                        it.showAlignBottom()
-                                    }
+                                    onLongClick = { it.showAlignBottom() }
                                 ) {
                                     sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-                                    uiState.selectedNotes.forEach {
-                                        dataModel.deleteData(it)
-                                    }
+//                                    uiState.selectedNotes.forEach { dataModel.deleteData(it) }
+                                    uiState.selectedNotes.forEach { dataModel.sendUiEvent(UiEvent.Delete(it)) }
                                     mainModel.clearSelectionNotes()
                                     mainModel.updateSelection(false)
                                 }
@@ -324,7 +334,8 @@ internal fun RemovedSelectionTopAppBar(
                                 ) {
                                     sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
                                     uiState.selectedNotes.forEach {
-                                        dataModel.editData(it.copy(removed = 0))
+//                                        dataModel.editData(it.copy(removed = 0))
+                                        dataModel.sendUiEvent(UiEvent.Update(it.copy(removed = 0)))
                                     }
                                     mainModel.clearSelectionNotes()
                                     mainModel.updateSelection(false)
