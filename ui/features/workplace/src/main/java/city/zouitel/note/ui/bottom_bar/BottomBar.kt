@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.utils.ColorsRow
@@ -124,30 +125,59 @@ internal fun BottomBar(
                         sound.performSoundEffect(context, CommonConstants.KEY_STANDARD, isMute.value)
 
                         if (isNew) {
-                            dataModel.addData(
-                                Data(
-                                    uid = id,
-                                    title = titleState?.text.toString(),
-                                    description = descriptionState?.text.toString(),
-                                    priority = priorityState.value,
-                                    reminding = reminderState.value,
-                                    date = dateState.value.toString(),
-                                    color = uiState.backgroundColor,
-                                    textColor = uiState.textColor
+//                            dataModel.addData(
+//                                Data(
+//                                    uid = id,
+//                                    title = titleState?.text.toString(),
+//                                    description = descriptionState?.text.toString(),
+//                                    priority = priorityState.value,
+//                                    reminding = reminderState.value,
+//                                    date = dateState.value.toString(),
+//                                    color = uiState.backgroundColor,
+//                                    textColor = uiState.textColor
+//                                )
+//                            )
+                            dataModel.sendUiEvent(
+                                UiEvent.Insert(
+                                    Data(
+                                        uid = id,
+                                        title = titleState?.text.toString(),
+                                        description = descriptionState?.text.toString(),
+                                        priority = priorityState.value,
+                                        reminding = reminderState.value,
+                                        date = dateState.value.toString(),
+                                        color = uiState.backgroundColor,
+                                        textColor = uiState.textColor
+                                    )
                                 )
                             )
                         } else {
-                            dataModel.editData(
-                                Data(
-                                    uid = id,
-                                    title = titleState?.text.toString(),
-                                    description = descriptionState?.text.toString(),
-                                    priority = priorityState.value,
-                                    reminding = reminderState.value,
-                                    date = dateState.value.toString(),
-                                    removed = 0,
-                                    color = uiState.backgroundColor,
-                                    textColor = uiState.textColor
+//                            dataModel.editData(
+//                                Data(
+//                                    uid = id,
+//                                    title = titleState?.text.toString(),
+//                                    description = descriptionState?.text.toString(),
+//                                    priority = priorityState.value,
+//                                    reminding = reminderState.value,
+//                                    date = dateState.value.toString(),
+//                                    removed = 0,
+//                                    color = uiState.backgroundColor,
+//                                    textColor = uiState.textColor
+//                                )
+//                            )
+                            dataModel.sendUiEvent(
+                                UiEvent.Update(
+                                    Data(
+                                        uid = id,
+                                        title = titleState?.text.toString(),
+                                        description = descriptionState?.text.toString(),
+                                        priority = priorityState.value,
+                                        reminding = reminderState.value,
+                                        date = dateState.value.toString(),
+                                        removed = 0,
+                                        color = uiState.backgroundColor,
+                                        textColor = uiState.textColor
+                                    )
                                 )
                             )
                         }
