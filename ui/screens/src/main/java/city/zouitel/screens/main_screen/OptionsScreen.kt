@@ -14,9 +14,9 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonBottomSheet
-import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonIcons.ERASER_ICON
 import city.zouitel.systemDesign.CommonIcons.UNDO_ICON
@@ -63,9 +63,10 @@ class OptionsScreen: Screen {
                     icon = UNDO_ICON
                 ) {
                     scope.launch {
-                        city.zouitel.screens.utils.sound.performSoundEffect(context, CommonConstants.KEY_CLICK, isMute)
+                        city.zouitel.screens.utils.sound.performSoundEffect(context, KEY_CLICK, isMute)
                         uiState.selectedNote?.copy(removed = 0)?.let {
-                            dataModel.editData(it)
+//                            dataModel.editData(it)
+                            dataModel.sendUiEvent(UiEvent.Update(it))
                         }
                         navBottomSheet.hide()
                     }
@@ -75,8 +76,9 @@ class OptionsScreen: Screen {
                     name = "Erase",
                     icon = ERASER_ICON
                 ) {
-                    city.zouitel.screens.utils.sound.performSoundEffect(context, CommonConstants.KEY_CLICK, isMute)
-                    uiState.selectedNote?.let { dataModel.deleteData(it) }
+                    city.zouitel.screens.utils.sound.performSoundEffect(context, KEY_CLICK, isMute)
+//                    uiState.selectedNote?.let { dataModel.deleteData(it) }
+                    uiState.selectedNote?.let { dataModel.sendUiEvent(UiEvent.Delete(it)) }
 
                     observerRemovedNotes.value.forEach { entity ->
                         entity.linkEntities.forEach { link ->
