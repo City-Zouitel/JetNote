@@ -1,6 +1,7 @@
 package city.zouitel.screens.main_screen.utils
 
 import android.content.Context
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonConstants
@@ -9,14 +10,13 @@ import java.util.UUID
 
 fun copyNote(
     ctx: Context,
-    dataScreenModel: DataScreenModel,
+    dataModel: DataScreenModel,
     note: Data,
     uid: UUID,
     onAction : () -> Unit
 ) {
-    dataScreenModel.addData(
-        note.copy(uid = uid.toString())
-    )
+//    dataModel.addData(note.copy(uid = uid.toString()))
+    dataModel.sendUiEvent(UiEvent.Insert(note.copy(uid = uid.toString())))
     //
 //    "${ctx.filesDir.path}/${CommonConstants.IMG_DIR}/".apply {
 //        File("$this${note.uid}.${CommonConstants.JPEG}").let {
