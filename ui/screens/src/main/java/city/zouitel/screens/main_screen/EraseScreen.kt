@@ -22,6 +22,7 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonBottomSheet
@@ -84,9 +85,8 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
                         onConfirm = {
                             scope.launch {
                                 sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-
-                                dataModel.eraseNotes()
-
+//                                dataModel.eraseNotes()
+                                dataModel.sendUiEvent(UiEvent.DeleteAll())
                                 observerRemovedNotes.value.forEach { entity ->
                                     entity.linkEntities.forEach { link ->
                                         linkModel.deleteLink(link)
