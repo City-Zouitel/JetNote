@@ -46,6 +46,7 @@ import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
@@ -290,7 +291,8 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     mediaModel = mediaModel,
                                     noteAndMediaModel = noteAndMediaModel
                                 ) {
-                                    dataModel.editData(it.dataEntity.copy(removed = 1))
+//                                    dataModel.editData(it.dataEntity.copy(removed = 1))
+                                    dataModel.sendUiEvent(UiEvent.Update(it.dataEntity.copy(removed = 1)))
                                     // to cancel the alarm manager reminder.
                                     notificationModel.scheduleNotification(
                                         context = context,
