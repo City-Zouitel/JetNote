@@ -53,6 +53,7 @@ class TagScreenModel(
             is UiEvent.Insert -> performUiEvent { add.invoke(mapper.toDomain(event.data)) }
             is UiEvent.Delete -> performUiEvent { /*delete.invoke(mapper.toDomain(event.data))*/ }
             is UiEvent.Update -> performUiEvent { update.invoke(mapper.toDomain(event.data)) }
+            else -> throw Exception("Not implemented")
         }
     }
 
