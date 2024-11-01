@@ -1,8 +1,9 @@
 package city.zouitel.screens.main_screen.utils
 
-import androidx.compose.material.*
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.State
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.note.model.Data
 import city.zouitel.note.model.Note
 import city.zouitel.note.ui.DataScreenModel
@@ -28,7 +29,19 @@ internal fun UndoSnackbar(
             when(snackbarResult)  {
                 SnackbarResult.Dismissed -> {} // Timber.d("Snackbar dismissed")
                 SnackbarResult.ActionPerformed -> {
-                    dataModule.editData(
+//                    dataModule.editData(
+//                        Data(
+//                            title = removedNotesState.value.last().dataEntity.title,
+//                            description = removedNotesState.value.last().dataEntity.description,
+//                            priority = removedNotesState.value.last().dataEntity.priority,
+//                            uid = removedNotesState.value.last().dataEntity.uid,
+//                            textColor = removedNotesState.value.last().dataEntity.textColor,
+//                            date = removedNotesState.value.last().dataEntity.date,
+//                            color = removedNotesState.value.last().dataEntity.color,
+//                            removed = 0,
+//                        )
+//                    )
+                    dataModule.sendUiEvent(UiEvent.Update(
                         Data(
                             title = removedNotesState.value.last().dataEntity.title,
                             description = removedNotesState.value.last().dataEntity.description,
@@ -39,7 +52,7 @@ internal fun UndoSnackbar(
                             color = removedNotesState.value.last().dataEntity.color,
                             removed = 0,
                         )
-                    )
+                    ))
                 }
             }
         }
