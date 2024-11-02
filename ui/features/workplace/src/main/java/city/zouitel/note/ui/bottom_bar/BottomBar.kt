@@ -125,18 +125,6 @@ internal fun BottomBar(
                         sound.performSoundEffect(context, CommonConstants.KEY_STANDARD, isMute.value)
 
                         if (isNew) {
-//                            dataModel.addData(
-//                                Data(
-//                                    uid = id,
-//                                    title = titleState?.text.toString(),
-//                                    description = descriptionState?.text.toString(),
-//                                    priority = priorityState.value,
-//                                    reminding = reminderState.value,
-//                                    date = dateState.value.toString(),
-//                                    color = uiState.backgroundColor,
-//                                    textColor = uiState.textColor
-//                                )
-//                            )
                             dataModel.sendUiEvent(
                                 UiEvent.Insert(
                                     Data(
@@ -152,19 +140,6 @@ internal fun BottomBar(
                                 )
                             )
                         } else {
-//                            dataModel.editData(
-//                                Data(
-//                                    uid = id,
-//                                    title = titleState?.text.toString(),
-//                                    description = descriptionState?.text.toString(),
-//                                    priority = priorityState.value,
-//                                    reminding = reminderState.value,
-//                                    date = dateState.value.toString(),
-//                                    removed = 0,
-//                                    color = uiState.backgroundColor,
-//                                    textColor = uiState.textColor
-//                                )
-//                            )
                             dataModel.sendUiEvent(
                                 UiEvent.Update(
                                     Data(
