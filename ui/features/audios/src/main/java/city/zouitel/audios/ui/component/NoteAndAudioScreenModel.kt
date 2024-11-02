@@ -5,6 +5,8 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.audios.mapper.NoteAndAudioMapper
 import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.domain.usecase.NoteAndAudioUseCase
+import city.zouitel.logic.events.UiEvent
+import city.zouitel.logic.events.UiEventHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,7 +18,7 @@ class NoteAndAudioScreenModel(
     getAllNotesAndAudios: NoteAndAudioUseCase.GetAllNotesAndAudios,
     private val deleteNoteAndAudio: NoteAndAudioUseCase.DeleteNoteAndAudio,
     private val mapper: NoteAndAudioMapper
-): ScreenModel {
+): ScreenModel, UiEventHandler<NoteAndAudio> {
 
     private val _allNotesAndAudios: MutableStateFlow<List<NoteAndAudio>> = MutableStateFlow(
         emptyList()
@@ -29,16 +31,23 @@ class NoteAndAudioScreenModel(
         )
 
     init {
-        screenModelScope.launch(Dispatchers.IO) {
-            getAllNotesAndAudios.invoke().collect { notesAndAudio ->
+        performUiEvent {
+            getAllNotesAndAudios().collect { notesAndAudio ->
                 _allNotesAndAudios.value = mapper.fromDomain(notesAndAudio)
             }
         }
     }
 
-    fun deleteNoteAndAudio(noteAndAudio: NoteAndAudio) {
-        screenModelScope.launch(Dispatchers.IO) {
-            deleteNoteAndAudio.invoke(mapper.toDomain(noteAndAudio))
+    override fun sendUiEvent(event: UiEvent<NoteAndAudio>) {
+        when(event) {
+            is UiEvent.Delete -> performUiEvent {
+                deleteNoteAndAudio(mapper.toDomain(event.data))
+            }
+            else -> throw Exception("Not Implemented!")
         }
+    }
+
+    override fun performUiEvent(action: suspend () -> Unit) {
+        screenModelScope.launch(Dispatchers.IO) { action.invoke() }
     }
 }
