@@ -4,24 +4,23 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
-import city.zouitel.audios.state.AudioListUiState
 import city.zouitel.audios.audio.AudioRepository
 import city.zouitel.audios.audio.toUiState
 import city.zouitel.audios.mapper.AudioMapper
 import city.zouitel.audios.mapper.NoteAndAudioMapper
 import city.zouitel.audios.model.Audio
 import city.zouitel.audios.model.NoteAndAudio
-import city.zouitel.audios.model.NoteAndAudio as InNoteAndAudio
+import city.zouitel.audios.state.AudioListUiState
 import city.zouitel.domain.usecase.AudioUseCase
 import city.zouitel.domain.usecase.NoteAndAudioUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import city.zouitel.audios.model.NoteAndAudio as InNoteAndAudio
 
 class AudioListScreenModel(
     getAllNotesAndAudios: NoteAndAudioUseCase.GetAllNotesAndAudios,
@@ -54,8 +53,6 @@ class AudioListScreenModel(
             SharingStarted.WhileSubscribed(),
             listOf()
         )
-
-    private var loadAudioJob: Job? = null
 
     init {
         loadAudioFiles()

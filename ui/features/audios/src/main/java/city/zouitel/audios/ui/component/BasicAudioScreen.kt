@@ -11,7 +11,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,6 +29,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.audios.model.Audio
 import city.zouitel.audios.model.NoteAndAudio
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.CommonSwipeItem
 import com.linc.audiowaveform.AudioWaveform
@@ -66,7 +66,7 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
         scope.launch {
             while (uiState.isPlaying && processState <= 1f) {
                 delay(audio.duration / 100)
-                processState += .011f
+                processState += .01f
             }
             when {
                 processState >= 1f -> {
@@ -83,7 +83,7 @@ data class BasicAudioScreen(val id: String, val audio: Audio): Screen {
             enableRightDirection = false,
             onSwipeLeft = {
                 File(audio.path).delete()
-                noteAndAudioModel.deleteNoteAndAudio(NoteAndAudio(id, audio.id))
+                noteAndAudioModel.sendUiEvent(UiEvent.Delete(NoteAndAudio(id, audio.id)))
             }
         ) {
             Card(

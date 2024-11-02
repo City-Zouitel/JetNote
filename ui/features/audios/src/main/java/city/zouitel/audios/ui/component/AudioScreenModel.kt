@@ -1,13 +1,10 @@
 package city.zouitel.audios.ui.component
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.audios.audio.AudioRepository
 import city.zouitel.audios.mapper.AudioMapper
 import city.zouitel.audios.model.Audio
-import city.zouitel.audios.state.AudioListUiState
 import city.zouitel.audios.state.AudioUiState
 import city.zouitel.domain.exoplayer.ExoPlayerImpl
 import city.zouitel.domain.usecase.AudioUseCase
@@ -19,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class AudioScreenModel (
     getAllAudios: AudioUseCase.GetAllAudios,
@@ -39,11 +36,13 @@ class AudioScreenModel (
             AudioUiState()
         )
 
-    var rec_path = derivedStateOf { recPath }
-        private set
-
-    private val _allAudios = MutableStateFlow<List<Audio>>(emptyList())
-    val allAudios = _allAudios.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
+    private val _allAudios: MutableStateFlow<List<Audio>> = MutableStateFlow(emptyList())
+    val allAudios: StateFlow<List<Audio>> = _allAudios
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            listOf()
+        )
 
     init {
         screenModelScope.launch(Dispatchers.IO) {
