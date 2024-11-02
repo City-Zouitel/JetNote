@@ -84,18 +84,17 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
                     CommonOptionItem(
                         onConfirm = {
                             scope.launch {
-                                sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-//                                dataModel.eraseNotes()
+                                sound.performSoundEffect(
+                                    context,
+                                    CommonConstants.KEY_CLICK,
+                                    thereIsSoundEffect.value
+                                )
                                 dataModel.sendUiEvent(UiEvent.DeleteAll())
                                 observerRemovedNotes.value.forEach { entity ->
                                     entity.linkEntities.forEach { link ->
                                         linkModel.deleteLink(link)
-                                        noteAndLinkModel.deleteNoteAndLink(
-                                            NoteAndLink(
-                                                noteUid = entity.dataEntity.uid,
-                                                linkId = link.id
-                                            )
-                                        )
+//                                        noteAndLinkModel.deleteNoteAndLink(NoteAndLink(noteUid = entity.dataEntity.uid, linkId = link.id))
+                                        noteAndLinkModel.sendUiEvent(UiEvent.Delete(NoteAndLink(entity.dataEntity.uid, link.id)))
                                     }
                                     entity.taskEntities.forEach {
                                         // TODO: need finishing.
@@ -119,46 +118,16 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
 
                         },
                         onDismiss = {
-                            sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
+                            sound.performSoundEffect(
+                                context,
+                                CommonConstants.KEY_CLICK,
+                                thereIsSoundEffect.value
+                            )
                             navBottom.hide()
                         }
                     )
                 }
             }
         }))
-
-//        Column {
-//            Text(text = "Empty Notes?")
-//            Text(text = "All notes in trash will be permanently deleted.")
-//
-//            Row {
-//                CommonRow {
-//                    ClickableText(
-//                        text = AnnotatedString("Confirm"),
-//                        style = TextStyle(
-//                            color = MaterialTheme.colorScheme.surfaceTint,
-//                            fontSize = 17.sp
-//                        ),
-//                        onClick = {
-//                            sound.makeSound.invoke(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-////                            confirmation.invoke()
-////                            homeModel.updateErasing(false)
-//                        }
-//                    )
-//
-//                    ClickableText(
-//                        text = AnnotatedString("Cancel"),
-//                        style = TextStyle(
-//                            color = MaterialTheme.colorScheme.surfaceTint,
-//                            fontSize = 17.sp
-//                        ),
-//                        onClick = {
-//                            sound.makeSound.invoke(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-////                            homeModel.updateErasing(false)
-//                        }
-//                    )
-//                }
-//            }
-//        }
     }
 }
