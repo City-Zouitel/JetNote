@@ -22,7 +22,6 @@ import city.zouitel.systemDesign.CommonIcons.ERASER_ICON
 import city.zouitel.systemDesign.CommonIcons.UNDO_ICON
 import city.zouitel.systemDesign.CommonOptionItem
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.systemDesign.SoundEffect
 import kotlinx.coroutines.launch
 
 class OptionsScreen: Screen {
@@ -52,9 +51,7 @@ class OptionsScreen: Screen {
         val isMute by remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
         val observerRemovedNotes = remember(mainModel, mainModel::allTrashedNotes).collectAsState()
         val uiState by remember(mainModel, mainModel::uiState).collectAsState()
-
         val scope = rememberCoroutineScope()
-        val sound by lazy { SoundEffect() }
 
         Navigator(CommonBottomSheet({
             Column {
@@ -65,7 +62,6 @@ class OptionsScreen: Screen {
                     scope.launch {
                         city.zouitel.screens.utils.sound.performSoundEffect(context, KEY_CLICK, isMute)
                         uiState.selectedNote?.copy(removed = 0)?.let {
-//                            dataModel.editData(it)
                             dataModel.sendUiEvent(UiEvent.Update(it))
                         }
                         navBottomSheet.hide()
@@ -77,18 +73,13 @@ class OptionsScreen: Screen {
                     icon = ERASER_ICON
                 ) {
                     city.zouitel.screens.utils.sound.performSoundEffect(context, KEY_CLICK, isMute)
-//                    uiState.selectedNote?.let { dataModel.deleteData(it) }
                     uiState.selectedNote?.let { dataModel.sendUiEvent(UiEvent.Delete(it)) }
 
                     observerRemovedNotes.value.forEach { entity ->
                         entity.linkEntities.forEach { link ->
                             linkModel.deleteLink(link)
-                            noteAndLinkModel.deleteNoteAndLink(
-                                NoteAndLink(
-                                    noteUid = entity.dataEntity.uid,
-                                    linkId = link.id
-                                )
-                            )
+//                            noteAndLinkModel.deleteNoteAndLink(NoteAndLink(noteUid = entity.dataEntity.uid, linkId = link.id))
+                            noteAndLinkModel.sendUiEvent(UiEvent.Delete(NoteAndLink(entity.dataEntity.uid, link.id)))
                         }
                         entity.taskEntities.forEach {
                             // TODO: need finishing.
