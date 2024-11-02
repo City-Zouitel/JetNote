@@ -2,8 +2,9 @@ package city.zouitel.media.ui
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import city.zouitel.domain.usecase.NoteAndAudioUseCase
 import city.zouitel.domain.usecase.NoteAndMediaUseCase
+import city.zouitel.logic.events.UiEvent
+import city.zouitel.logic.events.UiEventHandler
 import city.zouitel.media.mapper.NoteAndMediaMapper
 import city.zouitel.media.model.NoteAndMedia
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ class NoteAndMediaScreenModel(
     private val updateNoteAndMedia: NoteAndMediaUseCase.UpdateNoteAndMedia,
     private val deleteNoteAndMedia: NoteAndMediaUseCase.DeleteNoteAndMedia,
     private val mapper: NoteAndMediaMapper
-): ScreenModel {
+): ScreenModel, UiEventHandler<NoteAndMedia> {
 
     private val _getAllNotesAndMedia: MutableStateFlow<List<NoteAndMedia>> = MutableStateFlow(
         emptyList()
@@ -32,28 +33,22 @@ class NoteAndMediaScreenModel(
     )
 
     init {
-        screenModelScope.launch {
-            getAllNotesAndMedia.invoke().collect { notesAndMedia ->
+        performUiEvent {
+            getAllNotesAndMedia().collect { notesAndMedia ->
                 _getAllNotesAndMedia.value = mapper.fromDomain(notesAndMedia)
             }
         }
     }
 
-    fun addNoteAndMedia(noteAndMedia: NoteAndMedia) {
-        screenModelScope.launch(Dispatchers.IO) {
-            addNoteAndMedia.invoke(mapper.toDomain(noteAndMedia))
+    override fun sendUiEvent(event: UiEvent<NoteAndMedia>) {
+        when(event) {
+            is UiEvent.Insert -> performUiEvent { addNoteAndMedia(mapper.toDomain(event.data)) }
+            is UiEvent.Delete -> performUiEvent { deleteNoteAndMedia(mapper.toDomain(event.data)) }
+            else -> throw Exception("Not Implemented!")
         }
     }
 
-    fun updateNoteAndMedia(noteAndMedia: NoteAndMedia) {
-        screenModelScope.launch {
-            updateNoteAndMedia.invoke(mapper.toDomain(noteAndMedia))
-        }
-    }
-
-    fun deleteNoteAndMedia(noteAndMedia: NoteAndMedia) {
-        screenModelScope.launch(Dispatchers.IO) {
-            deleteNoteAndMedia.invoke(mapper.toDomain(noteAndMedia))
-        }
+    override fun performUiEvent(action: suspend () -> Unit) {
+        screenModelScope.launch(Dispatchers.IO) { action.invoke() }
     }
 }

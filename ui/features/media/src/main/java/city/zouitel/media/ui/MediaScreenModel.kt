@@ -1,18 +1,10 @@
 package city.zouitel.media.ui
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import city.zouitel.domain.usecase.AudioUseCase
 import city.zouitel.domain.usecase.MediaUseCase
-import city.zouitel.domain.usecase.NoteAndMediaUseCase
+import city.zouitel.logic.events.UiEvent
+import city.zouitel.logic.events.UiEventHandler
 import city.zouitel.media.mapper.MediaMapper
 import city.zouitel.media.model.Media
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +17,9 @@ import kotlinx.coroutines.launch
 class MediaScreenModel(
     getAllMedias: MediaUseCase.GetAllMedias,
     private val addMedia: MediaUseCase.AddMedia,
-    private val updateMedia: MediaUseCase.UpdateMedia,
     private val deleteMedia: MediaUseCase.DeleteMedia,
     private val mapper: MediaMapper
-): ScreenModel {
+): ScreenModel, UiEventHandler<Media> {
 
     private val _allMedias: MutableStateFlow<List<Media>> = MutableStateFlow(
         emptyList()
@@ -41,26 +32,20 @@ class MediaScreenModel(
         )
 
     init {
-        screenModelScope.launch {
-            getAllMedias.invoke().collect { audios -> _allMedias.value = mapper.fromDomain(audios) }
+        performUiEvent {
+            getAllMedias().collect { audios -> _allMedias.value = mapper.fromDomain(audios) }
         }
     }
 
-    fun addMedia(media: Media) {
-        screenModelScope.launch(Dispatchers.IO) {
-            addMedia.invoke(mapper.toDomain(media))
+    override fun sendUiEvent(event: UiEvent<Media>) {
+        when(event) {
+            is UiEvent.Delete -> performUiEvent { deleteMedia(mapper.toDomain(event.data)) }
+            is UiEvent.Insert -> performUiEvent { addMedia(mapper.toDomain(event.data)) }
+            else -> throw Exception("Not Implemented!")
         }
     }
 
-    fun updateMedia(media: Media) {
-        screenModelScope.launch {
-            updateMedia.invoke(mapper.toDomain(media))
-        }
-    }
-
-    fun deleteMedia(media: Media) {
-        screenModelScope.launch(Dispatchers.IO) {
-            deleteMedia.invoke(mapper.toDomain(media))
-        }
+    override fun performUiEvent(action: suspend () -> Unit) {
+        screenModelScope.launch(Dispatchers.IO) { action.invoke() }
     }
 }

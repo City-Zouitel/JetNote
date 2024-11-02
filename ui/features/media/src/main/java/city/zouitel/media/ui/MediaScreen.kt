@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.media.model.NoteAndMedia
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -35,7 +36,6 @@ data class MediaScreen(
     val id: String,
     val backgroundColor: Int = 0,
 ): Screen {
-    @OptIn(ExperimentalSharedTransitionApi::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     override fun Content() {
@@ -45,7 +45,7 @@ data class MediaScreen(
         )
     }
 
-    @OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun Media(
         mediaModel: MediaScreenModel,
@@ -98,9 +98,8 @@ data class MediaScreen(
                             modifier = Modifier.combinedClickable(
                                 onLongClick = {
                                     vibe.performHapticFeedback(HapticFeedbackType.LongPress)
-
-                                    mediaModel.deleteMedia(filteredMedias[index])
-                                    noteAndMediaModel.deleteNoteAndMedia(NoteAndMedia(id, filteredMedias[index].id))
+                                    mediaModel.sendUiEvent(UiEvent.Delete(filteredMedias[index]))
+                                    noteAndMediaModel.sendUiEvent(UiEvent.Delete(NoteAndMedia(id, filteredMedias[index].id)))
                                 }
                             ) { /*do nothing..*/ }
                         ) {
