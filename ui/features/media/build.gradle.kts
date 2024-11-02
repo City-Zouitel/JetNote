@@ -11,6 +11,7 @@ android {
 dependencies {
     //Modules.
     implementation(projects.domain)
+    implementation(projects.common.logic)
 
     //Coil.
     implementation(libs.coil.compose)

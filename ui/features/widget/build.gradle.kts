@@ -13,6 +13,7 @@ dependencies {
     //Modules.
     implementation(projects.domain)
     implementation(projects.common.systemDesign)
+    implementation(projects.common.logic)
 
     //AndroidX.
     implementation(libs.constraintlayout)
