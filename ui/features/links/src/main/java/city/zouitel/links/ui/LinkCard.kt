@@ -1,6 +1,10 @@
 package city.zouitel.links.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -14,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import city.zouitel.links.model.Link
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.systemDesign.CommonSwipeItem
 import coil.compose.AsyncImage
 import city.zouitel.links.model.NoteAndLink as InNoteAndLink
@@ -32,9 +37,7 @@ fun LinkCard(
         CommonSwipeItem(
             onSwipeLeft = {
                 linkScreenModel.deleteLink(link)
-                noteAndLinkScreenModel.deleteNoteAndLink(
-                    InNoteAndLink(noteUid, link.id)
-                )
+                noteAndLinkScreenModel.sendUiEvent(UiEvent.Delete(InNoteAndLink(noteUid, link.id)))
             },
             onSwipeRight = {
                 uriHand.openUri(link.url)

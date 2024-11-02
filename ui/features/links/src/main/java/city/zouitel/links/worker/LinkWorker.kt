@@ -1,8 +1,8 @@
 package city.zouitel.links.worker
 
 import android.content.Context
-import android.graphics.Bitmap
-import androidx.work.*
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
 import city.zouitel.domain.usecase.LinkUseCase
 import city.zouitel.domain.usecase.NoteAndLinkUseCase
 import city.zouitel.links.mapper.LinkMapper
@@ -14,11 +14,10 @@ import city.zouitel.links.utils.Constants.LINK_ID
 import city.zouitel.links.utils.Constants.NOTE_ID
 import city.zouitel.links.utils.Constants.TITLE
 import city.zouitel.links.utils.Constants.URL
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import city.zouitel.links.model.Link as InLink
 import city.zouitel.links.model.NoteAndLink as InNoteAndLink
-import kotlinx.coroutines.*
-import java.io.File
-import java.io.FileOutputStream
 
 class LinkWorker(
     context: Context,
@@ -67,14 +66,5 @@ class LinkWorker(
             Result.failure()
         }
 
-    }
-
-    private fun saveImageLocally(img: Bitmap?, path:String, name:String?) {
-        FileOutputStream(
-            name?.let { File(path, it) }
-        ).use {
-            img?.compress(Bitmap.CompressFormat.JPEG, 100, it)
-            it.flush()
-        }
     }
 }
