@@ -34,12 +34,4 @@ class WidgetScreenModel(
             getAllNotes.invoke().collect { notes -> _allNotesById.value = mapper.fromDomain(notes) }
         }
     }
-
-//    @WorkerThread
-//    fun imageDecoder(context: Context, uid: String): Bitmap {
-//        val path = File(context.filesDir.path + "/" + CommonConstants.IMG_DIR, "$uid.${CommonConstants.JPEG}")
-//        val bitmapOptions = BitmapFactory.Options()
-//        bitmapOptions.inSampleSize = 4
-//        return BitmapFactory.decodeFile(path.absolutePath, bitmapOptions)
-//    }
 }

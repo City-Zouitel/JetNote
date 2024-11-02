@@ -196,8 +196,10 @@ data class WorkplaceScreen(
                 uris.forEach { uri ->
                     context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     Random.nextLong().let {
-                        mediaModel.addMedia(Media(id = it, path = uri.toString()))
-                        noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))
+//                        mediaModel.addMedia(Media(id = it, path = uri.toString()))
+//                        noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))
+                        mediaModel.sendUiEvent(UiEvent.Insert(Media(id = it, path = uri.toString())))
+                        noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(id, it)))
                     }
                 }
             }
@@ -440,8 +442,10 @@ data class WorkplaceScreen(
         noteAndMediaModel: NoteAndMediaScreenModel
     ): (Uri) -> Unit = { uri ->
         Random.nextLong().let {
-            mediaModel.addMedia(Media(id = it, path = uri.toString()))
-            noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))
+//            mediaModel.addMedia(Media(id = it, path = uri.toString()))
+//            noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))
+            mediaModel.sendUiEvent(UiEvent.Insert(Media(id = it, path = uri.toString())))
+            noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(id, it)))
         }
     }
 }
