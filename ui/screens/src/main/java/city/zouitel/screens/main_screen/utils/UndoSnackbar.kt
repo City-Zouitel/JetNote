@@ -29,18 +29,6 @@ internal fun UndoSnackbar(
             when(snackbarResult)  {
                 SnackbarResult.Dismissed -> {} // Timber.d("Snackbar dismissed")
                 SnackbarResult.ActionPerformed -> {
-//                    dataModule.editData(
-//                        Data(
-//                            title = removedNotesState.value.last().dataEntity.title,
-//                            description = removedNotesState.value.last().dataEntity.description,
-//                            priority = removedNotesState.value.last().dataEntity.priority,
-//                            uid = removedNotesState.value.last().dataEntity.uid,
-//                            textColor = removedNotesState.value.last().dataEntity.textColor,
-//                            date = removedNotesState.value.last().dataEntity.date,
-//                            color = removedNotesState.value.last().dataEntity.color,
-//                            removed = 0,
-//                        )
-//                    )
                     dataModule.sendUiEvent(UiEvent.Update(
                         Data(
                             title = removedNotesState.value.last().dataEntity.title,

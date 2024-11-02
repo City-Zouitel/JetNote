@@ -7,17 +7,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.contentColorFor
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
-import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
-import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.CommonIcons.REDO_ICON
 import city.zouitel.systemDesign.CommonIcons.UNDO_ICON
+import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.SoundEffect
 
 // TODO: need improvement.
@@ -37,7 +39,7 @@ fun UndoRedo(
     IconButton(
         modifier = Modifier.size(23.dp),
         onClick = {
-            sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
+            sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
             if (uiState.isTitleFieldFocused) titleState?.undoState?.undo()
             else if (uiState.isDescriptionFieldFocused) descriptionState?.undoState?.undo()
             else throw Exception("there is no field is focused!!")
@@ -55,7 +57,7 @@ fun UndoRedo(
     IconButton(
         modifier = Modifier.size(23.dp),
         onClick = {
-            sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
+            sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
             if (uiState.isTitleFieldFocused) titleState.undoState.redo()
             else if (uiState.isDescriptionFieldFocused) descriptionState.undoState.redo()
             else throw Exception("there is no field is focused!!")
