@@ -1,6 +1,5 @@
 package city.zouitel.screens.navigation_drawer
 
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.ContextualFlowRow
 import androidx.compose.foundation.layout.ContextualFlowRowOverflow
@@ -25,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -80,6 +80,7 @@ fun NavigationDrawer(
     val isMute by remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val scope = rememberCoroutineScope()
     var maxLines by remember { mutableIntStateOf(3) }
+    val currentScreen = remember { mutableStateOf(MAIN_SCREEN) }
 
     DismissibleDrawerSheet(
         drawerState = drawerState,
@@ -100,33 +101,35 @@ fun NavigationDrawer(
             item { HorizontalDivider() }
 
             item {
-                NavItem(
-                    navigationDrawerModel = navigationDrawerModel,
-                    screen = MAIN_SCREEN,
-                    icon = HOME_ICON
-                ) {
-                    scope.launch {
-                        drawerState.close()
-                        navigationDrawerModel.updateCurrentScreen(MAIN_SCREEN)
+                NavigationDrawerItem(
+                    label = { Text(text = MAIN_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
+                    icon = { Icon(painterResource(HOME_ICON), null) },
+                    selected = currentScreen.value == MAIN_SCREEN,
+                    onClick = {
+                        scope.launch {
+                            currentScreen.value = MAIN_SCREEN
+                            navigator.push(MainScreen(isHome = true))
+                            drawerState.close()
+                        }
                     }
-                    navigator.push(MainScreen(isHome = true))
-                }
+                )
             }
 
             item { HorizontalDivider() }
 
             item {
-                NavItem(
-                    navigationDrawerModel = navigationDrawerModel,
-                    screen = TAGS_SCREEN,
-                    icon = TAGS_ICON
-                ) {
-                    scope.launch {
-                        drawerState.close()
-                        navigationDrawerModel.updateCurrentScreen(TAGS_SCREEN)
+                NavigationDrawerItem(
+                    label = { Text(text = TAGS_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
+                    icon = { Icon(painterResource(TAGS_ICON), null) },
+                    selected = currentScreen.value == TAGS_SCREEN,
+                    onClick = {
+                        scope.launch {
+                            currentScreen.value = TAGS_SCREEN
+                            navigator.push(HashTagsScreen())
+                            drawerState.close()
+                        }
                     }
-                    navigator.push(HashTagsScreen())
-                }
+                )
             }
 
             item {
@@ -195,31 +198,33 @@ fun NavigationDrawer(
             item { HorizontalDivider() }
 
             item {
-                NavItem(
-                    navigationDrawerModel = navigationDrawerModel,
-                    screen = SETTINGS_SCREEN,
-                    icon = SETTINGS_ICON
-                ) {
-                    scope.launch {
-                        drawerState.close()
-                        navigationDrawerModel.updateCurrentScreen(SETTINGS_SCREEN)
+                NavigationDrawerItem(
+                    label = { Text(text = SETTINGS_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
+                    icon = { Icon(painterResource(SETTINGS_ICON), null) },
+                    selected = currentScreen.value == SETTINGS_SCREEN,
+                    onClick = {
+                        scope.launch {
+                            currentScreen.value = SETTINGS_SCREEN
+                            navigator.push(SettingsScreen())
+                            drawerState.close()
+                        }
                     }
-                    navigator.push(SettingsScreen())
-                }
+                )
             }
 
             item {
-                NavItem(
-                    navigationDrawerModel = navigationDrawerModel,
-                    screen = REMOVED_SCREEN,
-                    icon = REMOVE_ICON
-                ) {
-                    scope.launch {
-                        drawerState.close()
-                        navigationDrawerModel.updateCurrentScreen(REMOVED_SCREEN)
+                NavigationDrawerItem(
+                    label = { Text(text = REMOVED_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
+                    icon = { Icon(painterResource(REMOVE_ICON), null) },
+                    selected = currentScreen.value == REMOVED_SCREEN,
+                    onClick = {
+                        scope.launch {
+                            currentScreen.value = REMOVED_SCREEN
+                            navigator.push(MainScreen(false))
+                            drawerState.close()
+                        }
                     }
-                    navigator.push(MainScreen(false))
-                }
+                )
             }
 
             item { HorizontalDivider() }
@@ -254,34 +259,19 @@ fun NavigationDrawer(
             }
 
             item {
-                NavItem(
-                    navigationDrawerModel = navigationDrawerModel,
-                    screen = ABOUT_SCREEN,
-                    icon = INTERROGATION_ICON
-                ) {
-                    scope.launch {
-                        drawerState.close()
-                        navigationDrawerModel.updateCurrentScreen(ABOUT_SCREEN)
+                NavigationDrawerItem(
+                    label = { Text(text = ABOUT_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
+                    icon = { Icon(painterResource(INTERROGATION_ICON), null) },
+                    selected = currentScreen.value == ABOUT_SCREEN,
+                    onClick = {
+                        scope.launch {
+                            currentScreen.value = ABOUT_SCREEN
+                            navigator.push(AboutScreen())
+                            drawerState.close()
+                        }
                     }
-                    navigator.push(AboutScreen())
-                }
+                )
             }
         }
     }
-}
-
-@Composable
-private fun NavItem(
-    navigationDrawerModel: NavigationDrawerScreenModel,
-    screen: NoteScreens,
-    @DrawableRes icon: Int,
-    onClick: () -> Unit
-) {
-    val uiState = remember(navigationDrawerModel, navigationDrawerModel::uiState).collectAsState()
-    NavigationDrawerItem(
-        label = { Text(screen.screen, fontSize = TITLE_SIZE.sp) },
-        icon = { Icon(painterResource(icon), null) },
-        selected = uiState.value.currentScreen == screen,
-        onClick = onClick
-    )
 }
