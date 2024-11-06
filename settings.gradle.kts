@@ -1,8 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":security")
-
-
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     repositories {
@@ -56,3 +53,4 @@ include(
 )
 include(":init")
 include(":root")
+include(":security")
