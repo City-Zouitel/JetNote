@@ -291,7 +291,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     mediaModel = mediaModel,
                                     noteAndMediaModel = noteAndMediaModel
                                 ) {
-//                                    dataModel.editData(it.dataEntity.copy(removed = 1))
                                     dataModel.sendUiEvent(UiEvent.Update(it.dataEntity.copy(removed = 1)))
                                     // to cancel the alarm manager reminder.
                                     notificationModel.scheduleNotification(

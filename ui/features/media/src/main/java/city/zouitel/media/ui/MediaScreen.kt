@@ -1,7 +1,6 @@
 package city.zouitel.media.ui
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -29,8 +28,10 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.media.model.NoteAndMedia
-import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import me.saket.telephoto.zoomable.coil.ZoomableAsyncImage
+import me.saket.telephoto.zoomable.rememberZoomableImageState
+import me.saket.telephoto.zoomable.rememberZoomableState
 
 data class MediaScreen(
     val id: String,
@@ -65,8 +66,8 @@ data class MediaScreen(
                 NoteAndMedia(id, it.id)
             )
         }
-
         val pagerState = rememberPagerState { filteredMedias.size }
+        val zoomState = rememberZoomableState()
 
         if (filteredMedias.isNotEmpty()) {
             Card(
@@ -104,7 +105,8 @@ data class MediaScreen(
                             ) { /*do nothing..*/ }
                         ) {
                             runCatching {
-                                AsyncImage(
+                                ZoomableAsyncImage(
+                                    state = rememberZoomableImageState(zoomState),
                                     model = ImageRequest.Builder(context)
                                         .data(filteredMedias[index].path)
                                         .build(),
