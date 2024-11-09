@@ -11,7 +11,9 @@ android {
 
 dependencies {
     //Modules.
+    implementation(projects.domain)
     implementation(projects.common.systemDesign)
+    implementation(projects.common.logic)
     implementation(projects.services.notifications)
     implementation(projects.core.local.datastore)
 
