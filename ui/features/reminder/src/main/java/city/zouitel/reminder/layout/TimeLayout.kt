@@ -1,4 +1,4 @@
-package city.zouitel.reminder.ui
+package city.zouitel.reminder.layout
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
