@@ -40,8 +40,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JetNote"
         android:usesCleartextTraffic="false"
-        tools:ignore="DataExtractionRules"
-        android:exported="true">
+        tools:ignore="DataExtractionRules,UnusedAttribute"
+        android:exported="true"
+        android:enableOnBackInvokedCallback="true">
 
         <profileable
             android:shell="true"
