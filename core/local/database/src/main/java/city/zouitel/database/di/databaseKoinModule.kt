@@ -10,7 +10,6 @@ import city.zouitel.database.datasourceImpl.MediaDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteAndAudioDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteAndLinkDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteAndMediaDataSourceImpl
-import city.zouitel.database.datasourceImpl.NoteAndReminderDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteAndTagDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteAndTaskDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteDataSourceImpl
@@ -29,7 +28,6 @@ import city.zouitel.database.mapper.NoteAndTagMapper
 import city.zouitel.database.mapper.NoteAndTaskMapper
 import city.zouitel.database.mapper.NoteMapper
 import city.zouitel.database.mapper.ReminderMapper
-import city.zouitel.database.mapper.NoteAndReminderMapper
 import city.zouitel.database.mapper.TagMapper
 import city.zouitel.database.mapper.TaskMapper
 import city.zouitel.database.mapper.WidgetMapper
@@ -41,7 +39,6 @@ import city.zouitel.repository.datasource.MediaDataSource
 import city.zouitel.repository.datasource.NoteAndAudioDataSource
 import city.zouitel.repository.datasource.NoteAndLinkDataSource
 import city.zouitel.repository.datasource.NoteAndMediaDataSource
-import city.zouitel.repository.datasource.NoteAndReminderDataSource
 import city.zouitel.repository.datasource.NoteAndTagDataSource
 import city.zouitel.repository.datasource.NoteAndTaskDataSource
 import city.zouitel.repository.datasource.NoteDataSource
@@ -73,7 +70,6 @@ val databaseKoinModule = module {
     singleOf(::MediaDataSourceImpl) bind MediaDataSource::class
     singleOf(::NoteAndMediaDataSourceImpl) bind NoteAndMediaDataSource::class
     singleOf(::ReminderDataSourceImpl) bind ReminderDataSource::class
-    singleOf(::NoteAndReminderDataSourceImpl) bind NoteAndReminderDataSource::class
 
     //Dao's.
     single { get<Database>().getNoteDao() }
@@ -90,7 +86,6 @@ val databaseKoinModule = module {
     single { get<Database>().getMediaDao() }
     single { get<Database>().getNoteAndMediaDao() }
     single { get<Database>().getReminderDao() }
-    single { get<Database>().getNoteAndReminderDao() }
 
     //Mappers
     factoryOf(::DataMapper)
@@ -105,12 +100,13 @@ val databaseKoinModule = module {
     factoryOf(::MediaMapper)
     factoryOf(::NoteAndMediaMapper)
     factoryOf(::ReminderMapper)
-    factoryOf(::NoteAndReminderMapper)
     factory {
-        NoteMapper(get(), get(), get(), get(), get(), get())
+        getAll<NoteMapper>()
+//        NoteMapper(get(), get(), get(), get(), get(), get())
     }
     factory {
-        WidgetMapper(get(), get(), get(), get(), get(), get())
+        getAll<WidgetMapper>()
+//        WidgetMapper(get(), get(), get(), get(), get(), get())
     }
 
     //Database.
