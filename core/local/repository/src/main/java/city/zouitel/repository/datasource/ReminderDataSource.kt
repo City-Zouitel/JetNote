@@ -5,15 +5,13 @@ import city.zouitel.repository.model.Reminder as InReminder
 
 interface ReminderDataSource {
 
-    val observeAllReminders: Flow<List<InReminder>>
+    suspend fun observeById(uid: String): Flow<List<InReminder>>
 
-    suspend fun observeRemindersById(id: Long): Flow<List<InReminder>>
+    suspend fun insert(reminder: InReminder)
 
-    suspend fun insertReminder(reminder: InReminder)
+    suspend fun update(reminder: InReminder)
 
-    suspend fun updateReminder(reminder: InReminder)
+    suspend fun delete(id: Long)
 
-    suspend fun deleteReminderById(id: Long)
-
-    suspend fun deleteAllReminders()
+    suspend fun deleteAll()
 }

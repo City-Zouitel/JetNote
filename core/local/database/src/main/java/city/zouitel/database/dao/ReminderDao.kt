@@ -6,26 +6,26 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import city.zouitel.database.model.ReminderEntity
+import city.zouitel.database.model.ReminderEntity.Companion.TABLE_NAME
+import city.zouitel.database.utils.Constants
+import city.zouitel.database.utils.Constants.UUID
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ReminderDao {
 
-    @get:Query("SELECT * FROM REMINDERS_TABLE")
-    val observeAllReminders: Flow<List<ReminderEntity>>
-
-    @Query("SELECT * FROM REMINDERS_TABLE WHERE id = :id")
-    fun observeAllReminderById(id: Long): Flow<List<ReminderEntity>>
+    @Query("SELECT * FROM $TABLE_NAME WHERE $UUID = :uid")
+    fun observeAllById(uid: String): Flow<List<ReminderEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertReminder(reminder: ReminderEntity)
+    suspend fun insert(reminder: ReminderEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateReminder(reminder: ReminderEntity)
+    suspend fun update(reminder: ReminderEntity)
 
-    @Query("DELETE FROM ${ReminderEntity.TABLE_NAME}")
-    suspend fun deleteAllReminders()
+    @Query("DELETE FROM $TABLE_NAME")
+    suspend fun deleteAll()
 
-    @Query("DELETE FROM ${ReminderEntity.TABLE_NAME} WHERE id = :id")
-    suspend fun deleteReminderById(id: Long)
+    @Query("DELETE FROM $TABLE_NAME WHERE ${Constants.ID} = :id")
+    suspend fun delete(id: Long)
 }

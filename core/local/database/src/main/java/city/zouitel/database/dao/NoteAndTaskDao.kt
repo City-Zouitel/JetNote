@@ -1,6 +1,10 @@
 package city.zouitel.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import city.zouitel.database.model.NoteAndTaskEntity
 import kotlinx.coroutines.flow.Flow
 

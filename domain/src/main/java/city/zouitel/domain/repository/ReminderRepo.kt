@@ -5,15 +5,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface ReminderRepo {
 
-    val observeAllReminders: Flow<List<Reminder>>
+    suspend fun observeById(uid: String): Flow<List<Reminder>>
 
-    suspend fun observeRemindersById(id: Long): Flow<List<Reminder>>
+    suspend fun insert(reminder: Reminder)
 
-    suspend fun insertReminder(reminder: Reminder)
+    suspend fun update(reminder: Reminder)
 
-    suspend fun updateReminder(reminder: Reminder)
+    suspend fun delete(id: Long)
 
-    suspend fun deleteReminderById(id: Long)
-
-    suspend fun deleteAllReminders()
+    suspend fun deleteAll()
 }

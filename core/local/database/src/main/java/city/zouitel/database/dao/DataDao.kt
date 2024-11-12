@@ -1,6 +1,11 @@
 package city.zouitel.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import city.zouitel.database.model.DataEntity
 
 @Dao
@@ -15,7 +20,6 @@ interface DataDao {
     @Delete
     suspend fun deleteNote(data: DataEntity)
 
-    // delete all removed notes.
     @Query("DELETE FROM NOTES_TABLE WHERE REMOVED = 1")
     suspend fun deleteAllTrashedNotes()
 }
