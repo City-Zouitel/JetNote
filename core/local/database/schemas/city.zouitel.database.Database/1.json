@@ -2,15 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "49a6c74f4fb152cf954fe4b7c24d1080",
+    "identityHash": "6b113bf3d2f9a65ee7f05071d9bae0b4",
     "entities": [
       {
         "tableName": "notes_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_id` TEXT NOT NULL, `title` TEXT, `description` TEXT, `priority` TEXT NOT NULL, `color` INTEGER NOT NULL, `text_color` INTEGER NOT NULL, `date` TEXT NOT NULL, `removed` INTEGER NOT NULL, `reminding` INTEGER NOT NULL, PRIMARY KEY(`unique_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`universally_unique_identifier` TEXT NOT NULL, `title` TEXT, `description` TEXT, `priority` TEXT NOT NULL, `color` INTEGER NOT NULL, `text_color` INTEGER NOT NULL, `date` TEXT NOT NULL, `removed` INTEGER NOT NULL, `reminding` INTEGER NOT NULL, PRIMARY KEY(`universally_unique_identifier`))",
         "fields": [
           {
             "fieldPath": "uid",
-            "columnName": "unique_id",
+            "columnName": "universally_unique_identifier",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -66,7 +66,7 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "unique_id"
+            "universally_unique_identifier"
           ]
         },
         "indices": [],
@@ -74,11 +74,11 @@
       },
       {
         "tableName": "labels_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `label` TEXT, `color` INTEGER NOT NULL DEFAULT 0x0000)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `label` TEXT, `color` INTEGER NOT NULL DEFAULT 0x0000)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "identifier",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -99,7 +99,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "identifier"
           ]
         },
         "indices": [],
@@ -134,11 +134,11 @@
       },
       {
         "tableName": "tasks_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `is_task_done` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `is_task_done` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "identifier",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -158,7 +158,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "identifier"
           ]
         },
         "indices": [],
@@ -193,11 +193,11 @@
       },
       {
         "tableName": "links_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `host` TEXT NOT NULL, `imageLink` TEXT, `title` TEXT, `description` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `host` TEXT NOT NULL, `imageLink` TEXT, `title` TEXT, `description` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "identifier",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -235,7 +235,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "identifier"
           ]
         },
         "indices": [],
@@ -270,11 +270,11 @@
       },
       {
         "tableName": "audios_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `media_path` TEXT NOT NULL, `uri` TEXT NOT NULL, `media_size` INTEGER NOT NULL, `media_duration` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `media_path` TEXT NOT NULL, `uri` TEXT NOT NULL, `media_size` INTEGER NOT NULL, `media_duration` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "identifier",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -312,7 +312,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "identifier"
           ]
         },
         "indices": [],
@@ -347,11 +347,11 @@
       },
       {
         "tableName": "media_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `is video` INTEGER NOT NULL, `media_path` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `is video` INTEGER NOT NULL, `media_path` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "identifier",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -371,7 +371,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "identifier"
           ]
         },
         "indices": [],
@@ -406,12 +406,18 @@
       },
       {
         "tableName": "reminders_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `Times` INTEGER NOT NULL, `Passed` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `universally_unique_identifier` TEXT NOT NULL, `Times` INTEGER NOT NULL, `Passed` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "identifier",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "universally_unique_identifier",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -430,34 +436,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "note_and_reminder",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteId` TEXT NOT NULL, `reminderId` INTEGER NOT NULL, PRIMARY KEY(`noteId`, `reminderId`))",
-        "fields": [
-          {
-            "fieldPath": "noteId",
-            "columnName": "noteId",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "reminderId",
-            "columnName": "reminderId",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "noteId",
-            "reminderId"
+            "identifier"
           ]
         },
         "indices": [],
@@ -467,7 +446,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '49a6c74f4fb152cf954fe4b7c24d1080')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6b113bf3d2f9a65ee7f05071d9bae0b4')"
     ]
   }
 }
