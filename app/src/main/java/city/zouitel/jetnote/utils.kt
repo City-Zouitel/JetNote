@@ -37,7 +37,7 @@ internal fun HideSystemUI(window: Window) {
         ).forEach {
             viewmodel.value.addNote(
                 Note(
-                    id = UUID.randomUUID().toString(),
+                    uid = UUID.randomUUID().toString(),
                     title = it.key,
                     description = it.value
                 )
