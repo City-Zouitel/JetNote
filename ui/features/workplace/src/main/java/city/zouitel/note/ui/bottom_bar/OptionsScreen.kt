@@ -48,7 +48,6 @@ import city.zouitel.note.ui.workplace.WorkplaceScreenModel
 import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.reminder.ui.ReminderScreen
 import city.zouitel.systemDesign.CommonBottomSheet
-import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonIcons.ADD_IMAGE_ICON
 import city.zouitel.systemDesign.CommonIcons.BELL_ICON
@@ -145,11 +144,10 @@ data class OptionsScreen(
             ) {
                 navBottomSheet.show(
                     ReminderScreen(
-                        id = id,
+                        uid = id,
                         title = titleState?.text.toString(),
                         message = descriptionState?.text.toString()
                     ) {
-//                        workspaceModel.updateRemindingValue(value)
                         reminderState.value = it
                     }
                 )
@@ -160,11 +158,10 @@ data class OptionsScreen(
             ) {
                 navBottomSheet.show(
                     ReminderScreen(
-                        id = id,
+                        uid = id,
                         title = titleState?.text.toString(),
                         message = descriptionState?.text.toString()
                     ) {
-//                        workspaceModel.updateRemindingValue(value)
                         reminderState.value = it
                     }
                 )
@@ -178,7 +175,7 @@ data class OptionsScreen(
                         name = "Add Image",
                         icon = ADD_IMAGE_ICON
                     ) {
-                        sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
+                        sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
                         navBottomSheet.hide()
                         imageLaunch.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                     }
@@ -189,7 +186,7 @@ data class OptionsScreen(
                         icon = CASSETTE_ICON
                     ) {
                         scope.launch {
-                            sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
+                            sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
                             navBottomSheet.hide()
                             delay(200)
                         }.invokeOnCompletion {
@@ -236,22 +233,17 @@ data class OptionsScreen(
 //                )
 //                            }
 //                        } else {
-//                            navBottomSheet.show(RecorderScreen(id) {})
+//                            navBottomSheet.show(RecorderScreen(uid) {})
 //                        }
 //                    }
 //                }
-//                item {
-//                    OptionItem(
-//                        name = "Drawing",
-//                        icon = GESTURE_ICON
-//                    ) {}
-//                }
+
                 item {
                     CommonOptionItem(
                         name = "Tags",
                         icon = TAGS_ICON
                     ) {
-                        sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
+                        sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
                         navigator.push(TagsScreen(id = id))
                     }
                 }
@@ -260,7 +252,7 @@ data class OptionsScreen(
                         name = "Task List",
                         icon = LIST_CHECK_ICON
                     ) {
-                        sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
+                        sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
                         navigator.push(TasksScreen(id = id))
                     }
                 }
@@ -288,11 +280,10 @@ data class OptionsScreen(
                             } else {
                                 navBottomSheet.show(
                                     ReminderScreen(
-                                        id = id,
+                                        uid = id,
                                         title = titleState?.text.toString(),
                                         message = descriptionState?.text.toString()
                                     ) {
-//                                        workspaceModel.updateRemindingValue(value)
                                         reminderState.value = it
                                     }
                                 )
