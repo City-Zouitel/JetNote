@@ -1,6 +1,5 @@
 package city.zouitel.database.mapper
 
-import city.zouitel.repository.model.NoteAndTask
 import city.zouitel.database.model.NoteAndTaskEntity as InNoteAndTask
 import city.zouitel.repository.model.NoteAndTask as OutNoteAndTask
 
