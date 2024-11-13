@@ -299,7 +299,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                                         title = it.dataEntity.title,
                                         message = it.dataEntity.description,
                                         uid = it.dataEntity.uid,
-                                        onReset = { true }
+                                        onReset = true
                                     )
 
                                     undo.invoke(entity.dataEntity)
