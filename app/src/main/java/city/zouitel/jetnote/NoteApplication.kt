@@ -12,6 +12,7 @@ import city.zouitel.note.di.noteKoinModule
 import city.zouitel.notifications.di.notificationKoinModule
 import city.zouitel.quicknote.di.quickNoteKoinModule
 import city.zouitel.recoder.di.recorderKoinModule
+import city.zouitel.reminder.di.reminderKoinModule
 import city.zouitel.repository.di.repositoryKoinModule
 import city.zouitel.root.di.rootKoinModule
 import city.zouitel.screens.di.screensKoinModule
@@ -60,7 +61,8 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
                 screensKoinModule,
                 initializerKoinModule,
                 rootKoinModule,
-                mediaKoinModule
+                mediaKoinModule,
+                reminderKoinModule
             )
         }
 
