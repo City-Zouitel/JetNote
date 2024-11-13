@@ -101,12 +101,10 @@ val databaseKoinModule = module {
     factoryOf(::NoteAndMediaMapper)
     factoryOf(::ReminderMapper)
     factory {
-        getAll<NoteMapper>()
-//        NoteMapper(get(), get(), get(), get(), get(), get())
+        NoteMapper(get(), get(), get(), get(), get(), get())
     }
     factory {
-        getAll<WidgetMapper>()
-//        WidgetMapper(get(), get(), get(), get(), get(), get())
+        WidgetMapper(get(), get(), get(), get(), get(), get())
     }
 
     //Database.
