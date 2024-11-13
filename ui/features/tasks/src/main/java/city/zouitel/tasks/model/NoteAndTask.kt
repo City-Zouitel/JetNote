@@ -4,6 +4,6 @@ import androidx.annotation.Keep
 
 @Keep
 data class NoteAndTask(
-    val noteUid:String,
-    val taskId:Long
+    val noteUid: String,
+    val taskId: Long
 )
