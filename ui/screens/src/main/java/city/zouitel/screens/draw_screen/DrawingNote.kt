@@ -83,7 +83,7 @@ import java.io.File
 //                ) {
 //                    //
 //                    Icon(
-//                        painter = painterResource(id = UNDO_ICON),
+//                        painter = painterResource(uid = UNDO_ICON),
 //                        null,
 //                        modifier = Modifier
 //                            .size(20.dp)
@@ -94,7 +94,7 @@ import java.io.File
 //                    )
 //                    //
 //                    Icon(
-//                        painter = painterResource(id = REDO_ICON),
+//                        painter = painterResource(uid = REDO_ICON),
 //                        contentDescription = null,
 //                        tint = if (controller.canRedo.value) MaterialTheme.colors.onSurface else MaterialTheme.colors.primary,
 //                        modifier = Modifier
@@ -128,7 +128,7 @@ import java.io.File
 //                    }
 //                    //
 //                    Icon(
-//                        painter = painterResource(id = ERASER_BLACK_ICON),
+//                        painter = painterResource(uid = ERASER_BLACK_ICON),
 //                        contentDescription = null,
 //                        tint = if (eraseState) MaterialTheme.colors.onSurface else MaterialTheme.colors.primary,
 //                        modifier = Modifier.clickable {
@@ -138,7 +138,7 @@ import java.io.File
 //                    )
 //                    //
 //                    Icon(
-//                        painter = painterResource(id = DISK_ICON),
+//                        painter = painterResource(uid = DISK_ICON),
 //                        contentDescription = null,
 //                        tint = MaterialTheme.colors.onSurface,
 //                        modifier = Modifier.clickable {
@@ -200,7 +200,7 @@ import java.io.File
 //                            )
 //                    ){
 //                        Icon(
-//                            painter = painterResource(id = CIRCLE_ICON),
+//                            painter = painterResource(uid = CIRCLE_ICON),
 //                            contentDescription = null,
 //                            modifier = Modifier.size(it.dp)
 //
