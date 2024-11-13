@@ -59,7 +59,8 @@ class SettingsScreen: Screen {
         )
     }
 
-    @SuppressLint("UnusedMaterialScaffoldPaddingParameter",
+    @SuppressLint(
+        "UnusedMaterialScaffoldPaddingParameter",
         "UnusedMaterial3ScaffoldPaddingParameter"
     )
     @OptIn(ExperimentalMaterial3Api::class)
@@ -123,7 +124,7 @@ class SettingsScreen: Screen {
                     item {
                         PreferenceItem(
                             title = "Dark Mode",
-                            description = "This application following the system mode by default.",
+                            description = "This mode is a system-wide setting that shifts the color scheme of your Android app's UI to darker colors.\nIt's designed to Reduce eye strain, improve accessibility, save battery life, and enhance user experience.",
                             checked = themeState == DARK,
                             onChecked = {
                                 sound.performSoundEffect(context, KEY_CLICK, isMute)
@@ -137,7 +138,7 @@ class SettingsScreen: Screen {
                     item {
                         PreferenceItem(
                             title = "Is Mute",
-                            description = "Make sound effect when any key is pressed.",
+                            description = "App muting refers to the ability to silence or suppress audio output from this application.\nThis feature is typically used to prevent unwanted notifications and sounds, or interrupting the user.",
                             checked = isMute,
                             onChecked = {
                                 sound.performSoundEffect(context, KEY_CLICK, isMute)
@@ -151,7 +152,7 @@ class SettingsScreen: Screen {
                     item {
                         PreferenceItem(
                             title = "Layout",
-                            description = "Grade layout is the default mode.",
+                            description = "Layouts are fundamental to organizing and displaying content in your Android applications.\nThey define the structure and arrangement of UI elements on the screen.\nChoosing the right layout is crucial for creating a user-friendly and visually appealing interface.",
                             currentItem = layoutState.value,
                             items = listOf(GRID, LIST)
                         ) { layout ->
@@ -165,7 +166,7 @@ class SettingsScreen: Screen {
                     item {
                         PreferenceItem(
                             title = "Sort Notes By",
-                            description = "",
+                            description = null,
                             items = listOf(
                                 NAME_ORDER,
                                 DEFAULT_ORDER,
@@ -186,7 +187,7 @@ class SettingsScreen: Screen {
                     item {
                         PreferenceItem(
                             title = "Block Screenshots",
-                            description = "By enable this feature you cannot take screenshots of this app.",
+                            description = "Screenshot blocking is a security measure that prevents users from capturing screenshots of your app's content.\nThis is often used to protect sensitive information, such as banking details, personal data, or copyrighted material.",
                             checked = screenshotState,
                             onChecked = {
                                 sound.performSoundEffect(context, KEY_CLICK, isMute)
