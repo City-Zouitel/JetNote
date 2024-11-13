@@ -215,7 +215,7 @@ private fun Card(
                 if (isHomeScreen && !uiState.isSelection) {
                     navigator?.push(
                         WorkplaceScreen(
-                            id = note.uid,
+                            uid = note.uid,
                             isNew = false,
                             title = note.title,
                             description = note.description,
