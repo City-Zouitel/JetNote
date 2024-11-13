@@ -2,7 +2,6 @@ package city.zouitel.domain.usecase
 
 import city.zouitel.domain.repository.NoteRepository
 
-//@Singleton
 sealed class NoteUseCase {
 
     class GetAllNotesById(
