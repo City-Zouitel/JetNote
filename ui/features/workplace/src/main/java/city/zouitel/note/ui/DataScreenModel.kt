@@ -24,6 +24,7 @@ class DataScreenModel(
             is UiEvent.Insert -> performUiEvent { add(mapper.toDomain(event.data)) }
             is UiEvent.Update -> performUiEvent { edit(mapper.toDomain(event.data)) }
             is UiEvent.DeleteAll -> performUiEvent { eraseTrash() }
+            else -> throw NotImplementedError("This event is not implemented: $event")
         }
     }
 
