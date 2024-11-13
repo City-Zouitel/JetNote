@@ -3,7 +3,6 @@ package city.zouitel.domain.usecase
 import city.zouitel.domain.model.Tag
 import city.zouitel.domain.repository.TagRepository
 
-//@Singleton
 sealed class TagUseCase {
 
     class GetAllTags(
