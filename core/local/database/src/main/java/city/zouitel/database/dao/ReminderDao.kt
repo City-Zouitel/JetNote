@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import city.zouitel.database.model.ReminderEntity
 import city.zouitel.database.model.ReminderEntity.Companion.TABLE_NAME
-import city.zouitel.database.utils.Constants
+import city.zouitel.database.utils.Constants.ID
 import city.zouitel.database.utils.Constants.UUID
 import kotlinx.coroutines.flow.Flow
 
@@ -26,6 +26,6 @@ interface ReminderDao {
     @Query("DELETE FROM $TABLE_NAME")
     suspend fun deleteAll()
 
-    @Query("DELETE FROM $TABLE_NAME WHERE ${Constants.ID} = :id")
+    @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
     suspend fun delete(id: Long)
 }

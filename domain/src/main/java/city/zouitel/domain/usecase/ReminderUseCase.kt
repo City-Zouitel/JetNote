@@ -5,27 +5,23 @@ import city.zouitel.domain.repository.ReminderRepo
 
 sealed class ReminderUseCase {
 
-    data class ObserveAllReminders(val repository: ReminderRepo): ReminderUseCase() {
-        operator fun invoke() = repository.observeAllReminders
+    data class ObserveById(val repository: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(uid: String) = repository.observeById(uid)
     }
 
-    data class ObserveReminderById(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(id: Long) = repository.observeRemindersById(id)
+    data class Insert(val repository: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(reminder: Reminder) = repository.insert(reminder)
     }
 
-    data class InsertReminder(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(reminder: Reminder) = repository.insertReminder(reminder)
+    data class Update(val repository: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(reminder: Reminder) = repository.update(reminder)
     }
 
-    data class UpdateReminder(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(reminder: Reminder) = repository.updateReminder(reminder)
+    data class DeleteReminder(val repository: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(id: Long) = repository.delete(id)
     }
 
-    data class DeleteReminderById(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(id: Long) = repository.deleteReminderById(id)
-    }
-
-    data class DeleteAllReminders(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke() = repository.deleteAllReminders()
+    data class DeleteAll(val repository: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke() = repository.deleteAll()
     }
 }

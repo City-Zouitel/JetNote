@@ -10,12 +10,14 @@ class ReminderMapper {
 
     fun toRepo(reminder: InReminder) = OutReminder(
         id = reminder.id,
+        uid = reminder.uid,
         atTime = reminder.atTime,
         isPassed = reminder.isPassed
     )
 
     fun fromRepo(reminder: OutReminder) = InReminder(
         id = reminder.id,
+        uid = reminder.uid,
         atTime = reminder.atTime,
         isPassed = reminder.isPassed
     )

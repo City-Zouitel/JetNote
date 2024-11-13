@@ -12,26 +12,23 @@ class ReminderRepoImpl(
     private val mapper: ReminderMapper
 ): ReminderRepo {
 
-    override val observeAllReminders: Flow<List<OutReminder>>
-        get() = dataSource.observeAllReminders.map { reminders -> mapper.toDomain(reminders) }
-
-    override suspend fun observeRemindersById(id: Long): Flow<List<OutReminder>> {
-        return dataSource.observeRemindersById(id).map { reminders -> mapper.toDomain(reminders) }
+    override suspend fun observeById(uid: String): Flow<List<OutReminder>> {
+        return dataSource.observeById(uid).map { reminders -> mapper.toDomain(reminders) }
     }
 
-    override suspend fun insertReminder(reminder: OutReminder) {
-        dataSource.insertReminder(mapper.fromDomain(reminder))
+    override suspend fun insert(reminder: OutReminder) {
+        dataSource.insert(mapper.fromDomain(reminder))
     }
 
-    override suspend fun updateReminder(reminder: OutReminder) {
-        dataSource.updateReminder(mapper.fromDomain(reminder))
+    override suspend fun update(reminder: OutReminder) {
+        dataSource.update(mapper.fromDomain(reminder))
     }
 
-    override suspend fun deleteReminderById(id: Long) {
-        dataSource.deleteReminderById(id)
+    override suspend fun delete(id: Long) {
+        dataSource.delete(id)
     }
 
-    override suspend fun deleteAllReminders() {
-        dataSource.deleteAllReminders()
+    override suspend fun deleteAll() {
+        dataSource.deleteAll()
     }
 }

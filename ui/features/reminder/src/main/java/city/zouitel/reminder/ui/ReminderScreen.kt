@@ -21,7 +21,11 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
+import city.zouitel.reminder.layout.DateLayout
+import city.zouitel.reminder.layout.TimeLayout
+import city.zouitel.reminder.model.Reminder
 import city.zouitel.reminder.utils.Constants.SINGLE_DAY
 import city.zouitel.systemDesign.CommonBottomSheet
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
@@ -38,24 +42,26 @@ import java.util.Date
 import java.util.Locale
 
 data class ReminderScreen(
-    val id: String?,
+    val uid: String,
     val title: String?,
     val message: String?,
     val remindingValue: (Long) -> Unit
 ): Screen {
     @Composable
     override fun Content() {
-        Reminder(
+        ReminderSheet(
             dataStoreModel = getScreenModel(),
-            notificationModel = getScreenModel()
+            notificationModel = getScreenModel(),
+            reminderModel = getScreenModel()
         )
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun Reminder(
+    private fun ReminderSheet(
         dataStoreModel: DataStoreScreenModel,
         notificationModel: NotificationScreenModel,
+        reminderModel: ReminderScreenModel,
     ) {
         val context = LocalContext.current
         val navBottomSheet = LocalBottomSheetNavigator.current
@@ -111,7 +117,7 @@ data class ReminderScreen(
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ROOT)
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
 
-        Navigator(CommonBottomSheet({
+        Navigator(CommonBottomSheet {
             LazyColumn(
                 modifier = Modifier.animateContentSize()
             ) {
@@ -140,22 +146,23 @@ data class ReminderScreen(
                     CommonOptionItem(
                         onConfirm = {
                             sound.performSoundEffect(context, KEY_STANDARD, isMute)
+
                             runCatching {
                                 notificationModel.scheduleNotification(
                                     context = context,
                                     dateTime = dateTime,
                                     title = title,
                                     message = message,
-                                    uid = id
-                                ) {
-                                    /**
-                                     * if true the work manager should be canceled.
-                                     */
-                                    dateTime == 0L
-                                }
-                            }.onSuccess {
-                                remindingValue.invoke(dateTime)
+                                    uid = uid,
+                                    // if true the work manager should be canceled.
+                                    onReset = dateTime == 0L
+                                )
+
+                                reminderModel.sendUiEvent(
+                                    UiEvent.Insert(Reminder(uid = uid, atTime = dateTime))
+                                )
                             }
+
                             navBottomSheet.hide()
                         },
                         onDismiss = {
@@ -166,6 +173,6 @@ data class ReminderScreen(
                     )
                 }
             }
-        }))
+        })
     }
 }

@@ -8,12 +8,14 @@ class ReminderMapper {
 
     fun toDomain(reminder: InReminder) = OutReminder(
         id = reminder.id,
+        uid = reminder.uid,
         atTime = reminder.atTime,
         isPassed = reminder.isPassed
     )
 
     fun fromDomain(reminder: OutReminder) = InReminder(
         id = reminder.id,
+        uid = reminder.uid,
         atTime = reminder.atTime,
         isPassed = reminder.isPassed
     )
