@@ -3,7 +3,6 @@ package city.zouitel.domain.usecase
 import city.zouitel.domain.model.NoteAndTask
 import city.zouitel.domain.repository.NoteAndTaskRepository
 
-//@Singleton
 sealed class NoteAndTaskUseCase {
 
     class GetAllNotesAndTask(
