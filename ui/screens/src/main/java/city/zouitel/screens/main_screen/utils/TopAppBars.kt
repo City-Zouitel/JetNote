@@ -150,7 +150,7 @@ internal fun HomeSelectionTopAppBar(
                                         title = it.title,
                                         message = it.description,
                                         uid = it.uid,
-                                        onReset = { true }
+                                        onReset = true
                                     )
                                     undo.invoke(it)
                                 }
