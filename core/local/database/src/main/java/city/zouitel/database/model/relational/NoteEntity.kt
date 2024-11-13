@@ -3,7 +3,17 @@ package city.zouitel.database.model.relational
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import city.zouitel.database.model.*
+import city.zouitel.database.model.AudioEntity
+import city.zouitel.database.model.DataEntity
+import city.zouitel.database.model.LinkEntity
+import city.zouitel.database.model.MediaEntity
+import city.zouitel.database.model.NoteAndAudioEntity
+import city.zouitel.database.model.NoteAndLinkEntity
+import city.zouitel.database.model.NoteAndMediaEntity
+import city.zouitel.database.model.NoteAndTagEntity
+import city.zouitel.database.model.NoteAndTaskEntity
+import city.zouitel.database.model.TagEntity
+import city.zouitel.database.model.TaskEntity
 import city.zouitel.database.utils.Constants.ID
 import city.zouitel.database.utils.Constants.UUID
 
