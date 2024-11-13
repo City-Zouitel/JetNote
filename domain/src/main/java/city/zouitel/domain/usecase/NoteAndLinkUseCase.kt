@@ -4,7 +4,6 @@ import city.zouitel.domain.model.Link
 import city.zouitel.domain.model.NoteAndLink
 import city.zouitel.domain.repository.NoteAndLinkRepository
 
-//@Singleton
 sealed class NoteAndLinkUseCase {
     class GetAllNotesAndLinks(
         private val repository: NoteAndLinkRepository
