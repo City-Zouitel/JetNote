@@ -3,7 +3,6 @@ package city.zouitel.domain.usecase
 import city.zouitel.domain.model.Task
 import city.zouitel.domain.repository.TaskRepository
 
-//@Singleton
 sealed class TaskUseCase {
 
     class GetAllTaskItems(
