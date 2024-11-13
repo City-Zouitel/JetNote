@@ -17,7 +17,7 @@ class NotificationScreenModel: ScreenModel {
         title: String?,
         message: String?,
         uid: String?,
-        onReset: () -> Boolean
+        onReset: Boolean
     ) {
         val intent = Intent(context.applicationContext, Notification::class.java)
         intent.putExtra(TITLE, title)
@@ -41,6 +41,6 @@ class NotificationScreenModel: ScreenModel {
             )
         }
 
-        if (onReset.invoke()) alarmManager.cancel(pendingInt)
+        if (onReset) alarmManager.cancel(pendingInt)
     }
 }
