@@ -77,6 +77,7 @@ import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.BottomBar
 import city.zouitel.note.ui.utils.TextField
+import city.zouitel.reminder.ui.ReminderScreenModel
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.model.NoteAndTag
@@ -92,7 +93,7 @@ import java.util.UUID
 import kotlin.random.Random
 
 data class WorkplaceScreen(
-    val id: String = UUID.randomUUID().toString(),
+    val uid: String = UUID.randomUUID().toString(),
     val isNew: Boolean = true,
     val title: String? = null,
     val description: String? = null,
@@ -105,10 +106,14 @@ data class WorkplaceScreen(
     @Composable
     override fun Content() {
         val workspaceModel = getScreenModel<WorkplaceScreenModel>()
+        val reminderModel = getScreenModel<ReminderScreenModel>()
 
         LaunchedEffect(!isNew) {
             workspaceModel.updateTextColor(textColor)
                 .updateBackgroundColor(backgroundColor)
+        }
+        LaunchedEffect(Unit) {
+            reminderModel.observeRemindersByUid(uid)
         }
 
         Workplace(
@@ -124,6 +129,7 @@ data class WorkplaceScreen(
             noteAndAudioModel = getScreenModel(),
             mediaModel = getScreenModel(),
             noteAndMediaModel = getScreenModel(),
+            reminderModel = getScreenModel(),
             workspaceModel = workspaceModel
         )
     }
@@ -144,6 +150,7 @@ data class WorkplaceScreen(
         noteAndAudioModel: NoteAndAudioScreenModel,
         mediaModel: MediaScreenModel,
         noteAndMediaModel: NoteAndMediaScreenModel,
+        reminderModel: ReminderScreenModel,
         workspaceModel: WorkplaceScreenModel
     ) {
         val context = LocalContext.current
@@ -174,8 +181,8 @@ data class WorkplaceScreen(
             noteAndLinkModel::getAllNotesAndLinks
         ).collectAsState()
         val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
-        val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
-            .collectAsState()
+        val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio).collectAsState()
+        val observeAllReminders by remember(reminderModel, reminderModel::observeAllById).collectAsState()
 
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
         val priorityState = remember { mutableStateOf(priority) }
@@ -185,7 +192,7 @@ data class WorkplaceScreen(
             derivedStateOf {
                 observeLabels.filter {
                     observeNotesAndLabels.contains(
-                        NoteAndTag(id, it.id)
+                        NoteAndTag(uid, it.id)
                     )
                 }
             }
@@ -196,10 +203,8 @@ data class WorkplaceScreen(
                 uris.forEach { uri ->
                     context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     Random.nextLong().let {
-//                        mediaModel.addMedia(Media(id = it, path = uri.toString()))
-//                        noteAndMediaModel.addNoteAndMedia(NoteAndMedia(id, it))
                         mediaModel.sendUiEvent(UiEvent.Insert(Media(id = it, path = uri.toString())))
-                        noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(id, it)))
+                        noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(uid, it)))
                     }
                 }
             }
@@ -217,7 +222,7 @@ data class WorkplaceScreen(
             bottomBar = {
                 BottomBar(
                     isNew = isNew,
-                    id = id,
+                    id = uid,
                     dataStoreModel = dataStoreModel,
                     dataModel = dataModel,
                     imageLaunch = chooseImageLauncher,
@@ -238,7 +243,7 @@ data class WorkplaceScreen(
                 // display the image.
                 item {
                     Navigator(MediaScreen(
-                        id = id,
+                        id = uid,
                         backgroundColor = uiState.backgroundColor,
                     ))
                 }
@@ -285,10 +290,10 @@ data class WorkplaceScreen(
 
                     observerAudios.filter {
                         observerNoteAndAudio.contains(
-                            NoteAndAudio(id, it.id)
+                            NoteAndAudio(uid, it.id)
                         )
                     }.fastLastOrNull { _audio ->
-                        Navigator(screen = BasicAudioScreen(id, _audio))
+                        Navigator(screen = BasicAudioScreen(uid, _audio))
                         true
                     }
                 }
@@ -299,7 +304,7 @@ data class WorkplaceScreen(
                         for (link in links) {
                             CacheLinks(
                                 linkModel = linkModel,
-                                noteId = id,
+                                noteId = uid,
                                 url = link
                             )
                         }
@@ -307,13 +312,13 @@ data class WorkplaceScreen(
                     // for refresh this screen.
                     observerLinks.filter {
                         observerNoteAndLink.contains(
-                            NoteAndLink(id, it.id)
+                            NoteAndLink(uid, it.id)
                         )
                     }.forEach { _link ->
                         LinkCard(
                             linkScreenModel = linkModel,
                             noteAndLinkScreenModel = noteAndLinkModel,
-                            noteUid = id,
+                            noteUid = uid,
                             isSwipe = true,
                             link = _link
                         )
@@ -321,43 +326,39 @@ data class WorkplaceScreen(
                 }
 
                 // display reminder chip.
-                if (reminderState.value != 0L) {
-                    item {
-                        reminderState.value.let {
-                            runCatching {
-                                ElevatedAssistChip(
-                                    modifier = Modifier.padding(start = 15.dp),
-                                    onClick = {},
-                                    label = {
-                                        Text(
-                                            DateFormat.format("yyyy-MM-dd HH:mm", Date(it))
-                                                .toString(),
-                                            maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis,
-                                            textDecoration = if (it < java.util.Calendar.getInstance().time.time) {
-                                                TextDecoration.LineThrough
-                                            } else {
-                                                TextDecoration.None
-                                            },
-                                            color = MaterialTheme.colorScheme.surfaceVariant
-                                        )
+                item {
+                    observeAllReminders.forEach {
+                        ElevatedAssistChip(
+                            modifier = Modifier.padding(start = 15.dp),
+                            onClick = {},
+                            label = {
+                                Text(
+                                    DateFormat.format("yyyy-MM-dd HH:mm", Date(it.atTime))
+                                        .toString(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    textDecoration = if (it.atTime < java.util.Calendar.getInstance().time.time) {
+                                        TextDecoration.LineThrough
+                                    } else {
+                                        TextDecoration.None
                                     },
-                                    leadingIcon = {
-                                        if (it >= java.util.Calendar.getInstance().time.time) {
-                                            Icon(
-                                                painterResource(CommonIcons.BELL_RING_ICON),
-                                                null,
-                                                tint = MaterialTheme.colorScheme.surfaceVariant
-                                            )
-                                        }
-                                    },
-                                    colors = AssistChipDefaults.assistChipColors(
-                                        containerColor = Color(.6f, .6f, .6f, .5f)
-                                    ),
-                                    elevation = AssistChipDefaults.assistChipElevation()
+                                    color = MaterialTheme.colorScheme.surfaceVariant
                                 )
-                            }
-                        }
+                            },
+                            leadingIcon = {
+                                if (it.atTime >= java.util.Calendar.getInstance().time.time) {
+                                    Icon(
+                                        painterResource(CommonIcons.BELL_RING_ICON),
+                                        null,
+                                        tint = MaterialTheme.colorScheme.surfaceVariant
+                                    )
+                                }
+                            },
+                            colors = AssistChipDefaults.assistChipColors(
+                                containerColor = Color(.6f, .6f, .6f, .5f)
+                            ),
+                            elevation = AssistChipDefaults.assistChipElevation()
+                        )
                     }
                 }
 
@@ -393,7 +394,7 @@ data class WorkplaceScreen(
                 item {
                     observeTodoList.filter {
                         observeNoteAndTodo.contains(
-                            NoteAndTask(id, it.id)
+                            NoteAndTask(uid, it.id)
                         )
                     }.forEach { todo ->
                         Row(
@@ -443,7 +444,7 @@ data class WorkplaceScreen(
     ): (Uri) -> Unit = { uri ->
         Random.nextLong().let {
             mediaModel.sendUiEvent(UiEvent.Insert(Media(id = it, path = uri.toString())))
-            noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(id, it)))
+            noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(uid, it)))
         }
     }
 }
