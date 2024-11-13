@@ -3,7 +3,6 @@ package city.zouitel.domain.usecase
 import city.zouitel.domain.model.Link
 import city.zouitel.domain.repository.LinkRepository
 
-//@Singleton
 sealed class LinkUseCase {
     class GetAllLinks(
         private val repository: LinkRepository
