@@ -8,7 +8,6 @@ import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlin.system.exitProcess
 
 class LockModeManager(private val activity: AppCompatActivity) {
 
@@ -47,7 +46,8 @@ class LockModeManager(private val activity: AppCompatActivity) {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
                     if (errorCode == BiometricPrompt.ERROR_USER_CANCELED) {
-                        exitProcess(0)
+//                        exitProcess(0)
+                        activity.finish()
                     }
                 }
 
