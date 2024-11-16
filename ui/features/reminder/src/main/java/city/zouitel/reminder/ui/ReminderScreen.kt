@@ -22,6 +22,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.logic.events.UiEvent
+import city.zouitel.notifications.viewmodel.AlarmManagerScreenModel
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.reminder.layout.DateLayout
 import city.zouitel.reminder.layout.TimeLayout
@@ -40,6 +41,7 @@ import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.random.Random
 
 data class ReminderScreen(
     val uid: String,
@@ -52,7 +54,8 @@ data class ReminderScreen(
         ReminderSheet(
             dataStoreModel = getScreenModel(),
             notificationModel = getScreenModel(),
-            reminderModel = getScreenModel()
+            reminderModel = getScreenModel(),
+            alarmManagerScreenModel = getScreenModel()
         )
     }
 
@@ -62,9 +65,12 @@ data class ReminderScreen(
         dataStoreModel: DataStoreScreenModel,
         notificationModel: NotificationScreenModel,
         reminderModel: ReminderScreenModel,
+        alarmManagerScreenModel: AlarmManagerScreenModel
     ) {
         val context = LocalContext.current
         val navBottomSheet = LocalBottomSheetNavigator.current
+
+        val id = Random.nextInt()
 
         val calendar = Calendar.getInstance()
 
@@ -148,19 +154,19 @@ data class ReminderScreen(
                             sound.performSoundEffect(context, KEY_STANDARD, isMute)
 
                             runCatching {
-                                notificationModel.scheduleNotification(
-                                    context = context,
-                                    dateTime = dateTime,
-                                    title = title,
-                                    message = message,
+                                alarmManagerScreenModel.initializeAlarm(
                                     uid = uid,
-                                    // if true the work manager should be canceled.
-                                    onReset = dateTime == 0L
+                                    title = title ?: "",
+                                    message = message ?: "",
+                                    id = id,
+                                    atTime = dateTime
                                 )
 
                                 reminderModel.sendUiEvent(
-                                    UiEvent.Insert(Reminder(uid = uid, atTime = dateTime))
+                                    UiEvent.Insert(Reminder(id = id.toLong(), uid = uid, atTime = dateTime))
                                 )
+
+                                println(id)
                             }
 
                             navBottomSheet.hide()
