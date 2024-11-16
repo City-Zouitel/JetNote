@@ -7,12 +7,14 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import city.zouitel.notifications.Cons
 import city.zouitel.notifications.viewmodel.NotificationScreenModel
+import city.zouitel.notifications.viewmodel.AlarmManagerScreenModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val notificationKoinModule = module {
     factoryOf(::NotificationScreenModel)
+    factoryOf(::AlarmManagerScreenModel)
 
     single {
         NotificationCompat.Builder(androidContext(), Cons.CHANNEL_ID)
