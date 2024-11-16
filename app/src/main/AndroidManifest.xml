@@ -49,7 +49,7 @@
             tools:targetApi="29" />
 
         <receiver
-            android:name="city.zouitel.notifications.reciver.Notification"
+            android:name="city.zouitel.notifications.reciver.NotificationReceiver"
             android:enabled="true"
             android:exported="true" />
 
