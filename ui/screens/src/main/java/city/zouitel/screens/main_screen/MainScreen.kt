@@ -51,7 +51,6 @@ import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreen
-import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.screens.main_screen.utils.HomeSelectionTopAppBar
 import city.zouitel.screens.main_screen.utils.MainTopAppBar
 import city.zouitel.screens.main_screen.utils.RemovedSelectionTopAppBar
@@ -86,7 +85,6 @@ data class MainScreen(val isHome: Boolean): Screen {
 
         Main(
             mainModel = mainModel,
-            notificationModel = getScreenModel(),
             tagModel = getScreenModel(),
             noteAndTagModel = getScreenModel(),
             taskModel = getScreenModel(),
@@ -112,7 +110,6 @@ data class MainScreen(val isHome: Boolean): Screen {
     private fun Main(
         mainModel: MainScreenModel,
         datastoreModel: DataStoreScreenModel,
-        notificationModel: NotificationScreenModel,
         tagModel: TagScreenModel,
         noteAndTagModel: NoteAndTagScreenModel,
         taskModel: TaskScreenModel,
@@ -205,7 +202,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                 datastoreModel = datastoreModel,
                                 mainModel = mainModel,
                                 dataModel = dataModel,
-                                notificationModel = notificationModel,
                                 noteAndTagModel = noteAndTagModel,
                                 tagModel = tagModel,
                                 taskModel = taskModel,
@@ -292,15 +288,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     noteAndMediaModel = noteAndMediaModel
                                 ) {
                                     dataModel.sendUiEvent(UiEvent.Update(it.dataEntity.copy(removed = 1)))
-                                    // to cancel the alarm manager reminder.
-                                    notificationModel.scheduleNotification(
-                                        context = context,
-                                        dateTime = it.dataEntity.reminding,
-                                        title = it.dataEntity.title,
-                                        message = it.dataEntity.description,
-                                        uid = it.dataEntity.uid,
-                                        onReset = true
-                                    )
+                                    // to.do cancel the alarm manager reminder.
 
                                     undo.invoke(entity.dataEntity)
                                 }
