@@ -147,9 +147,7 @@ data class OptionsScreen(
                         uid = id,
                         title = titleState?.text.toString(),
                         message = descriptionState?.text.toString()
-                    ) {
-                        reminderState.value = it
-                    }
+                    )
                 )
             }
         } else {
@@ -161,14 +159,12 @@ data class OptionsScreen(
                         uid = id,
                         title = titleState?.text.toString(),
                         message = descriptionState?.text.toString()
-                    ) {
-                        reminderState.value = it
-                    }
+                    )
                 )
             }
         }
 
-        Navigator(CommonBottomSheet({
+        Navigator(CommonBottomSheet {
             LazyColumn {
                 item {
                     CommonOptionItem(
@@ -193,10 +189,10 @@ data class OptionsScreen(
                             if (!readMediaPermissions.allPermissionsGranted) {
                                 if (readMediaPermissions.shouldShowRationale) {
                                     navBottomSheet.show(
-                                    RationalScreen(
-                                        permissionState = reminderPermissions,
-                                        permissionName = "local media"
-                                    )
+                                        RationalScreen(
+                                            permissionState = reminderPermissions,
+                                            permissionName = "local media"
+                                        )
                                     )
                                 } else {
                                     readMediaPermissions.launchMultiplePermissionRequest()
@@ -283,9 +279,7 @@ data class OptionsScreen(
                                         uid = id,
                                         title = titleState?.text.toString(),
                                         message = descriptionState?.text.toString()
-                                    ) {
-                                        reminderState.value = it
-                                    }
+                                    )
                                 )
                             }
                         }
@@ -300,7 +294,7 @@ data class OptionsScreen(
                     }
                 }
             }
-        }))
+        })
     }
 
     @Composable
