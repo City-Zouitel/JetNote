@@ -1,62 +1,55 @@
 package city.zouitel.notifications.reciver
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.media.RingtoneManager
 import android.os.Build
 import androidx.annotation.CallSuper
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import city.zouitel.notifications.Cons
+import city.zouitel.notifications.Constants
 
 class NotificationReceiver: BroadcastReceiver() {
 
+    @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.Q)
     @CallSuper
     override fun onReceive(context: Context, intent: Intent) {
         val notifyManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val currentChannel = intent.getStringExtra("uid")
+        val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        val notifyChannel = NotificationChannel(
-            Cons.CHANNEL_ID,
-            Cons.CHANNEL_NAME,
+        val publicChannel = NotificationChannel(
+            currentChannel,
+            Constants.CHANNEL_NAME,
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
             description = "Reminder notification"
-            enableLights(true)
-            lightColor = Color.YELLOW
             enableVibration(true)
-            vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
-            setShowBadge(true)
             lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
-            setBypassDnd(true)
-            setSound(null, null)
-            setAllowBubbles(true)
         }
 
-        notifyManager.createNotificationChannel(notifyChannel)
+        notifyManager.createNotificationChannel(publicChannel)
 
-        val notifyBuilder = NotificationCompat.Builder(context, Cons.CHANNEL_ID)
-            .setDefaults(android.app.Notification.DEFAULT_ALL)
+        val notifyBuilder = NotificationCompat.Builder(context, currentChannel ?: Constants.CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_popup_reminder)
-            .setColor(Color.YELLOW)
-            .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
-            .setLights(Color.WHITE, 300, 100)
+            .setSound(sound)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            .setChannelId(Cons.CHANNEL_ID)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setFullScreenIntent(null, true)
             .setAllowSystemGeneratedContextualActions(true)
-            .setGroup("Reminder")
             .setGroupSummary(true)
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
             .setContentTitle(intent.getStringExtra("note_title"))
             .setContentText(intent.getStringExtra("note_description"))
-            .setAutoCancel(true)
+            .setGroup(currentChannel)
             .build()
 
         notifyManager.notify(
