@@ -5,19 +5,17 @@ import android.app.NotificationManager
 import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import city.zouitel.notifications.Cons
-import city.zouitel.notifications.viewmodel.NotificationScreenModel
+import city.zouitel.notifications.Constants
 import city.zouitel.notifications.viewmodel.AlarmManagerScreenModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val notificationKoinModule = module {
-    factoryOf(::NotificationScreenModel)
     factoryOf(::AlarmManagerScreenModel)
 
     single {
-        NotificationCompat.Builder(androidContext(), Cons.CHANNEL_ID)
+        NotificationCompat.Builder(androidContext(), Constants.CHANNEL_ID)
             .setDefaults(android.app.Notification.DEFAULT_ALL)
             .setSmallIcon(android.R.drawable.ic_popup_reminder)
             .setColor(Color.YELLOW)
@@ -31,8 +29,8 @@ val notificationKoinModule = module {
 
     single {
         NotificationChannel(
-            Cons.CHANNEL_ID,
-            Cons.CHANNEL_NAME,
+            Constants.CHANNEL_ID,
+            Constants.CHANNEL_NAME,
             NotificationManager.IMPORTANCE_DEFAULT
         )
     }
