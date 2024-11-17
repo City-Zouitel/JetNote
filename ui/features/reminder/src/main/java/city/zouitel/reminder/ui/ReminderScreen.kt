@@ -23,7 +23,6 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.notifications.viewmodel.AlarmManagerScreenModel
-import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.reminder.layout.DateLayout
 import city.zouitel.reminder.layout.TimeLayout
 import city.zouitel.reminder.model.Reminder
@@ -47,13 +46,11 @@ data class ReminderScreen(
     val uid: String,
     val title: String?,
     val message: String?,
-    val remindingValue: (Long) -> Unit
 ): Screen {
     @Composable
     override fun Content() {
         ReminderSheet(
             dataStoreModel = getScreenModel(),
-            notificationModel = getScreenModel(),
             reminderModel = getScreenModel(),
             alarmManagerScreenModel = getScreenModel()
         )
@@ -63,7 +60,6 @@ data class ReminderScreen(
     @Composable
     private fun ReminderSheet(
         dataStoreModel: DataStoreScreenModel,
-        notificationModel: NotificationScreenModel,
         reminderModel: ReminderScreenModel,
         alarmManagerScreenModel: AlarmManagerScreenModel
     ) {
