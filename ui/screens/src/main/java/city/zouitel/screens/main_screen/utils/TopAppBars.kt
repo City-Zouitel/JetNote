@@ -25,7 +25,6 @@ import city.zouitel.logic.events.UiEvent
 import city.zouitel.logic.sharNote
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
-import city.zouitel.notifications.viewmodel.NotificationScreenModel
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
@@ -92,7 +91,6 @@ internal fun HomeSelectionTopAppBar(
     datastoreModel: DataStoreScreenModel,
     mainModel: MainScreenModel,
     dataModel: DataScreenModel,
-    notificationModel: NotificationScreenModel,
     noteAndTagModel: NoteAndTagScreenModel,
     tagModel: TagScreenModel,
     taskModel: TaskScreenModel,
@@ -143,15 +141,7 @@ internal fun HomeSelectionTopAppBar(
                                         )
                                     )
 
-                                    // to cancel the alarm manager reminder.
-                                    notificationModel.scheduleNotification(
-                                        context = context,
-                                        dateTime = it.reminding,
-                                        title = it.title,
-                                        message = it.description,
-                                        uid = it.uid,
-                                        onReset = true
-                                    )
+                                    // to.do cancel the alarm manager reminder.
                                     undo.invoke(it)
                                 }
                                 mainModel.clearSelectionNotes()
