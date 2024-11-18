@@ -32,11 +32,14 @@
             <option value="$PROJECT_DIR$/core/local/repository" />
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/core/network/ai" />
-            <option value="$PROJECT_DIR$/core/security" />
+            <option value="$PROJECT_DIR$/core/network/repository" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/init" />
-            <option value="$PROJECT_DIR$/root" />
             <option value="$PROJECT_DIR$/security" />
+            <option value="$PROJECT_DIR$/security/appLock" />
+            <option value="$PROJECT_DIR$/security/encryption" />
+            <option value="$PROJECT_DIR$/security/rooted" />
+            <option value="$PROJECT_DIR$/security/screenshot" />
             <option value="$PROJECT_DIR$/services" />
             <option value="$PROJECT_DIR$/services/notifications" />
             <option value="$PROJECT_DIR$/services/shortcuts" />
