@@ -8,11 +8,11 @@ import androidx.compose.material3.ShapeDefaults
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
+import city.zouitel.applock.LockModeHandler
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.root.RootCheckerHandler
+import city.zouitel.rooted.RootCheckerHandler
 import city.zouitel.screens.main_screen.MainScreen
-import city.zouitel.security.appLock.LockModeHandler
-import city.zouitel.security.screenshot.ScreenshotHandler
+import city.zouitel.screenshot.ScreenshotHandler
 import city.zouitel.shortcuts.checkNoteActivityShortcut
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.MainTheme
