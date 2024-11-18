@@ -22,16 +22,4 @@ val initializerKoinModule = module {
         if (!file.exists()) file.mkdirs()
         file.path
     }
-
-//    single<String>(named(IMG_DIR)) {
-//        val file = File(androidContext().filesDir.path, IMG_DIR)
-//        if (!file.exists()) file.mkdirs()
-//        file.path
-//    }
-
-//    single<String>(named(MEDIA_DIR)) {
-//        val file = File(androidContext().filesDir.path, MEDIA_DIR)
-//        if (!file.exists()) file.mkdirs()
-//        file.path
-//    }
 }

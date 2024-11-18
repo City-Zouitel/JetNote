@@ -1,4 +1,4 @@
-package city.zouitel.security.appLock
+package city.zouitel.applock
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.SnackbarHostState

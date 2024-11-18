@@ -1,6 +1,5 @@
 package city.zouitel.source
 
-import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -37,7 +36,7 @@ internal fun Project.configureAndroidApplication(
             abi {
                 isEnable = true
                 reset()
-                include("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
+                include("armeabi-v7a", "arm64-v8a")
                 isUniversalApk = true
             }
         }
