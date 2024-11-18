@@ -1,4 +1,4 @@
-package city.zouitel.security
+package city.zouitel.applock
 
 import org.junit.Test
 
