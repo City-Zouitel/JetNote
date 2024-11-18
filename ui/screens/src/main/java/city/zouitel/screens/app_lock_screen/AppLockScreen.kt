@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import city.zouitel.security.appLock.LockModeManager
+import city.zouitel.applock.LockModeManager
 
 class AppLockScreen : Screen {
     @Composable
