@@ -30,8 +30,8 @@ dependencies {
     api(projects.ui.features.links)
     api(projects.ui.features.widget)
     api(projects.ui.features.media)
-    implementation(projects.root)
-    implementation(projects.security)
+    implementation(projects.security.rooted)
+    implementation(projects.security.appLock)
 
     //AndroidX.
     implementation(libs.constraintlayout)

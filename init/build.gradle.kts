@@ -12,7 +12,6 @@ android {
 dependencies {
     //Modules.
     implementation(projects.common.systemDesign)
-    implementation(projects.security)
 
     //Koin.
     implementation(libs.koin.worker)

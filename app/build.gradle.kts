@@ -31,15 +31,15 @@ dependencies {
     implementation(projects.core.local.database)
     implementation(projects.core.local.datastore)
     implementation(projects.core.local.repository)
-    implementation(projects.core.security)
     implementation(projects.domain)
     implementation(projects.init)
     implementation(projects.services.notifications)
     implementation(projects.services.shortcuts)
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
-    implementation(projects.root)
-    implementation(projects.security)
+    implementation(projects.security.rooted)
+    implementation(projects.security.appLock)
+    implementation(projects.security.screenshot)
     api(projects.ui.screens)
 
     //Lifecycle.
