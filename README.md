@@ -6,7 +6,7 @@ JetNote is modern note android application written by kotlin language and [jetpa
 [![Kotlin Version](https://img.shields.io/badge/coroutines-1.9.0-7F52FF?logo=kotlin)](https://kotlinlang.org/docs/coroutines-overview.html)
 [![Jetpack Compose](https://img.shields.io/badge/Compose-1.5.14-4285F4?logo=jetpackcompose)](https://developer.android.com/jetpack/androidx/releases/compose)
 [![Gradle](https://img.shields.io/badge/Gradle-8.5.2-02303A?logo=gradle)](https://gradle.org)
-[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
+[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://github.com/City-Zouitel/JetNote/edit/main/LICENSE)
 [![Android CI](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml/badge.svg)](https://github.com/City-Zouitel/JetNote/actions/workflows/android.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/city-zouitel/jetnote/badge)](https://www.codefactor.io/repository/github/city-zouitel/jetnote)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/77dad54167db49a7bb7c3d9c43f312c2)](https://app.codacy.com/gh/City-Zouitel/JetNote/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
