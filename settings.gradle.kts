@@ -26,7 +26,7 @@ include(
     ":core:local:repository",
     ":core:local:datastore",
     ":core:network:ai",
-    ":core:security"
+    ":core:network:repository"
 )
 include(":domain")
 include(
@@ -52,5 +52,9 @@ include(
     ":services:shortcuts"
 )
 include(":init")
-include(":root")
-include(":security")
+include(
+    ":security:encryption",
+    ":security:rooted",
+    ":security:screenshot",
+    ":security:appLock"
+)
