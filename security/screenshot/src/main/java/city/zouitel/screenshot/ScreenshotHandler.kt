@@ -1,4 +1,4 @@
-package city.zouitel.security.screenshot
+package city.zouitel.screenshot
 
 import android.view.Window
 import android.view.WindowManager.LayoutParams
