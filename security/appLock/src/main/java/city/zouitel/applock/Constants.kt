@@ -1,4 +1,4 @@
-package city.zouitel.security.appLock
+package city.zouitel.applock
 
 object Constants {
 
