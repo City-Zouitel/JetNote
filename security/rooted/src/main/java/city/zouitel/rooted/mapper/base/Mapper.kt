@@ -1,4 +1,4 @@
-package city.zouitel.root.mapper.base
+package city.zouitel.rooted.mapper.base
 
 sealed interface Mapper {
     interface Base<In, Out> {
