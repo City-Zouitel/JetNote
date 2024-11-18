@@ -1,4 +1,4 @@
-package city.zouitel.security.appLock
+package city.zouitel.applock
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -46,7 +46,6 @@ class LockModeManager(private val activity: AppCompatActivity) {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
                     if (errorCode == BiometricPrompt.ERROR_USER_CANCELED) {
-//                        exitProcess(0)
                         activity.finish()
                     }
                 }
