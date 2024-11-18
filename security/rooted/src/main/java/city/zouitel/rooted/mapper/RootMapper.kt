@@ -1,9 +1,8 @@
-package city.zouitel.root.mapper
+package city.zouitel.rooted.mapper
 
 import city.zouitel.domain.model.Root as OutRoot
-import city.zouitel.root.model.Root as InRoot
-import city.zouitel.root.mapper.base.Mapper
-import city.zouitel.root.model.Root
+import city.zouitel.rooted.model.Root as InRoot
+import city.zouitel.rooted.mapper.base.Mapper
 
 class RootMapper: Mapper.ReadOnly<OutRoot, InRoot> {
     override fun toView(data: OutRoot): InRoot = with(data) {

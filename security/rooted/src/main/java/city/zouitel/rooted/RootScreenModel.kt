@@ -1,10 +1,10 @@
-package city.zouitel.root
+package city.zouitel.rooted
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.RootUseCase
-import city.zouitel.root.mapper.RootMapper
-import city.zouitel.root.model.Root as InRoot
+import city.zouitel.rooted.mapper.RootMapper
+import city.zouitel.rooted.model.Root as InRoot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

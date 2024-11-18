@@ -1,4 +1,4 @@
-package city.zouitel.root
+package city.zouitel.rooted
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
