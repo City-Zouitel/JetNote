@@ -3,6 +3,7 @@ package city.zouitel.jetnote
 import android.app.Application
 import android.os.Build
 import city.zouitel.audios.di.audioPlayerKoinModule
+import city.zouitel.base.di.baseKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
 import city.zouitel.init.initializerKoinModule
@@ -44,6 +45,7 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
             workManagerFactory()
             modules(
                 databaseKoinModule,
+                baseKoinModule,
                 datastoreKoinModule,
                 repositoryKoinModule,
                 audioPlayerKoinModule,
