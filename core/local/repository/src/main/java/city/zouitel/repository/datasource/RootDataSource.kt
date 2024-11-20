@@ -7,5 +7,4 @@ import city.zouitel.repository.model.Root as OutRoot
 interface RootDataSource {
 
     val isDeviceRooted: Flow<Result<OutRoot>>
-
 }
