@@ -31,6 +31,7 @@ dependencies {
     implementation(projects.core.local.database)
     implementation(projects.core.local.datastore)
     implementation(projects.core.local.repository)
+    implementation(projects.core.local.base)
     implementation(projects.domain)
     implementation(projects.init)
     implementation(projects.services.notifications)
