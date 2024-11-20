@@ -112,6 +112,10 @@ data class MediaScreen(
                                         .build(),
                                     contentDescription = null
                                 )
+                            }.onSuccess {
+                                println("*************************************")
+                                println(filteredMedias[index].path)
+                                println("*************************************")
                             }
                         }
                     }
