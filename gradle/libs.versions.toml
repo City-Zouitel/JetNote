@@ -4,8 +4,8 @@ kotlin = "2.0.0"
 compileSdk-version = "35"
 minSdk-version = "26"
 targetSdk-version = "35"
-code-version = "681"
-name-version = "6.8.1"
+code-version = "682"
+name-version = "6.8.2"
 compose-version = "1.5.14"
 
 #Android.
