@@ -12,6 +12,10 @@ import androidx.annotation.CallSuper
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import city.zouitel.notifications.Constants
+import city.zouitel.notifications.Constants.ID
+import city.zouitel.notifications.Constants.MESSAGE
+import city.zouitel.notifications.Constants.TITLE
+import city.zouitel.notifications.Constants.UID
 
 class NotificationReceiver: BroadcastReceiver() {
 
@@ -20,8 +24,10 @@ class NotificationReceiver: BroadcastReceiver() {
     @CallSuper
     override fun onReceive(context: Context, intent: Intent) {
         val notifyManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val currentChannel = intent.getStringExtra("uid")
-        val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val currentChannel = intent.getStringExtra(UID)
+        val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+
+//        val bitmap = BitmapFactory.decodeFile("content://media/picker/0/com.android.providers.media.photopicker/media/1000001104").asImageBitmap().asAndroidBitmap()
 
         val publicChannel = NotificationChannel(
             currentChannel,
@@ -30,30 +36,34 @@ class NotificationReceiver: BroadcastReceiver() {
         ).apply {
             description = "Reminder notification"
             enableVibration(true)
+            enableLights(true)
+            vibrationPattern = longArrayOf(1000, 1000, 1000, 1000, 1000)
             lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
+            setShowBadge(true)
         }
 
         notifyManager.createNotificationChannel(publicChannel)
 
         val notifyBuilder = NotificationCompat.Builder(context, currentChannel ?: Constants.CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_popup_reminder)
+//            .setLargeIcon(bitmap)
+            .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
             .setSound(sound)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
             .setFullScreenIntent(null, true)
             .setAllowSystemGeneratedContextualActions(true)
             .setGroupSummary(true)
             .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
-            .setContentTitle(intent.getStringExtra("note_title"))
-            .setContentText(intent.getStringExtra("note_description"))
-            .setGroup(currentChannel)
+            .setContentTitle(intent.getStringExtra(TITLE))
+            .setContentText(intent.getStringExtra(MESSAGE))
             .build()
 
         notifyManager.notify(
-            intent.getIntExtra("id", 0),
+            intent.getIntExtra(ID, 0),
             notifyBuilder
         )
 
