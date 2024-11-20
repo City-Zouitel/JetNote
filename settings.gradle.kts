@@ -25,6 +25,7 @@ include(
     ":core:local:database",
     ":core:local:repository",
     ":core:local:datastore",
+    ":core:local:base",
     ":core:network:ai",
     ":core:network:repository"
 )
