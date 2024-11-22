@@ -41,7 +41,8 @@
         android:usesCleartextTraffic="false"
         tools:ignore="DataExtractionRules,UnusedAttribute"
         android:exported="true"
-        android:enableOnBackInvokedCallback="true">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="33">
 
         <profileable
             android:shell="true"
