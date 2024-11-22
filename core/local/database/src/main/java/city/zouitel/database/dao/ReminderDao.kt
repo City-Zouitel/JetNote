@@ -17,10 +17,10 @@ interface ReminderDao {
     @Query("SELECT * FROM $TABLE_NAME WHERE $UUID = :uid")
     fun observeAllById(uid: String): Flow<List<ReminderEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(reminder: ReminderEntity)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update(onConflict = OnConflictStrategy.IGNORE)
     suspend fun update(reminder: ReminderEntity)
 
     @Query("DELETE FROM $TABLE_NAME")
