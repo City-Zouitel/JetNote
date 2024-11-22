@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
 import android.os.Build
 import androidx.annotation.CallSuper
 import androidx.annotation.RequiresApi
@@ -16,8 +15,9 @@ import city.zouitel.notifications.Constants.ID
 import city.zouitel.notifications.Constants.MESSAGE
 import city.zouitel.notifications.Constants.TITLE
 import city.zouitel.notifications.Constants.UID
+import org.koin.core.component.KoinComponent
 
-class NotificationReceiver: BroadcastReceiver() {
+class NotificationReceiver: BroadcastReceiver(), KoinComponent {
 
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -25,9 +25,6 @@ class NotificationReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notifyManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val currentChannel = intent.getStringExtra(UID)
-        val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-
-//        val bitmap = BitmapFactory.decodeFile("content://media/picker/0/com.android.providers.media.photopicker/media/1000001104").asImageBitmap().asAndroidBitmap()
 
         val publicChannel = NotificationChannel(
             currentChannel,
@@ -46,9 +43,7 @@ class NotificationReceiver: BroadcastReceiver() {
 
         val notifyBuilder = NotificationCompat.Builder(context, currentChannel ?: Constants.CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_popup_reminder)
-//            .setLargeIcon(bitmap)
             .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
-            .setSound(sound)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setCategory(NotificationCompat.CATEGORY_MESSAGE)
@@ -66,6 +61,5 @@ class NotificationReceiver: BroadcastReceiver() {
             intent.getIntExtra(ID, 0),
             notifyBuilder
         )
-
     }
 }
