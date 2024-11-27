@@ -10,7 +10,7 @@ import city.zouitel.domain.repository.NoteAndMediaRepository
 import city.zouitel.domain.repository.NoteAndTagRepository
 import city.zouitel.domain.repository.NoteAndTaskRepository
 import city.zouitel.domain.repository.NoteRepository
-import city.zouitel.domain.repository.ReminderRepo
+import city.zouitel.domain.repository.ReminderDatasource
 import city.zouitel.domain.repository.RootRepository
 import city.zouitel.domain.repository.TagRepository
 import city.zouitel.domain.repository.TaskRepository
@@ -55,7 +55,7 @@ import city.zouitel.repository.repositoryImpl.NoteAndMediaRepoImpl
 import city.zouitel.repository.repositoryImpl.NoteAndTagRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteAndTaskRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteRepositoryImpl
-import city.zouitel.repository.repositoryImpl.ReminderRepoImpl
+import city.zouitel.repository.repositoryImpl.ReminderDatasourceImpl
 import city.zouitel.repository.repositoryImpl.RootRepositoryImpl
 import city.zouitel.repository.repositoryImpl.TagRepositoryImpl
 import city.zouitel.repository.repositoryImpl.TaskRepositoryImpl
@@ -65,7 +65,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-val repositoryKoinModule = module {
+val localRepositoryKoinModule = module {
 
     //Mappers.
     factoryOf(::DataMapper)
@@ -103,7 +103,7 @@ val repositoryKoinModule = module {
     singleOf(::RootRepositoryImpl) bind RootRepository::class
     singleOf(::MediaRepoImpl) bind MediaRepository::class
     singleOf(::NoteAndMediaRepoImpl) bind NoteAndMediaRepository::class
-    singleOf(::ReminderRepoImpl) bind ReminderRepo::class
+    singleOf(::ReminderDatasourceImpl) bind ReminderDatasource::class
 
     //UseCases.
     factoryOf(DataUseCase::AddData)
