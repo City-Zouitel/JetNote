@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.services.notifications)
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
+    api(projects.ui.features.assistant)
     api(projects.ui.features.tags)
     api(projects.ui.features.camera)
     api(projects.ui.features.recorder)
