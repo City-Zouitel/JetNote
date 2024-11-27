@@ -6,6 +6,7 @@ import city.zouitel.audios.di.audioPlayerKoinModule
 import city.zouitel.base.di.baseKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
+import city.zouitel.generativeai.di.generativeKoinModule
 import city.zouitel.init.initializerKoinModule
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.media.di.mediaKoinModule
@@ -14,7 +15,8 @@ import city.zouitel.notifications.di.notificationKoinModule
 import city.zouitel.quicknote.di.quickNoteKoinModule
 import city.zouitel.recoder.di.recorderKoinModule
 import city.zouitel.reminder.di.reminderKoinModule
-import city.zouitel.repository.di.repositoryKoinModule
+import city.zouitel.repository.di.localRepositoryKoinModule
+import city.zouitel.repository.di.networkRepositoryKoinModule
 import city.zouitel.rooted.di.rootedKoinModule
 import city.zouitel.screens.di.screensKoinModule
 import city.zouitel.systemDesign.di.commonSystemDesignKoinModule
@@ -47,7 +49,9 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
                 databaseKoinModule,
                 baseKoinModule,
                 datastoreKoinModule,
-                repositoryKoinModule,
+                localRepositoryKoinModule,
+                networkRepositoryKoinModule,
+                generativeKoinModule,
                 audioPlayerKoinModule,
                 linksKoinModule,
                 noteKoinModule,
