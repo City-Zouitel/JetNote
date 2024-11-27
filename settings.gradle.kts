@@ -1,12 +1,21 @@
 @file:Suppress("UnstableApiUsage")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
+
 pluginManagement {
     repositories {
         includeBuild("source")
-        google()
         mavenCentral()
         gradlePluginPortal()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+                includeGroupByRegex("org\\.jetbrains.*")
+            }
+        }
     }
 }
 dependencyResolutionManagement {
@@ -26,11 +35,12 @@ include(
     ":core:local:repository",
     ":core:local:datastore",
     ":core:local:base",
-    ":core:network:ai",
-    ":core:network:repository"
+    ":core:network:repository",
+    ":core:network:generativeai"
 )
 include(":domain")
 include(
+    ":ui:features:assistant",
     ":ui:features:workplace",
     ":ui:features:quickNote",
     ":ui:features:camera",
