@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import city.zouitel.applock.LockModeHandler
+import city.zouitel.domain.usecase.GeminiUseCase
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.rooted.RootCheckerHandler
 import city.zouitel.screens.main_screen.MainScreen
