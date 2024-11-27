@@ -3,7 +3,7 @@ package city.zouitel.domain.repository
 import city.zouitel.domain.model.Reminder
 import kotlinx.coroutines.flow.Flow
 
-interface ReminderRepo {
+interface ReminderDatasource {
 
     suspend fun observeById(uid: String): Flow<List<Reminder>>
 
