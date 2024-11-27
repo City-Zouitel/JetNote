@@ -5,3 +5,8 @@ plugins {
 android {
     namespace = "city.zouitel.quicknote"
 }
+
+dependencies {
+    //Modules.
+    implementation(projects.domain)
+}
