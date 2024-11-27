@@ -1,16 +1,16 @@
 package city.zouitel.repository.repositoryImpl
 
-import city.zouitel.domain.repository.ReminderRepo
+import city.zouitel.domain.repository.ReminderDatasource
 import city.zouitel.repository.datasource.ReminderDataSource
 import city.zouitel.repository.mapper.ReminderMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import city.zouitel.domain.model.Reminder as OutReminder
 
-class ReminderRepoImpl(
+class ReminderDatasourceImpl(
     private val dataSource: ReminderDataSource,
     private val mapper: ReminderMapper
-): ReminderRepo {
+): ReminderDatasource {
 
     override suspend fun observeById(uid: String): Flow<List<OutReminder>> {
         return dataSource.observeById(uid).map { reminders -> mapper.toDomain(reminders) }
