@@ -1,6 +1,5 @@
 package city.zouitel.domain.usecase
 
-import city.zouitel.domain.model.Link
 import city.zouitel.domain.model.NoteAndLink
 import city.zouitel.domain.repository.NoteAndLinkRepository
 
