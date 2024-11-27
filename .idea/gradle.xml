@@ -32,7 +32,7 @@
             <option value="$PROJECT_DIR$/core/local/datastore" />
             <option value="$PROJECT_DIR$/core/local/repository" />
             <option value="$PROJECT_DIR$/core/network" />
-            <option value="$PROJECT_DIR$/core/network/ai" />
+            <option value="$PROJECT_DIR$/core/network/generativeai" />
             <option value="$PROJECT_DIR$/core/network/repository" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/init" />
@@ -47,6 +47,7 @@
             <option value="$PROJECT_DIR$/source" />
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/ui/features" />
+            <option value="$PROJECT_DIR$/ui/features/assistant" />
             <option value="$PROJECT_DIR$/ui/features/audios" />
             <option value="$PROJECT_DIR$/ui/features/camera" />
             <option value="$PROJECT_DIR$/ui/features/links" />
