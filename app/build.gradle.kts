@@ -32,6 +32,8 @@ dependencies {
     implementation(projects.core.local.datastore)
     implementation(projects.core.local.repository)
     implementation(projects.core.local.base)
+    implementation(projects.core.network.repository)
+    implementation(projects.core.network.generativeai)
     implementation(projects.domain)
     implementation(projects.init)
     implementation(projects.services.notifications)
