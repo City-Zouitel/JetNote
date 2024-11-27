@@ -1,9 +1,9 @@
 package city.zouitel.repository.mapper
 
-import city.zouitel.repository.model.Audio as InAudio
 import city.zouitel.domain.model.Audio as OutAudio
+import city.zouitel.repository.model.Audio as InAudio
 
-class  AudioMapper {
+class AudioMapper {
 
     fun toDomain(audios: List<InAudio>) = audios.map { toDomain(it) }
 
