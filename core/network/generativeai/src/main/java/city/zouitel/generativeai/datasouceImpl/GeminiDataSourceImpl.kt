@@ -14,25 +14,23 @@ class GeminiDataSourceImpl(
 ): GeminiDataSource {
 
     override suspend fun sendGeminiPrompt(geminiQuest: GeminiQuest): Flow<String> {
-        var response = flow { emit("...") }
-        runCatching {
-            generativeModel.generateContent(
-                content {
-                    mapper.fromRepo(geminiQuest).image?.let { image(it) }
-                    text(mapper.fromRepo(geminiQuest).prompt)
+        var response = flow { emit("") }
+            runCatching {
+                generativeModel.generateContent(
+                    content {
+                        mapper.fromRepo(geminiQuest).image?.let { image(it) }
+                        text(mapper.fromRepo(geminiQuest).prompt)
+                    }
+                ).run {
+                    text?.let {
+                        response = flow { emit(it) }
+                    } ?: run {
+                        response = flow { emit("null") }
+                    }
                 }
-            ).run {
-                text?.let {
-                    response = flow { emit(it) }
-                } ?: run {
-                    response = flow { emit("null") }
-                }
-                println(this.promptFeedback)
-                println(this.usageMetadata)
+            }.onFailure {
+                response = flow { emit(it.message.toString()) }
             }
-        }.onFailure {
-            response = flow { emit(it.message.toString()) }
-        }
         return mapper.toRepo(response)
     }
 }
