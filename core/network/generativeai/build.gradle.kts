@@ -15,4 +15,5 @@ dependencies {
 
     //DataStore.
     implementation (libs.datastore)
+    implementation(project(":core:local:datastore"))
 }
