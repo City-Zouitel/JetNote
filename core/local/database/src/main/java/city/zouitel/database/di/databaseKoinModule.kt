@@ -43,7 +43,6 @@ import city.zouitel.repository.datasource.NoteAndTagDataSource
 import city.zouitel.repository.datasource.NoteAndTaskDataSource
 import city.zouitel.repository.datasource.NoteDataSource
 import city.zouitel.repository.datasource.ReminderDataSource
-import city.zouitel.repository.datasource.RootDataSource
 import city.zouitel.repository.datasource.TagDataSource
 import city.zouitel.repository.datasource.TaskDataSource
 import city.zouitel.repository.datasource.WidgetDataSource
