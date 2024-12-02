@@ -27,4 +27,6 @@ interface DataStoreRepo {
     suspend fun setLockMode(isLocked: Boolean)
 
     suspend fun setScreenshotBlock(isBlocked: Boolean)
+
+    suspend fun setGeminiApiKey(apiKey: String)
 }
