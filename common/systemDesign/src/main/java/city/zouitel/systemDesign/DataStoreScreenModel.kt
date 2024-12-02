@@ -94,4 +94,10 @@ class DataStoreScreenModel(
             dataStoreRepo.setScreenshotBlock(isBlocked)
         }
     }
+
+    fun setGeminiApiKey(apiKey: String) {
+        screenModelScope.launch(Dispatchers.IO) {
+            dataStoreRepo.setGeminiApiKey(apiKey)
+        }
+    }
 }
