@@ -40,6 +40,9 @@ class NoteActivity : AppCompatActivity(), KoinComponent, IntentHandler {
             HideSystemUI(window)
             IntentHandler(intent) {}
 
+            // Set the Gemini API key
+            dataStoreModel.setGeminiApiKey("AIzaSyAsJtZ7sHR-gq0pym_w8aPCrn6X0KnxKZY")
+
             MainTheme(dataStoreModel) {
                 BottomSheetNavigator(
                     sheetShape = ShapeDefaults.Large,
