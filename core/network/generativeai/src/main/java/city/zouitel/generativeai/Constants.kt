@@ -1,17 +1,7 @@
 package city.zouitel.generativeai
 
-import city.zouitel.datastore.DataStoreRepo
+object Constants {
 
-class Constants(
-    private val dataStoreRepo: DataStoreRepo
-) {
-    init {
-        dataStoreRepo.getLayout
-    }
-
-    val c = ""
-
-    companion object {
-
-    }
+    const val GEMINI_API = "gemini_api_key_preferences"
+    const val GEMINI_MODEL = "gemini-1.5-flash-latest"
 }
