@@ -62,4 +62,8 @@ class DataStoreRepoImpl(
     override suspend fun setScreenshotBlock(isBlocked: Boolean) {
         dataStore.edit { it[Keys.SCREENSHOT_BLOCK_KEY] = isBlocked }
     }
+
+    override suspend fun setGeminiApiKey(apiKey: String) {
+        dataStore.edit { preferences -> preferences[Keys.GEMINI_API_KEY] = apiKey }
+    }
 }
