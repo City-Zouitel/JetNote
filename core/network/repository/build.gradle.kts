@@ -8,5 +8,5 @@ android {
 
 dependencies {
     //Modules.
-    implementation(projects.domain)
+    api(projects.domain)
 }
