@@ -13,6 +13,7 @@ internal object Constants {
     const val THEME = "APP_THEME_PREFERENCES_KEY"
     const val LOCK_MODE = "LOCK_MODE_PREFERENCES_KEY"
     const val SCREENSHOT_BLOCK = "SCREENSHOT_BLOCK_PREFERENCES_KEY"
+    const val GEMINI_API = "gemini_api_key_preferences"
 
     const val DEFAULT_ORDER = "Default"
 
