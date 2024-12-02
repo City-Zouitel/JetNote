@@ -1,5 +1,6 @@
 package city.zouitel.generativeai.datasouceImpl
 
+import city.zouitel.domain.utils.RequestState
 import city.zouitel.generativeai.mapper.GeminiMapper
 import city.zouitel.repository.datasource.GeminiDataSource
 import city.zouitel.repository.model.GeminiQuest
@@ -13,8 +14,9 @@ class GeminiDataSourceImpl(
     private val mapper: GeminiMapper
 ): GeminiDataSource {
 
-    override suspend fun sendGeminiPrompt(geminiQuest: GeminiQuest): Flow<String> {
-        var response = flow { emit("") }
+    override suspend fun sendGeminiPrompt(geminiQuest: GeminiQuest): Flow<RequestState<String>> {
+        val response = flow {
+            emit(RequestState.Loading)
             runCatching {
                 generativeModel.generateContent(
                     content {
@@ -23,14 +25,15 @@ class GeminiDataSourceImpl(
                     }
                 ).run {
                     text?.let {
-                        response = flow { emit(it) }
+                        emit(RequestState.Success(it))
                     } ?: run {
-                        response = flow { emit("null") }
+                        emit(RequestState.Error("No response from Gemini."))
                     }
                 }
             }.onFailure {
-                response = flow { emit(it.message.toString()) }
+                emit(RequestState.Error(it.message.toString()))
             }
-        return mapper.toRepo(response)
+        }
+        return response
     }
 }
