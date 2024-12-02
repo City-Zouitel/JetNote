@@ -14,6 +14,5 @@ dependencies {
     implementation(libs.generativeai)
 
     //DataStore.
-    implementation (libs.datastore)
-    implementation(project(":core:local:datastore"))
+    implementation(libs.datastore)
 }
