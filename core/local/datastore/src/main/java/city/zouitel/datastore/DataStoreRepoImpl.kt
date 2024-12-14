@@ -39,6 +39,11 @@ class DataStoreRepoImpl(
         get() = dataStore.data
             .map { it[Keys.SCREENSHOT_BLOCK_KEY] ?: false }
 
+    override val getGeminiApiKey: Flow<String>
+        get() = dataStore.data
+            .catch { emit(emptyPreferences()) }
+            .map { it[Keys.GEMINI_API_KEY] ?: Constants.EMPTY_API_KEY }
+
     override suspend fun setLayout(layout: String) {
         dataStore.edit { it[Keys.LAYOUT_KEY] = layout }
     }
