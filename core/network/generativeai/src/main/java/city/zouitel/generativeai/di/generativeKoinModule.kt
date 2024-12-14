@@ -3,8 +3,8 @@ package city.zouitel.generativeai.di
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
-import city.zouitel.datastore.Keys
 import city.zouitel.generativeai.Constants.GEMINI_MODEL
+import city.zouitel.generativeai.Keys
 import city.zouitel.generativeai.datasouceImpl.GeminiDataSourceImpl
 import city.zouitel.generativeai.mapper.GeminiMapper
 import city.zouitel.repository.datasource.GeminiDataSource
