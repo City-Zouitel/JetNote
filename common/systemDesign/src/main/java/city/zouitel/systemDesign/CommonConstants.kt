@@ -2,7 +2,7 @@ package city.zouitel.systemDesign
 
 
 object CommonConstants {
-    const val APP_VERSION = "6.8.2"
+    const val APP_VERSION = "7.0.0"
     const val APP_NAME = "JetNote"
     const val NONE = "unspecified"
 
@@ -41,6 +41,8 @@ object CommonConstants {
 
     const val DARK = "dark-theme"
     const val LIGHT = "light-theme"
+
+    const val EMPTY_API_KEY = ""
 
     const val TITLE_SIZE = 20
     const val DESCRIPTION_SIZE = 16
