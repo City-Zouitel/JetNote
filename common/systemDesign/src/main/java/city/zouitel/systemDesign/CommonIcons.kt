@@ -79,4 +79,7 @@ object CommonIcons {
     val CASSETTE_ICON = R.drawable.cassette_tape__24
     val ADD_DOCUMENT_ICON = R.drawable.add_document_24
     val ERASER_ICON = R.drawable.eraser_24
+    val CLIP_ICON = R.drawable.clip_24
+    val SPARKLES_ICON = R.drawable.sparkles_24
+    val EXCLAMATION_ICON = R.drawable.exclamation_24
 }
