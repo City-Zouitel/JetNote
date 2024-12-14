@@ -13,4 +13,7 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
+
+    //Markdown.
+    implementation (libs.markdown)
 }
