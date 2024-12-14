@@ -4,8 +4,8 @@ kotlin = "2.0.0"
 compileSdk-version = "35"
 minSdk-version = "26"
 targetSdk-version = "35"
-code-version = "682"
-name-version = "6.8.2"
+code-version = "700"
+name-version = "7.0.0"
 compose-version = "1.5.14"
 
 #Android.
@@ -27,7 +27,7 @@ compose-bom = "2024.10.01"
 appcompat = "1.7.0"
 material = "1.12.0"
 #navigation-compose = "2.7.7"
-compose-constraintlayout = "1.1.0"
+compose-constraintlayout = "1.0.1"
 foundation = "1.7.5"
 ui = "1.7.5"
 
@@ -93,6 +93,7 @@ enigma = "1.0.0.8"
 media3 = "1.4.1"
 balloon-compose = "1.6.7"
 cloudy = "0.2.3"
+markdown-version = "0.5.4"
 
 [libraries]
 #Kotlin.
@@ -213,6 +214,7 @@ amplituda = { module = "com.github.lincollincol:amplituda", version.ref = "ampli
 enigma = { module = "gradle.plugin.chrisney:enigma", version.ref = "enigma" }
 balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloon-compose" }
 compose-cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
+markdown = { module = "com.github.jeziellago:compose-markdown", version.ref = "markdown-version" }
 
 [bundles]
 compose = ["ui", "ui-tooling-preview", "material3"]
