@@ -1,53 +1,161 @@
 package city.zouitel.assistant.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import city.zouitel.assistant.OperationType
 import city.zouitel.assistant.model.GeminiQuest
-import city.zouitel.domain.utils.RequestState
+import dev.jeziellago.compose.markdowntext.MarkdownText
 
 class AssistantScreen: Screen {
     @Composable
     override fun Content() {
-        var textState by remember { mutableStateOf("") }
         val viewModel = getScreenModel<AssistantScreenModel>()
-        val response by remember(viewModel, viewModel::getGenerativeResponse).collectAsState(RequestState.Idle)
+        val messages = remember { mutableStateListOf<GeminiQuest>() }
+        val response by remember(viewModel, viewModel::getGenerativeResponse).collectAsState()
+        var suspending = remember { mutableStateOf(false) }
+        var textState by remember { mutableStateOf("") }
+        val haptic = LocalHapticFeedback.current
+        val keyboard = LocalSoftwareKeyboardController.current
 
-        Column {
-            TextField(
-                value = textState,
-                onValueChange = { textState = it }
-            )
+        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
 
-            Button({ viewModel.sendPrompt(GeminiQuest(null, textState)) }) {
-                Text("prompt")
-            }
-
+            val (chatRef, messageRef) = createRefs()
             response.DisplayResult(
-                onLoading = { Text("Loading") },
-                onSuccess = { Text(it) },
-                onError = { Text(it) }
+                onLoading = { suspending.value = true },
+                onSuccess = {
+                    LaunchedEffect(true) {
+                        messages.add(GeminiQuest(null, it, OperationType.RESPONSE))
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    }
+                },
+                onError = {
+                    LaunchedEffect(true) {
+                        messages.add(GeminiQuest(null, it, OperationType.ERROR)) }
+                    }
             )
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .constrainAs(messageRef) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(chatRef.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        height = Dimension.fillToConstraints
+                    }
+            ) {
+                items(messages) { message ->
+                    Box(
+                        contentAlignment = if (message.type == OperationType.REQUEST) Alignment.CenterEnd else Alignment.CenterStart,
+                        modifier = Modifier
+                            .animateContentSize()
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surface)
+                    ) {
+                        MarkdownText(
+                            modifier = Modifier
+                                .padding(12.dp)
+                                .then(
+                                    when (message.type) {
+                                        OperationType.REQUEST -> {
+                                            Modifier
+                                                .clip(
+                                                    RoundedCornerShape(
+                                                        topStart = 48f,
+                                                        topEnd = 0f,
+                                                        bottomStart = 48f,
+                                                        bottomEnd = 48f
+                                                    )
+                                                )
+                                                .background(Color.Gray)
+                                        }
+
+                                        OperationType.RESPONSE -> Modifier
+                                        OperationType.ERROR -> {
+                                            Modifier
+                                                .clip(RoundedCornerShape(48f))
+                                                .background(MaterialTheme.colorScheme.errorContainer)
+                                        }
+                                    }
+                                        .padding(12.dp)
+                                ),
+                            isTextSelectable = true,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            markdown = message.prompt
+                        )
+                    }
+                }
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface)
+                    .constrainAs(chatRef) {
+                        top.linkTo(messageRef.bottom)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+            ) {
+
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Transparent)
+                        .padding(7.dp),
+                    value = textState,
+                    onValueChange = { textState = it },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
+                    keyboardActions = KeyboardActions(onSend = {
+                        viewModel.sendPrompt(GeminiQuest(null, textState))
+                        messages.add(GeminiQuest(null, textState))
+                        textState = ""
+                        keyboard?.hide()
+                    }),
+                    placeholder = { Text("Type Something..") },
+                    shape = RoundedCornerShape(26.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.background,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.onSurface
+                    )
+                )
+            }
         }
-//        Column {
-//            TextField(
-//                value = textState,
-//                onValueChange = { textState = it }
-//            )
-//            Button({ viewModel.sendPrompt(GeminiQuest(null, textState)) }) {
-//                Text("prompt")
-//            }
-//            HorizontalDivider(modifier = Modifier.padding(20.dp))
-//            Text(text = response)
-//        }
     }
 }
