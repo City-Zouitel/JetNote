@@ -16,6 +16,8 @@ interface DataStoreRepo {
 
     val isScreenshotBlock: Flow<Boolean>
 
+    val getGeminiApiKey: Flow<String>
+
     suspend fun setLayout(layout: String)
 
     suspend fun setOrdination(order: String)
