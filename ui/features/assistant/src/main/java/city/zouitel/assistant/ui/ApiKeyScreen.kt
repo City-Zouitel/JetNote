@@ -1,11 +1,11 @@
 package city.zouitel.assistant.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,6 +28,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.systemDesign.CommonBottomSheet
+import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonOptionItem
 import city.zouitel.systemDesign.DataStoreScreenModel
 
@@ -59,7 +61,7 @@ data class ApiKeyScreen(val apiKey: String): Screen {
                 placeholder = {
                     Text(
                         text = apiKey
-                            .replaceRange(3, apiKey.length - 4, "*********")
+                            .replaceRange(3, apiKey.length - 4, "************")
                             .ifEmpty { "Enter your api key" },
                         color = Color.Gray,
                         fontSize = 18.sp
@@ -67,8 +69,9 @@ data class ApiKeyScreen(val apiKey: String): Screen {
                 trailingIcon = {
                     Icon(
                         modifier = Modifier.clickable { uri.openUri(GEMINI_API_KEY_INFO) },
-                        imageVector = Icons.Default.Info,
-                        contentDescription = "Info"
+                        painter = painterResource(CommonIcons.EXCLAMATION_ICON),
+                        contentDescription = "Info",
+                        tint = Color.Gray
                     )
                 },
                 maxLines = 10,
@@ -79,6 +82,8 @@ data class ApiKeyScreen(val apiKey: String): Screen {
                     unfocusedBorderColor = MaterialTheme.colorScheme.onSurface
                 )
             )
+
+            Spacer(Modifier.height(50.dp))
 
             CommonOptionItem(
                 onConfirm = {
