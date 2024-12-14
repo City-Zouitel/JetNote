@@ -60,6 +60,13 @@ class DataStoreScreenModel(
             false
         )
 
+    val getGeminiApiKey: StateFlow<String> = dataStoreRepo.getGeminiApiKey
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(),
+            CommonConstants.EMPTY_API_KEY
+        )
+
     fun setMute(isMute: Boolean) {
         screenModelScope.launch(Dispatchers.IO) {
             dataStoreRepo.setMute(isMute)
