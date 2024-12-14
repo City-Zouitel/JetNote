@@ -26,7 +26,9 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import city.zouitel.assistant.ui.ApiKeyScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
@@ -45,6 +47,7 @@ import city.zouitel.systemDesign.CommonConstants.REMINDING_ORDER
 import city.zouitel.systemDesign.CommonTopAppBar
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.ui.TagScreenModel
+import com.skydoves.cloudy.cloudy
 
 class SettingsScreen: Screen {
 
@@ -74,6 +77,7 @@ class SettingsScreen: Screen {
 
         val navigator = LocalNavigator.currentOrThrow
         val context = LocalContext.current
+        val navBottom = LocalBottomSheetNavigator.current
 
         val themeState by remember(datastoreModel, datastoreModel::getTheme).collectAsState()
         val isMute by remember(datastoreModel, datastoreModel::isMute).collectAsState()
@@ -81,6 +85,7 @@ class SettingsScreen: Screen {
         val orderState = remember(datastoreModel, datastoreModel::getOrdination).collectAsState()
         val screenshotState by remember(datastoreModel, datastoreModel::getScreenshotBlock).collectAsState()
         val appLockState by remember(datastoreModel, datastoreModel::isLockMode).collectAsState()
+        val apiKeyState by remember(datastoreModel, datastoreModel::getGeminiApiKey).collectAsState()
 
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
@@ -101,6 +106,7 @@ class SettingsScreen: Screen {
                 )
             },
             modifier = Modifier.navigationBarsPadding()
+                .cloudy(enabled = navBottom.isVisible)
         ) {
             androidx.compose.material.Scaffold(
                 scaffoldState = scaffoldState,
@@ -211,6 +217,20 @@ class SettingsScreen: Screen {
                                 datastoreModel.setLockMode(it)
                             }
                         )
+                    }
+
+                    item { HorizontalDivider(modifier = Modifier.padding(10.dp)) }
+
+                    item {
+                        PreferenceItem(
+                            title = "AI Generative",
+                            description = "Generative AI is a type of artificial intelligence that can create new content and ideas." +
+                                    " It learns patterns and structures from existing data and then uses this knowledge to generate new," +
+                                    " original outputs.",
+                            checked = null
+                        ) {
+                            navBottom.show(ApiKeyScreen(apiKeyState))
+                        }
                     }
 
                     item { HorizontalDivider(modifier = Modifier.padding(10.dp)) }
