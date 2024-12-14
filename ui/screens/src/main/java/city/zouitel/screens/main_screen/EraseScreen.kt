@@ -59,7 +59,7 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
         val observerRemovedNotes = remember(mainModel, mainModel::allTrashedNotes).collectAsState()
         val scope = rememberCoroutineScope()
 
-        Navigator(CommonBottomSheet({
+        Navigator(CommonBottomSheet {
 
             LazyColumn {
                 item {
@@ -94,7 +94,14 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
                                     entity.linkEntities.forEach { link ->
                                         linkModel.deleteLink(link)
 //                                        noteAndLinkModel.deleteNoteAndLink(NoteAndLink(noteUid = entity.dataEntity.uid, linkId = link.uid))
-                                        noteAndLinkModel.sendUiEvent(UiEvent.Delete(NoteAndLink(entity.dataEntity.uid, link.id)))
+                                        noteAndLinkModel.sendUiEvent(
+                                            UiEvent.Delete(
+                                                NoteAndLink(
+                                                    entity.dataEntity.uid,
+                                                    link.id
+                                                )
+                                            )
+                                        )
                                     }
                                     entity.taskEntities.forEach {
                                         // TODO: need finishing.
@@ -128,6 +135,6 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
                     )
                 }
             }
-        }))
+        })
     }
 }
