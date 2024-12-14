@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 sealed class RequestState<out T> {
     data object Idle : RequestState<Nothing>()
     data object Loading : RequestState<Nothing>()
-    data class Success(val data: String) : RequestState<String>()
+    data class Success <T> (val data: T) : RequestState<T>()
     data class Error(val message: String) : RequestState<Nothing>()
 
     fun isLoading() = this is Loading
@@ -22,7 +22,7 @@ sealed class RequestState<out T> {
      * @throws ClassCastException If the current state is not [Success]
      *  */
     private fun getSuccessData() = (this as Success).data
-    fun getSuccessDataOrNull(): String? {
+    fun getSuccessDataOrNull(): T? {
         return try {
             (this as Success).data
         } catch (e: Exception) {
@@ -47,7 +47,7 @@ sealed class RequestState<out T> {
     fun DisplayResult(
         onIdle: (@Composable () -> Unit)? = null,
         onLoading: @Composable () -> Unit,
-        onSuccess: @Composable (String) -> Unit,
+        onSuccess: @Composable (T) -> Unit,
         onError: @Composable (String) -> Unit,
     ) {
         AnimatedContent(
