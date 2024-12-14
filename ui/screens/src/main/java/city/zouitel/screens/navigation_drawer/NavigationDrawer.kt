@@ -36,11 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import city.zouitel.assistant.ui.AssistantScreen
 import city.zouitel.logic.sharApp
 import city.zouitel.screens.about_screen.AboutScreen
 import city.zouitel.screens.main_screen.MainScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NoteScreens.ABOUT_SCREEN
+import city.zouitel.screens.navigation_drawer.NoteScreens.ASSISTANT_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.MAIN_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.REMOVED_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.SETTINGS_SCREEN
@@ -109,6 +111,21 @@ fun NavigationDrawer(
                         scope.launch {
                             currentScreen.value = MAIN_SCREEN
                             navigator.push(MainScreen(isHome = true))
+                            drawerState.close()
+                        }
+                    }
+                )
+            }
+
+            item {
+                NavigationDrawerItem(
+                    label = { Text(text = ASSISTANT_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
+                    icon = { Icon(painterResource(HOME_ICON), null) },
+                    selected = currentScreen.value == ASSISTANT_SCREEN,
+                    onClick = {
+                        scope.launch {
+                            currentScreen.value = ASSISTANT_SCREEN
+                            navigator.push(AssistantScreen())
                             drawerState.close()
                         }
                     }
