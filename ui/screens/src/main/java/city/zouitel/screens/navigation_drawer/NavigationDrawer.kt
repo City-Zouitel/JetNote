@@ -61,6 +61,7 @@ import city.zouitel.systemDesign.CommonIcons.INTERROGATION_ICON
 import city.zouitel.systemDesign.CommonIcons.REMOVE_ICON
 import city.zouitel.systemDesign.CommonIcons.SETTINGS_ICON
 import city.zouitel.systemDesign.CommonIcons.SHARE_ICON
+import city.zouitel.systemDesign.CommonIcons.SPARKLES_ICON
 import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.ui.TagScreenModel
@@ -120,7 +121,7 @@ fun NavigationDrawer(
             item {
                 NavigationDrawerItem(
                     label = { Text(text = ASSISTANT_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
-                    icon = { Icon(painterResource(HOME_ICON), null) },
+                    icon = { Icon(painterResource(SPARKLES_ICON), null) },
                     selected = currentScreen.value == ASSISTANT_SCREEN,
                     onClick = {
                         scope.launch {
