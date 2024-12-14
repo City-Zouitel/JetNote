@@ -7,6 +7,8 @@ internal object Constants {
     const val DARK = "dark-theme"
     const val LIGHT = "light-theme"
 
+    const val EMPTY_API_KEY = ""
+
     const val LAYOUT = "LAYOUT_PREFERENCES_KEY"
     const val ORDINATION = "ORDINATION_PREFERENCES_KEY"
     const val MUTE = "MUTE_PREFERENCES_KEY"
