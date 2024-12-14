@@ -157,7 +157,7 @@ data class WorkplaceScreen(
         val keyboardManager = LocalFocusManager.current
         val navBottomSheet = LocalBottomSheetNavigator.current
 
-        val focusRequester by lazy { FocusRequester() }
+        val focus by lazy { FocusRequester() }
 
         val titleState = rememberTextFieldState(title ?: "")
         val descriptionState = rememberTextFieldState(description ?: "")
@@ -211,7 +211,7 @@ data class WorkplaceScreen(
 
         LaunchedEffect(Unit) {
             kotlin.runCatching {
-                if (isNew) focusRequester.requestFocus()
+                if (isNew) focus.requestFocus()
             }
         }
 
@@ -255,7 +255,7 @@ data class WorkplaceScreen(
                         receiver = mediaInsert(mediaModel, noteAndMediaModel),
                         modifier = Modifier
                             .height(50.dp)
-                            .focusRequester(focusRequester)
+                            .focusRequester(focus)
                             .onFocusEvent {
                                 workspaceModel.updateTitleFieldFocused(it.isFocused)
                             },
