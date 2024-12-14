@@ -18,10 +18,10 @@ class AssistantScreenModel(
 ): ScreenModel {
 
     private val _getGenerativeResponse: MutableStateFlow<RequestState<String>>
-        get() = MutableStateFlow(RequestState.Idle)
+        = MutableStateFlow(RequestState.Idle)
 
     val getGenerativeResponse: StateFlow<RequestState<String>>
-        get() = _getGenerativeResponse.asLogicFlow(RequestState.Idle)
+        = _getGenerativeResponse.asLogicFlow(RequestState.Idle)
 
     fun sendPrompt(geminiQuest: GeminiQuest) {
         screenModelScope.launch(Dispatchers.IO) {
