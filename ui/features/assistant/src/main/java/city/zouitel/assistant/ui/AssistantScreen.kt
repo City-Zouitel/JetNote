@@ -26,6 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -44,12 +46,16 @@ class AssistantScreen: Screen {
     @Composable
     override fun Content() {
         val viewModel = getScreenModel<AssistantScreenModel>()
+
+        val haptic = LocalHapticFeedback.current
+        val keyboard = LocalSoftwareKeyboardController.current
         val messages = remember { mutableStateListOf<GeminiQuest>() }
         val response by remember(viewModel, viewModel::getGenerativeResponse).collectAsState()
         var suspending = remember { mutableStateOf(false) }
         var textState by remember { mutableStateOf("") }
-        val haptic = LocalHapticFeedback.current
-        val keyboard = LocalSoftwareKeyboardController.current
+        val focus by lazy { FocusRequester() }
+
+        LaunchedEffect(true) { focus.requestFocus() }
 
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
 
@@ -137,6 +143,7 @@ class AssistantScreen: Screen {
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .focusRequester(focus)
                         .background(Color.Transparent)
                         .padding(7.dp),
                     value = textState,
