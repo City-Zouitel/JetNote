@@ -3,9 +3,8 @@ package city.zouitel.assistant.ui
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.assistant.mapper.AssistantMapper
-import city.zouitel.assistant.model.GeminiQuest
-import city.zouitel.domain.usecase.GeminiUseCase
-import city.zouitel.domain.utils.RequestState
+import city.zouitel.assistant.model.Message
+import city.zouitel.domain.usecase.MessageUseCase
 import city.zouitel.logic.asLogicFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,21 +12,28 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class AssistantScreenModel(
-    private val sendGeminiPrompt: GeminiUseCase.SendGeminiPrompt,
+    private val observeAll: MessageUseCase.ObserveAllMessages,
+    private val insert: MessageUseCase.InsertMessage,
     private val mapper: AssistantMapper
 ): ScreenModel {
 
-    private val _getGenerativeResponse: MutableStateFlow<RequestState<String>>
-        = MutableStateFlow(RequestState.Idle)
+    private val _observeAllMessages: MutableStateFlow<List<Message>> =
+        MutableStateFlow(emptyList())
 
-    val getGenerativeResponse: StateFlow<RequestState<String>>
-        = _getGenerativeResponse.asLogicFlow(RequestState.Idle)
+    val observeAllMessages: StateFlow<List<Message>> =
+        _observeAllMessages.asLogicFlow(emptyList())
 
-    fun sendPrompt(geminiQuest: GeminiQuest) {
+    init {
         screenModelScope.launch(Dispatchers.IO) {
-            sendGeminiPrompt(mapper.toDomain(geminiQuest)).collect { response ->
-                _getGenerativeResponse.value = response
+            observeAll().collect { messages ->
+                _observeAllMessages.value = mapper.fromDomain(messages)
             }
+        }
+    }
+
+    fun insertMessage(message: Message) {
+        screenModelScope.launch(Dispatchers.IO) {
+            insert(mapper.toDomain(message))
         }
     }
 }
