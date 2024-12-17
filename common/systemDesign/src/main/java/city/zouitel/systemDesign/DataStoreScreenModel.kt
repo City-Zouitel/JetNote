@@ -60,7 +60,7 @@ class DataStoreScreenModel(
             false
         )
 
-    val getGeminiApiKey: StateFlow<String> = dataStoreRepo.getGeminiApiKey
+    val getGeminiApiKey: StateFlow<String?> = dataStoreRepo.getGeminiApiKey
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(),
