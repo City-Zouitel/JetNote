@@ -10,6 +10,10 @@ android {
 }
 
 dependencies {
+    //Modules.
+    implementation(projects.domain)
+    implementation(projects.common.logic)
+
     //AndroidX.
     implementation(libs.constraintlayout)
 }
