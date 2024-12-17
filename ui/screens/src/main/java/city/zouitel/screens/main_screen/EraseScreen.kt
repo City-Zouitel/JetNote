@@ -93,7 +93,7 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
                                 observerRemovedNotes.value.forEach { entity ->
                                     entity.linkEntities.forEach { link ->
                                         linkModel.deleteLink(link)
-//                                        noteAndLinkModel.deleteNoteAndLink(NoteAndLink(noteUid = entity.dataEntity.uid, linkId = link.uid))
+//                                        noteAndLinkModel.deleteNoteAndLink(NoteAndLink(noteUid = entity.data.uid, linkId = link.uid))
                                         noteAndLinkModel.sendUiEvent(
                                             UiEvent.Delete(
                                                 NoteAndLink(
