@@ -1,18 +1,21 @@
 package city.zouitel.repository.repositoryImpl
 
-import city.zouitel.domain.model.GeminiQuest
-import city.zouitel.domain.repository.GeminiRepository
-import city.zouitel.domain.utils.RequestState
-import city.zouitel.repository.datasource.GeminiDataSource
-import city.zouitel.repository.mapper.GeminiMapper
+import city.zouitel.domain.repository.MessageRepository
+import city.zouitel.repository.datasource.MessageDataSource
+import city.zouitel.repository.mapper.MessageMapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import city.zouitel.domain.model.Message as OutMessage
 
 class GeminiRepositoryImpl(
-    private val dataSource: GeminiDataSource,
-    private val mapper: GeminiMapper
-): GeminiRepository {
+    private val dataSource: MessageDataSource,
+    private val mapper: MessageMapper
+): MessageRepository {
 
-    override suspend fun sendGeminiPrompt(geminiQuest: GeminiQuest): Flow<RequestState<String>> {
-        return dataSource.sendGeminiPrompt(mapper.fromDomain(geminiQuest))
+    override val observeAll: Flow<List<OutMessage>>
+        get() = dataSource.observeAllMessages.map { mapper.toDomain(it) }
+
+    override suspend fun insert(message: OutMessage) {
+        dataSource.insertMessage(mapper.fromDomain(message))
     }
 }
