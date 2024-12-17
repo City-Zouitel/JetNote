@@ -16,7 +16,4 @@ interface NoteRepository {
     val getAllRemovedNotes: Flow<List<OutNote>>
 
     val allNotesByPriority: Flow<List<OutNote>>
-
-    val getAllRemindingNotes: Flow<List<OutNote>>
-
 }
