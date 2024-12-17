@@ -28,7 +28,4 @@ class NoteRepositoryImpl(
 
     override val allNotesByPriority: Flow<List<OutNote>>
         get() = dataSource.allNotesByPriority.map{ notes -> mapper.toDomain(notes) }
-
-    override val getAllRemindingNotes: Flow<List<OutNote>>
-        get() = dataSource.getAllRemindingNotes.map { notes -> mapper.toDomain(notes) }
 }
