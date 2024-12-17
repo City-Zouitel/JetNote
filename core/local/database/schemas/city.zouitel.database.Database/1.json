@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c677044bcf526d0fd98c4d8bf0ca35e1",
+    "identityHash": "b3e592510aebd6f3271e5a2e86695391",
     "entities": [
       {
         "tableName": "notes_table",
@@ -406,7 +406,7 @@
       },
       {
         "tableName": "reminders_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER NOT NULL DEFAULT 0, `universally_unique_identifier` TEXT NOT NULL DEFAULT '', `Times` INTEGER NOT NULL DEFAULT 0, `Passed` INTEGER NOT NULL DEFAULT false, PRIMARY KEY(`identifier`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER NOT NULL DEFAULT 0, `universally_unique_identifier` TEXT NOT NULL DEFAULT '', `exact_time_to_remind` INTEGER NOT NULL DEFAULT 0, `is_reminder_passed` INTEGER NOT NULL DEFAULT false, PRIMARY KEY(`identifier`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -424,14 +424,14 @@
           },
           {
             "fieldPath": "atTime",
-            "columnName": "Times",
+            "columnName": "exact_time_to_remind",
             "affinity": "INTEGER",
             "notNull": true,
             "defaultValue": "0"
           },
           {
             "fieldPath": "isPassed",
-            "columnName": "Passed",
+            "columnName": "is_reminder_passed",
             "affinity": "INTEGER",
             "notNull": true,
             "defaultValue": "false"
@@ -450,7 +450,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c677044bcf526d0fd98c4d8bf0ca35e1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b3e592510aebd6f3271e5a2e86695391')"
     ]
   }
 }
