@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "city.zouitel.repository"
+    namespace = "city.zouitel.localRepo"
 }
 
 dependencies {
