@@ -1,8 +1,7 @@
 package city.zouitel.note.mapper
 
-import city.zouitel.tasks.mapper.base.Mapper
-import city.zouitel.note.model.Data as InData
 import city.zouitel.domain.model.Data as OutData
+import city.zouitel.note.model.Data as InData
 
 class DataMapper {
 
@@ -14,8 +13,7 @@ class DataMapper {
         color = data.color,
         textColor = data.textColor,
         date = data.date,
-        removed = data.removed,
-        reminding = data.reminding
+        removed = data.removed
     )
 
     fun fromDomain(data: OutData) = InData(
@@ -26,7 +24,6 @@ class DataMapper {
         color = data.color,
         textColor = data.textColor,
         date = data.date,
-        removed = data.removed,
-        reminding = data.reminding
+        removed = data.removed
     )
 }
