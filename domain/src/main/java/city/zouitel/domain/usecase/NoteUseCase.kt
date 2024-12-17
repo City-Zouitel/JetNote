@@ -39,10 +39,4 @@ sealed class NoteUseCase {
     ): NoteUseCase() {
         operator fun invoke() = repository.allNotesByPriority
     }
-
-    class GetAllRemindingNotes(
-        private val repository: NoteRepository
-    ): NoteUseCase() {
-        operator fun invoke() = repository.getAllRemindingNotes
-    }
 }
