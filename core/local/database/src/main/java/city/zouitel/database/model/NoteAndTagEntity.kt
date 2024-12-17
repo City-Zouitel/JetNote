@@ -1,6 +1,5 @@
 package city.zouitel.database.model
 
-import androidx.annotation.Keep
 import androidx.room.Entity
 
 @Entity(
