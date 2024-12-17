@@ -8,7 +8,6 @@ internal object Constants {
     const val TASKS = "tasks_table"
     const val AUDIOS = "audios_table"
     const val MEDIA = "media_table"
-    const val REMINDERS = "reminders_table"
 
     const val DATABASE = "jet_note_database"
 
@@ -32,6 +31,8 @@ internal object Constants {
     const val IMG_LINK = "imageLink"
     const val LABEL = "label"
     const val DONE = "is_task_done"
+    const val TIME = "exact_time_to_remind"
+    const val PASSED = "is_reminder_passed"
 
     const val JPEG = "jpeg"
 
