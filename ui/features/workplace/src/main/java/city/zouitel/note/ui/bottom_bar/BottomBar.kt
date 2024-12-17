@@ -63,7 +63,6 @@ internal fun BottomBar(
     imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
     workspaceModel: WorkplaceScreenModel,
     priorityState: MutableState<String>,
-    reminderState: MutableState<Long>
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
@@ -98,14 +97,15 @@ internal fun BottomBar(
                                 }
                             ) {
                                 sound.performSoundEffect(context, FOCUS_NAVIGATION, isMute.value)
-                                navBottomSheet.show(OptionsScreen(
-                                    id = id,
-                                    titleState = titleState,
-                                    descriptionState = descriptionState,
-                                    imageLaunch = imageLaunch,
-                                    priorityState = priorityState,
-                                    reminderState = reminderState
-                                ))
+                                navBottomSheet.show(
+                                    OptionsScreen(
+                                        id = id,
+                                        titleState = titleState,
+                                        descriptionState = descriptionState,
+                                        imageLaunch = imageLaunch,
+                                        priorityState = priorityState,
+                                    )
+                                )
                             }
                     )
                 }
@@ -132,7 +132,6 @@ internal fun BottomBar(
                                         title = titleState?.text.toString(),
                                         description = descriptionState?.text.toString(),
                                         priority = priorityState.value,
-                                        reminding = reminderState.value,
                                         date = dateState.value.toString(),
                                         color = uiState.backgroundColor,
                                         textColor = uiState.textColor
@@ -147,7 +146,6 @@ internal fun BottomBar(
                                         title = titleState?.text.toString(),
                                         description = descriptionState?.text.toString(),
                                         priority = priorityState.value,
-                                        reminding = reminderState.value,
                                         date = dateState.value.toString(),
                                         removed = 0,
                                         color = uiState.backgroundColor,
