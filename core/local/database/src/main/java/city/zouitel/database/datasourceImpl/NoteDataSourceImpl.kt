@@ -29,7 +29,4 @@ class NoteDataSourceImpl(
 
     override val allNotesByPriority: Flow<List<OutNote>>
         get() = dao.getAllNotesByPriority().map { notes -> mapper.toRepo(notes) }
-
-    override val getAllRemindingNotes: Flow<List<OutNote>>
-        get() = dao.getAllRemindingNotes().map { notes -> mapper.toRepo(notes) }
 }
