@@ -1,10 +1,10 @@
 package city.zouitel.domain.model
 
-import android.graphics.Bitmap
 import androidx.annotation.Keep
 
 @Keep
-data class GeminiQuest(
-    val image: Bitmap? = null,
+data class Message(
+    val id: Long = 0L,
+    val isRequest: Boolean = false,
     val prompt: String = "",
 )
