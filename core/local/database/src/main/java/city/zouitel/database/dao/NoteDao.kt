@@ -38,8 +38,4 @@ interface NoteDao {
     @Transaction
     @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 1")
     fun getAllTrashedNotes(): Flow<List<NoteEntity>>
-
-    @Transaction
-    @Query("SELECT * FROM NOTES_TABLE WHERE REMOVED = 0 ORDER BY REMINDING DESC")
-    fun getAllRemindingNotes(): Flow<List<NoteEntity>>
 }
