@@ -16,7 +16,4 @@ interface NoteDataSource {
     val getAllTrashedNotes: Flow<List<Note>>
 
     val allNotesByPriority: Flow<List<Note>>
-
-    val getAllRemindingNotes: Flow<List<Note>>
-
 }
