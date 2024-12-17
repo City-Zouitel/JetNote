@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -29,7 +28,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -38,8 +36,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.assistant.OperationType
-import city.zouitel.assistant.model.GeminiQuest
+import city.zouitel.assistant.model.Message
 import dev.jeziellago.compose.markdowntext.MarkdownText
 
 class AssistantScreen: Screen {
@@ -49,9 +46,9 @@ class AssistantScreen: Screen {
 
         val haptic = LocalHapticFeedback.current
         val keyboard = LocalSoftwareKeyboardController.current
-        val messages = remember { mutableStateListOf<GeminiQuest>() }
-        val response by remember(viewModel, viewModel::getGenerativeResponse).collectAsState()
-        var suspending = remember { mutableStateOf(false) }
+//        val messages = remember { mutableStateListOf<Message>() }
+        val messages by remember(viewModel, viewModel::observeAllMessages).collectAsState()
+//        var suspending = remember { mutableStateOf(false) }
         var textState by remember { mutableStateOf("") }
         val focus by lazy { FocusRequester() }
 
@@ -60,19 +57,6 @@ class AssistantScreen: Screen {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
 
             val (chatRef, messageRef) = createRefs()
-            response.DisplayResult(
-                onLoading = { suspending.value = true },
-                onSuccess = {
-                    LaunchedEffect(true) {
-                        messages.add(GeminiQuest(null, it, OperationType.RESPONSE))
-                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    }
-                },
-                onError = {
-                    LaunchedEffect(true) {
-                        messages.add(GeminiQuest(null, it, OperationType.ERROR)) }
-                    }
-            )
 
             LazyColumn(
                 modifier = Modifier
@@ -88,7 +72,7 @@ class AssistantScreen: Screen {
             ) {
                 items(messages) { message ->
                     Box(
-                        contentAlignment = if (message.type == OperationType.REQUEST) Alignment.CenterEnd else Alignment.CenterStart,
+                        contentAlignment = if (message.isRequest) Alignment.CenterEnd else Alignment.CenterStart,
                         modifier = Modifier
                             .animateContentSize()
                             .fillMaxWidth()
@@ -98,8 +82,8 @@ class AssistantScreen: Screen {
                             modifier = Modifier
                                 .padding(12.dp)
                                 .then(
-                                    when (message.type) {
-                                        OperationType.REQUEST -> {
+                                    when {
+                                        message.isRequest -> {
                                             Modifier
                                                 .clip(
                                                     RoundedCornerShape(
@@ -112,8 +96,8 @@ class AssistantScreen: Screen {
                                                 .background(Color.Gray)
                                         }
 
-                                        OperationType.RESPONSE -> Modifier
-                                        OperationType.ERROR -> {
+                                        !message.isRequest -> Modifier
+                                        else -> {
                                             Modifier
                                                 .clip(RoundedCornerShape(48f))
                                                 .background(MaterialTheme.colorScheme.errorContainer)
@@ -150,8 +134,7 @@ class AssistantScreen: Screen {
                     onValueChange = { textState = it },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                     keyboardActions = KeyboardActions(onSend = {
-                        viewModel.sendPrompt(GeminiQuest(null, textState))
-                        messages.add(GeminiQuest(null, textState))
+                        viewModel.insertMessage(Message(isRequest = true, prompt = textState))
                         textState = ""
                         keyboard?.hide()
                     }),
