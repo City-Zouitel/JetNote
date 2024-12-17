@@ -1,6 +1,5 @@
 package city.zouitel.database.mapper
 
-import city.zouitel.repository.model.Data
 import city.zouitel.database.model.DataEntity as InData
 import city.zouitel.repository.model.Data as OutData
 
@@ -14,8 +13,7 @@ class DataMapper {
         color = data.color,
         textColor = data.textColor,
         date = data.date,
-        removed = data.removed,
-        reminding = data.reminding
+        removed = data.removed
     )
 
     fun fromRepo(data: OutData) = InData(
@@ -26,7 +24,6 @@ class DataMapper {
         color = data.color,
         textColor = data.textColor,
         date = data.date,
-        removed = data.removed,
-        reminding = data.reminding
+        removed = data.removed
     )
 }
