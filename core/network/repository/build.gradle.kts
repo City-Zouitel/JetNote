@@ -1,9 +1,10 @@
 plugins {
     alias(libs.plugins.cityzouitel.androidLibrary)
+    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "city.zouitel.quicknote"
+    namespace = "city.zouitel.networkRepo"
 }
 
 dependencies {
