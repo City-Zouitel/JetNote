@@ -23,7 +23,6 @@ class MainScreenModel(
     private val getAllByName: NoteUseCase.GetAllNotesByName,
     private val getAllRemoved: NoteUseCase.GetAllRemovedNotes,
     private val getAllByPriority: NoteUseCase.GetAllNotesByPriority,
-    private val getAllReminding: NoteUseCase.GetAllRemindingNotes,
     private val mapper: NoteMapper
 ): ScreenModel {
 
@@ -37,7 +36,7 @@ class MainScreenModel(
             MainScreenUiState()
         )
 
-    // for observing the dataEntity changes.
+    // for observing the data changes.
     private val _allNotesById = MutableStateFlow<List<InNote>>(emptyList())
     val allNotesById: StateFlow<List<InNote>> = _allNotesById.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
 
@@ -78,9 +77,6 @@ class MainScreenModel(
             }
             launch(Dispatchers.IO) {
                 getAllByPriority.invoke().collect { notes -> _allNotesByPriority.value = mapper.fromDomain(notes) }
-            }
-            launch(Dispatchers.IO) {
-                getAllReminding.invoke().collect { notes -> _allRemindingNotes.value = mapper.fromDomain(notes) }
             }
         }
     }
