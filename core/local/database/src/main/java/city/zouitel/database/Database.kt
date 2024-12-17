@@ -25,12 +25,12 @@ import city.zouitel.database.model.NoteAndLinkEntity
 import city.zouitel.database.model.NoteAndMediaEntity
 import city.zouitel.database.model.NoteAndTagEntity
 import city.zouitel.database.model.NoteAndTaskEntity
-import city.zouitel.database.model.ReminderEntity
+import city.zouitel.database.model.Reminder
 import city.zouitel.database.model.TagEntity
 import city.zouitel.database.model.TaskEntity
 
 @Database(
-    version = 1,
+    version = 2,
     autoMigrations = [],
     entities = [
         DataEntity::class,
@@ -44,11 +44,11 @@ import city.zouitel.database.model.TaskEntity
         NoteAndAudioEntity::class,
         MediaEntity::class,
         NoteAndMediaEntity::class,
-        ReminderEntity::class
+        Reminder::class
     ],
     exportSchema = true
 )
-abstract class Database:RoomDatabase() {
+abstract class Database: RoomDatabase() {
     abstract fun getNoteDao(): DataDao
     abstract fun getLabelDao(): TagDao
     abstract fun getNoteAndLabelDao(): NoteAndTagDao
