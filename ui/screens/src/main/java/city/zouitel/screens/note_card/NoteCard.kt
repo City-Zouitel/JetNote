@@ -221,8 +221,7 @@ private fun Card(
                             description = note.description,
                             backgroundColor = note.color,
                             textColor = note.textColor,
-                            priority = note.priority,
-                            reminder = note.reminding
+                            priority = note.priority
                         )
                     )
                 } else if (!isHomeScreen && !uiState.isSelection) {
