@@ -67,6 +67,6 @@ class NotificationReceiver: BroadcastReceiver(), KoinComponent {
             notifyBuilder
         )
 
-        alarmModel.sendUiEvent(UiEvent.Update(intent.getIntExtra(ID, 0).toLong()))
+        alarmModel.sendUiEvent(UiEvent.Update(intent.getIntExtra(ID, 0)))
     }
 }
