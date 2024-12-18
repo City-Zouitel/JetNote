@@ -52,7 +52,7 @@ data class ReminderScreen(
         ReminderSheet(
             dataStoreModel = getScreenModel(),
             reminderModel = getScreenModel(),
-            alarmManagerScreenModel = getScreenModel()
+            alarmManagerModel = getScreenModel()
         )
     }
 
@@ -61,11 +61,14 @@ data class ReminderScreen(
     private fun ReminderSheet(
         dataStoreModel: DataStoreScreenModel,
         reminderModel: ReminderScreenModel,
-        alarmManagerScreenModel: AlarmManagerScreenModel
+        alarmManagerModel: AlarmManagerScreenModel
     ) {
         val context = LocalContext.current
         val navBottomSheet = LocalBottomSheetNavigator.current
 
+        /**
+         * This id always should be an integer because of *IntentPadding.getBroadcast()*,
+         * that support only integer parameter.*/
         val id = Random.nextInt()
 
         val calendar = Calendar.getInstance()
@@ -150,7 +153,7 @@ data class ReminderScreen(
                             sound.performSoundEffect(context, KEY_STANDARD, isMute)
 
                             runCatching {
-                                alarmManagerScreenModel.initializeAlarm(
+                                alarmManagerModel.initializeAlarm(
                                     uid = uid,
                                     title = title ?: "",
                                     message = message ?: "",
@@ -159,10 +162,8 @@ data class ReminderScreen(
                                 )
 
                                 reminderModel.sendUiEvent(
-                                    UiEvent.Insert(Reminder(id = id.toLong(), uid = uid, atTime = dateTime))
+                                    UiEvent.Insert(Reminder(id = id, uid = uid, atTime = dateTime))
                                 )
-
-                                println(id)
                             }
 
                             navBottomSheet.hide()
