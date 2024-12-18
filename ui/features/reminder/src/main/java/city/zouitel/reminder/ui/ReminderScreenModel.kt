@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 class ReminderScreenModel(
     private val observeById: ReminderUseCase.ObserveById,
     private val insert: ReminderUseCase.Insert,
-    private val update: ReminderUseCase.Update,
     private val delete: ReminderUseCase.DeleteReminder,
     private val deleteAll: ReminderUseCase.DeleteAll,
     private val mapper: ReminderMapper
@@ -27,13 +26,14 @@ class ReminderScreenModel(
 
     fun observeRemindersByUid(uid: String) {
         performUiEvent {
-            observeById(uid).collect { _observeAllById.value = mapper.fromDomain(it) }
+            observeById(uid).collect {
+                _observeAllById.value = mapper.fromDomain(it)
+            }
         }
     }
 
     override fun sendUiEvent(event: UiEvent<Reminder>) {
         when(event) {
-            is UiEvent.Update -> performUiEvent { update(mapper.toDomain(event.data)) }
             is UiEvent.Delete -> performUiEvent { delete(event.data.id) }
             is UiEvent.Insert -> performUiEvent { insert(mapper.toDomain(event.data)) }
             is UiEvent.DeleteAll -> performUiEvent { deleteAll() }
