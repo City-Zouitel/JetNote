@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 
 @Keep
 data class Reminder(
-    val id: Long = 0L,
+    val id: Int = 0,
     val uid: String = "",
     val atTime: Long = 0L,
     val isPassed: Boolean = false
