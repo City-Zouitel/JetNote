@@ -176,7 +176,7 @@ internal fun HomeSelectionTopAppBar(
                                     })
                         }
 
-                        // copy the dataEntity.
+                        // copy the data.
                         CommonPopupTip(message = "Copy WidgetNote") {
                             Icon(painter = painterResource(id = CommonIcons.COPY_ICON),
                                 contentDescription = null,
