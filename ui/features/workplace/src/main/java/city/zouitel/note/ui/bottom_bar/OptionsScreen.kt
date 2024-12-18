@@ -51,7 +51,6 @@ import city.zouitel.systemDesign.CommonBottomSheet
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonIcons.ADD_IMAGE_ICON
 import city.zouitel.systemDesign.CommonIcons.BELL_ICON
-import city.zouitel.systemDesign.CommonIcons.BELL_RING_ICON_24
 import city.zouitel.systemDesign.CommonIcons.CASSETTE_ICON
 import city.zouitel.systemDesign.CommonIcons.LIST_CHECK_ICON
 import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
@@ -70,7 +69,6 @@ data class OptionsScreen(
     val titleState: TextFieldState?,
     val descriptionState: TextFieldState?,
     val priorityState: MutableState<String>,
-    val reminderState: MutableState<Long>,
     val imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
 ): Screen {
     @Composable
@@ -255,7 +253,7 @@ data class OptionsScreen(
                 item {
                     CommonOptionItem(
                         name = "Reminder",
-                        icon = if (reminderState.value != 0L) BELL_RING_ICON_24 else BELL_ICON
+                        icon = BELL_ICON
                     ) {
                         sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
                         scope.launch {
