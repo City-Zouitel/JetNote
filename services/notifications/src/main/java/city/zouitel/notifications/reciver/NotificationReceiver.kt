@@ -10,14 +10,19 @@ import android.os.Build
 import androidx.annotation.CallSuper
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import city.zouitel.logic.events.UiEvent
 import city.zouitel.notifications.Constants
 import city.zouitel.notifications.Constants.ID
 import city.zouitel.notifications.Constants.MESSAGE
 import city.zouitel.notifications.Constants.TITLE
 import city.zouitel.notifications.Constants.UID
+import city.zouitel.notifications.viewmodel.AlarmManagerScreenModel
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class NotificationReceiver: BroadcastReceiver(), KoinComponent {
+
+    private val alarmModel by inject<AlarmManagerScreenModel>()
 
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -61,5 +66,7 @@ class NotificationReceiver: BroadcastReceiver(), KoinComponent {
             intent.getIntExtra(ID, 0),
             notifyBuilder
         )
+
+        alarmModel.sendUiEvent(UiEvent.Update(intent.getIntExtra(ID, 0).toLong()))
     }
 }
