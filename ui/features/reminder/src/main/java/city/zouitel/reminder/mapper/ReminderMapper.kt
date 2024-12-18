@@ -13,7 +13,7 @@ class ReminderMapper {
         isPassed = reminder.isPassed
     )
 
-    fun fromDomain(reminder: OutReminder) = InReminder(
+    private fun fromDomain(reminder: OutReminder) = InReminder(
         id = reminder.id,
         uid = reminder.uid,
         atTime = reminder.atTime,
