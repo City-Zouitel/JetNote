@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class AlarmManagerScreenModel(
     private val context: Context,
     private val updateReminder: ReminderUseCase.Update
-): ScreenModel, UiEventHandler<Long> {
+): ScreenModel, UiEventHandler<Int> {
 
     private val intent = Intent(context , NotificationReceiver::class.java)
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -68,7 +68,7 @@ class AlarmManagerScreenModel(
         )
     }
 
-    override fun sendUiEvent(event: UiEvent<Long>) {
+    override fun sendUiEvent(event: UiEvent<Int>) {
         when(event) {
             is UiEvent.Update -> performUiEvent { updateReminder(event.data) }
             else -> throw NotImplementedError("UiEvent not implemented: $event")
