@@ -7,7 +7,9 @@ import android.text.format.DateFormat
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ContextualFlowRow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -44,8 +46,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -77,8 +81,10 @@ import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.BottomBar
 import city.zouitel.note.ui.utils.TextField
+import city.zouitel.notifications.viewmodel.AlarmManagerScreenModel
 import city.zouitel.reminder.ui.ReminderScreenModel
 import city.zouitel.systemDesign.CommonIcons
+import city.zouitel.systemDesign.CommonIcons.BELL_RING_ICON
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
@@ -99,8 +105,7 @@ data class WorkplaceScreen(
     val description: String? = null,
     val backgroundColor: Int = 0,
     val textColor: Int = 0,
-    val priority: String = "NON",
-    val reminder: Long = 0
+    val priority: String = "NON"
 ): Screen {
 
     @Composable
@@ -130,12 +135,13 @@ data class WorkplaceScreen(
             mediaModel = getScreenModel(),
             noteAndMediaModel = getScreenModel(),
             reminderModel = getScreenModel(),
+            alarmModel = getScreenModel(),
             workspaceModel = workspaceModel
         )
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalLayoutApi::class)
+    @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
     @Composable
     private fun Workplace(
         dataModel: DataScreenModel,
@@ -151,11 +157,13 @@ data class WorkplaceScreen(
         mediaModel: MediaScreenModel,
         noteAndMediaModel: NoteAndMediaScreenModel,
         reminderModel: ReminderScreenModel,
+        alarmModel: AlarmManagerScreenModel,
         workspaceModel: WorkplaceScreenModel
     ) {
         val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
         val navBottomSheet = LocalBottomSheetNavigator.current
+        val haptic = LocalHapticFeedback.current
 
         val focus by lazy { FocusRequester() }
 
@@ -183,36 +191,33 @@ data class WorkplaceScreen(
         val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
         val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio).collectAsState()
         val observeAllReminders by remember(reminderModel, reminderModel::observeAllById).collectAsState()
-
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
         val priorityState = remember { mutableStateOf(priority) }
-        val reminderState = remember { mutableStateOf(reminder) }
-
         val filteredObservedTags by remember {
             derivedStateOf {
                 observeLabels.filter {
-                    observeNotesAndLabels.contains(
-                        NoteAndTag(uid, it.id)
-                    )
+                    observeNotesAndLabels.contains(NoteAndTag(uid, it.id))
                 }
             }
         }
 
-        val chooseImageLauncher =
-            rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
-                uris.forEach { uri ->
-                    context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    Random.nextLong().let {
-                        mediaModel.sendUiEvent(UiEvent.Insert(Media(id = it, path = uri.toString())))
-                        noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(uid, it)))
-                    }
+        val chooseImageLauncher = rememberLauncherForActivityResult(
+            ActivityResultContracts.PickMultipleVisualMedia()
+        ) { uris ->
+            uris.forEach { uri ->
+                context.contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                Random.nextLong().let {
+                    mediaModel.sendUiEvent(UiEvent.Insert(Media(id = it, path = uri.toString())))
+                    noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(uid, it)))
                 }
             }
+        }
 
         LaunchedEffect(Unit) {
-            kotlin.runCatching {
-                if (isNew) focus.requestFocus()
-            }
+            if (isNew) focus.requestFocus()
         }
 
         Scaffold(
@@ -229,8 +234,7 @@ data class WorkplaceScreen(
                     workspaceModel = workspaceModel,
                     titleState = titleState,
                     descriptionState = descriptionState,
-                    priorityState = priorityState,
-                    reminderState = reminderState
+                    priorityState = priorityState
                 )
             }
         ) {
@@ -242,10 +246,12 @@ data class WorkplaceScreen(
 
                 // display the image.
                 item {
-                    Navigator(MediaScreen(
-                        id = uid,
-                        backgroundColor = uiState.backgroundColor,
-                    ))
+                    Navigator(
+                        MediaScreen(
+                            id = uid,
+                            backgroundColor = uiState.backgroundColor,
+                        )
+                    )
                 }
 
                 // The Title.
@@ -327,32 +333,43 @@ data class WorkplaceScreen(
 
                 // display reminder chip.
                 item {
-                    observeAllReminders.forEach {
+                    ContextualFlowRow(
+                        itemCount = observeAllReminders.size,
+                        modifier = Modifier
+                            .animateContentSize()
+                            .padding(3.dp)
+                    ) { index ->
                         ElevatedAssistChip(
-                            modifier = Modifier.padding(start = 15.dp),
+                            modifier = Modifier.padding(start = 8.dp),
                             onClick = {},
                             label = {
                                 Text(
-                                    DateFormat.format("yyyy-MM-dd HH:mm", Date(it.atTime))
-                                        .toString(),
+                                    modifier = Modifier
+                                        .animateContentSize()
+                                        .combinedClickable(onLongClick = {
+                                            reminderModel.sendUiEvent(
+                                                UiEvent.Delete(observeAllReminders[index])
+                                            )
+                                            alarmModel.cancelAlarm(observeAllReminders[index].id)
+                                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                        }) {},
+                                    text = DateFormat.format(
+                                        "yy/MM/dd HH:mm",
+                                        Date(observeAllReminders.getOrNull(index)?.atTime ?: 0)
+                                    ).toString(),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
-                                    textDecoration = if (it.atTime < java.util.Calendar.getInstance().time.time) {
-                                        TextDecoration.LineThrough
-                                    } else {
-                                        TextDecoration.None
-                                    },
+                                    textDecoration = if (observeAllReminders.getOrNull(index)?.isPassed == true) TextDecoration.LineThrough else TextDecoration.None,
                                     color = MaterialTheme.colorScheme.surfaceVariant
                                 )
                             },
                             leadingIcon = {
-                                if (it.atTime >= java.util.Calendar.getInstance().time.time) {
+                                if (observeAllReminders.getOrNull(index)?.isPassed == false)
                                     Icon(
-                                        painterResource(CommonIcons.BELL_RING_ICON),
+                                        painterResource(BELL_RING_ICON),
                                         null,
                                         tint = MaterialTheme.colorScheme.surfaceVariant
                                     )
-                                }
                             },
                             colors = AssistChipDefaults.assistChipColors(
                                 containerColor = Color(.6f, .6f, .6f, .5f)
