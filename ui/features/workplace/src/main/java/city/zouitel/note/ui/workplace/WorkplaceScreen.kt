@@ -89,17 +89,17 @@ import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
-import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
-import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import com.skydoves.cloudy.cloudy
 import java.util.Date
-import java.util.UUID
 import kotlin.random.Random
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 data class WorkplaceScreen(
-    val uid: String = UUID.randomUUID().toString(),
+    val uid: String = Uuid.random().toString(),
     val isNew: Boolean = true,
     val title: String? = null,
     val description: String? = null,
@@ -117,8 +117,9 @@ data class WorkplaceScreen(
             workspaceModel.updateTextColor(textColor)
                 .updateBackgroundColor(backgroundColor)
         }
+
         LaunchedEffect(Unit) {
-            reminderModel.observeRemindersByUid(uid)
+            reminderModel.initializeReminders(uid)
         }
 
         Workplace(
@@ -126,7 +127,6 @@ data class WorkplaceScreen(
             tagModel = getScreenModel(),
             noteAndTagModel = getScreenModel(),
             taskModel = getScreenModel(),
-            noteAndTodoModel = getScreenModel(),
             linkModel = getScreenModel(),
             noteAndLinkModel = getScreenModel(),
             dataStoreModel = getScreenModel(),
@@ -140,7 +140,7 @@ data class WorkplaceScreen(
         )
     }
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "NewApi")
     @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
     @Composable
     private fun Workplace(
@@ -148,7 +148,6 @@ data class WorkplaceScreen(
         tagModel: TagScreenModel,
         noteAndTagModel: NoteAndTagScreenModel,
         taskModel: TaskScreenModel,
-        noteAndTodoModel: NoteAndTaskScreenModel,
         linkModel: LinkScreenModel,
         noteAndLinkModel: NoteAndLinkScreenModel,
         dataStoreModel: DataStoreScreenModel,
@@ -179,10 +178,6 @@ data class WorkplaceScreen(
             taskModel,
             taskModel::getAllTaskList
         ).collectAsState()
-        val observeNoteAndTodo by remember(
-            noteAndTodoModel,
-            noteAndTodoModel::getAllNotesAndTask
-        ).collectAsState()
         val observerLinks by remember(linkModel, linkModel::getAllLinks).collectAsState()
         val observerNoteAndLink by remember(
             noteAndLinkModel,
@@ -193,6 +188,7 @@ data class WorkplaceScreen(
         val observeAllReminders by remember(reminderModel, reminderModel::observeAllById).collectAsState()
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
         val priorityState = remember { mutableStateOf(priority) }
+
         val filteredObservedTags by remember {
             derivedStateOf {
                 observeLabels.filter {
@@ -216,8 +212,9 @@ data class WorkplaceScreen(
             }
         }
 
-        LaunchedEffect(Unit) {
+        LaunchedEffect(true) {
             if (isNew) focus.requestFocus()
+            taskModel.initializeTasks(uid)
         }
 
         Scaffold(
@@ -409,19 +406,15 @@ data class WorkplaceScreen(
 
                 // display the tasks list.
                 item {
-                    observeTodoList.filter {
-                        observeNoteAndTodo.contains(
-                            NoteAndTask(uid, it.id)
-                        )
-                    }.forEach { todo ->
+                    observeTodoList.forEach { todo ->
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.animateContentSize().fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Checkbox(
                                 checked = todo.isDone,
                                 onCheckedChange = {
-                                    taskModel.sendUiEvent(UiEvent.Update(Task(id = todo.id, item = todo.item, isDone = !todo.isDone)))
+                                    taskModel.sendUiEvent(UiEvent.Update(Task(id = todo.id)))
                                 },
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = Color.Gray,
