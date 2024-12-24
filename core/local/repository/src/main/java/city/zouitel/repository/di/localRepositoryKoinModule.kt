@@ -8,7 +8,6 @@ import city.zouitel.domain.repository.NoteAndAudioRepository
 import city.zouitel.domain.repository.NoteAndLinkRepository
 import city.zouitel.domain.repository.NoteAndMediaRepository
 import city.zouitel.domain.repository.NoteAndTagRepository
-import city.zouitel.domain.repository.NoteAndTaskRepository
 import city.zouitel.domain.repository.NoteRepository
 import city.zouitel.domain.repository.ReminderRepo
 import city.zouitel.domain.repository.RootRepository
@@ -23,7 +22,6 @@ import city.zouitel.domain.usecase.NoteAndAudioUseCase
 import city.zouitel.domain.usecase.NoteAndLinkUseCase
 import city.zouitel.domain.usecase.NoteAndMediaUseCase
 import city.zouitel.domain.usecase.NoteAndTagUseCase
-import city.zouitel.domain.usecase.NoteAndTaskUseCase
 import city.zouitel.domain.usecase.NoteUseCase
 import city.zouitel.domain.usecase.ReminderUseCase
 import city.zouitel.domain.usecase.RootUseCase
@@ -38,7 +36,6 @@ import city.zouitel.repository.mapper.NoteAndAudioMapper
 import city.zouitel.repository.mapper.NoteAndLinkMapper
 import city.zouitel.repository.mapper.NoteAndMediaMapper
 import city.zouitel.repository.mapper.NoteAndTagMapper
-import city.zouitel.repository.mapper.NoteAndTaskMapper
 import city.zouitel.repository.mapper.NoteMapper
 import city.zouitel.repository.mapper.ReminderMapper
 import city.zouitel.repository.mapper.RootMapper
@@ -53,7 +50,6 @@ import city.zouitel.repository.repositoryImpl.NoteAndAudioRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteAndLinkRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteAndMediaRepoImpl
 import city.zouitel.repository.repositoryImpl.NoteAndTagRepositoryImpl
-import city.zouitel.repository.repositoryImpl.NoteAndTaskRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteRepositoryImpl
 import city.zouitel.repository.repositoryImpl.ReminderRepoImpl
 import city.zouitel.repository.repositoryImpl.RootRepositoryImpl
@@ -75,17 +71,16 @@ val localRepositoryKoinModule = module {
     factoryOf(::AudioMapper)
     factoryOf(::NoteAndLinkMapper)
     factoryOf(::NoteAndTagMapper)
-    factoryOf(::NoteAndTaskMapper)
     factoryOf(::NoteAndAudioMapper)
     factoryOf(::RootMapper)
     factoryOf(::MediaMapper)
     factoryOf(::NoteAndMediaMapper)
     factoryOf(::ReminderMapper)
     factory {
-        NoteMapper(get(), get(), get(), get(), get(), get())
+        NoteMapper(get(), get(), get(), get(), get())
     }
     factory {
-        WidgetMapper(get(), get(), get(), get(), get(), get())
+        WidgetMapper(get(), get(), get(), get(), get())
     }
 
     //Repositories.
@@ -96,7 +91,6 @@ val localRepositoryKoinModule = module {
     singleOf(::TagRepositoryImpl) bind TagRepository::class
     singleOf(::NoteAndTagRepositoryImpl) bind NoteAndTagRepository::class
     singleOf(::TaskRepositoryImpl) bind TaskRepository::class
-    singleOf(::NoteAndTaskRepositoryImpl) bind NoteAndTaskRepository::class
     singleOf(::AudioRepoImpl) bind AudioRepo::class
     singleOf(::NoteAndAudioRepositoryImpl) bind NoteAndAudioRepository::class
     singleOf(::WidgetRepositoryImpl) bind WidgetRepository::class
@@ -123,10 +117,6 @@ val localRepositoryKoinModule = module {
     factoryOf(NoteAndTagUseCase::DeleteNoteAndTag)
     factoryOf(NoteAndTagUseCase::GetAllNotesAndTags)
 
-    factoryOf(NoteAndTaskUseCase::AddNoteAndTask)
-    factoryOf(NoteAndTaskUseCase::DeleteNoteAndTask)
-    factoryOf(NoteAndTaskUseCase::GetAllNotesAndTask)
-
     factoryOf(NoteUseCase::GetAllNotesById)
     factoryOf(NoteUseCase::GetAllNotesByName)
     factoryOf(NoteUseCase::GetAllNotesByNewest)
@@ -139,10 +129,11 @@ val localRepositoryKoinModule = module {
     factoryOf(TagUseCase::UpdateTag)
     factoryOf(TagUseCase::GetAllTags)
 
-    factoryOf(TaskUseCase::AddTaskItem)
-    factoryOf(TaskUseCase::DeleteTaskItem)
-    factoryOf(TaskUseCase::UpdateTaskItem)
-    factoryOf(TaskUseCase::GetAllTaskItems)
+    factoryOf(TaskUseCase::ObserveAll)
+    factoryOf(TaskUseCase::ObserveByUid)
+    factoryOf(TaskUseCase::Insert)
+    factoryOf(TaskUseCase::DeleteById)
+    factoryOf(TaskUseCase::UpdateById)
 
     factoryOf(WidgetUseCase::GetAllWidgetMainEntityById)
 
