@@ -27,10 +27,10 @@
             <option value="$PROJECT_DIR$/common/systemDesign" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/local" />
-            <option value="$PROJECT_DIR$/core/local/base" />
             <option value="$PROJECT_DIR$/core/local/database" />
             <option value="$PROJECT_DIR$/core/local/datastore" />
             <option value="$PROJECT_DIR$/core/local/repository" />
+            <option value="$PROJECT_DIR$/core/local/system" />
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/core/network/generativeai" />
             <option value="$PROJECT_DIR$/core/network/repository" />
