@@ -5,7 +5,6 @@ internal object Constants {
     const val NOTES = "notes_table"
     const val LABELS = "labels_table"
     const val LINKS = "links_table"
-    const val TASKS = "tasks_table"
     const val AUDIOS = "audios_table"
     const val MEDIA = "media_table"
 
