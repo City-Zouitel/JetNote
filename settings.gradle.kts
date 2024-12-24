@@ -34,7 +34,7 @@ include(
     ":core:local:database",
     ":core:local:repository",
     ":core:local:datastore",
-    ":core:local:base",
+    ":core:local:system",
     ":core:network:repository",
     ":core:network:generativeai"
 )
