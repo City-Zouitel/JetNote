@@ -14,19 +14,19 @@ sealed class ReminderUseCase {
      *
      * This UseCase utilizes the provided [ReminderRepo] to access and observe the Reminder.
      *
-     * @property repository The Reminder repository used to fetch and observe the Reminder.
+     * @property repo The Reminder repo used to fetch and observe the Reminder.
      */
-    data class ObserveById(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(uid: String) = repository.observeById(uid)
+    data class ObserveById(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(uid: String) = repo.observeById(uid)
     }
 
     /**
-     * Use case for inserting a new reminder into the repository.
+     * Use case for inserting a new reminder into the repo.
      *
-     * @param repository The [ReminderRepo] to use for inserting the reminder.
+     * @param repo The [ReminderRepo] to use for inserting the reminder.
      */
-    data class Insert(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(reminder: Reminder) = repository.insert(reminder)
+    data class Insert(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(reminder: Reminder) = repo.insert(reminder)
     }
 
     /**
@@ -34,21 +34,21 @@ sealed class ReminderUseCase {
      *
      * This use case interacts with the [ReminderRepo] to update a reminder associated with the given ID.
      *
-     * @param repository The repository used to access and modify reminder data.
+     * @param repo The repo used to access and modify reminder data.
      */
-    data class Update(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(id: Int) = repository.update(id)
+    data class Update(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(id: Int) = repo.update(id)
     }
 
     /**
      * Use case for deleting a reminder.
      *
-     * This class provides a way to delete a reminder from the repository using its ID.
+     * This class provides a way to delete a reminder from the repo using its ID.
      *
-     * @property repository The repository used to access reminder data.
+     * @property repo The repo used to access reminder data.
      */
-    data class DeleteReminder(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(id: Int) = repository.delete(id)
+    data class DeleteReminder(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(id: Int) = repo.delete(id)
     }
 
     /**
@@ -56,9 +56,9 @@ sealed class ReminderUseCase {
      *
      * This use case utilizes the provided `ReminderRepo` to delete all reminders.
      *
-     * @property repository The repository responsible for storing and retrieving reminders.
+     * @property repo The repo responsible for storing and retrieving reminders.
      */
-    data class DeleteAll(val repository: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke() = repository.deleteAll()
+    data class DeleteAll(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke() = repo.deleteAll()
     }
 }
