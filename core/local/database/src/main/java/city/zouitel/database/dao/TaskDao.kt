@@ -1,30 +1,31 @@
 package city.zouitel.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
-import city.zouitel.database.model.TaskEntity
-import city.zouitel.database.utils.Constants
+import city.zouitel.database.model.Task
+import city.zouitel.database.model.Task.Companion.TABLE_NAME
+import city.zouitel.database.utils.Constants.DONE
+import city.zouitel.database.utils.Constants.ID
+import city.zouitel.database.utils.Constants.UUID
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
 
-    @Query("SELECT * FROM tasks_table")
-    fun getAllTaskItems(): Flow<List<TaskEntity>>
+    @get:Query("SELECT * FROM $TABLE_NAME")
+    val observeAll: Flow<List<Task>>
 
-    @Query("SELECT * FROM tasks_table WHERE ${Constants.ID} = :id")
-    suspend fun getTaskItemById(id: Long): TaskEntity?
+    @Query("SELECT * FROM $TABLE_NAME WHERE $UUID = :uid")
+    fun observeByUid(uid: String): Flow<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addTaskItem(item: TaskEntity)
+    suspend fun insert(item: Task)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateTaskItem(item: TaskEntity)
+    @Query("UPDATE $TABLE_NAME SET $DONE = NOT $DONE WHERE $ID = :id")
+    suspend fun updateById(id: Long)
 
-    @Delete
-    suspend fun deleteTaskItem(item: TaskEntity)
+    @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
+    suspend fun deleteById(id: Long)
 }
