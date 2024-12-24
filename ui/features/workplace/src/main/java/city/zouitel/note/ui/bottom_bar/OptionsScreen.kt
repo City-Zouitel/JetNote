@@ -65,7 +65,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 data class OptionsScreen(
-    val id: String,
+    val uid: String,
     val titleState: TextFieldState?,
     val descriptionState: TextFieldState?,
     val priorityState: MutableState<String>,
@@ -103,7 +103,7 @@ data class OptionsScreen(
                 )
             ) {
                 if (it.all { true }) {
-                    navBottomSheet.show(RecorderScreen(id) {})
+                    navBottomSheet.show(RecorderScreen(uid) {})
                 }
             }
         } else {
@@ -113,7 +113,7 @@ data class OptionsScreen(
                 )
             ) {
                 if (it.all { true }) {
-                    navBottomSheet.show(RecorderScreen(id) {})
+                    navBottomSheet.show(RecorderScreen(uid) {})
                 }
             }
         }
@@ -124,14 +124,14 @@ data class OptionsScreen(
                 )
             ) {
                 if (it.all { true }) {
-                    navBottomSheet.show(AudioListScreen(id))
+                    navBottomSheet.show(AudioListScreen(uid))
                 }
             }
         } else {
             rememberMultiplePermissionsState(
                 permissions = emptyList()
             ) {
-                navBottomSheet.show(AudioListScreen(id))
+                navBottomSheet.show(AudioListScreen(uid))
             }
         }
         val reminderPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -142,7 +142,7 @@ data class OptionsScreen(
             ) {
                 navBottomSheet.show(
                     ReminderScreen(
-                        uid = id,
+                        uid = uid,
                         title = titleState?.text.toString(),
                         message = descriptionState?.text.toString()
                     )
@@ -154,7 +154,7 @@ data class OptionsScreen(
             ) {
                 navBottomSheet.show(
                     ReminderScreen(
-                        uid = id,
+                        uid = uid,
                         title = titleState?.text.toString(),
                         message = descriptionState?.text.toString()
                     )
@@ -196,7 +196,7 @@ data class OptionsScreen(
                                     readMediaPermissions.launchMultiplePermissionRequest()
                                 }
                             } else {
-                                navBottomSheet.show(AudioListScreen(id))
+                                navBottomSheet.show(AudioListScreen(uid))
                             }
                         }
                     }
@@ -238,7 +238,7 @@ data class OptionsScreen(
                         icon = TAGS_ICON
                     ) {
                         sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
-                        navigator.push(TagsScreen(id = id))
+                        navigator.push(TagsScreen(id = uid))
                     }
                 }
                 item {
@@ -247,7 +247,7 @@ data class OptionsScreen(
                         icon = LIST_CHECK_ICON
                     ) {
                         sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
-                        navigator.push(TasksScreen(id = id))
+                        navigator.push(TasksScreen(uid = uid))
                     }
                 }
                 item {
@@ -274,7 +274,7 @@ data class OptionsScreen(
                             } else {
                                 navBottomSheet.show(
                                     ReminderScreen(
-                                        uid = id,
+                                        uid = uid,
                                         title = titleState?.text.toString(),
                                         message = descriptionState?.text.toString()
                                     )
