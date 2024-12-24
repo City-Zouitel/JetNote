@@ -11,9 +11,7 @@ import city.zouitel.database.model.NoteAndAudioEntity
 import city.zouitel.database.model.NoteAndLinkEntity
 import city.zouitel.database.model.NoteAndMediaEntity
 import city.zouitel.database.model.NoteAndTagEntity
-import city.zouitel.database.model.NoteAndTaskEntity
 import city.zouitel.database.model.TagEntity
-import city.zouitel.database.model.TaskEntity
 import city.zouitel.database.utils.Constants.ID
 import city.zouitel.database.utils.Constants.UUID
 
@@ -28,15 +26,6 @@ data class NoteEntity(
         )
     )
     val tagEntities :List<TagEntity>,
-    @Relation(
-        parentColumn = UUID, entityColumn = ID, entity = TaskEntity::class,
-        associateBy = Junction(
-            NoteAndTaskEntity::class,
-            parentColumn = "noteUid",
-            entityColumn = "taskId"
-        )
-    )
-    val taskEntities:List<TaskEntity>,
     @Relation(
         parentColumn = UUID, entityColumn = ID, entity = LinkEntity::class,
         associateBy = Junction(
