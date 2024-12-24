@@ -38,7 +38,7 @@ interface ReminderDao {
     /**
      * Updates the record with the given ID, setting the 'passed' column to 1 (true).
      *
-     * @param id The ID of the record to update.
+     * @param id The ID of the record to updateById.
      */
     @Query("UPDATE $TABLE_NAME SET $PASSED = 1 WHERE $ID = :id")
     suspend fun update(id: Int)
