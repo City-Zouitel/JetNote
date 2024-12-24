@@ -69,7 +69,6 @@ import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
-import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import com.skydoves.cloudy.cloudy
 
@@ -88,7 +87,6 @@ data class MainScreen(val isHome: Boolean): Screen {
             tagModel = getScreenModel(),
             noteAndTagModel = getScreenModel(),
             taskModel = getScreenModel(),
-            noteAndTaskModel = getScreenModel(),
             dataModel = getScreenModel(),
             audioModel = getScreenModel(),
             noteAndAudioModel = getScreenModel(),
@@ -113,7 +111,6 @@ data class MainScreen(val isHome: Boolean): Screen {
         tagModel: TagScreenModel,
         noteAndTagModel: NoteAndTagScreenModel,
         taskModel: TaskScreenModel,
-        noteAndTaskModel: NoteAndTaskScreenModel,
         dataModel: DataScreenModel,
         audioModel: AudioScreenModel,
         noteAndAudioModel: NoteAndAudioScreenModel,
@@ -205,7 +202,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                 noteAndTagModel = noteAndTagModel,
                                 tagModel = tagModel,
                                 taskModel = taskModel,
-                                noteAndTaskModel = noteAndTaskModel,
                                 undo = undo
                             )
                         }
@@ -276,7 +272,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                 NoteCard(
                                     dataStoreModel = datastoreModel,
                                     taskModel = taskModel,
-                                    noteAndTaskModel = noteAndTaskModel,
                                     audioModel = audioModel,
                                     noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
@@ -309,7 +304,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                 NoteCard(
                                     dataStoreModel = datastoreModel,
                                     taskModel = taskModel,
-                                    noteAndTaskModel = noteAndTaskModel,
                                     audioModel = audioModel,
                                     noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
