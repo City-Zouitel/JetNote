@@ -103,19 +103,7 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
                                             )
                                         )
                                     }
-                                    entity.taskEntities.forEach {
-                                        // TODO: need finishing.
-                                    }
                                     entity.tagEntities.forEach {
-
-                                    }
-                                    entity.audioEntities.forEach {
-
-                                    }
-                                    entity.mediaEntities.forEach {
-
-                                    }
-                                    entity.mediaEntities.forEach {
 
                                     }
                                 }
