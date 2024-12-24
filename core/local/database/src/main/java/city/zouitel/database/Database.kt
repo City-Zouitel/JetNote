@@ -10,7 +10,6 @@ import city.zouitel.database.dao.NoteAndAudioDao
 import city.zouitel.database.dao.NoteAndLinkDao
 import city.zouitel.database.dao.NoteAndMediaDao
 import city.zouitel.database.dao.NoteAndTagDao
-import city.zouitel.database.dao.NoteAndTaskDao
 import city.zouitel.database.dao.NoteDao
 import city.zouitel.database.dao.ReminderDao
 import city.zouitel.database.dao.TagDao
@@ -24,10 +23,9 @@ import city.zouitel.database.model.NoteAndAudioEntity
 import city.zouitel.database.model.NoteAndLinkEntity
 import city.zouitel.database.model.NoteAndMediaEntity
 import city.zouitel.database.model.NoteAndTagEntity
-import city.zouitel.database.model.NoteAndTaskEntity
 import city.zouitel.database.model.Reminder
 import city.zouitel.database.model.TagEntity
-import city.zouitel.database.model.TaskEntity
+import city.zouitel.database.model.Task
 
 @Database(
     version = 2,
@@ -36,8 +34,7 @@ import city.zouitel.database.model.TaskEntity
         DataEntity::class,
         TagEntity::class,
         NoteAndTagEntity::class,
-        TaskEntity::class,
-        NoteAndTaskEntity::class,
+        Task::class,
         LinkEntity::class,
         NoteAndLinkEntity::class,
         AudioEntity::class,
@@ -54,8 +51,7 @@ abstract class Database: RoomDatabase() {
     abstract fun getNoteAndLabelDao(): NoteAndTagDao
     abstract fun getEntityDao(): NoteDao
     abstract fun getWidgetEntityDao(): WidgetDao
-    abstract fun getTodoDao(): TaskDao
-    abstract fun getNoteAndTodoDao(): NoteAndTaskDao
+    abstract fun getTaskDao(): TaskDao
     abstract fun getLinkDao(): LinkDao
     abstract fun getNoteAndLinkDao(): NoteAndLinkDao
     abstract fun getAudioDao(): AudioDao
