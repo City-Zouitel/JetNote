@@ -45,26 +45,23 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.logic.events.UiEvent
-import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonSwipeItem
 import city.zouitel.systemDesign.CommonTextField
-import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
 import kotlin.random.Random
-import city.zouitel.tasks.model.NoteAndTask as InNoteAndTask
-import city.zouitel.tasks.model.Task as InTask
 
-@Suppress("IMPLICIT_CAST_TO_ANY")
-data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
+data class TasksScreen(val uid: String): Screen {
 
     @Composable
     override fun Content() {
+        val taskModel = getScreenModel<TaskScreenModel>()
+        Tasks(taskModel = taskModel)
 
-        Tasks(
-            taskModel = getScreenModel(),
-            noteAndTaskModel = getScreenModel()
-        )
+        LaunchedEffect(Unit) {
+            taskModel.initializeTasks(uid)
+            println(uid)
+        }
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -73,18 +70,11 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
         "UnusedMaterialScaffoldPaddingParameter"
     )
     @Composable
-    private fun Tasks(
-        taskModel: TaskScreenModel,
-        noteAndTaskModel: NoteAndTaskScreenModel
-    ) {
+    private fun Tasks(taskModel: TaskScreenModel) {
         val keyboardManager = LocalFocusManager.current
         val navigator = LocalNavigator.current
 
         val observeTaskList by remember(taskModel, taskModel::getAllTaskList).collectAsState()
-        val observeNoteAndTodoList by remember(
-            noteAndTaskModel,
-            noteAndTaskModel::getAllNotesAndTask
-        ).collectAsState()
         val uiState by remember(taskModel, taskModel::uiState).collectAsState()
 
         val focusRequester = remember { FocusRequester() }
@@ -116,9 +106,7 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                     .background(MaterialTheme.colorScheme.surface)
                     .padding(top = 25.dp)
             ) {
-                observeTaskList
-                    .filter { observeNoteAndTodoList.contains(NoteAndTask(id, it.id)) }
-                    .forEach { task ->
+                observeTaskList.forEach { task ->
                         item {
                             CommonSwipeItem(
                                 onClick = {
@@ -130,14 +118,14 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                                     taskModel.sendUiEvent(UiEvent.Delete(Task(id = task.id)))
                                 },
                                 onSwipeRight = {
-                                    taskModel.sendUiEvent(UiEvent.Update(Task(id = task.id, item = task.item, isDone = !task.isDone)))
+                                    taskModel.sendUiEvent(UiEvent.Update(Task(id = task.id)))
                                 }
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Checkbox(
                                         checked = task.isDone,
                                         onCheckedChange = {
-                                            taskModel.sendUiEvent(UiEvent.Update(Task(id = task.id, item = task.item, isDone = !task.isDone)))
+                                            taskModel.sendUiEvent(UiEvent.Update(Task(id = task.id)))
 
                                         },
                                         colors = CheckboxDefaults.colors(
@@ -182,11 +170,10 @@ data class TasksScreen(val id: String = CommonConstants.NONE): Screen {
                         keyboardActions = KeyboardActions {
 
                             if (observeTaskList.any { it.id == uiState.currentId }) {
-                                taskModel.sendUiEvent(UiEvent.Update(InTask(uiState.currentId, uiState.currentItem, false)))
+                                taskModel.sendUiEvent(UiEvent.Update(Task(id = uiState.currentId)))
                             } else {
                                 Random.nextLong().let {
-                                    taskModel.sendUiEvent(UiEvent.Insert(InTask(it, uiState.currentItem, false)))
-                                    noteAndTaskModel.sendUiEvent(UiEvent.Insert(InNoteAndTask(id, it)))
+                                    taskModel.sendUiEvent(UiEvent.Insert(Task(it, uid, uiState.currentItem)))
                                 }
                             }
                             taskModel.updateId().updateItem()
