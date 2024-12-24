@@ -3,51 +3,56 @@ package city.zouitel.tasks.ui
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.TaskUseCase
+import city.zouitel.logic.asLogicFlow
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.logic.events.UiEventHandler
 import city.zouitel.tasks.mapper.TaskMapper
+import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.state.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import city.zouitel.tasks.model.Task as InTask
 
 class TaskScreenModel(
-    private val getAll: TaskUseCase.GetAllTaskItems,
-    private val add: TaskUseCase.AddTaskItem,
-    private val update: TaskUseCase.UpdateTaskItem,
-    private val delete: TaskUseCase.DeleteTaskItem,
+    private val observeAll: TaskUseCase.ObserveAll,
+    private val observeByUid: TaskUseCase.ObserveByUid,
+    private val insert: TaskUseCase.Insert,
+    private val updateById: TaskUseCase.UpdateById,
+    private val deleteById: TaskUseCase.DeleteById,
     private val mapper: TaskMapper
-): ScreenModel, UiEventHandler<InTask> {
+): ScreenModel, UiEventHandler<Task> {
 
-    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
-        UiState()
-    )
-    val uiState: StateFlow<UiState> = _uiState
-        .stateIn(
-            screenModelScope,
-            SharingStarted.WhileSubscribed(),
-            UiState()
-        )
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
+    val uiState: StateFlow<UiState> = _uiState.asLogicFlow(UiState())
 
+    private val _getAllTaskList = MutableStateFlow<List<Task>>(emptyList())
+    val getAllTaskList:StateFlow<List<Task>> = _getAllTaskList.asLogicFlow(listOf())
 
-    private val _getAllTaskList = MutableStateFlow<List<InTask>>(emptyList())
-    val getAllTaskList:StateFlow<List<InTask>> = _getAllTaskList.stateIn(screenModelScope, SharingStarted.WhileSubscribed(), listOf())
+    private val _observeAllTasks = MutableStateFlow<List<Task>>(emptyList())
+    val observeAllTasks:StateFlow<List<Task>> = _observeAllTasks.asLogicFlow(listOf())
 
-    init {
+    fun initializeTasks(uid: String) {
         performUiEvent {
-            getAll().collect { tasks -> _getAllTaskList.value =  mapper.fromDomain(tasks) }
+            observeByUid(uid).collect {
+                _getAllTaskList.value =  mapper.fromDomain(it)
+            }
         }
     }
 
-    override fun sendUiEvent(event: UiEvent<InTask>) {
+    init {
+        performUiEvent {
+            observeAll().collect {
+                _observeAllTasks.value = mapper.fromDomain(it)
+            }
+        }
+    }
+
+    override fun sendUiEvent(event: UiEvent<Task>) {
         when(event) {
-            is UiEvent.Update -> performUiEvent { update(mapper.toDomain(event.data)) }
-            is UiEvent.Delete -> performUiEvent { delete(mapper.toDomain(event.data)) }
-            is UiEvent.Insert -> performUiEvent { add(mapper.toDomain(event.data)) }
+            is UiEvent.Update -> performUiEvent { updateById(event.data.id) }
+            is UiEvent.Delete -> performUiEvent { deleteById(event.data.id) }
+            is UiEvent.Insert -> performUiEvent { insert(mapper.toDomain(event.data)) }
             else -> throw Exception("Not implemented")
         }
     }
