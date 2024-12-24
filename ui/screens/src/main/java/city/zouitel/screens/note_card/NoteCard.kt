@@ -80,9 +80,7 @@ import city.zouitel.systemDesign.CommonIcons.ANGLE_UP_ICON
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonSwipeItem
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
-import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -92,7 +90,6 @@ import kotlinx.coroutines.launch
 fun NoteCard(
     dataStoreModel: DataStoreScreenModel,
     taskModel: TaskScreenModel,
-    noteAndTaskModel: NoteAndTaskScreenModel,
     audioModel: AudioScreenModel,
     noteAndAudioModel: NoteAndAudioScreenModel,
     linkModel: LinkScreenModel,
@@ -104,9 +101,9 @@ fun NoteCard(
     noteAndMediaModel: NoteAndMediaScreenModel,
     onSwipeNote: (Note) -> Unit,
 ) {
-    val currentLayout = remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
+    val currentLayout by remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
 
-    if (currentLayout.value == LIST) {
+    if (currentLayout == LIST) {
         CommonSwipeItem(
             enableRightDirection = false,
             onSwipeLeft = {
@@ -115,7 +112,6 @@ fun NoteCard(
         ) {
             Card(
                 taskModel = taskModel,
-                noteAndTodoModel = noteAndTaskModel,
                 audioModel = audioModel,
                 noteAndAudioModel = noteAndAudioModel,
                 dataStoreModel = dataStoreModel,
@@ -131,7 +127,6 @@ fun NoteCard(
     } else {
         Card(
             taskModel = taskModel,
-            noteAndTodoModel = noteAndTaskModel,
             audioModel = audioModel,
             noteAndAudioModel = noteAndAudioModel,
             dataStoreModel = dataStoreModel,
@@ -150,7 +145,6 @@ fun NoteCard(
 @Composable
 private fun Card(
     taskModel: TaskScreenModel,
-    noteAndTodoModel: NoteAndTaskScreenModel,
     dataStoreModel: DataStoreScreenModel,
     linkModel: LinkScreenModel,
     noteAndLinkModel: NoteAndLinkScreenModel,
@@ -162,19 +156,17 @@ private fun Card(
     mediaModel: MediaScreenModel,
     noteAndMediaModel: NoteAndMediaScreenModel
 ) {
+    val note = noteEntity.dataEntity
+    val labels = noteEntity.tagEntities
+
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
     val navigator = LocalNavigator.current
     val navBottomSheet = LocalBottomSheetNavigator.current
 
-    val note = noteEntity.dataEntity
-    val labels = noteEntity.tagEntities
 
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
-    val observeTodoList = remember(taskModel, taskModel::getAllTaskList).collectAsState()
-    val observeNoteAndTodo =
-        remember(noteAndTodoModel, noteAndTodoModel::getAllNotesAndTask).collectAsState()
-
+    val observeAllTasks by remember(taskModel, taskModel::observeAllTasks).collectAsState()
     val observerLinks = remember(linkModel, linkModel::getAllLinks).collectAsState()
     val observerNoteAndLink =
         remember(noteAndLinkModel, noteAndLinkModel::getAllNotesAndLinks).collectAsState()
@@ -198,7 +190,7 @@ private fun Card(
         )
     }
     val pagerState = rememberPagerState { filteredMedias.size }
-    
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -211,7 +203,11 @@ private fun Card(
                     mainModel.updateSelection(true)
                 }
             ) {
-                sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
+                sound.performSoundEffect(
+                    context,
+                    CommonConstants.KEY_CLICK,
+                    thereIsSoundEffect.value
+                )
                 if (isHomeScreen && !uiState.isSelection) {
                     navigator?.push(
                         WorkplaceScreen(
@@ -247,14 +243,14 @@ private fun Card(
             },
         shape = AbsoluteRoundedCornerShape(15.dp),
         border =
-            if(uiState.selectedNotes.contains(note)) {
-                when(isHomeScreen) {
-                    true -> BorderStroke(3.dp, Color.Cyan)
-                    false -> BorderStroke(3.dp, Color.Red)
-                }
-            } else {
-                BorderStroke(0.dp, Color.Transparent)
-            } ,
+        if (uiState.selectedNotes.contains(note)) {
+            when (isHomeScreen) {
+                true -> BorderStroke(3.dp, Color.Cyan)
+                false -> BorderStroke(3.dp, Color.Red)
+            }
+        } else {
+            BorderStroke(0.dp, Color.Transparent)
+        },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp
         ),
@@ -345,27 +341,27 @@ private fun Card(
                 collapseIndicator = { }
             )
         ) { index ->
-                AssistChip(
-                    modifier = Modifier.alpha(.7f),
-                    border = BorderStroke(0.dp, Color.Transparent),
-                    onClick = { },
-                    label = {
-                        labels[index].label?.let { Text(it, fontSize = 11.sp) }
-                    },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = CIRCLE_ICON_18),
-                            contentDescription = null,
-                            tint = Color(labels[index].color),
-                            modifier = Modifier.size(10.dp)
-                        )
-                    },
-                    colors = AssistChipDefaults.assistChipColors(
-                        labelColor = Color(note.textColor)
-                    ),
-                    shape = CircleShape
-                )
-                Spacer(modifier = Modifier.width(3.dp))
+            AssistChip(
+                modifier = Modifier.alpha(.7f),
+                border = BorderStroke(0.dp, Color.Transparent),
+                onClick = { },
+                label = {
+                    labels[index].label?.let { Text(it, fontSize = 11.sp) }
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = CIRCLE_ICON_18),
+                        contentDescription = null,
+                        tint = Color(labels[index].color),
+                        modifier = Modifier.size(10.dp)
+                    )
+                },
+                colors = AssistChipDefaults.assistChipColors(
+                    labelColor = Color(note.textColor)
+                ),
+                shape = CircleShape
+            )
+            Spacer(modifier = Modifier.width(3.dp))
         }
 
         // display link card.
@@ -384,23 +380,13 @@ private fun Card(
         }
 
         // display tasks list.
-        if (
-            observeTodoList.value.any {
-                observeNoteAndTodo.value.contains(
-                    NoteAndTask(note.uid, it.id)
-                )
-            }
-        ) {
+        if (observeAllTasks.any { it.uid == note.uid }) {
             Icon(
-                painterResource(
-                    if (todoListState) ANGLE_UP_ICON else ANGLE_DOWN_ICON
-                ),
+                painterResource(if (todoListState) ANGLE_UP_ICON else ANGLE_DOWN_ICON),
                 null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        todoListState = !todoListState
-                    },
+                    .clickable { todoListState = !todoListState },
                 tint = Color(note.textColor)
             )
         }
@@ -408,22 +394,19 @@ private fun Card(
         AnimatedVisibility(visible = todoListState, modifier = Modifier.height(100.dp)) {
             LazyColumn {
                 item {
-                    observeTodoList.value.filter {
-                        observeNoteAndTodo.value.contains(
-                            NoteAndTask(note.uid, it.id)
-                        )
-                    }.forEach { todo ->
+                    observeAllTasks.filter { it.uid == note.uid }.forEach { todo ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            RadioButton(selected = todo.isDone, onClick = {
-                                taskModel.sendUiEvent(UiEvent.Update(Task(todo.id, todo.item, !todo.isDone)))
-                            },
+                            RadioButton(
+                                selected = todo.isDone, onClick = {
+                                    taskModel.sendUiEvent(UiEvent.Update(Task(todo.id)))
+                                },
                                 colors = RadioButtonDefaults.colors(
-                                selectedColor = Color.Gray,
-                                unselectedColor = Color(note.textColor)
-                            ),
+                                    selectedColor = Color.Gray,
+                                    unselectedColor = Color(note.textColor)
+                                ),
                                 modifier = Modifier
                                     .padding(5.dp)
                                     .size(14.dp)
