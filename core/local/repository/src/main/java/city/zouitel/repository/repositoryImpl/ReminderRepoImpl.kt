@@ -11,7 +11,7 @@ import city.zouitel.domain.model.Reminder as OutReminder
 /**
  * Implementation of the [ReminderRepo] interface.
  * This class interacts with the [dataSource] to perform CRUD operations on reminders.
- * It uses the [mapper] to convert between domain model [OutReminder] and repository model [Reminder].
+ * It uses the [mapper] to convert between domain model [OutReminder] and repo model [Reminder].
  */
 class ReminderRepoImpl(
     private val dataSource: ReminderDataSource,
