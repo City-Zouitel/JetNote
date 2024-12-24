@@ -5,27 +5,23 @@ import city.zouitel.domain.repository.TaskRepository
 
 sealed class TaskUseCase {
 
-    class GetAllTaskItems(
-        private val repository: TaskRepository
-    ): TaskUseCase() {
-        operator fun invoke() = repository.getAllTaskItems
+    data class ObserveAll(private val repo: TaskRepository): TaskUseCase() {
+        operator fun invoke() = repo.observeAll
     }
 
-    class AddTaskItem(
-        private val repository: TaskRepository
-    ): TaskUseCase() {
-        suspend operator fun invoke(task: Task) = repository.addTaskItem(task)
+    data class ObserveByUid(private val repo: TaskRepository): TaskUseCase() {
+        operator fun invoke(uid: String) = repo.observeByUid(uid)
     }
 
-    class UpdateTaskItem(
-        private val repository: TaskRepository
-    ): TaskUseCase() {
-        suspend operator fun invoke(task: Task) = repository.updateTaskItem(task)
+    data class Insert(private val repo: TaskRepository): TaskUseCase() {
+        suspend operator fun invoke(task: Task) = repo.insert(task)
     }
 
-    class DeleteTaskItem(
-        private val repository: TaskRepository
-    ): TaskUseCase() {
-        suspend operator fun invoke(task: Task) = repository.deleteTaskItem(task)
+    data class UpdateById(private val repo: TaskRepository): TaskUseCase() {
+        suspend operator fun invoke(id: Long) = repo.updateById(id)
+    }
+
+    data class DeleteById(private val repo: TaskRepository): TaskUseCase() {
+        suspend operator fun invoke(id: Long) = repo.deleteById(id)
     }
 }
