@@ -24,7 +24,7 @@ class ReminderScreenModel(
     private val _observeAllById = MutableStateFlow<List<Reminder>>(emptyList())
     val observeAllById: StateFlow<List<Reminder>> = _observeAllById.asLogicFlow(emptyList())
 
-    fun observeRemindersByUid(uid: String) {
+    fun initializeReminders(uid: String) {
         performUiEvent {
             observeById(uid).collect {
                 _observeAllById.value = mapper.fromDomain(it)
