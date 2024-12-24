@@ -29,7 +29,7 @@ internal fun HideSystemUI(window: Window) {
         mapOf(
             "Coffee" to "Prepare hot coffee for my self.",
             "Certification" to "Call instructor for complete details.",
-            "Team Meeting" to "Planning sprint log for next product application update.",
+            "Team Meeting" to "Planning sprint log for next product application updateById.",
             "Birthday Party" to "Tomorrow is my brother birthday there will be party at 7:00 pm.",
             "Vacation Tickets" to "Buy tickets for the family vacation.",
             "Appointment" to "Health check up with physician."
