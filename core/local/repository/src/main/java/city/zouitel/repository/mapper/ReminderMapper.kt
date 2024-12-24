@@ -4,7 +4,7 @@ import city.zouitel.repository.model.Reminder
 import city.zouitel.domain.model.Reminder as OutReminder
 
 /**
- * A mapper class responsible for converting between [Reminder] (repository module) and [OutReminder] (domain layer) objects.
+ * A mapper class responsible for converting between [Reminder] (repo module) and [OutReminder] (domain layer) objects.
  */
 class ReminderMapper {
 
