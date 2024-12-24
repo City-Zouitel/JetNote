@@ -36,12 +36,11 @@ import city.zouitel.systemDesign.Open_Drawer
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
-import city.zouitel.tasks.model.NoteAndTask
 import city.zouitel.tasks.model.Task
-import city.zouitel.tasks.ui.NoteAndTaskScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
-import java.util.UUID
 import kotlin.random.Random
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +84,9 @@ internal fun MainTopAppBar(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalUuidApi::class
+)
 @Composable
 internal fun HomeSelectionTopAppBar(
     datastoreModel: DataStoreScreenModel,
@@ -94,26 +95,24 @@ internal fun HomeSelectionTopAppBar(
     noteAndTagModel: NoteAndTagScreenModel,
     tagModel: TagScreenModel,
     taskModel: TaskScreenModel,
-    noteAndTaskModel: NoteAndTaskScreenModel,
     undo: (Data) -> Unit
 ) {
 
     val context = LocalContext.current
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
     val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isMute).collectAsState()
-    val newUid by lazy { UUID.randomUUID() }
+    val newUid by lazy { Uuid.random().toString() }
     val observeNotesAndLabels =
         remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
     val observeLabels = remember(tagModel, tagModel::getAllLTags).collectAsState()
 
     val observeTodoList =
         remember(taskModel, taskModel::getAllTaskList).collectAsState()
-    val observeNoteAndTodo =
-        remember(noteAndTaskModel, noteAndTaskModel::getAllNotesAndTask).collectAsState()
+
     TopAppBar(
         navigationIcon = {
             Row {
-                // remove.
+                // remove a note.
                 CommonPopupTip(message = "Remove") {
                     Icon(
                         painter = painterResource(id = CommonIcons.REMOVE_ICON),
@@ -152,8 +151,8 @@ internal fun HomeSelectionTopAppBar(
 
                 AnimatedVisibility(visible = uiState.selectedNotes.count() == 1) {
                     Row {
-                        // share
-                        CommonPopupTip(message = "Share WidgetNote") {
+                        // share a note
+                        CommonPopupTip(message = "Share Note") {
                             Icon(painter = painterResource(id = CommonIcons.SHARE_ICON),
                                 contentDescription = null,
                                 modifier = Modifier
@@ -176,8 +175,8 @@ internal fun HomeSelectionTopAppBar(
                                     })
                         }
 
-                        // copy the data.
-                        CommonPopupTip(message = "Copy WidgetNote") {
+                        // copy a note.
+                        CommonPopupTip(message = "Copy Note") {
                             Icon(painter = painterResource(id = CommonIcons.COPY_ICON),
                                 contentDescription = null,
                                 modifier = Modifier
@@ -206,41 +205,17 @@ internal fun HomeSelectionTopAppBar(
                                                 }
                                                 .forEach {
                                                     noteAndTagModel.sendUiEvent(
-                                                        UiEvent.Insert(
-                                                            NoteAndTag(
-                                                                newUid.toString(),
-                                                                it.id
-                                                            )
-                                                        )
+                                                        UiEvent.Insert(NoteAndTag(newUid, it.id))
                                                     )
                                                 }
 
                                             // copy each todo item.
                                             observeTodoList.value
-                                                .filter {
-                                                    observeNoteAndTodo.value.contains(
-                                                        NoteAndTask(
-                                                            uiState.selectedNotes.single().uid,
-                                                            it.id
-                                                        )
-                                                    )
-                                                }
                                                 .forEach { todo ->
-                                                    Random
-                                                        .nextLong()
+                                                    Random.nextLong()
                                                         .let {
                                                             taskModel.sendUiEvent(
-                                                                UiEvent.Insert(
-                                                                    Task(it, todo.item, todo.isDone)
-                                                                )
-                                                            )
-                                                            noteAndTaskModel.sendUiEvent(
-                                                                UiEvent.Insert(
-                                                                    NoteAndTask(
-                                                                        newUid.toString(),
-                                                                        it
-                                                                    )
-                                                                )
+                                                                UiEvent.Insert(Task(it, newUid, todo.item, todo.isDone))
                                                             )
                                                         }
                                                 }
