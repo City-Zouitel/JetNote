@@ -99,7 +99,7 @@ internal fun BottomBar(
                                 sound.performSoundEffect(context, FOCUS_NAVIGATION, isMute.value)
                                 navBottomSheet.show(
                                     OptionsScreen(
-                                        id = id,
+                                        uid = id,
                                         titleState = titleState,
                                         descriptionState = descriptionState,
                                         imageLaunch = imageLaunch,
