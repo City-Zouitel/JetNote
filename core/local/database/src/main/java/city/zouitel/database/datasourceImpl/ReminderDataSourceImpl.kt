@@ -40,7 +40,7 @@ class ReminderDataSourceImpl(
     /**
      * Updates an entity in the database based on its ID.
      *
-     * @param id The ID of the entity to update.
+     * @param id The ID of the entity to updateById.
      */
     override suspend fun update(id: Int) {
         dao.update(id)
