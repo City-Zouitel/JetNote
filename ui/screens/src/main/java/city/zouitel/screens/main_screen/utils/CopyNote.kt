@@ -6,17 +6,17 @@ import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonConstants
 import java.io.File
-import java.util.UUID
+import kotlin.uuid.ExperimentalUuidApi
 
 fun copyNote(
     ctx: Context,
     dataModel: DataScreenModel,
     note: Data,
-    uid: UUID,
+    uid: String,
     onAction : () -> Unit
 ) {
 //    dataModel.addData(note.copy(uid = uid.toString()))
-    dataModel.sendUiEvent(UiEvent.Insert(note.copy(uid = uid.toString())))
+    dataModel.sendUiEvent(UiEvent.Insert(note.copy(uid = uid)))
     //
 //    "${ctx.filesDir.path}/${CommonConstants.IMG_DIR}/".apply {
 //        File("$this${note.uid}.${CommonConstants.JPEG}").let {
