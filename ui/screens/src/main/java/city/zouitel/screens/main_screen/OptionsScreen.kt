@@ -81,9 +81,6 @@ class OptionsScreen: Screen {
 //                            noteAndLinkModel.deleteNoteAndLink(NoteAndLink(noteUid = entity.data.uid, linkId = link.uid))
                             noteAndLinkModel.sendUiEvent(UiEvent.Delete(NoteAndLink(entity.dataEntity.uid, link.id)))
                         }
-                        entity.taskEntities.forEach {
-                            // TODO: need finishing.
-                        }
                     }
                     navBottomSheet.hide()
                 }
