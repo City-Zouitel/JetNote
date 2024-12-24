@@ -4,11 +4,14 @@ import city.zouitel.repository.model.Task
 import kotlinx.coroutines.flow.Flow
 
 interface TaskDataSource {
-    val getAllTaskItems: Flow<List<Task>>
 
-    suspend fun addTaskItem(task: Task)
+    val observeAll: Flow<List<Task>>
 
-    suspend fun updateTaskItem(task: Task)
+    fun observeByUid(uid: String): Flow<List<Task>>
 
-    suspend fun deleteTaskItem(task: Task)
+    suspend fun insert(task: Task)
+
+    suspend fun updateById(id: Long)
+
+    suspend fun deleteById(id: Long)
 }
