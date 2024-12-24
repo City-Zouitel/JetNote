@@ -50,4 +50,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
     implementation(libs.zoomable.coil)
+
+    //
+    implementation("io.github.khubaibkhan4:mediaplayer-kmp:2.0.5")
 }

@@ -31,7 +31,7 @@ dependencies {
     implementation(projects.core.local.database)
     implementation(projects.core.local.datastore)
     implementation(projects.core.local.repository)
-    implementation(projects.core.local.base)
+    implementation(projects.core.local.system)
     implementation(projects.core.network.repository)
     implementation(projects.core.network.generativeai)
     implementation(projects.domain)
