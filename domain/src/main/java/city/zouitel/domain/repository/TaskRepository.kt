@@ -1,14 +1,17 @@
 package city.zouitel.domain.repository
 
-import city.zouitel.domain.model.Task as OutTask
 import kotlinx.coroutines.flow.Flow
+import city.zouitel.domain.model.Task as OutTask
 
 interface TaskRepository {
-    val getAllTaskItems: Flow<List<OutTask>>
 
-    suspend fun addTaskItem(task: OutTask)
+    val observeAll: Flow<List<OutTask>>
 
-    suspend fun updateTaskItem(task: OutTask)
+    fun observeByUid(uid: String): Flow<List<OutTask>>
 
-    suspend fun deleteTaskItem(task: OutTask)
+    suspend fun insert(task: OutTask)
+
+    suspend fun updateById(id: Long)
+
+    suspend fun deleteById(id: Long)
 }
