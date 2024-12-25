@@ -36,7 +36,7 @@ class ReminderMapper {
     )
 
     /**
-     * Maps an OutReminder data object from the repository layer to a Reminder data object for the domain layer.
+     * Maps an OutReminder data object from the repository layer to a Reminder data object for the repository layer.
      *
      * @param reminder The OutReminder object to map.
      * @return A Reminder object representing the same data.
