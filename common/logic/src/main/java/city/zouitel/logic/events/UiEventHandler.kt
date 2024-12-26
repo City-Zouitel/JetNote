@@ -5,3 +5,9 @@ interface UiEventHandler<T> {
 
     fun performUiEvent(action: suspend () -> Unit)
 }
+
+interface UiEventsHandler {
+    fun sendUiEvent(event: UiEvents)
+
+    fun performUiEvent(action: suspend () -> Unit)
+}
