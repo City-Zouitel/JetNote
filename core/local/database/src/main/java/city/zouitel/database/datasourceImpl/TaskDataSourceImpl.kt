@@ -70,6 +70,23 @@ class TaskDataSourceImpl(
     }
 
     /**
+     * Updates an existing [Task] in the data source.
+     *
+     * This function updates the task in the underlying data source using the provided [Task] object.
+     * It first converts the domain [Task] object to a database-friendly entity using the [mapper].
+     * Then, it utilizes the [dao] to perform the actual update operation.
+     *
+     * This function is a suspending function, meaning it can be safely called within a coroutine.
+     *
+     * @param task The [Task] object containing the updated information.
+     * @throws Exception if there is any error during the update operation. This can include database exceptions
+     * or mapping errors.
+     */
+    override suspend fun update(task: Task) {
+        dao.update(mapper.fromRepo(task))
+    }
+
+    /**
      * Updates a record in the underlying data source by its ID.
      *
      * This function utilizes a suspending call to interact with the data access object (DAO).
