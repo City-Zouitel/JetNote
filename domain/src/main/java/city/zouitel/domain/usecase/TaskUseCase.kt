@@ -48,6 +48,17 @@ sealed class TaskUseCase {
     }
 
     /**
+     * Represents a use case for updating an existing [Task].
+     *
+     * This use case interacts with the [TaskRepository] to persist changes made to a specific task.
+     *
+     * @property repo The [TaskRepository] responsible for data access and persistence of tasks.
+     */
+    data class Update(private val repo: TaskRepository): TaskUseCase() {
+        suspend operator fun invoke(task: Task) = repo.update(task)
+    }
+
+    /**
      * [TaskUseCase] implementation for updating a task by its ID.
      *
      * This use case interacts with the [TaskRepository] to perform the actual update operation.
