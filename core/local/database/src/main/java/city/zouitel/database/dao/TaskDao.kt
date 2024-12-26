@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import city.zouitel.database.model.Task
 import city.zouitel.database.model.Task.Companion.TABLE_NAME
 import city.zouitel.database.utils.Constants.DONE
@@ -46,6 +47,20 @@ interface TaskDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: Task)
+
+    /**
+     * Updates an existing [Task] in the data source.
+     *
+     * If a [Task] with the same primary key already exists, it will be replaced
+     * with the new [Task] data. This operation is performed as an atomic transaction.
+     *
+     * @param item The [Task] object containing the updated data. The primary key
+     *             of this object must match the [Task] you intend to update.
+     * @throws SQLiteException If an error occurs while interacting with the database.
+     * @see OnConflictStrategy.REPLACE
+     */
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun update(item: Task)
 
     /**
      * Updates the 'done' status of a task in the database by toggling its current state.
