@@ -132,6 +132,7 @@ val localRepositoryKoinModule = module {
     factoryOf(TaskUseCase::ObserveAll)
     factoryOf(TaskUseCase::ObserveByUid)
     factoryOf(TaskUseCase::Insert)
+    factoryOf(TaskUseCase::Update)
     factoryOf(TaskUseCase::DeleteById)
     factoryOf(TaskUseCase::UpdateById)
 
