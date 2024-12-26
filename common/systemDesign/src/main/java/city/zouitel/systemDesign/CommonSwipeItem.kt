@@ -1,6 +1,7 @@
 package city.zouitel.systemDesign
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
@@ -31,12 +33,10 @@ fun CommonSwipeItem(
             when (state) {
                 SwipeToDismissBoxValue.StartToEnd -> {
                     onSwipeRight.invoke()
-                    true
                 }
 
                 SwipeToDismissBoxValue.EndToStart -> {
                     onSwipeLeft.invoke()
-                    true
                 }
 
                 SwipeToDismissBoxValue.Settled -> {
@@ -55,8 +55,8 @@ fun CommonSwipeItem(
         backgroundContent = {
             val backgroundColor = animateColorAsState(
                 targetValue = when (state.targetValue) {
-                    SwipeToDismissBoxValue.StartToEnd -> Color.Green
-                    SwipeToDismissBoxValue.EndToStart -> Color.Red
+                    SwipeToDismissBoxValue.StartToEnd -> MaterialTheme.colorScheme.surfaceVariant
+                    SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.errorContainer
                     SwipeToDismissBoxValue.Settled -> Color.Unspecified
                 }, label = ""
             )
