@@ -22,7 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,10 +40,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import city.zouitel.logic.events.UiEvent
+import city.zouitel.logic.events.UiEvents
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonSwipeItem
 import city.zouitel.systemDesign.CommonTextField
@@ -56,12 +56,12 @@ data class TasksScreen(val uid: String): Screen {
     @Composable
     override fun Content() {
         val taskModel = getScreenModel<TaskScreenModel>()
-        Tasks(taskModel = taskModel)
 
-        LaunchedEffect(Unit) {
+        LaunchedEffect(true) {
             taskModel.initializeTasks(uid)
-            println(uid)
         }
+
+        Tasks(taskModel = taskModel)
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -74,14 +74,11 @@ data class TasksScreen(val uid: String): Screen {
         val keyboardManager = LocalFocusManager.current
         val navigator = LocalNavigator.current
 
-        val observeTaskList by remember(taskModel, taskModel::getAllTaskList).collectAsState()
-        val uiState by remember(taskModel, taskModel::uiState).collectAsState()
+        val observeTaskList by remember(taskModel, taskModel::getAllTaskList).collectAsStateWithLifecycle()
+        val uiState by remember(taskModel, taskModel::uiState).collectAsStateWithLifecycle()
 
         val focusRequester = remember { FocusRequester() }
-
-        LaunchedEffect(Unit) {
-            focusRequester.requestFocus()
-        }
+        LaunchedEffect(Unit) { focusRequester.requestFocus() }
 
         Scaffold(
             modifier = Modifier.navigationBarsPadding(),
@@ -115,17 +112,17 @@ data class TasksScreen(val uid: String): Screen {
                                         .updateItem(task.item ?: "")
                                 },
                                 onSwipeLeft = {
-                                    taskModel.sendUiEvent(UiEvent.Delete(Task(id = task.id)))
+                                    taskModel.sendUiEvent(UiEvents.Delete(task.id))
                                 },
                                 onSwipeRight = {
-                                    taskModel.sendUiEvent(UiEvent.Update(Task(id = task.id)))
+                                    taskModel.sendUiEvent(UiEvents.Update(task.id))
                                 }
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Checkbox(
                                         checked = task.isDone,
                                         onCheckedChange = {
-                                            taskModel.sendUiEvent(UiEvent.Update(Task(id = task.id)))
+                                            taskModel.sendUiEvent(UiEvents.Update(task.id))
 
                                         },
                                         colors = CheckboxDefaults.colors(
@@ -170,10 +167,10 @@ data class TasksScreen(val uid: String): Screen {
                         keyboardActions = KeyboardActions {
 
                             if (observeTaskList.any { it.id == uiState.currentId }) {
-                                taskModel.sendUiEvent(UiEvent.Update(Task(id = uiState.currentId)))
+                                taskModel.sendUiEvent(UiEvents.Update(Task(id = uiState.currentId, uid = uid, item = uiState.currentItem)))
                             } else {
                                 Random.nextLong().let {
-                                    taskModel.sendUiEvent(UiEvent.Insert(Task(it, uid, uiState.currentItem)))
+                                    taskModel.sendUiEvent(UiEvents.Insert(Task(it, uid, uiState.currentItem)))
                                 }
                             }
                             taskModel.updateId().updateItem()
