@@ -55,6 +55,23 @@ interface TaskRepository {
     suspend fun insert(task: Task)
 
     /**
+     * Updates an existing [Task] in the data source.
+     *
+     * This function performs a suspendable operation to update the provided [task].
+     * It is intended to be used within a coroutine or another suspending function.
+     *
+     * @param task The [Task] object containing the updated information. The ID of the task
+     *             must be set and correspond to an existing task in the data source.
+     * @throws Exception if any error occurs during the update process, such as:
+     *                   - The task with the provided ID does not exist.
+     *                   - A database error occurs during the update.
+     *                   - Network error if it uses network to update the data.
+     * @throws IllegalArgumentException if the [task]'s ID is null or invalid.
+     * @see Task
+     */
+    suspend fun update(task: Task)
+
+    /**
      * Updates an entity in the data source identified by the given [id].
      *
      * This function performs an update operation. The specific data being updated is
