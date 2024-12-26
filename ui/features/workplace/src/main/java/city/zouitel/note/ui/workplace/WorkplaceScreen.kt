@@ -72,6 +72,7 @@ import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.events.UiEvent
+import city.zouitel.logic.events.UiEvents
 import city.zouitel.logic.findUrlLink
 import city.zouitel.media.model.Media
 import city.zouitel.media.model.NoteAndMedia
@@ -89,7 +90,6 @@ import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
-import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.ui.TaskScreenModel
 import com.skydoves.cloudy.cloudy
 import java.util.Date
@@ -406,15 +406,15 @@ data class WorkplaceScreen(
 
                 // display the tasks list.
                 item {
-                    observeTodoList.forEach { todo ->
+                    observeTodoList.forEach { task ->
                         Row(
                             modifier = Modifier.animateContentSize().fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Checkbox(
-                                checked = todo.isDone,
+                                checked = task.isDone,
                                 onCheckedChange = {
-                                    taskModel.sendUiEvent(UiEvent.Update(Task(id = todo.id)))
+                                    taskModel.sendUiEvent(UiEvents.Update(task.id))
                                 },
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = Color.Gray,
@@ -422,13 +422,13 @@ data class WorkplaceScreen(
                                 )
                             )
 
-                            todo.item?.let { item ->
+                            task.item?.let { item ->
                                 Text(
                                     text = item,
                                     style = TextStyle(
                                         fontSize = 14.sp,
-                                        textDecoration = if (todo.isDone) TextDecoration.LineThrough else TextDecoration.None,
-                                        color = if (todo.isDone) Color.Gray else Color(uiState.textColor)
+                                        textDecoration = if (task.isDone) TextDecoration.LineThrough else TextDecoration.None,
+                                        color = if (task.isDone) Color.Gray else Color(uiState.textColor)
                                     )
                                 )
                             }
