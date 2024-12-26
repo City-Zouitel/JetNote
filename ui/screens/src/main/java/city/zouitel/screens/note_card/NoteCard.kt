@@ -63,7 +63,7 @@ import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
-import city.zouitel.logic.events.UiEvent
+import city.zouitel.logic.events.UiEvents
 import city.zouitel.media.model.NoteAndMedia
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.media.ui.NoteAndMediaScreenModel
@@ -80,7 +80,6 @@ import city.zouitel.systemDesign.CommonIcons.ANGLE_UP_ICON
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonSwipeItem
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.ui.TaskScreenModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -394,14 +393,14 @@ private fun Card(
         AnimatedVisibility(visible = todoListState, modifier = Modifier.height(100.dp)) {
             LazyColumn {
                 item {
-                    observeAllTasks.filter { it.uid == note.uid }.forEach { todo ->
+                    observeAllTasks.filter { it.uid == note.uid }.forEach { task ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(
-                                selected = todo.isDone, onClick = {
-                                    taskModel.sendUiEvent(UiEvent.Update(Task(todo.id)))
+                                selected = task.isDone, onClick = {
+                                    taskModel.sendUiEvent(UiEvents.Update(task.id))
                                 },
                                 colors = RadioButtonDefaults.colors(
                                     selectedColor = Color.Gray,
@@ -411,19 +410,19 @@ private fun Card(
                                     .padding(5.dp)
                                     .size(14.dp)
                             )
-                            todo.item?.let { item ->
+                            task.item?.let { item ->
                                 Text(
                                     text = item,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     fontSize = 14.sp,
                                     style = TextStyle(
-                                        textDecoration = if (todo.isDone) {
+                                        textDecoration = if (task.isDone) {
                                             TextDecoration.LineThrough
                                         } else {
                                             TextDecoration.None
                                         },
-                                        color = if (todo.isDone) Color.Gray else Color(note.textColor)
+                                        color = if (task.isDone) Color.Gray else Color(note.textColor)
                                     ),
                                     modifier = Modifier.padding(3.dp)
                                 )
