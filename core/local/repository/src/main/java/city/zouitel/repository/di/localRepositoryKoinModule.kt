@@ -6,7 +6,6 @@ import city.zouitel.domain.repository.LinkRepository
 import city.zouitel.domain.repository.MediaRepository
 import city.zouitel.domain.repository.NoteAndAudioRepository
 import city.zouitel.domain.repository.NoteAndLinkRepository
-import city.zouitel.domain.repository.NoteAndMediaRepository
 import city.zouitel.domain.repository.NoteAndTagRepository
 import city.zouitel.domain.repository.NoteRepository
 import city.zouitel.domain.repository.ReminderRepo
@@ -20,7 +19,6 @@ import city.zouitel.domain.usecase.LinkUseCase
 import city.zouitel.domain.usecase.MediaUseCase
 import city.zouitel.domain.usecase.NoteAndAudioUseCase
 import city.zouitel.domain.usecase.NoteAndLinkUseCase
-import city.zouitel.domain.usecase.NoteAndMediaUseCase
 import city.zouitel.domain.usecase.NoteAndTagUseCase
 import city.zouitel.domain.usecase.NoteUseCase
 import city.zouitel.domain.usecase.ReminderUseCase
@@ -34,7 +32,6 @@ import city.zouitel.repository.mapper.LinkMapper
 import city.zouitel.repository.mapper.MediaMapper
 import city.zouitel.repository.mapper.NoteAndAudioMapper
 import city.zouitel.repository.mapper.NoteAndLinkMapper
-import city.zouitel.repository.mapper.NoteAndMediaMapper
 import city.zouitel.repository.mapper.NoteAndTagMapper
 import city.zouitel.repository.mapper.NoteMapper
 import city.zouitel.repository.mapper.ReminderMapper
@@ -48,7 +45,6 @@ import city.zouitel.repository.repositoryImpl.LinkRepositoryImpl
 import city.zouitel.repository.repositoryImpl.MediaRepoImpl
 import city.zouitel.repository.repositoryImpl.NoteAndAudioRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteAndLinkRepositoryImpl
-import city.zouitel.repository.repositoryImpl.NoteAndMediaRepoImpl
 import city.zouitel.repository.repositoryImpl.NoteAndTagRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteRepositoryImpl
 import city.zouitel.repository.repositoryImpl.ReminderRepoImpl
@@ -74,13 +70,12 @@ val localRepositoryKoinModule = module {
     factoryOf(::NoteAndAudioMapper)
     factoryOf(::RootMapper)
     factoryOf(::MediaMapper)
-    factoryOf(::NoteAndMediaMapper)
     factoryOf(::ReminderMapper)
     factory {
-        NoteMapper(get(), get(), get(), get(), get())
+        NoteMapper(get(), get(), get(), get())
     }
     factory {
-        WidgetMapper(get(), get(), get(), get(), get())
+        WidgetMapper(get(), get(), get(), get())
     }
 
     //Repositories.
@@ -96,7 +91,6 @@ val localRepositoryKoinModule = module {
     singleOf(::WidgetRepositoryImpl) bind WidgetRepository::class
     singleOf(::RootRepositoryImpl) bind RootRepository::class
     singleOf(::MediaRepoImpl) bind MediaRepository::class
-    singleOf(::NoteAndMediaRepoImpl) bind NoteAndMediaRepository::class
     singleOf(::ReminderRepoImpl) bind ReminderRepo::class
 
     //UseCases.
@@ -150,15 +144,11 @@ val localRepositoryKoinModule = module {
     factoryOf(NoteAndAudioUseCase::UpdateNoteAndAudio)
     factoryOf(NoteAndAudioUseCase::DeleteNoteAndAudio)
 
-    factoryOf(MediaUseCase::GetAllMedias)
-    factoryOf(MediaUseCase::AddMedia)
+    factoryOf(MediaUseCase::ObserveAll)
+    factoryOf(MediaUseCase::ObserveByUid)
+    factoryOf(MediaUseCase::Insert)
     factoryOf(MediaUseCase::UpdateMedia)
-    factoryOf(MediaUseCase::DeleteMedia)
-
-    factoryOf(NoteAndMediaUseCase::GetAllNotesAndMedia)
-    factoryOf(NoteAndMediaUseCase::AddNoteAndMedia)
-    factoryOf(NoteAndMediaUseCase::UpdateNoteAndMedia)
-    factoryOf(NoteAndMediaUseCase::DeleteNoteAndMedia)
+    factoryOf(MediaUseCase::DeleteById)
 
     factoryOf(ReminderUseCase::ObserveById)
     factoryOf(ReminderUseCase::Insert)
