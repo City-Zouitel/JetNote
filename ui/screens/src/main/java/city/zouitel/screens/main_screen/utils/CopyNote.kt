@@ -18,7 +18,7 @@ fun copyNote(
 //    dataModel.addData(note.copy(uid = uid.toString()))
     dataModel.sendUiEvent(UiEvent.Insert(note.copy(uid = uid)))
     //
-//    "${ctx.filesDir.path}/${CommonConstants.IMG_DIR}/".apply {
+//    "${ctx.filesDir.uri}/${CommonConstants.IMG_DIR}/".apply {
 //        File("$this${note.uid}.${CommonConstants.JPEG}").let {
 //            if (it.exists()) it.copyTo(File("${this}${uid}.${CommonConstants.JPEG}"))
 //        }
