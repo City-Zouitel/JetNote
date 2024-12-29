@@ -15,7 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -24,52 +24,43 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.logic.events.UiEvent
-import city.zouitel.media.model.NoteAndMedia
+import city.zouitel.logic.events.UiEvents
 import coil.request.ImageRequest
 import me.saket.telephoto.zoomable.coil.ZoomableAsyncImage
 import me.saket.telephoto.zoomable.rememberZoomableImageState
 import me.saket.telephoto.zoomable.rememberZoomableState
 
 data class MediaScreen(
-    val id: String,
+    val uid: String,
     val backgroundColor: Int = 0,
 ): Screen {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     override fun Content() {
-        Media(
-            mediaModel = getScreenModel(),
-            noteAndMediaModel = getScreenModel(),
-        )
+        val mediaModel = getScreenModel<MediaScreenModel>()
+
+        LaunchedEffect(true) {
+            mediaModel.initializeUid(uid)
+        }
+
+        Media(mediaModel = mediaModel)
     }
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    private fun Media(
-        mediaModel: MediaScreenModel,
-        noteAndMediaModel: NoteAndMediaScreenModel,
-    ) {
+    private fun Media(mediaModel: MediaScreenModel) {
         val context = LocalContext.current
         val vibe = LocalHapticFeedback.current
 
-        val observeMedias by remember(mediaModel, mediaModel::allMedias).collectAsState()
-        val observeNotesAndMedia by remember(
-            noteAndMediaModel,
-            noteAndMediaModel::getAllNotesAndMedia
-        ).collectAsState()
+        val observeMedias by remember(mediaModel, mediaModel::observeByUid).collectAsStateWithLifecycle()
 
-        val filteredMedias = observeMedias.filter {
-            observeNotesAndMedia.contains(
-                NoteAndMedia(id, it.id)
-            )
-        }
-        val pagerState = rememberPagerState { filteredMedias.size }
+        val pagerState = rememberPagerState { observeMedias.size }
         val zoomState = rememberZoomableState()
 
-        if (filteredMedias.isNotEmpty()) {
+        if (observeMedias.isNotEmpty()) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = Color(backgroundColor)),
                 modifier = Modifier
@@ -82,13 +73,13 @@ data class MediaScreen(
                             .fillMaxSize()
                             .background(Color(backgroundColor)),
                         badge = {
-                            if (filteredMedias.count() > 1) {
+                            if (observeMedias.count() > 1) {
                                 Badge(
                                     modifier = Modifier.padding(15.dp),
                                     contentColor = Color.White.copy(alpha = .5f),
                                     containerColor = Color.Black.copy(alpha = .5f)
                                 ) {
-                                    Text(text = "${index + 1}/${filteredMedias.count()}")
+                                    Text(text = "${index + 1}/${observeMedias.count()}")
                                 }
                             }
                         }
@@ -99,8 +90,7 @@ data class MediaScreen(
                             modifier = Modifier.combinedClickable(
                                 onLongClick = {
                                     vibe.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    mediaModel.sendUiEvent(UiEvent.Delete(filteredMedias[index]))
-                                    noteAndMediaModel.sendUiEvent(UiEvent.Delete(NoteAndMedia(id, filteredMedias[index].id)))
+                                    mediaModel.sendUiEvent(UiEvents.Delete(observeMedias[index].id))
                                 }
                             ) { /*do nothing..*/ }
                         ) {
@@ -108,14 +98,10 @@ data class MediaScreen(
                                 ZoomableAsyncImage(
                                     state = rememberZoomableImageState(zoomState),
                                     model = ImageRequest.Builder(context)
-                                        .data(filteredMedias[index].path)
+                                        .data(observeMedias[index].uri)
                                         .build(),
                                     contentDescription = null
                                 )
-                            }.onSuccess {
-                                println("*************************************")
-                                println(filteredMedias[index].path)
-                                println("*************************************")
                             }
                         }
                     }
