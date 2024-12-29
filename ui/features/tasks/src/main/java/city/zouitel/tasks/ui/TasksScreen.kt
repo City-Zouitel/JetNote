@@ -77,7 +77,7 @@ data class TasksScreen(val uid: String): Screen {
         val observeTaskList by remember(taskModel, taskModel::getAllTaskList).collectAsStateWithLifecycle()
         val uiState by remember(taskModel, taskModel::uiState).collectAsStateWithLifecycle()
 
-        val focusRequester = remember { FocusRequester() }
+        val focusRequester by lazy { FocusRequester() }
         LaunchedEffect(Unit) { focusRequester.requestFocus() }
 
         Scaffold(
@@ -165,13 +165,12 @@ data class TasksScreen(val uid: String): Screen {
                         placeholder = "Task..",
                         imeAction = ImeAction.Done,
                         keyboardActions = KeyboardActions {
-
-                            if (observeTaskList.any { it.id == uiState.currentId }) {
-                                taskModel.sendUiEvent(UiEvents.Update(Task(id = uiState.currentId, uid = uid, item = uiState.currentItem)))
+                            val taskToUpdate = observeTaskList.find { it.id == uiState.currentId }
+                            if (taskToUpdate != null) {
+                                taskModel.sendUiEvent(UiEvents.Update(taskToUpdate.copy(item = uiState.currentItem)))
                             } else {
-                                Random.nextLong().let {
-                                    taskModel.sendUiEvent(UiEvents.Insert(Task(it, uid, uiState.currentItem)))
-                                }
+                                val newTaskId = Random.nextLong()
+                                taskModel.sendUiEvent(UiEvents.Insert(Task(newTaskId, uid, uiState.currentItem)))
                             }
                             taskModel.updateId().updateItem()
                         }
