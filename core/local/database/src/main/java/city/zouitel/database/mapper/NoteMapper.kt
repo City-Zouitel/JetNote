@@ -7,8 +7,7 @@ class NoteMapper(
     private val dataMapper: DataMapper,
     private val tagMapper: TagMapper,
     private val linkMapper: LinkMapper,
-    private val audioMapper: AudioMapper,
-    private val mediaMapper: MediaMapper
+    private val audioMapper: AudioMapper
 ) {
     fun toRepo(notes: List<InNote>) = notes.map { toRepo(it) }
 
@@ -17,8 +16,7 @@ class NoteMapper(
             dataEntity = dataMapper.toRepo(dataEntity),
             tagEntities = tagEntities.map { tagMapper.toRepo(it) },
             linkEntities = linkEntities.map { linkMapper.toRepo(it) },
-            audioEntities = audioEntities.map { audioMapper.toRepo(it) },
-            mediaEntities = mediaEntities.map { mediaMapper.toRepo(it) }
+            audioEntities = audioEntities.map { audioMapper.toRepo(it) }
         )
     }
 }
