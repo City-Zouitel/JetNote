@@ -1,7 +1,7 @@
 package city.zouitel.media.mapper
 
-import city.zouitel.media.model.Media as InMedia
 import city.zouitel.domain.model.Media as OutMedia
+import city.zouitel.media.model.Media as InMedia
 
 class MediaMapper {
 
@@ -9,13 +9,15 @@ class MediaMapper {
 
     fun toDomain(media: InMedia) = OutMedia(
         id = media.id,
+        uid = media.uid,
         isVideo = media.isVideo,
-        path = media.path
+        uri = media.uri
     )
 
     fun fromDomain(media: OutMedia) = InMedia(
         id = media.id,
+        uid = media.uid,
         isVideo = media.isVideo,
-        path = media.path
+        uri = media.uri
     )
 }
