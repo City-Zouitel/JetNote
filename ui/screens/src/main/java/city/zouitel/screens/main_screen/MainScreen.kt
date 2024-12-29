@@ -48,7 +48,6 @@ import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.media.ui.MediaScreenModel
-import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.screens.main_screen.utils.HomeSelectionTopAppBar
@@ -94,7 +93,6 @@ data class MainScreen(val isHome: Boolean): Screen {
             noteAndLinkModel = getScreenModel(),
             datastoreModel = getScreenModel(),
             mediaModel = getScreenModel(),
-            noteAndMediaModel = getScreenModel(),
             navigationDrawerModel = getScreenModel(),
         )
     }
@@ -117,7 +115,6 @@ data class MainScreen(val isHome: Boolean): Screen {
         linkModel: LinkScreenModel,
         noteAndLinkModel: NoteAndLinkScreenModel,
         mediaModel: MediaScreenModel,
-        noteAndMediaModel: NoteAndMediaScreenModel,
         navigationDrawerModel: NavigationDrawerScreenModel,
     ) {
         val context = LocalContext.current
@@ -280,7 +277,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     isHomeScreen = uiState.isHomeScreen,
                                     noteEntity = entity,
                                     mediaModel = mediaModel,
-                                    noteAndMediaModel = noteAndMediaModel
                                 ) {
                                     dataModel.sendUiEvent(UiEvent.Update(it.dataEntity.copy(removed = 1)))
                                     // to.do cancel the alarm manager reminder.
@@ -312,7 +308,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     isHomeScreen = uiState.isHomeScreen,
                                     noteEntity = entity,
                                     mediaModel = mediaModel,
-                                    noteAndMediaModel = noteAndMediaModel
                                 ) {
 
                                 }
