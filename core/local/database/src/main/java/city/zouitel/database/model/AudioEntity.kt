@@ -1,6 +1,8 @@
 package city.zouitel.database.model
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import city.zouitel.database.utils.Constants.AUDIOS
 import city.zouitel.database.utils.Constants.DURATION
 import city.zouitel.database.utils.Constants.ID
