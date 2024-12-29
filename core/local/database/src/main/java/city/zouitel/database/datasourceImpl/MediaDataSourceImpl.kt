@@ -11,18 +11,22 @@ class MediaDataSourceImpl(
     private val dao: MediaDao,
     private val mapper: MediaMapper
 ): MediaDataSource {
-    override val getAllMedias: Flow<List<Media>>
-        get() = dao.getAllMedias().map { medias -> mapper.toRepo(medias) }
+    override val observeAll: Flow<List<Media>>
+        get() = dao.observeAll.map { mapper.toRepo(it) }
 
-    override fun addMedia(media: Media) {
-        dao.addMedia(mapper.fromRepo(media))
+    override fun observeByUid(uid: String): Flow<List<Media>> {
+        return dao.observeByUid(uid).map { mapper.toRepo(it) }
+    }
+
+    override fun insert(media: Media) {
+        dao.insert(mapper.fromRepo(media))
     }
 
     override fun updateMedia(media: Media) {
         dao.updateMedia(mapper.fromRepo(media))
     }
 
-    override fun deleteMedia(media: Media) {
-        dao.deleteMedia(mapper.fromRepo(media))
+    override fun deleteById(id: Long) {
+        dao.deleteById(id)
     }
 }
