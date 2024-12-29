@@ -58,11 +58,11 @@ import java.io.File
 //    var eraseState by remember { mutableStateOf(false) }
 //
 //    // TODO: move to viewmodel
-//    val path = File(context.filesDir.path + "/" + IMG_DIR, "$uid.$JPEG")
-//    val bitImg = BitmapFactory.decodeFile(path.absolutePath)
+//    val uri = File(context.filesDir.uri + "/" + IMG_DIR, "$uid.$JPEG")
+//    val bitImg = BitmapFactory.decodeFile(uri.absolutePath)
 //
 //    val bitmap = remember { mutableStateOf<Bitmap?>(bitImg) }
-//    val imagesPath = context.filesDir.path + "/" + IMG_DIR
+//    val imagesPath = context.filesDir.uri + "/" + IMG_DIR
 //
 //    val colorPickerDialogState = remember { mutableStateOf(false) }
 //    var currentBrushSize by remember { mutableFloatStateOf(0f) }
