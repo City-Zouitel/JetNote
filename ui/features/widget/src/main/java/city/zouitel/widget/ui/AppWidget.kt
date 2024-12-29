@@ -3,24 +3,35 @@ package city.zouitel.widget.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.glance.*
+import androidx.glance.GlanceId
+import androidx.glance.GlanceModifier
+import androidx.glance.LocalContext
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.provideContent
-import androidx.glance.layout.*
+import androidx.glance.background
+import androidx.glance.layout.Column
+import androidx.glance.layout.Row
+import androidx.glance.layout.Spacer
+import androidx.glance.layout.fillMaxWidth
+import androidx.glance.layout.height
+import androidx.glance.layout.padding
+import androidx.glance.layout.width
 import androidx.glance.text.Text
 import androidx.glance.unit.ColorProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.media.model.NoteAndMedia
 import city.zouitel.media.ui.MediaScreenModel
-import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.widget.model.WidgetNote
 
 class AppWidget: GlanceAppWidget(), Screen {
@@ -35,10 +46,8 @@ class AppWidget: GlanceAppWidget(), Screen {
         val context = LocalContext.current
         val widgetModel = getScreenModel<WidgetScreenModel>()
         val mediaModel = getScreenModel<MediaScreenModel>()
-        val noteAndMediaModel = getScreenModel<NoteAndMediaScreenModel>()
         val notes: List<WidgetNote>? by remember(widgetModel, widgetModel::allNotesById).collectAsState()
-        val observeMedias by remember(mediaModel, mediaModel::allMedias).collectAsState()
-        val observeNotesAndMedia by remember(noteAndMediaModel, noteAndMediaModel::getAllNotesAndMedia).collectAsState()
+        val observeMedias by remember(mediaModel, mediaModel::observeAll).collectAsStateWithLifecycle()
 
         LazyColumn(
             modifier = GlanceModifier
@@ -46,11 +55,7 @@ class AppWidget: GlanceAppWidget(), Screen {
             items(
                 items = notes ?: emptyList()
             ) { entity ->
-                val filteredMedias = observeMedias.filter {
-                    observeNotesAndMedia.contains(
-                        NoteAndMedia(entity.dataEntity.uid, it.id)
-                    )
-                }
+                val filteredMedias = observeMedias.filter { it.uid == entity.dataEntity.uid }
                 val pagerState = rememberPagerState { filteredMedias.size }
 
                 Column {
@@ -88,7 +93,7 @@ class AppWidget: GlanceAppWidget(), Screen {
 //                                        runCatching {
 //                                            AsyncImage(
 //                                                model = ImageRequest.Builder(context)
-//                                                    .data(filteredMedias[index].path)
+//                                                    .data(filteredMedias[index].uri)
 //                                                    .build(),
 //                                                contentDescription = null
 //                                            )
