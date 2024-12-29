@@ -8,7 +8,6 @@ import city.zouitel.database.dao.LinkDao
 import city.zouitel.database.dao.MediaDao
 import city.zouitel.database.dao.NoteAndAudioDao
 import city.zouitel.database.dao.NoteAndLinkDao
-import city.zouitel.database.dao.NoteAndMediaDao
 import city.zouitel.database.dao.NoteAndTagDao
 import city.zouitel.database.dao.NoteDao
 import city.zouitel.database.dao.ReminderDao
@@ -18,17 +17,16 @@ import city.zouitel.database.dao.WidgetDao
 import city.zouitel.database.model.AudioEntity
 import city.zouitel.database.model.DataEntity
 import city.zouitel.database.model.LinkEntity
-import city.zouitel.database.model.MediaEntity
+import city.zouitel.database.model.Media
 import city.zouitel.database.model.NoteAndAudioEntity
 import city.zouitel.database.model.NoteAndLinkEntity
-import city.zouitel.database.model.NoteAndMediaEntity
 import city.zouitel.database.model.NoteAndTagEntity
 import city.zouitel.database.model.Reminder
 import city.zouitel.database.model.TagEntity
 import city.zouitel.database.model.Task
 
 @Database(
-    version = 2,
+    version = 3,
     autoMigrations = [],
     entities = [
         DataEntity::class,
@@ -39,8 +37,7 @@ import city.zouitel.database.model.Task
         NoteAndLinkEntity::class,
         AudioEntity::class,
         NoteAndAudioEntity::class,
-        MediaEntity::class,
-        NoteAndMediaEntity::class,
+        Media::class,
         Reminder::class
     ],
     exportSchema = true
@@ -57,6 +54,5 @@ abstract class Database: RoomDatabase() {
     abstract fun getAudioDao(): AudioDao
     abstract fun getNoteAndAudioDao(): NoteAndAudioDao
     abstract fun getMediaDao(): MediaDao
-    abstract fun getNoteAndMediaDao(): NoteAndMediaDao
     abstract fun getReminderDao(): ReminderDao
 }
