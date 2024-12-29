@@ -4,12 +4,13 @@ import city.zouitel.repository.model.Media
 import kotlinx.coroutines.flow.Flow
 
 interface MediaDataSource {
+    val observeAll: Flow<List<Media>>
 
-    val getAllMedias: Flow<List<Media>>
+    fun observeByUid(uid: String): Flow<List<Media>>
 
-    fun addMedia(media: Media)
+    fun insert(media: Media)
 
     fun updateMedia(media: Media)
 
-    fun deleteMedia(media: Media)
+    fun deleteById(id: Long)
 }
