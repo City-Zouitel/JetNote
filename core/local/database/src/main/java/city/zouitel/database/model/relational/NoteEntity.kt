@@ -6,10 +6,8 @@ import androidx.room.Relation
 import city.zouitel.database.model.AudioEntity
 import city.zouitel.database.model.DataEntity
 import city.zouitel.database.model.LinkEntity
-import city.zouitel.database.model.MediaEntity
 import city.zouitel.database.model.NoteAndAudioEntity
 import city.zouitel.database.model.NoteAndLinkEntity
-import city.zouitel.database.model.NoteAndMediaEntity
 import city.zouitel.database.model.NoteAndTagEntity
 import city.zouitel.database.model.TagEntity
 import city.zouitel.database.utils.Constants.ID
@@ -43,14 +41,5 @@ data class NoteEntity(
             entityColumn = "audioId"
         )
     )
-    val audioEntities: List<AudioEntity>,
-    @Relation(
-        parentColumn = UUID, entityColumn = ID, entity = MediaEntity::class,
-        associateBy = Junction(
-            NoteAndMediaEntity::class,
-            parentColumn = "noteUid",
-            entityColumn = "mediaId"
-        )
-    )
-    val mediaEntities: List<MediaEntity>
+    val audioEntities: List<AudioEntity>
 )
