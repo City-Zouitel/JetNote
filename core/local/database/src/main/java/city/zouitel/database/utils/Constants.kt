@@ -6,7 +6,6 @@ internal object Constants {
     const val LABELS = "labels_table"
     const val LINKS = "links_table"
     const val AUDIOS = "audios_table"
-    const val MEDIA = "media_table"
 
     const val DATABASE = "jet_note_database"
 
@@ -20,7 +19,7 @@ internal object Constants {
     const val UUID = "universally_unique_identifier"
     const val REMOVED = "removed"
     const val URL = "url"
-    const val URI = "uri"
+    const val URI = "uniform_resource_identifier"
     const val PATH = "media_path"
     const val FORMAT = "media_format"
     const val SIZE = "media_size"
@@ -32,6 +31,11 @@ internal object Constants {
     const val DONE = "is_task_done"
     const val TIME = "exact_time_to_remind"
     const val PASSED = "is_reminder_passed"
+    const val VIDEO = "is_this_media-a_video"
+
+    const val DEFAULT_NUM = "0"
+    const val DEFAULT_BOOLEAN = "false"
+    const val DEFAULT_TXT = ""
 
     const val JPEG = "jpeg"
 
