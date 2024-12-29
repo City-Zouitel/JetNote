@@ -10,9 +10,22 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
 context (Context)
+/**
+ * Plays a sound effect if the Boolean value is true.
+ *
+ * This infix function extends the [Boolean] class and provides a convenient way to conditionally
+ * play a sound effect using the system's [AudioManager].
+ *
+ * @receiver The [Boolean] value that determines whether the sound effect will be played.
+ *           If `true`, the sound effect will be played; otherwise, no action is taken.
+ * @param audioManager The sound effect ID from [AudioManager]. For example, [AudioManager.FX_KEYPRESS_STANDARD].
+ * @throws ClassCastException If the system's audio service cannot be cast to [AudioManager].
+ * @throws SecurityException If the calling application is not allowed to play sound effects.
+ */
 infix fun Boolean.makeSoundFor(audioManager: Int) {
     val systemService = this@Context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
@@ -62,4 +75,34 @@ fun <T> Flow<T>.asLogicFlow(initialValue: T): StateFlow<T> {
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = initialValue
     )
+}
+
+context(ScreenModel)
+    /**
+     * Converts a [Flow] into a "logic flow" that behaves like a shared, hot flow with an initial value and a startup action.
+     *
+     * This function takes an existing [Flow] and transforms it into a state-backed flow that:
+     *  - Shares its emissions among multiple collectors.
+     *  - Retains the latest emitted value as its state.
+     *  - Starts collecting upstream only when there are active collectors (hot).
+     *  - Replays the last emitted value to new collectors.
+     *  - Executes a specified [onStart] action when the flow starts being collected.
+     *  - Keeps collecting for 5 seconds after the last collector disappears before stopping.
+     *
+     * This is particularly useful for representing the state of UI logic or other business logic that needs to be shared across
+     * multiple observers (e.g., UI components) and needs an initial value.
+     *
+     * @param T The type of the items emitted by the flow.
+     * @param initialValue The initial value of the state. This value will be emitted immediately to new collectors.
+     * @param onStart A lambda function that will be executed when the flow starts being collected. This is useful for
+     *                performing setup or triggering initial actions.
+     * @return A [Flow] that shares its emissions, retains the latest value, starts lazily, and executes the [onStart] action.
+     * @receiver The [Flow] to be converted into a logic flow.
+     */
+    fun <T> Flow<T>.asLogicFlow(initialValue: T, onStart: () -> Unit): StateFlow<T> {
+        return this@asLogicFlow.onStart { onStart.invoke() }.stateIn(
+            scope = screenModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = initialValue
+        )
 }
