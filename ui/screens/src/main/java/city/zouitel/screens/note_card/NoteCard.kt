@@ -53,6 +53,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastLastOrNull
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.audios.model.NoteAndAudio
@@ -64,9 +65,7 @@ import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.events.UiEvents
-import city.zouitel.media.model.NoteAndMedia
 import city.zouitel.media.ui.MediaScreenModel
-import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.model.Note
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.screens.main_screen.MainScreenModel
@@ -97,7 +96,6 @@ fun NoteCard(
     noteEntity: Note,
     homeModel: MainScreenModel,
     mediaModel: MediaScreenModel,
-    noteAndMediaModel: NoteAndMediaScreenModel,
     onSwipeNote: (Note) -> Unit,
 ) {
     val currentLayout by remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
@@ -120,7 +118,6 @@ fun NoteCard(
                 isHomeScreen = isHomeScreen,
                 mainModel = homeModel,
                 mediaModel = mediaModel,
-                noteAndMediaModel = noteAndMediaModel
             )
         }
     } else {
@@ -135,7 +132,6 @@ fun NoteCard(
             isHomeScreen = isHomeScreen,
             mainModel = homeModel,
             mediaModel = mediaModel,
-            noteAndMediaModel = noteAndMediaModel
         )
     }
 }
@@ -153,7 +149,6 @@ private fun Card(
     isHomeScreen: Boolean,
     mainModel: MainScreenModel,
     mediaModel: MediaScreenModel,
-    noteAndMediaModel: NoteAndMediaScreenModel
 ) {
     val note = noteEntity.dataEntity
     val labels = noteEntity.tagEntities
@@ -162,7 +157,6 @@ private fun Card(
     val haptic = LocalHapticFeedback.current
     val navigator = LocalNavigator.current
     val navBottomSheet = LocalBottomSheetNavigator.current
-
 
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val observeAllTasks by remember(taskModel, taskModel::observeAllTasks).collectAsState()
@@ -177,18 +171,9 @@ private fun Card(
     var todoListState by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
-    val observeMedias by remember(mediaModel, mediaModel::allMedias).collectAsState()
-    val observeNotesAndMedia by remember(
-        noteAndMediaModel,
-        noteAndMediaModel::getAllNotesAndMedia
-    ).collectAsState()
-
-    val filteredMedias = observeMedias.filter {
-        observeNotesAndMedia.contains(
-            NoteAndMedia(note.uid, it.id)
-        )
-    }
-    val pagerState = rememberPagerState { filteredMedias.size }
+    val observeMedias by remember(mediaModel, mediaModel::observeAll).collectAsStateWithLifecycle()
+    val filteredMedia = observeMedias.filter { it.uid == note.uid }
+    val mediaCount = rememberPagerState { filteredMedia.size }
 
     Card(
         modifier = Modifier
@@ -256,9 +241,10 @@ private fun Card(
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
 
     ) {
-        if (filteredMedias.isNotEmpty()) {
+        // Media display.
+        if (filteredMedia.isNotEmpty()) {
             HorizontalPager(
-                state = pagerState,
+                state = mediaCount,
                 modifier = Modifier.background(Color(note.color))
             ) { index ->
                 BadgedBox(
@@ -266,13 +252,13 @@ private fun Card(
                         .fillMaxWidth()
                         .background(Color(note.color)),
                     badge = {
-                        if (filteredMedias.count() > 1) {
+                        if (filteredMedia.count() > 1) {
                             Badge(
                                 modifier = Modifier.padding(3.dp),
                                 contentColor = Color.White.copy(alpha = .5f),
                                 containerColor = Color.Black.copy(alpha = .5f)
                             ) {
-                                Text(text = "${index + 1}/${filteredMedias.count()}")
+                                Text(text = "${index + 1}/${filteredMedia.count()}")
                             }
                         }
                     }
@@ -284,7 +270,7 @@ private fun Card(
                         runCatching {
                             AsyncImage(
                                 model = ImageRequest.Builder(context)
-                                    .data(filteredMedias[index].path)
+                                    .data(filteredMedia[index].uri)
                                     .build(),
                                 contentDescription = null
                             )
