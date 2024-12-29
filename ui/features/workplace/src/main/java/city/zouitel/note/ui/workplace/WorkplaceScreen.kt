@@ -75,10 +75,8 @@ import city.zouitel.logic.events.UiEvent
 import city.zouitel.logic.events.UiEvents
 import city.zouitel.logic.findUrlLink
 import city.zouitel.media.model.Media
-import city.zouitel.media.model.NoteAndMedia
 import city.zouitel.media.ui.MediaScreen
 import city.zouitel.media.ui.MediaScreenModel
-import city.zouitel.media.ui.NoteAndMediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.BottomBar
 import city.zouitel.note.ui.utils.TextField
@@ -133,7 +131,6 @@ data class WorkplaceScreen(
             audioModel = getScreenModel(),
             noteAndAudioModel = getScreenModel(),
             mediaModel = getScreenModel(),
-            noteAndMediaModel = getScreenModel(),
             reminderModel = getScreenModel(),
             alarmModel = getScreenModel(),
             workspaceModel = workspaceModel
@@ -154,7 +151,6 @@ data class WorkplaceScreen(
         audioModel: AudioScreenModel,
         noteAndAudioModel: NoteAndAudioScreenModel,
         mediaModel: MediaScreenModel,
-        noteAndMediaModel: NoteAndMediaScreenModel,
         reminderModel: ReminderScreenModel,
         alarmModel: AlarmManagerScreenModel,
         workspaceModel: WorkplaceScreenModel
@@ -206,8 +202,7 @@ data class WorkplaceScreen(
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
                 Random.nextLong().let {
-                    mediaModel.sendUiEvent(UiEvent.Insert(Media(id = it, path = uri.toString())))
-                    noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(uid, it)))
+                    mediaModel.sendUiEvent(UiEvents.Insert(Media(id = it,uid = uid, uri = uri.toString())))
                 }
             }
         }
@@ -245,7 +240,7 @@ data class WorkplaceScreen(
                 item {
                     Navigator(
                         MediaScreen(
-                            id = uid,
+                            uid = uid,
                             backgroundColor = uiState.backgroundColor,
                         )
                     )
@@ -255,7 +250,7 @@ data class WorkplaceScreen(
                 item {
                     TextField(
                         state = titleState,
-                        receiver = mediaInsert(mediaModel, noteAndMediaModel),
+                        receiver = mediaInsert(mediaModel),
                         modifier = Modifier
                             .height(50.dp)
                             .focusRequester(focus)
@@ -276,7 +271,7 @@ data class WorkplaceScreen(
                 item {
                     TextField(
                         state = descriptionState,
-                        receiver = mediaInsert(mediaModel, noteAndMediaModel),
+                        receiver = mediaInsert(mediaModel),
                         modifier = Modifier
                             .height(200.dp)
                             .onFocusEvent {
@@ -448,13 +443,9 @@ data class WorkplaceScreen(
         }
     }
 
-    private fun mediaInsert(
-        mediaModel: MediaScreenModel,
-        noteAndMediaModel: NoteAndMediaScreenModel
-    ): (Uri) -> Unit = { uri ->
+    private fun mediaInsert(mediaModel: MediaScreenModel): (Uri) -> Unit = { uri ->
         Random.nextLong().let {
-            mediaModel.sendUiEvent(UiEvent.Insert(Media(id = it, path = uri.toString())))
-            noteAndMediaModel.sendUiEvent(UiEvent.Insert(NoteAndMedia(uid, it)))
+            mediaModel.sendUiEvent(UiEvents.Insert(Media(id = it, uri = uri.toString())))
         }
     }
 }
