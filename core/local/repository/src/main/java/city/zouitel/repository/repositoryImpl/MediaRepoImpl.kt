@@ -11,18 +11,22 @@ class MediaRepoImpl(
     private val dataSource: MediaDataSource,
     private val mapper: MediaMapper
 ): MediaRepository {
-    override val getAllMedias: Flow<List<Media>>
-        get() = dataSource.getAllMedias.map { audios -> mapper.toDomain(audios) }
+    override val observeAll: Flow<List<Media>>
+        get() = dataSource.observeAll.map { mapper.toDomain(it) }
 
-    override fun addMedia(media: Media) {
-        dataSource.addMedia(mapper.fromDomain(media))
+    override fun observeByUid(uid: String): Flow<List<Media>> {
+        return dataSource.observeByUid(uid).map { mapper.toDomain(it) }
+}
+
+    override fun insert(media: Media) {
+        dataSource.insert(mapper.fromDomain(media))
     }
 
     override fun updateMedia(media: Media) {
         dataSource.updateMedia(mapper.fromDomain(media))
     }
 
-    override fun deleteMedia(media: Media) {
-        dataSource.deleteMedia(mapper.fromDomain(media))
+    override fun deleteById(id: Long) {
+        dataSource.deleteById(id)
     }
 }
