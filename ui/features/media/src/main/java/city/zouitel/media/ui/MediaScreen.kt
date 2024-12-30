@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.logic.events.UiEvents
+import city.zouitel.domain.utils.Action
 import coil.request.ImageRequest
 import me.saket.telephoto.zoomable.coil.ZoomableAsyncImage
 import me.saket.telephoto.zoomable.rememberZoomableImageState
@@ -90,7 +90,7 @@ data class MediaScreen(
                             modifier = Modifier.combinedClickable(
                                 onLongClick = {
                                     vibe.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    mediaModel.sendUiEvent(UiEvents.Delete(observeMedias[index].id))
+                                    mediaModel.sendAction(Action.Delete(observeMedias[index].id))
                                 }
                             ) { /*do nothing..*/ }
                         ) {
