@@ -71,7 +71,7 @@ class AlarmManagerScreenModel(
     override fun sendUiEvent(event: UiEvent<Int>) {
         when(event) {
             is UiEvent.Update -> performUiEvent { updateReminder(event.data) }
-            else -> throw NotImplementedError("UiEvent not implemented: $event")
+            else -> throw NotImplementedError("Action not implemented: $event")
         }
     }
 
