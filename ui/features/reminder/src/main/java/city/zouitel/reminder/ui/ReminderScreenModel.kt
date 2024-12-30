@@ -37,7 +37,7 @@ class ReminderScreenModel(
             is UiEvent.Delete -> performUiEvent { delete(event.data.id) }
             is UiEvent.Insert -> performUiEvent { insert(mapper.toDomain(event.data)) }
             is UiEvent.DeleteAll -> performUiEvent { deleteAll() }
-            else -> throw NotImplementedError("UiEvent not implemented: $event")
+            else -> throw NotImplementedError("Action not implemented: $event")
         }
     }
 
