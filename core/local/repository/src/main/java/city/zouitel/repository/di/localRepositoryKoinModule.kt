@@ -147,7 +147,6 @@ val localRepositoryKoinModule = module {
     factoryOf(MediaUseCase::ObserveAll)
     factoryOf(MediaUseCase::ObserveByUid)
     factoryOf(MediaUseCase::Insert)
-    factoryOf(MediaUseCase::UpdateMedia)
     factoryOf(MediaUseCase::DeleteById)
 
     factoryOf(ReminderUseCase::ObserveById)
