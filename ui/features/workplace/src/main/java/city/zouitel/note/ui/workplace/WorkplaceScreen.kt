@@ -66,6 +66,7 @@ import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.BasicAudioScreen
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
+import city.zouitel.domain.utils.Action
 import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.CacheLinks
 import city.zouitel.links.ui.LinkCard
@@ -202,7 +203,7 @@ data class WorkplaceScreen(
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
                 Random.nextLong().let {
-                    mediaModel.sendUiEvent(UiEvents.Insert(Media(id = it,uid = uid, uri = uri.toString())))
+                    mediaModel.sendAction(Action.Insert(Media(id = it,uid = uid, uri = uri.toString())))
                 }
             }
         }
@@ -445,7 +446,7 @@ data class WorkplaceScreen(
 
     private fun mediaInsert(mediaModel: MediaScreenModel): (Uri) -> Unit = { uri ->
         Random.nextLong().let {
-            mediaModel.sendUiEvent(UiEvents.Insert(Media(id = it, uri = uri.toString())))
+            mediaModel.sendAction(Action.Insert(Media(id = it, uri = uri.toString())))
         }
     }
 }
