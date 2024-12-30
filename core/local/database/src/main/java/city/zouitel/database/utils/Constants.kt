@@ -21,11 +21,9 @@ internal object Constants {
     const val URL = "url"
     const val URI = "uniform_resource_identifier"
     const val PATH = "media_path"
-    const val FORMAT = "media_format"
     const val SIZE = "media_size"
     const val HOST = "host"
     const val DURATION = "media_duration"
-    const val REMINDING = "reminding"
     const val IMG_LINK = "imageLink"
     const val LABEL = "label"
     const val DONE = "is_task_done"
@@ -37,11 +35,7 @@ internal object Constants {
     const val DEFAULT_BOOLEAN = "false"
     const val DEFAULT_TXT = ""
 
-    const val JPEG = "jpeg"
-
     const val NON = "non_specified"
-
-    const val KEY_CLICK = 0
 
     const val PASS = "crypticpass.bin"
 }
