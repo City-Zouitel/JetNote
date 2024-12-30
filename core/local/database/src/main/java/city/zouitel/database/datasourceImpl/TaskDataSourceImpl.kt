@@ -3,7 +3,6 @@ package city.zouitel.database.datasourceImpl
 import city.zouitel.database.dao.TaskDao
 import city.zouitel.database.mapper.TaskMapper
 import city.zouitel.repository.datasource.TaskDataSource
-import city.zouitel.repository.model.Task
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import city.zouitel.repository.model.Task as OutTask
@@ -24,36 +23,33 @@ class TaskDataSourceImpl(
 ): TaskDataSource {
 
     /**
-     * A [Flow] that emits a list of [Task] objects representing all tasks in the data source.
+     * A [Flow] that emits a list of all [OutTask]s in the repository.
      *
-     * This observable flow is derived from the underlying data access object (DAO)'s `observeAll`
-     * method, which provides a flow of data layer [Task] objects.  This property then
-     * maps that flow into a flow of domain layer Task objects using the provided [mapper].
+     * This flow is backed by the underlying [dao.observeAll] flow from the DAO.
+     * It transforms the list of database entities emitted by the DAO into a list of
+     * repository-level [OutTask] objects using the [mapper].
      *
-     * Each emission represents a snapshot of the current state of all tasks in the data source.
-     * Any changes to the tasks in the data source will result in a new emission containing
-     * the updated list.
-     *
-     * @see dao.observeAll for the underlying flow of data layer entities.
-     * @see mapper.toRepo for the transformation logic from data layer entities to domain objects.
+     * Each emission of the underlying DAO flow will result in a new list of
+     * [OutTask]s being emitted by this flow, reflecting any changes in the
+     * database.
      */
-    override val observeAll: Flow<List<Task>>
+    override val observeAll: Flow<List<OutTask>>
         get() = dao.observeAll.map { mapper.toRepo(it) }
 
     /**
-     * Observes a list of [Task] entities associated with a specific user ID.
+     * Observes a list of [OutTask] entities associated with a specific user ID (UID).
      *
-     * This function retrieves a stream of tasks from the data source (presumably a database)
-     * that are linked to the provided `uid`. It then transforms the data source's entities
-     * into repository-level [Task] objects using a mapper.
+     * This function retrieves a stream of [OutTask] entities from the underlying data source (DAO)
+     * filtered by the provided [uid]. It then transforms the emitted entities into repository-level
+     * [OutTask] objects using the specified [mapper].
      *
-     * @param uid The unique identifier of the user whose tasks are to be observed.
-     * @return A [Flow] emitting a list of [Task] objects. Each emitted list represents
-     *         the current set of tasks associated with the user ID, reflecting changes
-     *         in the underlying data source.
-     * @throws Exception If any error happens during data fetching or mapping.
+     * @param uid The unique identifier of the user.
+     * @return A [Flow] that emits a list of [OutTask] objects associated with the given [uid].
+     *         The list will be empty if no tasks are found for the specified user.
+     *         The flow will emit updates whenever the data associated with this uid changes in the underlying data source.
+     * @throws Exception Any exception that might occur during data access or mapping will be propagated through the flow.
      */
-    override fun observeByUid(uid: String): Flow<List<Task>> {
+    override fun observeByUid(uid: String): Flow<List<OutTask>> {
         return dao.observeByUid(uid).map { mapper.toRepo(it) }
     }
 
@@ -70,19 +66,15 @@ class TaskDataSourceImpl(
     }
 
     /**
-     * Updates an existing [Task] in the data source.
+     * Updates an existing task in the data source.
      *
-     * This function updates the task in the underlying data source using the provided [Task] object.
-     * It first converts the domain [Task] object to a database-friendly entity using the [mapper].
-     * Then, it utilizes the [dao] to perform the actual update operation.
+     * This function takes an [OutTask] object, maps it to a database entity using the [mapper],
+     * and then delegates the update operation to the [dao].
      *
-     * This function is a suspending function, meaning it can be safely called within a coroutine.
-     *
-     * @param task The [Task] object containing the updated information.
-     * @throws Exception if there is any error during the update operation. This can include database exceptions
-     * or mapping errors.
+     * @param task The [OutTask] object containing the updated information for the task.
+     * @throws Exception if there's an error during the update process (e.g., database error).
      */
-    override suspend fun update(task: Task) {
+    override suspend fun update(task: OutTask) {
         dao.update(mapper.fromRepo(task))
     }
 
