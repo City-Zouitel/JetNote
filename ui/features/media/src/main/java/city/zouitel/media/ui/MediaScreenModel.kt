@@ -3,9 +3,8 @@ package city.zouitel.media.ui
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.MediaUseCase
+import city.zouitel.domain.utils.Action
 import city.zouitel.logic.asLogicFlow
-import city.zouitel.logic.events.UiEvents
-import city.zouitel.logic.events.UiEventsHandler
 import city.zouitel.media.mapper.MediaMapper
 import city.zouitel.media.model.Media
 import kotlinx.coroutines.Dispatchers
@@ -19,12 +18,12 @@ class MediaScreenModel(
     private val insert: MediaUseCase.Insert,
     private val deleteById: MediaUseCase.DeleteById,
     private val mapper: MediaMapper
-): ScreenModel, UiEventsHandler {
+): ScreenModel {
 
     private val _observeAll: MutableStateFlow<List<Media>> = MutableStateFlow(emptyList())
     val observeAll: StateFlow<List<Media>> = _observeAll
         .asLogicFlow(emptyList()) {
-            performUiEvent {
+            act {
                 _observeAll_().collect { _observeAll.value = mapper.fromDomain(it) }
             }
         }
@@ -33,20 +32,20 @@ class MediaScreenModel(
     val observeByUid: StateFlow<List<Media>> = _observeByUid.asLogicFlow(emptyList())
 
     fun initializeUid(uid: String) {
-        performUiEvent {
+        act {
             _observeByUid_(uid).collect { _observeByUid.value = mapper.fromDomain(it) }
         }
     }
 
-    override fun sendUiEvent(event: UiEvents) {
-        when(event) {
-            is UiEvents.Delete<*> -> performUiEvent { deleteById(event.data as Long) }
-            is UiEvents.Insert<*> -> performUiEvent { insert(mapper.toDomain(event.data as Media)) }
+    fun sendAction(action: Action) {
+        when(action) {
+            is Action.Delete<*> -> act { deleteById(action.data as Long) }
+            is Action.Insert<*> -> act { insert(mapper.toDomain(action.data as Media)) }
             else -> throw Exception("Not Implemented!")
         }
     }
 
-    override fun performUiEvent(action: suspend () -> Unit) {
+    private fun act(action: suspend () -> Unit) {
         screenModelScope.launch(Dispatchers.IO) { action.invoke() }
     }
 }
