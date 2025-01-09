@@ -60,10 +60,8 @@ import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.MiniAudioPlayer
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
-import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.events.UiEvents
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.note.model.Note
@@ -91,7 +89,6 @@ fun NoteCard(
     audioModel: AudioScreenModel,
     noteAndAudioModel: NoteAndAudioScreenModel,
     linkModel: LinkScreenModel,
-    noteAndLinkModel: NoteAndLinkScreenModel,
     isHomeScreen: Boolean,
     noteEntity: Note,
     homeModel: MainScreenModel,
@@ -113,7 +110,6 @@ fun NoteCard(
                 noteAndAudioModel = noteAndAudioModel,
                 dataStoreModel = dataStoreModel,
                 linkModel = linkModel,
-                noteAndLinkModel = noteAndLinkModel,
                 noteEntity = noteEntity,
                 isHomeScreen = isHomeScreen,
                 mainModel = homeModel,
@@ -127,7 +123,6 @@ fun NoteCard(
             noteAndAudioModel = noteAndAudioModel,
             dataStoreModel = dataStoreModel,
             linkModel = linkModel,
-            noteAndLinkModel = noteAndLinkModel,
             noteEntity = noteEntity,
             isHomeScreen = isHomeScreen,
             mainModel = homeModel,
@@ -142,7 +137,6 @@ private fun Card(
     taskModel: TaskScreenModel,
     dataStoreModel: DataStoreScreenModel,
     linkModel: LinkScreenModel,
-    noteAndLinkModel: NoteAndLinkScreenModel,
     audioModel: AudioScreenModel,
     noteAndAudioModel: NoteAndAudioScreenModel,
     noteEntity: Note,
@@ -160,9 +154,6 @@ private fun Card(
 
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val observeAllTasks by remember(taskModel, taskModel::observeAllTasks).collectAsState()
-    val observerLinks = remember(linkModel, linkModel::getAllLinks).collectAsState()
-    val observerNoteAndLink =
-        remember(noteAndLinkModel, noteAndLinkModel::getAllNotesAndLinks).collectAsState()
     val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
     val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
         .collectAsState()
@@ -170,6 +161,9 @@ private fun Card(
 
     var todoListState by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+
+    val observerLinks by remember(linkModel, linkModel::observeAll).collectAsState()
+    val filteredLinks = observerLinks.filter { it.uid == note.uid }
 
     val observeMedias by remember(mediaModel, mediaModel::observeAll).collectAsStateWithLifecycle()
     val filteredMedia = observeMedias.filter { it.uid == note.uid }
@@ -350,17 +344,12 @@ private fun Card(
         }
 
         // display link card.
-        observerLinks.value.filter {
-            observerNoteAndLink.value.contains(
-                NoteAndLink(note.uid, it.id)
-            )
-        }.forEach { _link ->
+        filteredLinks.map {
             LinkCard(
                 linkScreenModel = linkModel,
-                noteAndLinkScreenModel = noteAndLinkModel,
-                noteUid = note.uid,
+                uid = note.uid,
                 isSwipe = false,
-                link = _link,
+                link = it,
             )
         }
 
