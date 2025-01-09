@@ -10,5 +10,4 @@ import city.zouitel.tasks.model.Task
 data class WidgetNote(
     val dataEntity: Data,
     val tagEntities: List<Tag>,
-    val linkEntities: List<Link>
 )
