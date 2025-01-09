@@ -17,17 +17,15 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import city.zouitel.domain.utils.Action
 import city.zouitel.links.model.Link
-import city.zouitel.logic.events.UiEvent
 import city.zouitel.systemDesign.CommonSwipeItem
 import coil.compose.AsyncImage
-import city.zouitel.links.model.NoteAndLink as InNoteAndLink
 
 @Composable
 fun LinkCard(
     linkScreenModel: LinkScreenModel,
-    noteAndLinkScreenModel: NoteAndLinkScreenModel,
-    noteUid: String,
+    uid: String,
     isSwipe: Boolean,
     link: Link,
 ) {
@@ -36,8 +34,7 @@ fun LinkCard(
     if (isSwipe) {
         CommonSwipeItem(
             onSwipeLeft = {
-                linkScreenModel.deleteLink(link)
-                noteAndLinkScreenModel.sendUiEvent(UiEvent.Delete(InNoteAndLink(noteUid, link.id)))
+                linkScreenModel.sendAction(Action.DeleteByUid(uid))
             },
             onSwipeRight = {
                 uriHand.openUri(link.url)
@@ -85,7 +82,7 @@ private fun LinkCard(
                 )
 
                 Text(
-                    text = link.host,
+                    text = link.description ?: "...",
                     fontSize = 11.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
