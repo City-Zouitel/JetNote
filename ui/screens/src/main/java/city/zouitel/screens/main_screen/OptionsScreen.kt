@@ -11,9 +11,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import city.zouitel.links.model.NoteAndLink
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.systemDesign.CommonBottomSheet
@@ -32,8 +30,7 @@ class OptionsScreen: Screen {
             dataStoreModel = getScreenModel(),
             dataModel = getScreenModel(),
             mainModel = getScreenModel(),
-            linkModel = getScreenModel(),
-            noteAndLinkModel = getScreenModel()
+            linkModel = getScreenModel()
         )
     }
 
@@ -42,8 +39,7 @@ class OptionsScreen: Screen {
         dataStoreModel: DataStoreScreenModel,
         dataModel: DataScreenModel,
         mainModel: MainScreenModel,
-        linkModel: LinkScreenModel,
-        noteAndLinkModel: NoteAndLinkScreenModel,
+        linkModel: LinkScreenModel
     ) {
         val context = LocalContext.current
         val navBottomSheet = LocalBottomSheetNavigator.current
@@ -76,11 +72,7 @@ class OptionsScreen: Screen {
                     uiState.selectedNote?.let { dataModel.sendUiEvent(UiEvent.Delete(it)) }
 
                     observerRemovedNotes.value.forEach { entity ->
-                        entity.linkEntities.forEach { link ->
-                            linkModel.deleteLink(link)
-//                            noteAndLinkModel.deleteNoteAndLink(NoteAndLink(noteUid = entity.data.uid, linkId = link.uid))
-                            noteAndLinkModel.sendUiEvent(UiEvent.Delete(NoteAndLink(entity.dataEntity.uid, link.id)))
-                        }
+
                     }
                     navBottomSheet.hide()
                 }
