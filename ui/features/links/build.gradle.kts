@@ -25,9 +25,12 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
 
-    //Baha-UrlPreview.
-    implementation(libs.url.preview)
-
     //Koin
     implementation(libs.koin.worker)
+
+    //Metaprobe.
+    implementation(libs.metaprobe.kmp)
+
+    //Ktor.
+    implementation(libs.ktor.client.android)
 }
