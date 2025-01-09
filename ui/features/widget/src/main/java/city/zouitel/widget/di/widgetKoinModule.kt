@@ -6,7 +6,7 @@ import org.koin.dsl.module
 
 val widgetKoinModule = module {
     factory {
-        WidgetMapper(get(), get(), get())
+        WidgetMapper(get(), get())
     }
 
     factory {
