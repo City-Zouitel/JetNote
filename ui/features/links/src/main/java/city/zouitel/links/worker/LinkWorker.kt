@@ -4,61 +4,50 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import city.zouitel.domain.usecase.LinkUseCase
-import city.zouitel.domain.usecase.NoteAndLinkUseCase
+import city.zouitel.domain.utils.Constants.DEFAULT_INT
+import city.zouitel.domain.utils.Constants.DEFAULT_TXT
 import city.zouitel.links.mapper.LinkMapper
-import city.zouitel.links.mapper.NoteAndLinkMapper
+import city.zouitel.links.model.Link
 import city.zouitel.links.utils.Constants.DESCRIBE
-import city.zouitel.links.utils.Constants.HOST
+import city.zouitel.links.utils.Constants.ICON
 import city.zouitel.links.utils.Constants.IMG
 import city.zouitel.links.utils.Constants.LINK_ID
-import city.zouitel.links.utils.Constants.NOTE_ID
 import city.zouitel.links.utils.Constants.TITLE
+import city.zouitel.links.utils.Constants.UID
 import city.zouitel.links.utils.Constants.URL
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import city.zouitel.links.model.Link as InLink
-import city.zouitel.links.model.NoteAndLink as InNoteAndLink
 
 class LinkWorker(
     context: Context,
     workerParameters: WorkerParameters,
     private val ioDeprecated: CoroutineDispatcher,
-    private val addLink: LinkUseCase.AddLink,
-    private val addNoteAndLink: NoteAndLinkUseCase.AddNoteAndLink,
+    private val insert: LinkUseCase.Insert,
     private val linkMapper: LinkMapper,
-    private val noteAndLinkMapper: NoteAndLinkMapper,
 ): CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result = withContext(ioDeprecated) {
         return@withContext try {
-            val note_id_data = inputData.getString(NOTE_ID) ?: ""
-            val link_id_data = inputData.getLong(LINK_ID, 0L)
-            val title_data = inputData.getString(TITLE) ?: ""
-            val description_data = inputData.getString(DESCRIBE) ?: ""
-            val url_data = inputData.getString(URL) ?: ""
-            val image_data = inputData.getString(IMG) ?: ""
-            val host_data = inputData.getString(HOST) ?: ""
+            val id_data = inputData.getInt(LINK_ID, DEFAULT_INT)
+            val uid_data = inputData.getString(UID) ?: DEFAULT_TXT
+            val url_data = inputData.getString(URL) ?: DEFAULT_TXT
+            val title_data = inputData.getString(TITLE) ?: DEFAULT_TXT
+            val description_data = inputData.getString(DESCRIBE) ?: DEFAULT_TXT
+            val image_data = inputData.getString(IMG) ?: DEFAULT_TXT
+            val icon_data = inputData.getString(ICON) ?: DEFAULT_TXT
 
-            addLink.invoke(
+            insert.invoke(
                linkMapper.toDomain(
-                   InLink(
-                       id = link_id_data,
+                   Link(
+                       id = id_data,
+                       uid = uid_data,
                        url = url_data,
-                       host = host_data,
-                       image = image_data,
                        title = title_data,
-                       description = description_data
+                       description = description_data,
+                       image = image_data,
+                       icon = icon_data
                    )
                )
-            )
-
-            addNoteAndLink.invoke(
-                noteAndLinkMapper.toDomain(
-                    InNoteAndLink(
-                        noteUid = note_id_data,
-                        linkId = link_id_data
-                    )
-                )
             )
 
             Result.success()
