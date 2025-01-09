@@ -2,13 +2,11 @@ package city.zouitel.database.di
 
 import androidx.room.Room
 import city.zouitel.database.Database
-import city.zouitel.database.Encryption
 import city.zouitel.database.datasourceImpl.AudioDataSourceImpl
 import city.zouitel.database.datasourceImpl.DataDataSourceImpl
 import city.zouitel.database.datasourceImpl.LinkDataSourceImpl
 import city.zouitel.database.datasourceImpl.MediaDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteAndAudioDataSourceImpl
-import city.zouitel.database.datasourceImpl.NoteAndLinkDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteAndTagDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteDataSourceImpl
 import city.zouitel.database.datasourceImpl.ReminderDataSourceImpl
@@ -20,7 +18,6 @@ import city.zouitel.database.mapper.DataMapper
 import city.zouitel.database.mapper.LinkMapper
 import city.zouitel.database.mapper.MediaMapper
 import city.zouitel.database.mapper.NoteAndAudioMapper
-import city.zouitel.database.mapper.NoteAndLinkMapper
 import city.zouitel.database.mapper.NoteAndTagMapper
 import city.zouitel.database.mapper.NoteMapper
 import city.zouitel.database.mapper.ReminderMapper
@@ -33,14 +30,12 @@ import city.zouitel.repository.datasource.DataDataSource
 import city.zouitel.repository.datasource.LinkDataSource
 import city.zouitel.repository.datasource.MediaDataSource
 import city.zouitel.repository.datasource.NoteAndAudioDataSource
-import city.zouitel.repository.datasource.NoteAndLinkDataSource
 import city.zouitel.repository.datasource.NoteAndTagDataSource
 import city.zouitel.repository.datasource.NoteDataSource
 import city.zouitel.repository.datasource.ReminderDataSource
 import city.zouitel.repository.datasource.TagDataSource
 import city.zouitel.repository.datasource.TaskDataSource
 import city.zouitel.repository.datasource.WidgetDataSource
-import net.sqlcipher.database.SupportFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -53,7 +48,6 @@ val databaseKoinModule = module {
     singleOf(::DataDataSourceImpl) bind DataDataSource::class
     singleOf(::NoteDataSourceImpl) bind NoteDataSource::class
     singleOf(::LinkDataSourceImpl) bind LinkDataSource::class
-    singleOf(::NoteAndLinkDataSourceImpl) bind NoteAndLinkDataSource::class
     singleOf(::TagDataSourceImpl) bind TagDataSource::class
     singleOf(::NoteAndTagDataSourceImpl) bind NoteAndTagDataSource::class
     singleOf(::TaskDataSourceImpl) bind TaskDataSource::class
@@ -71,7 +65,6 @@ val databaseKoinModule = module {
     single { get<Database>().getWidgetEntityDao() }
     single { get<Database>().getTaskDao() }
     single { get<Database>().getLinkDao() }
-    single { get<Database>().getNoteAndLinkDao() }
     single { get<Database>().getAudioDao() }
     single { get<Database>().getNoteAndAudioDao() }
     single { get<Database>().getMediaDao() }
@@ -83,16 +76,15 @@ val databaseKoinModule = module {
     factoryOf(::TagMapper)
     factoryOf(::TaskMapper)
     factoryOf(::AudioMapper)
-    factoryOf(::NoteAndLinkMapper)
     factoryOf(::NoteAndTagMapper)
     factoryOf(::NoteAndAudioMapper)
     factoryOf(::MediaMapper)
     factoryOf(::ReminderMapper)
     factory {
-        NoteMapper(get(), get(), get(), get())
+        NoteMapper(get(), get(), get())
     }
     factory {
-        WidgetMapper(get(), get(), get(), get())
+        WidgetMapper(get(), get(), get())
     }
 
     //Database.
@@ -102,7 +94,7 @@ val databaseKoinModule = module {
             Database::class.java,
             Constants.DATABASE
         )
-            .openHelperFactory(SupportFactory(Encryption(androidContext()).getCrypticPass()))
+//            .openHelperFactory(SupportFactory(Encryption(androidContext()).getCrypticPass()))
             .fallbackToDestructiveMigration()
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
