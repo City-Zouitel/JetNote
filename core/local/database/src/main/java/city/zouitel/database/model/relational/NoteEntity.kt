@@ -5,9 +5,7 @@ import androidx.room.Junction
 import androidx.room.Relation
 import city.zouitel.database.model.AudioEntity
 import city.zouitel.database.model.DataEntity
-import city.zouitel.database.model.LinkEntity
 import city.zouitel.database.model.NoteAndAudioEntity
-import city.zouitel.database.model.NoteAndLinkEntity
 import city.zouitel.database.model.NoteAndTagEntity
 import city.zouitel.database.model.TagEntity
 import city.zouitel.database.utils.Constants.ID
@@ -24,15 +22,6 @@ data class NoteEntity(
         )
     )
     val tagEntities :List<TagEntity>,
-    @Relation(
-        parentColumn = UUID, entityColumn = ID, entity = LinkEntity::class,
-        associateBy = Junction(
-            NoteAndLinkEntity::class,
-            parentColumn = "noteUid",
-            entityColumn = "linkId"
-        )
-    )
-    val linkEntities: List<LinkEntity>,
     @Relation(
         parentColumn = UUID, entityColumn = ID, entity = AudioEntity::class,
         associateBy = Junction(
