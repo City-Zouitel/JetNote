@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
@@ -31,6 +32,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
+import city.zouitel.links.ui.LinkScreenModel
+import city.zouitel.links.ui.cacheLink
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
@@ -55,11 +58,12 @@ import city.zouitel.systemDesign.listOfBackgroundColors
 @Composable
 internal fun BottomBar(
     isNew: Boolean,
-    id: String,
+    uid: String,
     titleState: TextFieldState?,
     descriptionState: TextFieldState?,
     dataStoreModel: DataStoreScreenModel,
     dataModel: DataScreenModel,
+    linkModel: LinkScreenModel,
     imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
     workspaceModel: WorkplaceScreenModel,
     priorityState: MutableState<String>,
@@ -69,6 +73,7 @@ internal fun BottomBar(
     val navigator = LocalNavigator.current
     val navBottomSheet = LocalBottomSheetNavigator.current
 
+    val scope = rememberCoroutineScope()
     val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
     val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
 
@@ -99,7 +104,7 @@ internal fun BottomBar(
                                 sound.performSoundEffect(context, FOCUS_NAVIGATION, isMute.value)
                                 navBottomSheet.show(
                                     OptionsScreen(
-                                        uid = id,
+                                        uid = uid,
                                         titleState = titleState,
                                         descriptionState = descriptionState,
                                         imageLaunch = imageLaunch,
@@ -128,7 +133,7 @@ internal fun BottomBar(
                             dataModel.sendUiEvent(
                                 UiEvent.Insert(
                                     Data(
-                                        uid = id,
+                                        uid = uid,
                                         title = titleState?.text.toString(),
                                         description = descriptionState?.text.toString(),
                                         priority = priorityState.value,
@@ -142,7 +147,7 @@ internal fun BottomBar(
                             dataModel.sendUiEvent(
                                 UiEvent.Update(
                                     Data(
-                                        uid = id,
+                                        uid = uid,
                                         title = titleState?.text.toString(),
                                         description = descriptionState?.text.toString(),
                                         priority = priorityState.value,
@@ -153,6 +158,10 @@ internal fun BottomBar(
                                     )
                                 )
                             )
+                        }
+
+                        linkModel.findUrlLink(descriptionState?.text?.toString())?.map {
+                            cacheLink(it, uid)
                         }
                         navigator?.pop()
                     }
