@@ -3,10 +3,6 @@ package city.zouitel.logic
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import city.zouitel.logic.Constants.HIG
-import city.zouitel.logic.Constants.LOW
-import city.zouitel.logic.Constants.MED
-import city.zouitel.logic.Constants.URG
 
 val sharNote: (Context, String, String, then: () -> Unit) -> Unit = { context, title, description, then ->
     context.startActivity(
@@ -58,9 +54,9 @@ val callNumber: (Context, String) -> Unit = { context, number ->
     )
 }
 
-val findUrlLink: (String?) -> List<String>? = {
-    it?.split(' ')?.filter { str -> str.matches("https?://.+".toRegex()) }
-}
+//val findUrlLink: (String?) -> List<String>? = {
+//    it?.split(' ')?.filter { str -> str.matches("https?://.+".toRegex()) }
+//}
 
 //
 
