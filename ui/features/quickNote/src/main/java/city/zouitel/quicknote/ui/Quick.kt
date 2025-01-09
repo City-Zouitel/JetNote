@@ -23,8 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,13 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.links.model.NoteAndLink
-import city.zouitel.links.ui.CacheLinks
-import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.events.UiEvent
-import city.zouitel.logic.findUrlLink
 import city.zouitel.quicknote.model.QuickData
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
@@ -66,9 +59,8 @@ data class QuickScreen(
     override fun Content() {
         val dataModel = getScreenModel<QuickDataScreenModel>()
         val linkModel = getScreenModel<LinkScreenModel>()
-        val noteAndLinkModel = getScreenModel<NoteAndLinkScreenModel>()
 
-        Quick(dataModel, linkModel, noteAndLinkModel, action = action)
+        Quick(dataModel, linkModel, action = action)
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -76,7 +68,6 @@ data class QuickScreen(
     fun Quick(
         dataModel: QuickDataScreenModel,
         linkModel: LinkScreenModel,
-        noteAndLinkModel: NoteAndLinkScreenModel,
         action:() -> (Unit)
     ) {
         val uid = UUID.randomUUID().toString()
@@ -90,8 +81,7 @@ data class QuickScreen(
 
         val focusRequester = FocusRequester()
 
-        val observerLinks by remember(linkModel, linkModel::getAllLinks).collectAsState()
-        val observerNoteAndLink by remember(noteAndLinkModel, noteAndLinkModel::getAllNotesAndLinks).collectAsState()
+//        val observerLinks by remember(linkModel, linkModel::observeAll).collectAsState()
 
         LaunchedEffect(Unit) {
             kotlin.runCatching {
@@ -155,29 +145,24 @@ data class QuickScreen(
 
                         // Link display.
                         item {
-                            findUrlLink(descriptionState.value) ?. let { links ->
-                                for (link in links) {
-                                    CacheLinks(
-                                        linkModel = linkModel,
-                                        noteId = uid,
-                                        url = link
-                                    )
-                                }
-                            }
+//                            findUrlLink(descriptionState.value) ?. let { links ->
+//                                for (link in links) {
+//                                    CacheLinks(
+//                                        linkModel = linkModel,
+//                                        uid = uid,
+//                                        url = link
+//                                    )
+//                                }
+//                            }
                             // for refresh this screen.
-                            observerLinks.filter {
-                                observerNoteAndLink.contains(
-                                    NoteAndLink(uid, it.id)
-                                )
-                            }.forEach { _link ->
-                                LinkCard(
-                                    linkScreenModel = linkModel,
-                                    noteAndLinkScreenModel = noteAndLinkModel,
-                                    noteUid = uid,
-                                    isSwipe = true,
-                                    link = _link
-                                )
-                            }
+//                            observerLinks.forEach { _link ->
+//                                LinkCard(
+//                                    linkScreenModel = linkModel,
+//                                    uid = uid,
+//                                    isSwipe = true,
+//                                    link = _link
+//                                )
+//                            }
                         }
 
                         item {
