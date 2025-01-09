@@ -1,27 +1,29 @@
 package city.zouitel.database.mapper
 
-import city.zouitel.database.model.LinkEntity as InLink
+import city.zouitel.database.model.Link
 import city.zouitel.repository.model.Link as OutLink
 
 class LinkMapper {
 
-    fun toRepo(links: List<InLink>) = links.map { toRepo(it) }
+    fun toRepo(links: List<Link>) = links.map { toRepo(it) }
 
-    fun toRepo(link: InLink) = OutLink(
+    fun toRepo(link: Link) = OutLink(
         id = link.id,
+        uid = link.uid,
         url = link.url,
-        host = link.host,
-        image = link.image,
         title = link.title,
-        description = link.description
+        description = link.description,
+        image = link.image,
+        icon = link.icon
     )
 
-    fun fromRepo(link: OutLink) = InLink(
+    fun fromRepo(link: OutLink) = Link(
         id = link.id,
+        uid = link.uid,
         url = link.url,
-        host = link.host,
-        image = link.image,
         title = link.title,
-        description = link.description
+        description = link.description,
+        image = link.image,
+        icon = link.icon
     )
 }
