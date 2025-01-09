@@ -6,7 +6,6 @@ import city.zouitel.repository.model.Note as OutNote
 class WidgetMapper (
     private val dataMapper: DataMapper,
     private val tagMapper: TagMapper,
-    private val linkMapper: LinkMapper,
     private val audioMapper: AudioMapper
 ) {
     fun toRepo(notes: List<InNote>) = notes.map { toRepo(it) }
@@ -15,7 +14,6 @@ class WidgetMapper (
         OutNote(
             dataEntity = dataMapper.toRepo(dataEntity),
             tagEntities = tagEntities.map { tagMapper.toRepo(it) },
-            linkEntities = linkEntities.map { linkMapper.toRepo(it) },
             audioEntities = audioEntities.map { audioMapper.toRepo(it) }
         )
     }
