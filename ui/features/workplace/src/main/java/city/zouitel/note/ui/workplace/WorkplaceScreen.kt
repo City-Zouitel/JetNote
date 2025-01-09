@@ -67,14 +67,10 @@ import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.BasicAudioScreen
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.domain.utils.Action
-import city.zouitel.links.model.NoteAndLink
-import city.zouitel.links.ui.CacheLinks
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.logic.events.UiEvents
-import city.zouitel.logic.findUrlLink
 import city.zouitel.media.model.Media
 import city.zouitel.media.ui.MediaScreen
 import city.zouitel.media.ui.MediaScreenModel
@@ -127,7 +123,6 @@ data class WorkplaceScreen(
             noteAndTagModel = getScreenModel(),
             taskModel = getScreenModel(),
             linkModel = getScreenModel(),
-            noteAndLinkModel = getScreenModel(),
             dataStoreModel = getScreenModel(),
             audioModel = getScreenModel(),
             noteAndAudioModel = getScreenModel(),
@@ -147,7 +142,6 @@ data class WorkplaceScreen(
         noteAndTagModel: NoteAndTagScreenModel,
         taskModel: TaskScreenModel,
         linkModel: LinkScreenModel,
-        noteAndLinkModel: NoteAndLinkScreenModel,
         dataStoreModel: DataStoreScreenModel,
         audioModel: AudioScreenModel,
         noteAndAudioModel: NoteAndAudioScreenModel,
@@ -156,6 +150,10 @@ data class WorkplaceScreen(
         alarmModel: AlarmManagerScreenModel,
         workspaceModel: WorkplaceScreenModel
     ) {
+        LaunchedEffect(true) {
+            linkModel.initializeUid(uid)
+        }
+
         val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
         val navBottomSheet = LocalBottomSheetNavigator.current
@@ -175,11 +173,7 @@ data class WorkplaceScreen(
             taskModel,
             taskModel::getAllTaskList
         ).collectAsState()
-        val observerLinks by remember(linkModel, linkModel::getAllLinks).collectAsState()
-        val observerNoteAndLink by remember(
-            noteAndLinkModel,
-            noteAndLinkModel::getAllNotesAndLinks
-        ).collectAsState()
+        val observerLinks by remember(linkModel, linkModel::observeByUid).collectAsState()
         val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
         val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio).collectAsState()
         val observeAllReminders by remember(reminderModel, reminderModel::observeAllById).collectAsState()
@@ -220,13 +214,14 @@ data class WorkplaceScreen(
             bottomBar = {
                 BottomBar(
                     isNew = isNew,
-                    id = uid,
-                    dataStoreModel = dataStoreModel,
-                    dataModel = dataModel,
-                    imageLaunch = chooseImageLauncher,
-                    workspaceModel = workspaceModel,
+                    uid = uid,
                     titleState = titleState,
                     descriptionState = descriptionState,
+                    dataStoreModel = dataStoreModel,
+                    dataModel = dataModel,
+                    linkModel = linkModel,
+                    imageLaunch = chooseImageLauncher,
+                    workspaceModel = workspaceModel,
                     priorityState = priorityState
                 )
             }
@@ -299,25 +294,11 @@ data class WorkplaceScreen(
 
                 // Link display.
                 item {
-                    findUrlLink(descriptionState.text.toString())?.let { links ->
-                        for (link in links) {
-                            CacheLinks(
-                                linkModel = linkModel,
-                                noteId = uid,
-                                url = link
-                            )
-                        }
-                    }
                     // for refresh this screen.
-                    observerLinks.filter {
-                        observerNoteAndLink.contains(
-                            NoteAndLink(uid, it.id)
-                        )
-                    }.forEach { _link ->
+                    observerLinks.forEach { _link ->
                         LinkCard(
                             linkScreenModel = linkModel,
-                            noteAndLinkScreenModel = noteAndLinkModel,
-                            noteUid = uid,
+                            uid = uid,
                             isSwipe = true,
                             link = _link
                         )
