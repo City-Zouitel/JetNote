@@ -45,7 +45,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.links.ui.NoteAndLinkScreenModel
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
@@ -90,10 +89,9 @@ data class MainScreen(val isHome: Boolean): Screen {
             audioModel = getScreenModel(),
             noteAndAudioModel = getScreenModel(),
             linkModel = getScreenModel(),
-            noteAndLinkModel = getScreenModel(),
             datastoreModel = getScreenModel(),
             mediaModel = getScreenModel(),
-            navigationDrawerModel = getScreenModel(),
+            navigationDrawerModel = getScreenModel()
         )
     }
 
@@ -113,7 +111,6 @@ data class MainScreen(val isHome: Boolean): Screen {
         audioModel: AudioScreenModel,
         noteAndAudioModel: NoteAndAudioScreenModel,
         linkModel: LinkScreenModel,
-        noteAndLinkModel: NoteAndLinkScreenModel,
         mediaModel: MediaScreenModel,
         navigationDrawerModel: NavigationDrawerScreenModel,
     ) {
@@ -272,7 +269,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     audioModel = audioModel,
                                     noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
-                                    noteAndLinkModel = noteAndLinkModel,
                                     homeModel = mainModel,
                                     isHomeScreen = uiState.isHomeScreen,
                                     noteEntity = entity,
@@ -303,7 +299,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     audioModel = audioModel,
                                     noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
-                                    noteAndLinkModel = noteAndLinkModel,
                                     homeModel = mainModel,
                                     isHomeScreen = uiState.isHomeScreen,
                                     noteEntity = entity,
