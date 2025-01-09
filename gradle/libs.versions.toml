@@ -4,8 +4,8 @@ kotlin = "2.0.0"
 compileSdk-version = "35"
 minSdk-version = "26"
 targetSdk-version = "35"
-code-version = "703"
-name-version = "7.0.3"
+code-version = "710"
+name-version = "7.1.0"
 compose-version = "1.5.14"
 
 #Android.
@@ -92,6 +92,8 @@ media3 = "1.5.1"
 balloon-compose = "1.6.7"
 cloudy = "0.2.3"
 markdown-version = "0.5.4"
+ktorClientAndroid = "2.3.4"
+metaprobeKmp = "1.0.1"
 
 [libraries]
 #Kotlin.
@@ -213,6 +215,8 @@ enigma = { module = "gradle.plugin.chrisney:enigma", version.ref = "enigma" }
 balloon-compose = { module = "com.github.skydoves:balloon-compose", version.ref = "balloon-compose" }
 compose-cloudy = { module = "com.github.skydoves:cloudy", version.ref = "cloudy" }
 markdown = { module = "com.github.jeziellago:compose-markdown", version.ref = "markdown-version" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClientAndroid" }
+metaprobe-kmp = { module = "tech.dev-scion:metaprobe-kmp", version.ref = "metaprobeKmp" }
 
 [bundles]
 compose = ["ui", "ui-tooling-preview", "material3"]
