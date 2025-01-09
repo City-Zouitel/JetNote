@@ -4,7 +4,6 @@ internal object Constants {
 
     const val NOTES = "notes_table"
     const val LABELS = "labels_table"
-    const val LINKS = "links_table"
     const val AUDIOS = "audios_table"
 
     const val DATABASE = "jet_note_database"
@@ -18,11 +17,12 @@ internal object Constants {
     const val DATE = "date"
     const val UUID = "universally_unique_identifier"
     const val REMOVED = "removed"
-    const val URL = "url"
+    const val URL = "uniform_resource_locator"
     const val URI = "uniform_resource_identifier"
     const val PATH = "media_path"
     const val SIZE = "media_size"
     const val HOST = "host"
+    const val ICON = "link_icon"
     const val DURATION = "media_duration"
     const val IMG_LINK = "imageLink"
     const val LABEL = "label"
