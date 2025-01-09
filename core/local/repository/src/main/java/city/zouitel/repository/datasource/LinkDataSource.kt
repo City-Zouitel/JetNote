@@ -5,9 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface LinkDataSource {
 
-    val getAllLinks: Flow<List<Link>>
+    val observeAll: Flow<List<Link>>
 
-    suspend fun addLink(link: Link)
+    suspend fun observeByUid(uid: String): Flow<List<Link>>
 
-    suspend fun deleteLink(link: Link)
+    suspend fun insert(link: Link)
+
+    suspend fun deleteByUid(uid: String)
 }
