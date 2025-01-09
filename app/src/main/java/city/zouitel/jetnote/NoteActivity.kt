@@ -56,7 +56,6 @@ class NoteActivity : AppCompatActivity(), KoinComponent, IntentHandler {
 
     override fun onDestroy() {
         super.onDestroy()
-        linkScreenModel.urlPreview(this, null)?.cleanUp()
         WidgetReceiver.updateBroadcast(this)
         // Cancel the performUiEvent when the activity is destroyed
         activityScope.cancel()
