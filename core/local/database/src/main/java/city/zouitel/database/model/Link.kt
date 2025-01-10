@@ -14,6 +14,23 @@ import city.zouitel.database.utils.Constants.TITLE
 import city.zouitel.database.utils.Constants.URL
 import city.zouitel.database.utils.Constants.UUID
 
+/**
+ * Represents a link entity stored in the database.
+ *
+ * This data class defines the structure of a link, including its unique identifier,
+ * URL, title, description, image link, and icon link. It is mapped to the
+ * [TABLE_NAME] in the database.
+ *
+ * @property id The unique integer identifier of the link. It is the primary key and is not auto-generated.
+ * @property uid A universally unique identifier (UUID) for the link.
+ * @property url The URL of the link.
+ * @property title The title associated with the link.
+ * @property description A brief description of the link.
+ * @property image The URL of an image associated with the link.
+ * @property icon The URL of an icon associated with the link.
+ *
+ * @see TABLE_NAME
+ */
 @Entity(tableName = TABLE_NAME)
 data class Link(
     @PrimaryKey(autoGenerate = false)
