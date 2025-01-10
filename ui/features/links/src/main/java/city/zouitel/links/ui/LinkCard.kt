@@ -48,10 +48,7 @@ fun LinkCard(
 }
 
 @Composable
-private fun LinkCard(
-    isSwipe: Boolean,
-    link: Link,
-) {
+private fun LinkCard(isSwipe: Boolean, link: Link) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,24 +68,24 @@ private fun LinkCard(
 
             Column {
                 Text(
-                    text = link.title ?: "Unknown",
+                    text = link.title,
                     fontSize = 14.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(
                         start = 5.dp,
-                        top = 10.dp,
+                        top = 5.dp,
                     )
                 )
 
                 Text(
-                    text = link.description ?: "...",
+                    text = link.description,
                     fontSize = 11.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(
                         start = 5.dp,
-                        top = 10.dp,
+                        top = 5.dp,
                     )
                 )
             }
