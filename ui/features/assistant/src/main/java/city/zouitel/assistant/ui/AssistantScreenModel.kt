@@ -5,7 +5,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.assistant.mapper.AssistantMapper
 import city.zouitel.assistant.model.Message
 import city.zouitel.domain.usecase.MessageUseCase
-import city.zouitel.logic.asLogicFlow
+import city.zouitel.logic.withFlow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +21,7 @@ class AssistantScreenModel(
         MutableStateFlow(emptyList())
 
     val observeAllMessages: StateFlow<List<Message>> =
-        _observeAllMessages.asLogicFlow(emptyList())
+        _observeAllMessages.withFlow(emptyList())
 
     init {
         screenModelScope.launch(Dispatchers.IO) {
