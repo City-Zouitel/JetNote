@@ -4,7 +4,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.MediaUseCase
 import city.zouitel.domain.utils.Action
-import city.zouitel.logic.asLogicFlow
+import city.zouitel.logic.withFlow
 import city.zouitel.media.mapper.MediaMapper
 import city.zouitel.media.model.Media
 import kotlinx.coroutines.Dispatchers
@@ -22,14 +22,14 @@ class MediaScreenModel(
 
     private val _observeAll: MutableStateFlow<List<Media>> = MutableStateFlow(emptyList())
     val observeAll: StateFlow<List<Media>> = _observeAll
-        .asLogicFlow(emptyList()) {
+        .withFlow(emptyList()) {
             act {
                 _observeAll_().collect { _observeAll.value = mapper.fromDomain(it) }
             }
         }
 
     private val _observeByUid: MutableStateFlow<List<Media>> = MutableStateFlow(emptyList())
-    val observeByUid: StateFlow<List<Media>> = _observeByUid.asLogicFlow(emptyList())
+    val observeByUid: StateFlow<List<Media>> = _observeByUid.withFlow(emptyList())
 
     fun initializeUid(uid: String) {
         act {
