@@ -11,24 +11,25 @@ import androidx.work.WorkManager
 import cafe.adriel.voyager.core.model.ScreenModel
 import city.zouitel.domain.usecase.LinkUseCase
 import city.zouitel.domain.utils.Action
-import city.zouitel.domain.utils.exe
+import city.zouitel.domain.utils.withAsync
 import city.zouitel.links.mapper.LinkMapper
 import city.zouitel.links.model.Link
 import city.zouitel.links.state.UiState
-import city.zouitel.links.utils.Constants.DESCRIBE
-import city.zouitel.links.utils.Constants.ICON
-import city.zouitel.links.utils.Constants.IMG
-import city.zouitel.links.utils.Constants.LINK_ID
+import city.zouitel.links.utils.Constants.LINK_DESCRIBE
+import city.zouitel.links.utils.Constants.LINK_ICON
+import city.zouitel.links.utils.Constants.LINK_IMG
+import city.zouitel.links.utils.Constants.ID
 import city.zouitel.links.utils.Constants.LINK_TAG
-import city.zouitel.links.utils.Constants.TITLE
+import city.zouitel.links.utils.Constants.LINK_TITLE
 import city.zouitel.links.utils.Constants.UID
 import city.zouitel.links.utils.Constants.UNIQUE_LINK_WORK
 import city.zouitel.links.utils.Constants.URL
 import city.zouitel.links.worker.LinkWorker
-import city.zouitel.logic.asLogicFlow
+import city.zouitel.logic.withFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+@Suppress("DeferredResultUnused")
 class LinkScreenModel(
     application: Application,
     private val _observeAll_: LinkUseCase.ObserveAll,
@@ -39,12 +40,12 @@ class LinkScreenModel(
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
     internal val uiState: StateFlow<UiState> = _uiState
-        .asLogicFlow(UiState())
+        .withFlow(UiState())
 
     private val _observeAll: MutableStateFlow<List<Link>> = MutableStateFlow(emptyList())
     val observeAll: StateFlow<List<Link>> = _observeAll
-        .asLogicFlow(emptyList()) {
-            exe {
+        .withFlow(emptyList()) {
+            withAsync {
                 _observeAll_.invoke().collect {
                     _observeAll.value = mapper.fromDomain(it)
                 }
@@ -53,17 +54,17 @@ class LinkScreenModel(
 
     private val _observeByUid: MutableStateFlow<List<Link>> = MutableStateFlow(emptyList())
     val observeByUid: StateFlow<List<Link>> = _observeByUid
-        .asLogicFlow(emptyList())
+        .withFlow(emptyList())
 
     private var workManager = WorkManager.getInstance(application)
 
-    fun initializeUid(uid: String) = exe {
+    fun initializeUid(uid: String) = withAsync {
         _observeByUid_(uid).collect {
             _observeByUid.value = mapper.fromDomain(it)
         }
     }
 
-    internal fun doWork(link: Link) = exe {
+    internal fun doWork(link: Link) = withAsync {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
@@ -72,13 +73,13 @@ class LinkScreenModel(
             .addTag(LINK_TAG)
             .setInputData(
                 Data.Builder()
-                    .putInt(LINK_ID, link.id)
+                    .putInt(ID, link.id)
                     .putString(UID, link.uid)
-                    .putString(TITLE, link.title)
-                    .putString(DESCRIBE, link.description)
+                    .putString(LINK_TITLE, link.title)
+                    .putString(LINK_DESCRIBE, link.description)
                     .putString(URL, link.url)
-                    .putString(IMG, link.image)
-                    .putString(ICON, link.icon)
+                    .putString(LINK_IMG, link.image)
+                    .putString(LINK_ICON, link.icon)
                     .build()
             )
             .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
@@ -94,7 +95,7 @@ class LinkScreenModel(
 
     fun sendAction(act: Action) {
         when(act) {
-            is Action.DeleteByUid -> exe { deleteByUid(act.uid) }
+            is Action.DeleteByUid -> withAsync { deleteByUid(act.uid) }
             else -> throw Exception("Unknown event")
         }
     }
@@ -112,6 +113,6 @@ class LinkScreenModel(
      * The URLs are returned in reversed order of their appearance in the original string.
      */
     val findUrlLink: (String?) -> List<String>? = { des ->
-        des ?. split(' ') ?. filter { s -> s.matches("https?://.+".toRegex()) } ?. reversed()
+        des?.split(' ', '\n', '\t')?.filter { s -> s.matches("https?://.+".toRegex()) }?.reversed()
     }
 }
