@@ -3,7 +3,7 @@ package city.zouitel.reminder.ui
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.ReminderUseCase
-import city.zouitel.logic.asLogicFlow
+import city.zouitel.logic.withFlow
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.logic.events.UiEventHandler
 import city.zouitel.reminder.mapper.ReminderMapper
@@ -22,7 +22,7 @@ class ReminderScreenModel(
 ): ScreenModel, UiEventHandler<Reminder> {
 
     private val _observeAllById = MutableStateFlow<List<Reminder>>(emptyList())
-    val observeAllById: StateFlow<List<Reminder>> = _observeAllById.asLogicFlow(emptyList())
+    val observeAllById: StateFlow<List<Reminder>> = _observeAllById.withFlow(emptyList())
 
     fun initializeReminders(uid: String) {
         performUiEvent {
