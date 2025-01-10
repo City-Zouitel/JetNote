@@ -3,7 +3,7 @@ package city.zouitel.tasks.ui
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.TaskUseCase
-import city.zouitel.logic.asLogicFlow
+import city.zouitel.logic.withFlow
 import city.zouitel.logic.events.UiEvents
 import city.zouitel.logic.events.UiEventsHandler
 import city.zouitel.tasks.mapper.TaskMapper
@@ -26,10 +26,10 @@ class TaskScreenModel(
 ): ScreenModel, UiEventsHandler {
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
-    val uiState: StateFlow<UiState> = _uiState.asLogicFlow(UiState())
+    val uiState: StateFlow<UiState> = _uiState.withFlow(UiState())
 
     private val _getAllTaskList = MutableStateFlow<List<Task>>(emptyList())
-    val getAllTaskList: StateFlow<List<Task>> = _getAllTaskList.asLogicFlow(listOf())
+    val getAllTaskList: StateFlow<List<Task>> = _getAllTaskList.withFlow(listOf())
 
     private val _observeAllTasks = MutableStateFlow<List<Task>>(emptyList())
     val observeAllTasks: StateFlow<List<Task>> = _observeAllTasks
@@ -40,7 +40,7 @@ class TaskScreenModel(
                 }
             }
         }
-        .asLogicFlow(listOf())
+        .withFlow(listOf())
 
     fun initializeTasks(uid: String) {
         performUiEvent {
