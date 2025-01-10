@@ -17,7 +17,7 @@ class LinkMapper {
         icon = link.icon
     )
 
-    fun fromDomain(link: OutLink) = Link(
+    private fun fromDomain(link: OutLink) = Link(
         id = link.id,
         uid = link.uid,
         url = link.url,
