@@ -69,7 +69,7 @@ fun String.asLongToast()  {
  * @return A [StateFlow] representing the latest value emitted by this flow.
  */
 context(ScreenModel)
-fun <T> Flow<T>.asLogicFlow(initialValue: T): StateFlow<T> {
+fun <T> Flow<T>.withFlow(initialValue: T): StateFlow<T> {
     return stateIn(
         scope = screenModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -77,7 +77,6 @@ fun <T> Flow<T>.asLogicFlow(initialValue: T): StateFlow<T> {
     )
 }
 
-context(ScreenModel)
     /**
      * Converts a [Flow] into a "logic flow" that behaves like a shared, hot flow with an initial value and a startup action.
      *
@@ -99,8 +98,9 @@ context(ScreenModel)
      * @return A [Flow] that shares its emissions, retains the latest value, starts lazily, and executes the [onStart] action.
      * @receiver The [Flow] to be converted into a logic flow.
      */
-    fun <T> Flow<T>.asLogicFlow(initialValue: T, onStart: () -> Unit): StateFlow<T> {
-        return this@asLogicFlow.onStart { onStart.invoke() }.stateIn(
+    context(ScreenModel)
+    fun <T> Flow<T>.withFlow(initialValue: T, onStart: () -> Unit): StateFlow<T> {
+        return this@withFlow.onStart { onStart.invoke() }.stateIn(
             scope = screenModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = initialValue
