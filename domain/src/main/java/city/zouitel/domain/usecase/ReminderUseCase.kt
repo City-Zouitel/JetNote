@@ -16,8 +16,8 @@ sealed class ReminderUseCase {
      *
      * @property repo The Reminder repo used to fetch and observe the Reminder.
      */
-    data class ObserveById(val repo: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(uid: String) = repo.observeById(uid)
+    data class ObserveByUid(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(uid: String) = repo.observeByUid(uid)
     }
 
     /**
@@ -36,8 +36,8 @@ sealed class ReminderUseCase {
      *
      * @param repo The repo used to access and modify reminder data.
      */
-    data class Update(val repo: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(id: Int) = repo.update(id)
+    data class UpdateById(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(id: Int) = repo.updateById(id)
     }
 
     /**
@@ -47,18 +47,19 @@ sealed class ReminderUseCase {
      *
      * @property repo The repo used to access reminder data.
      */
-    data class DeleteReminder(val repo: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(id: Int) = repo.delete(id)
+    data class DeleteById(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(id: Int) = repo.deleteById(id)
     }
 
     /**
-     * Use case for deleting all reminders.
+     *  UseCase for deleting a reminder by its unique identifier (UID).
      *
-     * This use case utilizes the provided `ReminderRepo` to delete all reminders.
+     *  This use case encapsulates the logic for deleting a reminder from the data layer.
+     *  It interacts with the [ReminderRepo] to perform the deletion operation.
      *
-     * @property repo The repo responsible for storing and retrieving reminders.
+     *  @property repo The [ReminderRepo] instance responsible for data layer operations.
      */
-    data class DeleteAll(val repo: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke() = repo.deleteAll()
+    data class DeleteByUid(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(uid: String) = repo.deleteByUid(uid)
     }
 }
