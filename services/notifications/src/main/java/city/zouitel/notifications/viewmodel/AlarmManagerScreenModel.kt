@@ -6,22 +6,20 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.ReminderUseCase
-import city.zouitel.logic.events.UiEvent
-import city.zouitel.logic.events.UiEventHandler
+import city.zouitel.domain.utils.Action
+import city.zouitel.domain.utils.withAsync
 import city.zouitel.notifications.Constants.ID
 import city.zouitel.notifications.Constants.MESSAGE
 import city.zouitel.notifications.Constants.TITLE
 import city.zouitel.notifications.Constants.UID
 import city.zouitel.notifications.reciver.NotificationReceiver
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
+@Suppress("DeferredResultUnused")
 class AlarmManagerScreenModel(
     private val context: Context,
-    private val updateReminder: ReminderUseCase.Update
-): ScreenModel, UiEventHandler<Int> {
+    private val updateById: ReminderUseCase.UpdateById
+): ScreenModel {
 
     private val intent = Intent(context , NotificationReceiver::class.java)
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -68,14 +66,10 @@ class AlarmManagerScreenModel(
         )
     }
 
-    override fun sendUiEvent(event: UiEvent<Int>) {
-        when(event) {
-            is UiEvent.Update -> performUiEvent { updateReminder(event.data) }
-            else -> throw NotImplementedError("Action not implemented: $event")
+    fun sendAction(act: Action) {
+        when(act) {
+            is Action.UpdateById -> withAsync { updateById(act.id as Int) }
+            else -> throw NotImplementedError("Action not implemented: $act")
         }
-    }
-
-    override fun performUiEvent(action: suspend () -> Unit) {
-        screenModelScope.launch(Dispatchers.IO) { action.invoke() }
     }
 }
