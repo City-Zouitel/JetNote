@@ -3,32 +3,25 @@ package city.zouitel.domain.utils
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
 context(ScreenModel)
 /**
- * Executes a suspending block of code within the `screenModelScope` asynchronously.
+ * Launches a new coroutine within the [screenModelScope] and returns its result as a [Deferred].
  *
- * This function provides a convenient way to launch asynchronous tasks within the lifecycle
- * of a screen model. It utilizes [async] to run the provided [scope] within the screen model's
- * coroutine scope.  Any exception thrown within the `scope` will be caught, wrapped in a new Exception
- * and rethrown.
+ * This function is a convenient wrapper around [screenModelScope.async] that automatically
+ * uses the `screenModelScope` as the coroutine context. It is primarily used for launching
+ * asynchronous tasks that need to be managed within the lifecycle of the screen model.
  *
- * @param scope The suspending block of code to execute asynchronously. This lambda will be executed
- *              within the [screenModelScope].
- * @return A [Deferred] that completes when the [scope] lambda finishes executing.
- *         The result of the [Deferred] is [Unit], or it will throw an exception if the [scope] lambda failed.
- * @throws Exception if the provided [scope] lambda throws an exception. The original exception's message
- *                 will be wrapped within this new [Exception].
+ * The coroutine will be cancelled automatically when the [screenModelScope] is cancelled.
+ *
+ * @param scope The coroutine code block to execute asynchronously.
+ *              This block is executed within a newly created coroutine on the `screenModelScope`.
+ * @return A [Deferred] representing the result of the asynchronous computation.
+ *         You can use `await()` on the returned `Deferred` to retrieve the result once it's ready.
+ *
+ * @see kotlinx.coroutines.async
+ * @see kotlinx.coroutines.Deferred
+ * @see screenModelScope
  */
-fun withAsync(scope: suspend CoroutineScope.() -> Unit): Deferred<Unit> {
-    return screenModelScope
-        .async {
-            runCatching {
-                scope()
-            }.onFailure {
-                throw Exception(it.message)
-            }
-        }
-}
+fun withAsync(scope: suspend CoroutineScope.() -> Unit) = screenModelScope.async(block = scope)
