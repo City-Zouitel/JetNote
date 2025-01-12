@@ -48,6 +48,19 @@ interface LinkRepository {
     suspend fun insert(link: Link)
 
     /**
+     * Deletes an entity from the data source by its unique identifier.
+     *
+     * This is a suspending function, meaning it should be called within a coroutine or
+     * another suspending function.  It handles the asynchronous deletion operation.
+     *
+     * @param id The unique identifier of the entity to delete. Must be a positive integer.
+     * @throws IllegalArgumentException if the provided `id` is not valid (e.g., negative or zero).
+     * @throws NoSuchElementException if no entity with the given `id` is found. (Optional, depends on implementation)
+     * @throws Exception if an error occurs during the deletion process (e.g., database error, network error). (Optional, depends on implementation)
+     */
+    suspend fun deleteById(id: Int)
+
+    /**
      * Deletes a record or resource associated with the given unique identifier (UID).
      *
      * This is a suspending function, meaning it must be called within a coroutine or another
