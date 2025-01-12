@@ -48,7 +48,7 @@ class MediaRepoImpl(
      *         The flow emits a new list whenever the underlying data changes.
      * @throws Exception if an error occurs during data retrieval or mapping.
      */
-    override fun observeByUid(uid: String): Flow<List<Media>> {
+    override suspend fun observeByUid(uid: String): Flow<List<Media>> {
         return dataSource.observeByUid(uid).map { mapper.toDomain(it) }
 }
 
@@ -63,7 +63,7 @@ class MediaRepoImpl(
      * @see dataSource
      * @see mapper
      */
-    override fun insert(media: Media) {
+    override suspend fun insert(media: Media) {
         dataSource.insert(mapper.fromDomain(media))
     }
 
@@ -78,7 +78,18 @@ class MediaRepoImpl(
      *         Remove this if your DataSource doesn't throw exceptions.
      * @see DataSource.deleteById For details on the underlying deletion implementation.
      */
-    override fun deleteById(id: Long) {
+    override suspend fun deleteById(id: Long) {
         dataSource.deleteById(id)
+    }
+
+    /**
+     * Deletes a record from the data source using the provided unique identifier (UID).
+     *
+     * This function delegates the deletion operation to the underlying [dataSource].
+     *
+     * @param uid The unique identifier of the record to be deleted.
+     */
+    override suspend fun deleteByUid(uid: String) {
+        dataSource.deleteByUid(uid)
     }
 }
