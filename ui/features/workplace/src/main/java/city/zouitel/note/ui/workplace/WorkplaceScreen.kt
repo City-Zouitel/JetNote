@@ -69,8 +69,6 @@ import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
 import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.logic.events.UiEvent
-import city.zouitel.logic.events.UiEvents
 import city.zouitel.media.model.Media
 import city.zouitel.media.ui.MediaScreen
 import city.zouitel.media.ui.MediaScreenModel
@@ -296,12 +294,7 @@ data class WorkplaceScreen(
                 item {
                     // for refresh this screen.
                     observerLinks.forEach { _link ->
-                        LinkCard(
-                            linkScreenModel = linkModel,
-                            uid = uid,
-                            isSwipe = true,
-                            link = _link
-                        )
+                        LinkCard(isSwipe = true, link = _link)
                     }
                 }
 
@@ -321,8 +314,8 @@ data class WorkplaceScreen(
                                     modifier = Modifier
                                         .animateContentSize()
                                         .combinedClickable(onLongClick = {
-                                            reminderModel.sendUiEvent(
-                                                UiEvent.Delete(observeAllReminders[index])
+                                            reminderModel.sendAction(
+                                                Action.DeleteById(observeAllReminders[index].id)
                                             )
                                             alarmModel.cancelAlarm(observeAllReminders[index].id)
                                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -391,7 +384,7 @@ data class WorkplaceScreen(
                             Checkbox(
                                 checked = task.isDone,
                                 onCheckedChange = {
-                                    taskModel.sendUiEvent(UiEvents.Update(task.id))
+                                    taskModel.sendAction(Action.Insert(task.copy(id = task.id, isDone = it)))
                                 },
                                 colors = CheckboxDefaults.colors(
                                     checkedColor = Color.Gray,
