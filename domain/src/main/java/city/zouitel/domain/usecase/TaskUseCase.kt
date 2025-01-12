@@ -48,28 +48,6 @@ sealed class TaskUseCase {
     }
 
     /**
-     * Represents a use case for updating an existing [Task].
-     *
-     * This use case interacts with the [TaskRepository] to persist changes made to a specific task.
-     *
-     * @property repo The [TaskRepository] responsible for data access and persistence of tasks.
-     */
-    data class Update(private val repo: TaskRepository): TaskUseCase() {
-        suspend operator fun invoke(task: Task) = repo.update(task)
-    }
-
-    /**
-     * [TaskUseCase] implementation for updating a task by its ID.
-     *
-     * This use case interacts with the [TaskRepository] to perform the actual update operation.
-     *
-     * @property repo The [TaskRepository] used to interact with the underlying data source.
-     */
-    data class UpdateById(private val repo: TaskRepository): TaskUseCase() {
-        suspend operator fun invoke(id: Long) = repo.updateById(id)
-    }
-
-    /**
      * [TaskUseCase] for deleting a task by its ID.
      *
      * This use case encapsulates the logic for deleting a task from the underlying
@@ -79,5 +57,17 @@ sealed class TaskUseCase {
      */
     data class DeleteById(private val repo: TaskRepository): TaskUseCase() {
         suspend operator fun invoke(id: Long) = repo.deleteById(id)
+    }
+
+    /**
+     * [TaskUseCase] for deleting a task from the repository by its unique ID (UID).
+     *
+     * This use case encapsulates the logic for deleting a task by its UID.
+     * It interacts with the [TaskRepository] to perform the actual deletion.
+     *
+     * @property repo The [TaskRepository] instance used to access and modify task data.
+     */
+    data class DeleteByUid(private val repo: TaskRepository): TaskUseCase() {
+        suspend operator fun invoke(uid: String) = repo.deleteByUid(uid)
     }
 }
