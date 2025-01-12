@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import city.zouitel.domain.utils.Action
 import city.zouitel.logic.events.UiEvent
-import city.zouitel.logic.events.UiEvents
 import city.zouitel.logic.sharNote
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
@@ -215,8 +215,8 @@ internal fun HomeSelectionTopAppBar(
                                                 .forEach { todo ->
                                                     Random.nextLong()
                                                         .let {
-                                                            taskModel.sendUiEvent(
-                                                                UiEvents.Insert(Task(it, newUid, todo.item, todo.isDone))
+                                                            taskModel.sendAction(
+                                                                Action.Insert(Task(it, newUid, todo.item, todo.isDone))
                                                             )
                                                         }
                                                 }
