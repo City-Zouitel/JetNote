@@ -99,10 +99,13 @@ fun <T> Flow<T>.withFlow(initialValue: T): StateFlow<T> {
      * @receiver The [Flow] to be converted into a logic flow.
      */
     context(ScreenModel)
-    fun <T> Flow<T>.withFlow(initialValue: T, onStart: () -> Unit): StateFlow<T> {
-        return this@withFlow.onStart { onStart.invoke() }.stateIn(
-            scope = screenModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = initialValue
-        )
-}
+    fun <T> Flow<T>.withFlow(initialValue: T, onStart: suspend () -> Unit): StateFlow<T> {
+        return this@withFlow
+            .onStart {
+                onStart()
+            }.stateIn(
+                scope = screenModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = initialValue
+            )
+    }
