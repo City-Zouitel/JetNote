@@ -60,9 +60,9 @@ import city.zouitel.audios.model.NoteAndAudio
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.MiniAudioPlayer
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
+import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.logic.events.UiEvents
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.note.model.Note
 import city.zouitel.note.ui.workplace.WorkplaceScreen
@@ -345,12 +345,7 @@ private fun Card(
 
         // display link card.
         filteredLinks.map {
-            LinkCard(
-                linkScreenModel = linkModel,
-                uid = note.uid,
-                isSwipe = false,
-                link = it,
-            )
+            LinkCard(isSwipe = false, link = it)
         }
 
         // display tasks list.
@@ -374,8 +369,9 @@ private fun Card(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(
-                                selected = task.isDone, onClick = {
-                                    taskModel.sendUiEvent(UiEvents.Update(task.id))
+                                selected = task.isDone,
+                                onClick = {
+                                    taskModel.sendAction(Action.Insert(task.copy(isDone = !task.isDone)))
                                 },
                                 colors = RadioButtonDefaults.colors(
                                     selectedColor = Color.Gray,
