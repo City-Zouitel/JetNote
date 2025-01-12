@@ -66,38 +66,25 @@ class TaskDataSourceImpl(
     }
 
     /**
-     * Updates an existing task in the data source.
-     *
-     * This function takes an [OutTask] object, maps it to a database entity using the [mapper],
-     * and then delegates the update operation to the [dao].
-     *
-     * @param task The [OutTask] object containing the updated information for the task.
-     * @throws Exception if there's an error during the update process (e.g., database error).
-     */
-    override suspend fun update(task: OutTask) {
-        dao.update(mapper.fromRepo(task))
-    }
-
-    /**
-     * Updates a record in the underlying data source by its ID.
-     *
-     * This function utilizes a suspending call to interact with the data access object (DAO).
-     * It delegates the update operation to the [dao] object's `updateById` method.
-     *
-     * @param id The ID of the record to update.
-     * @throws Exception if an error occurs during the update process.
-     */
-    override suspend fun updateById(id: Long) {
-        dao.updateById(id)
-    }
-
-    /**
      * Deletes an entity from the data source by its ID.
      *
-     * @param id The ID of the entity to delete.
+     * @param id The ID of the entity to deleteById.
      * @throws Exception if an error occurs during the deletion process.
      */
     override suspend fun deleteById(id: Long) {
         dao.deleteById(id)
+    }
+
+    /**
+     * Deletes a record from the data source with the specified unique ID (UID).
+     *
+     * This function suspends the coroutine execution while the deletion operation is performed.
+     * It delegates the actual deletion to the underlying [dao] (Data Access Object).
+     *
+     * @param uid The unique identifier (UID) of the record to be deleted.
+     * @throws Exception if there is an error during the deletion process (specific exceptions depend on DAO implementation).
+     */
+    override suspend fun deleteByUid(uid: String) {
+        dao.deleteByUid(uid)
     }
 }
