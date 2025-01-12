@@ -52,7 +52,7 @@ class MediaDataSourceImpl(
      *         with the provided `uid`.
      * @throws Exception Any exception thrown by the DAO or the mapper.
      */
-    override fun observeByUid(uid: String): Flow<List<OutMedia>> {
+    override suspend fun observeByUid(uid: String): Flow<List<OutMedia>> {
         return dao.observeByUid(uid).map { mapper.toRepo(it) }
     }
 
@@ -64,17 +64,21 @@ class MediaDataSourceImpl(
      *
      * @param media The [OutMedia] object to be inserted.
      */
-    override fun insert(media: OutMedia) {
+    override suspend fun insert(media: OutMedia) {
         dao.insert(mapper.fromRepo(media))
     }
 
     /**
      * Deletes an entity from the data source by its ID.
      *
-     * @param id The ID of the entity to delete.
+     * @param id The ID of the entity to deleteById.
      * @throws Exception if there's an error during the deletion process. This should be replaced with a more specific exception if applicable.
      */
-    override fun deleteById(id: Long) {
+    override suspend fun deleteById(id: Long) {
         dao.deleteById(id)
+    }
+
+    override suspend fun deleteByUid(uid: String) {
+        dao.deleteByUid(uid)
     }
 }
