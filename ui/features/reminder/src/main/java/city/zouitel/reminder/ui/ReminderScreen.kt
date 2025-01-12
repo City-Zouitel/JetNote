@@ -21,7 +21,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import city.zouitel.logic.events.UiEvent
+import city.zouitel.domain.utils.Action
 import city.zouitel.notifications.viewmodel.AlarmManagerScreenModel
 import city.zouitel.reminder.layout.DateLayout
 import city.zouitel.reminder.layout.TimeLayout
@@ -45,7 +45,7 @@ import kotlin.random.Random
 data class ReminderScreen(
     val uid: String,
     val title: String?,
-    val message: String?,
+    val message: String?
 ): Screen {
     @Composable
     override fun Content() {
@@ -151,7 +151,6 @@ data class ReminderScreen(
                     CommonOptionItem(
                         onConfirm = {
                             sound.performSoundEffect(context, KEY_STANDARD, isMute)
-
                             runCatching {
                                 alarmManagerModel.initializeAlarm(
                                     uid = uid,
@@ -161,8 +160,9 @@ data class ReminderScreen(
                                     atTime = dateTime
                                 )
 
-                                reminderModel.sendUiEvent(
-                                    UiEvent.Insert(Reminder(id = id, uid = uid, atTime = dateTime))
+                            }.onSuccess {
+                                reminderModel.sendAction(
+                                    Action.Insert(Reminder(id = id, uid = uid, atTime = dateTime))
                                 )
                             }
 
