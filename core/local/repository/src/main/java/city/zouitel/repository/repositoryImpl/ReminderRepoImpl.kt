@@ -29,8 +29,8 @@ class ReminderRepoImpl(
      * @param uid The user ID for which to observe reminders.
      * @return A flow of lists of OutReminder objects, representing the reminders for the user.
      */
-    override suspend fun observeById(uid: String): Flow<List<OutReminder>> {
-        return dataSource.observeById(uid).map { reminders -> mapper.toDomain(reminders) }
+    override suspend fun observeByUid(uid: String): Flow<List<OutReminder>> {
+        return dataSource.observeByUid(uid).map { reminders -> mapper.toDomain(reminders) }
     }
 
     /**
@@ -47,8 +47,8 @@ class ReminderRepoImpl(
      *
      * @param id The ID of the entity to update.
      */
-    override suspend fun update(id: Int) {
-        dataSource.update(id)
+    override suspend fun updateById(id: Int) {
+        dataSource.updateById(id)
     }
 
     /**
@@ -56,14 +56,18 @@ class ReminderRepoImpl(
      *
      * @param id The ID of the entity to delete.
      */
-    override suspend fun delete(id: Int) {
-        dataSource.delete(id)
+    override suspend fun deleteById(id: Int) {
+        dataSource.deleteById(id)
     }
 
     /**
-     * Deletes all items from the database.
+     * Deletes a record from the data source using the provided unique identifier (UID).
+     *
+     * This function delegates the deletion operation to the underlying [dataSource].
+     *
+     * @param uid The unique identifier of the record to be deleted.
      */
-    override suspend fun deleteAll() {
-        dataSource.deleteAll()
+    override suspend fun deleteByUid(uid: String) {
+        dataSource.deleteByUid(uid)
     }
 }
