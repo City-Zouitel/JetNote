@@ -1,13 +1,10 @@
 package city.zouitel.database.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
+import androidx.room.Upsert
 import city.zouitel.database.model.Task
 import city.zouitel.database.model.Task.Companion.TABLE_NAME
-import city.zouitel.database.utils.Constants.DONE
 import city.zouitel.database.utils.Constants.ID
 import city.zouitel.database.utils.Constants.UUID
 import kotlinx.coroutines.flow.Flow
@@ -39,46 +36,32 @@ interface TaskDao {
     fun observeByUid(uid: String): Flow<List<Task>>
 
     /**
-     * Inserts a [Task] into the database.
+     * Inserts a [Task] into the database, or updates it if a [Task] with the same primary key already exists.
      *
-     * If a [Task] with the same primary key already exists, it will be replaced.
+     * This is a suspend function, meaning it must be called within a coroutine.
      *
-     * @param item The [Task] to be inserted or replaced.
+     * @param item The [Task] to be inserted or updated.
+     * @throws SQLiteConstraintException if a constraint violation occurs during the upsert operation.
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert(entity = Task::class)
     suspend fun insert(item: Task)
-
-    /**
-     * Updates an existing [Task] in the data source.
-     *
-     * If a [Task] with the same primary key already exists, it will be replaced
-     * with the new [Task] data. This operation is performed as an atomic transaction.
-     *
-     * @param item The [Task] object containing the updated data. The primary key
-     *             of this object must match the [Task] you intend to update.
-     * @throws SQLiteException If an error occurs while interacting with the database.
-     * @see OnConflictStrategy.REPLACE
-     */
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(item: Task)
-
-    /**
-     * Updates the 'done' status of a task in the database by toggling its current state.
-     *
-     * This function finds the task with the specified [id] and inverts the value of its 'done'
-     * column (e.g., if 'done' was true, it will become false, and vice-versa).
-     *
-     * @param id The ID of the task to update.
-     */
-    @Query("UPDATE $TABLE_NAME SET $DONE = NOT $DONE WHERE $ID = :id")
-    suspend fun updateById(id: Long)
 
     /**
      * Deletes a row from the table with the specified ID.
      *
-     * @param id The ID of the row to delete.
+     * @param id The ID of the row to deleteById.
      * @throws SQLiteException if an error occurs during the database operation.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
     suspend fun deleteById(id: Long)
+
+    /**
+     * Deletes a record from the [TABLE_NAME] table based on the provided UUID.
+     *
+     * @param uid The UUID of the record to delete.
+     * @throws Exception If any error occurs during the database operation.
+     * @return Unit. The function returns nothing explicitly, but it suspends until the database operation is complete.
+     */
+    @Query("DELETE FROM $TABLE_NAME WHERE $UUID = :uid")
+    suspend fun deleteByUid(uid: String)
 }
