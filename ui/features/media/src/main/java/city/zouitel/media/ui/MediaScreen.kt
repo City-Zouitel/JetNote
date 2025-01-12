@@ -33,10 +33,7 @@ import me.saket.telephoto.zoomable.coil.ZoomableAsyncImage
 import me.saket.telephoto.zoomable.rememberZoomableImageState
 import me.saket.telephoto.zoomable.rememberZoomableState
 
-data class MediaScreen(
-    val uid: String,
-    val backgroundColor: Int = 0,
-): Screen {
+data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     override fun Content() {
@@ -90,7 +87,7 @@ data class MediaScreen(
                             modifier = Modifier.combinedClickable(
                                 onLongClick = {
                                     vibe.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    mediaModel.sendAction(Action.Delete(observeMedias[index].id))
+                                    mediaModel.sendAction(Action.DeleteById(observeMedias[index].id))
                                 }
                             ) { /*do nothing..*/ }
                         ) {
