@@ -50,25 +50,34 @@ interface MediaDao {
     /**
      * Inserts a [Media] object into the database.
      *
-     * If a [Media] object with the same primary key already exists, it will be replaced with the new one.
-     * This uses the [OnConflictStrategy.REPLACE] conflict resolution strategy.
+     * If a conflict occurs (i.e., a row with the same primary key already exists),
+     * the existing row will be ignored, and no changes will be made.
      *
-     * @param media The [Media] object to insert or replace.
+     * This is a suspend function, so it must be called within a coroutine.
      *
-     * @see OnConflictStrategy.REPLACE
-     * @see Media
+     * @param media The [Media] object to insert.
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(media: Media)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(media: Media)
 
     /**
      * Deletes a row from the table with the specified ID.
      *
-     * @param id The ID of the row to delete.
+     * @param id The ID of the row to deleteById.
      * @return The number of rows deleted. Usually 1 if successful, 0 if no row with the given ID exists.
      *
      * @throws SQLiteException if an error occurs during the database operation.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
-    fun deleteById(id: Long)
+    suspend fun deleteById(id: Long)
+
+    /**
+     * Deletes a record from the [TABLE_NAME] table based on the provided UUID.
+     *
+     * @param uid The UUID of the record to deleteById.
+     * @throws Exception If any error occurs during the database operation.
+     * @return Unit. The function returns nothing explicitly, but it suspends until the database operation is complete.
+     */
+    @Query("DELETE FROM $TABLE_NAME WHERE $UUID = :uid")
+    suspend fun deleteByUid(uid: String)
 }
