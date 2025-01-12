@@ -5,6 +5,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 import city.zouitel.database.model.Link
 import city.zouitel.database.model.Link.Companion.TABLE_NAME
+import city.zouitel.database.utils.Constants.ID
 import city.zouitel.database.utils.Constants.UUID
 import kotlinx.coroutines.flow.Flow
 
@@ -46,7 +47,7 @@ interface LinkDao {
      * Inserts a [Link] into the database, or updates it if a matching row already exists.
      *
      * This function utilizes Room's `@Upsert` annotation, which provides a convenient way to
-     * either insert a new entity or update an existing one based on the entity's primary key.
+     * either insert a new entity or updateById an existing one based on the entity's primary key.
      * If a [Link] with the same primary key (as defined in the [Link] entity class) already
      * exists in the database, it will be updated with the new values provided in the [link]
      * parameter. Otherwise, a new row will be inserted.
@@ -63,9 +64,17 @@ interface LinkDao {
     suspend fun insert(link: Link)
 
     /**
+     * Deletes a row from the table with the specified ID.
+     *
+     * @param id The ID of the row to deleteById.
+     */
+    @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
+    suspend fun deleteById(id: Int)
+
+    /**
      * Deletes a record from the [TABLE_NAME] table based on the provided UUID.
      *
-     * @param uid The UUID of the record to delete.
+     * @param uid The UUID of the record to deleteById.
      * @throws Exception If any error occurs during the database operation.
      * @return Unit. The function returns nothing explicitly, but it suspends until the database operation is complete.
      */
