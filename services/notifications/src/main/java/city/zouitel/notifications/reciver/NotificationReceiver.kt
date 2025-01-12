@@ -10,7 +10,7 @@ import android.os.Build
 import androidx.annotation.CallSuper
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import city.zouitel.logic.events.UiEvent
+import city.zouitel.domain.utils.Action
 import city.zouitel.notifications.Constants
 import city.zouitel.notifications.Constants.ID
 import city.zouitel.notifications.Constants.MESSAGE
@@ -67,6 +67,6 @@ class NotificationReceiver: BroadcastReceiver(), KoinComponent {
             notifyBuilder
         )
 
-        alarmModel.sendUiEvent(UiEvent.Update(intent.getIntExtra(ID, 0)))
+        alarmModel.sendAction(Action.UpdateById(intent.getIntExtra(ID, 0)))
     }
 }
