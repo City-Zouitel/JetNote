@@ -65,32 +65,6 @@ class TaskRepositoryImpl(
     }
 
     /**
-     * Updates an existing [Task] in the data source.
-     *
-     * This function maps the domain [Task] to a data source-specific representation
-     * using the [mapper] and then delegates the update operation to the underlying
-     * [dataSource].
-     *
-     * @param task The [Task] object containing the updated information.
-     * @throws Exception if an error occurs during the update process in the data source.
-     */
-    override suspend fun update(task: Task) {
-        dataSource.update(mapper.fromDomain(task))
-    }
-
-    /**
-     * Updates an entity in the data source by its ID.
-     *
-     * This function delegates the update operation to the underlying [dataSource].
-     *
-     * @param id The ID of the entity to update.
-     * @throws Exception if any error occurs during the update operation within the data source.
-     */
-    override suspend fun updateById(id: Long) {
-        dataSource.updateById(id)
-    }
-
-    /**
      * Deletes an entity from the data source by its unique identifier.
      *
      * This function delegates the deletion operation to the underlying [dataSource].
@@ -100,5 +74,16 @@ class TaskRepositoryImpl(
      */
     override suspend fun deleteById(id: Long) {
         dataSource.deleteById(id)
+    }
+
+    /**
+     * Deletes a record from the data source using the provided unique identifier (UID).
+     *
+     * This function delegates the deletion operation to the underlying [dataSource].
+     *
+     * @param uid The unique identifier of the record to be deleted.
+     */
+    override suspend fun deleteByUid(uid: String) {
+        dataSource.deleteByUid(uid)
     }
 }
