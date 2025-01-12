@@ -15,10 +15,10 @@ import city.zouitel.domain.utils.withAsync
 import city.zouitel.links.mapper.LinkMapper
 import city.zouitel.links.model.Link
 import city.zouitel.links.state.UiState
+import city.zouitel.links.utils.Constants.ID
 import city.zouitel.links.utils.Constants.LINK_DESCRIBE
 import city.zouitel.links.utils.Constants.LINK_ICON
 import city.zouitel.links.utils.Constants.LINK_IMG
-import city.zouitel.links.utils.Constants.ID
 import city.zouitel.links.utils.Constants.LINK_TAG
 import city.zouitel.links.utils.Constants.LINK_TITLE
 import city.zouitel.links.utils.Constants.UID
@@ -34,8 +34,9 @@ class LinkScreenModel(
     application: Application,
     private val _observeAll_: LinkUseCase.ObserveAll,
     private val _observeByUid_: LinkUseCase.ObserveByUid,
+    private val deleteById: LinkUseCase.DeleteById,
     private val deleteByUid: LinkUseCase.DeleteByUid,
-    private val mapper: LinkMapper,
+    private val mapper: LinkMapper
 ): ScreenModel {
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
@@ -46,9 +47,7 @@ class LinkScreenModel(
     val observeAll: StateFlow<List<Link>> = _observeAll
         .withFlow(emptyList()) {
             withAsync {
-                _observeAll_.invoke().collect {
-                    _observeAll.value = mapper.fromDomain(it)
-                }
+                _observeAll_.invoke().collect { _observeAll.value = mapper.fromDomain(it) }
             }
         }
 
@@ -95,8 +94,9 @@ class LinkScreenModel(
 
     fun sendAction(act: Action) {
         when(act) {
+            is Action.DeleteById -> withAsync { deleteById(act.id as Int) }
             is Action.DeleteByUid -> withAsync { deleteByUid(act.uid) }
-            else -> throw Exception("Unknown event")
+            else -> throw NotImplementedError("Action not implemented: $act")
         }
     }
 
