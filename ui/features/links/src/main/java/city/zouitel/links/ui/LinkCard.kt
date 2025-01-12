@@ -1,5 +1,6 @@
 package city.zouitel.links.ui
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,38 +22,36 @@ import city.zouitel.domain.utils.Action
 import city.zouitel.links.model.Link
 import city.zouitel.systemDesign.CommonSwipeItem
 import coil.compose.AsyncImage
+import org.koin.java.KoinJavaComponent.inject
 
 @Composable
-fun LinkCard(
-    linkScreenModel: LinkScreenModel,
-    uid: String,
-    isSwipe: Boolean,
-    link: Link,
-) {
+fun LinkCard(isSwipe: Boolean, link: Link) {
     val uriHand = LocalUriHandler.current
+    val linkModel by inject<LinkScreenModel>(LinkScreenModel::class.java)
 
     if (isSwipe) {
         CommonSwipeItem(
             onSwipeLeft = {
-                linkScreenModel.sendAction(Action.DeleteByUid(uid))
+                linkModel.sendAction(Action.DeleteById(link.id))
             },
             onSwipeRight = {
                 uriHand.openUri(link.url)
             }
         ) {
-            LinkCard(isSwipe = isSwipe, link = link)
+            Link(isSwipe = isSwipe, link = link)
         }
     } else {
-        LinkCard(isSwipe = isSwipe, link = link)
+        Link(isSwipe = isSwipe, link = link)
     }
 }
 
 @Composable
-private fun LinkCard(isSwipe: Boolean, link: Link) {
+private fun Link(isSwipe: Boolean, link: Link) {
     Card(
         modifier = Modifier
+            .animateContentSize()
             .fillMaxWidth()
-            .padding(if (isSwipe) 20.dp else 0.dp),
+            .padding(if (isSwipe) 8.dp else 0.dp),
         shape = if (isSwipe) RoundedCornerShape(15.dp) else RoundedCornerShape(0.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(.6f, .6f, .6f, .5f)
