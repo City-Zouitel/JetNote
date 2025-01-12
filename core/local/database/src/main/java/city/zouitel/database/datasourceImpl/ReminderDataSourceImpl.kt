@@ -24,8 +24,8 @@ class ReminderDataSourceImpl(
      * @return A flow emitting a list of [OutReminder] objects for the given user ID.
      *         The list will be updated whenever there are changes in the database.
      */
-    override suspend fun observeById(uid: String): Flow<List<OutReminder>> {
-        return dao.observeAllById(uid).map { mapper.toRepo(it) }
+    override suspend fun observeByUid(uid: String): Flow<List<OutReminder>> {
+        return dao.observeByUid(uid).map { mapper.toRepo(it) }
     }
 
     /**
@@ -42,23 +42,29 @@ class ReminderDataSourceImpl(
      *
      * @param id The ID of the entity to updateById.
      */
-    override suspend fun update(id: Int) {
-        dao.update(id)
+    override suspend fun updateById(id: Int) {
+        dao.updateById(id)
     }
 
     /**
      * Deletes a reminder with the given ID.
      *
-     * @param id The ID of the reminder entity to delete.
+     * @param id The ID of the reminder entity to deleteById.
      */
-    override suspend fun delete(id: Int) {
-        dao.delete(id)
+    override suspend fun deleteById(id: Int) {
+        dao.deleteById(id)
     }
 
     /**
-     * Deletes all reminders from the database.
+     * Deletes a record from the data source with the specified unique ID (UID).
+     *
+     * This function suspends the coroutine execution while the deletion operation is performed.
+     * It delegates the actual deletion to the underlying [dao] (Data Access Object).
+     *
+     * @param uid The unique identifier (UID) of the record to be deleted.
+     * @throws Exception if there is an error during the deletion process (specific exceptions depend on DAO implementation).
      */
-    override suspend fun deleteAll() {
-        dao.deleteAll()
+    override suspend fun deleteByUid(uid: String) {
+        dao.deleteByUid(uid)
     }
 }
