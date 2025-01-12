@@ -65,6 +65,18 @@ class LinkDataSourceImpl(
     }
 
     /**
+     * Deletes an entity from the data source by its ID.
+     *
+     * This function suspends execution and performs the deletion operation asynchronously.
+     * It typically interacts with a data access object (DAO) to remove the entity.
+     *
+     * @param id The ID of the entity to delete.
+     */
+    override suspend fun deleteById(id: Int) {
+        dao.deleteById(id)
+    }
+
+    /**
      * Deletes a record from the data source with the specified unique ID (UID).
      *
      * This function suspends the coroutine execution while the deletion operation is performed.
