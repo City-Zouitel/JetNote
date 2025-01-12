@@ -3,27 +3,25 @@ package city.zouitel.tasks.ui
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.TaskUseCase
+import city.zouitel.domain.utils.Action
+import city.zouitel.domain.utils.withAsync
 import city.zouitel.logic.withFlow
-import city.zouitel.logic.events.UiEvents
-import city.zouitel.logic.events.UiEventsHandler
 import city.zouitel.tasks.mapper.TaskMapper
 import city.zouitel.tasks.model.Task
 import city.zouitel.tasks.state.UiState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
+@Suppress("DeferredResultUnused")
 class TaskScreenModel(
     private val observeAll: TaskUseCase.ObserveAll,
     private val observeByUid: TaskUseCase.ObserveByUid,
     private val insert: TaskUseCase.Insert,
-    private val update: TaskUseCase.Update,
-    private val updateById: TaskUseCase.UpdateById,
     private val deleteById: TaskUseCase.DeleteById,
+    private val deleteByUid: TaskUseCase.DeleteByUid,
     private val mapper: TaskMapper
-): ScreenModel, UiEventsHandler {
+): ScreenModel {
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.withFlow(UiState())
@@ -33,39 +31,27 @@ class TaskScreenModel(
 
     private val _observeAllTasks = MutableStateFlow<List<Task>>(emptyList())
     val observeAllTasks: StateFlow<List<Task>> = _observeAllTasks
-        .onStart {
-            performUiEvent {
-                observeAll().collect {
-                    _observeAllTasks.value = mapper.fromDomain(it)
-                }
+        .withFlow(listOf()) {
+            withAsync {
+                observeAll().collect { _observeAllTasks.value = mapper.fromDomain(it) }
             }
         }
-        .withFlow(listOf())
 
     fun initializeTasks(uid: String) {
-        performUiEvent {
+        withAsync {
             observeByUid(uid).collect {
                 _getAllTaskList.value =  mapper.fromDomain(it)
             }
         }
     }
 
-    override fun sendUiEvent(event: UiEvents) {
-        when(event) {
-            is UiEvents.Insert<*> -> performUiEvent { insert(mapper.toDomain(event.data as Task)) }
-            is UiEvents.Update<*> -> performUiEvent {
-                when(event.data) {
-                    is Task -> update(mapper.toDomain(event.data as Task))
-                    is Long -> updateById(event.data as Long)
-                }
-            }
-            is UiEvents.Delete<*> -> performUiEvent { deleteById(event.data as Long) }
-            else -> throw Exception("Not implemented")
+    fun sendAction(act: Action) {
+        when(act) {
+            is Action.Insert<*> -> withAsync { insert(mapper.toDomain(act.data as Task)) }
+            is Action.DeleteById -> withAsync { deleteById(act.id as Long) }
+            is Action.DeleteByUid -> withAsync { deleteByUid(act.uid) }
+            else -> throw Exception("Action is not implemented $act")
         }
-    }
-
-    override fun performUiEvent(action: suspend () -> Unit) {
-        screenModelScope.launch(Dispatchers.IO) { action.invoke() }
     }
 
     fun updateId(id: Long = 0L): TaskScreenModel {
