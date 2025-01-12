@@ -39,7 +39,7 @@ interface MediaDataSource {
      *         The flow continues to emit new lists as the media data changes.
      *         The flow will never complete normally, unless the underlying data source is closed.
      */
-    fun observeByUid(uid: String): Flow<List<Media>>
+    suspend fun observeByUid(uid: String): Flow<List<Media>>
 
     /**
      * Inserts a new [Media] object into the data store.
@@ -59,7 +59,7 @@ interface MediaDataSource {
      * @return Unit, indicating successful completion. The inserted [Media] object might be modified,
      *         for example with a generated id.
      */
-    fun insert(media: Media)
+    suspend fun insert(media: Media)
 
     /**
      * Deletes an entity from the data source by its unique identifier.
@@ -72,5 +72,24 @@ interface MediaDataSource {
      * @throws AnotherExceptionType if another type of error can happen (replace with actual exception type if any).
      * @return void. The function doesn't return any value.
      */
-    fun deleteById(id: Long)
+    suspend fun deleteById(id: Long)
+
+    /**
+     * Deletes a record or resource associated with the given unique identifier (UID).
+     *
+     * This is a suspending function, meaning it must be called within a coroutine or another
+     * suspending function. It performs the deletion asynchronously.
+     *
+     * @param uid The unique identifier of the record/resource to delete.
+     * @throws Exception if any error occurs during the deletion process.  Consider more specific exceptions if possible.
+     * For example:
+     * @throws NotFoundException if a record with the given UID is not found.
+     * @throws DatabaseException if there is an issue communicating with the database.
+     * @throws PermissionDeniedException if the user doesn't have permission to delete.
+     * @throws IllegalArgumentException if the uid is invalid or empty.
+     *
+     * @see [suspend]
+     * @see [kotlinx.coroutines]
+     */
+    suspend fun deleteByUid(uid: String)
 }
