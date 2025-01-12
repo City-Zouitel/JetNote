@@ -93,10 +93,11 @@ val localRepositoryKoinModule = module {
     factoryOf(DataUseCase::DeleteData)
     factoryOf(DataUseCase::DeleteAllTrashedData)
 
-    factoryOf(LinkUseCase::Insert)
-    factoryOf(LinkUseCase::DeleteByUid)
     factoryOf(LinkUseCase::ObserveAll)
     factoryOf(LinkUseCase::ObserveByUid)
+    factoryOf(LinkUseCase::Insert)
+    factoryOf(LinkUseCase::DeleteById)
+    factoryOf(LinkUseCase::DeleteByUid)
 
     factoryOf(NoteAndTagUseCase::AddNoteAndTag)
     factoryOf(NoteAndTagUseCase::DeleteNoteAndTag)
@@ -117,9 +118,8 @@ val localRepositoryKoinModule = module {
     factoryOf(TaskUseCase::ObserveAll)
     factoryOf(TaskUseCase::ObserveByUid)
     factoryOf(TaskUseCase::Insert)
-    factoryOf(TaskUseCase::Update)
     factoryOf(TaskUseCase::DeleteById)
-    factoryOf(TaskUseCase::UpdateById)
+    factoryOf(TaskUseCase::DeleteByUid)
 
     factoryOf(WidgetUseCase::GetAllWidgetMainEntityById)
 
@@ -139,10 +139,11 @@ val localRepositoryKoinModule = module {
     factoryOf(MediaUseCase::ObserveByUid)
     factoryOf(MediaUseCase::Insert)
     factoryOf(MediaUseCase::DeleteById)
+    factoryOf(MediaUseCase::DeleteByUid)
 
-    factoryOf(ReminderUseCase::ObserveById)
+    factoryOf(ReminderUseCase::ObserveByUid)
     factoryOf(ReminderUseCase::Insert)
-    factoryOf(ReminderUseCase::Update)
-    factoryOf(ReminderUseCase::DeleteReminder)
-    factoryOf(ReminderUseCase::DeleteAll)
+    factoryOf(ReminderUseCase::UpdateById)
+    factoryOf(ReminderUseCase::DeleteById)
+    factoryOf(ReminderUseCase::DeleteByUid)
 }
