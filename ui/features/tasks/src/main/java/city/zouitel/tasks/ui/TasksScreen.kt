@@ -44,7 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import city.zouitel.logic.events.UiEvents
+import city.zouitel.domain.utils.Action
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonSwipeItem
 import city.zouitel.systemDesign.CommonTextField
@@ -112,18 +112,17 @@ data class TasksScreen(val uid: String): Screen {
                                         .updateItem(task.item ?: "")
                                 },
                                 onSwipeLeft = {
-                                    taskModel.sendUiEvent(UiEvents.Delete(task.id))
+                                    taskModel.sendAction(Action.DeleteById(task.id))
                                 },
                                 onSwipeRight = {
-                                    taskModel.sendUiEvent(UiEvents.Update(task.id))
+                                    taskModel.sendAction(Action.Insert(task.copy(id = task.id, isDone = !task.isDone)))
                                 }
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Checkbox(
                                         checked = task.isDone,
                                         onCheckedChange = {
-                                            taskModel.sendUiEvent(UiEvents.Update(task.id))
-
+                                            taskModel.sendAction(Action.Insert(task.copy(id = task.id, isDone = !task.isDone)))
                                         },
                                         colors = CheckboxDefaults.colors(
                                             checkedColor = Color.Gray
@@ -167,10 +166,10 @@ data class TasksScreen(val uid: String): Screen {
                         keyboardActions = KeyboardActions {
                             val taskToUpdate = observeTaskList.find { it.id == uiState.currentId }
                             if (taskToUpdate != null) {
-                                taskModel.sendUiEvent(UiEvents.Update(taskToUpdate.copy(item = uiState.currentItem)))
+                                taskModel.sendAction(Action.Insert(taskToUpdate.copy(item = uiState.currentItem)))
                             } else {
                                 val newTaskId = Random.nextLong()
-                                taskModel.sendUiEvent(UiEvents.Insert(Task(newTaskId, uid, uiState.currentItem)))
+                                taskModel.sendAction(Action.Insert(Task(newTaskId, uid, uiState.currentItem)))
                             }
                             taskModel.updateId().updateItem()
                         }
