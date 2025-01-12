@@ -12,7 +12,7 @@ val linksKoinModule = module {
     factoryOf(::LinkMapper)
 
     factory {
-        LinkScreenModel(get(), get(), get(), get(), get())
+        LinkScreenModel(get(), get(), get(), get(), get(), get())
     }
 
     worker {
