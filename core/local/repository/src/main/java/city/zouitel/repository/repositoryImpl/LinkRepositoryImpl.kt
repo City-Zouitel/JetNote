@@ -61,6 +61,20 @@ class LinkRepositoryImpl(
     }
 
     /**
+     * Deletes a record from the data source by its ID.
+     *
+     * This function delegates the deletion operation to the underlying [dataSource].
+     * If a record with the specified [id] exists, it will be removed from the data source.
+     * If no record with the given [id] exists, no changes will be made.
+     *
+     * @param id The unique identifier of the record to delete.
+     * @throws Exception If any error occurs during the deletion process. (Add specific exceptions if known, e.g., DatabaseException)
+     */
+    override suspend fun deleteById(id: Int) {
+        dataSource.deleteById(id)
+    }
+
+    /**
      * Deletes a record from the data source using the provided unique identifier (UID).
      *
      * This function delegates the deletion operation to the underlying [dataSource].
