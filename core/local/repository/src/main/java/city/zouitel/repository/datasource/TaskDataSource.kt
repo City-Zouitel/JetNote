@@ -55,42 +55,6 @@ interface TaskDataSource {
     suspend fun insert(task: Task)
 
     /**
-     * Updates an existing [Task] in the data source.
-     *
-     * This function performs a suspendable operation to update the provided [task].
-     * It is intended to be used within a coroutine or another suspending function.
-     *
-     * @param task The [Task] object containing the updated information. The ID of the task
-     *             must be set and correspond to an existing task in the data source.
-     * @throws Exception if any error occurs during the update process, such as:
-     *                   - The task with the provided ID does not exist.
-     *                   - A database error occurs during the update.
-     *                   - Network error if it uses network to update the data.
-     * @throws IllegalArgumentException if the [task]'s ID is null or invalid.
-     * @see Task
-     */
-    suspend fun update(task: Task)
-
-    /**
-     * Updates an entity in the data source identified by the given [id].
-     *
-     * This function performs an update operation. The specific data being updated is
-     * expected to be provided to the function's caller through a separate mechanism
-     * (e.g., setting the values on a data class before calling this method).
-     *
-     * This is a suspending function, which means it can be safely called from a
-     * coroutine and will not block the calling thread while waiting for the update
-     * operation to complete.
-     *
-     * @param id The unique identifier of the entity to update.
-     * @throws Exception if there is an error during the update process. Specific
-     *   exceptions might be thrown depending on the underlying data source
-     *   implementation (e.g., `NotFoundException` if the entity with the given ID
-     *   does not exist, `DatabaseException` if a database error occurs).
-     */
-    suspend fun updateById(id: Long)
-
-    /**
      * Deletes an entity from the data source by its unique identifier.
      *
      * This is a suspending function, meaning it should be called within a coroutine or
@@ -102,4 +66,23 @@ interface TaskDataSource {
      * @throws Exception If any other error occurs during the deletion process (e.g., database error).
      */
     suspend fun deleteById(id: Long)
+
+    /**
+     * Deletes a record or resource associated with the given unique identifier (UID).
+     *
+     * This is a suspending function, meaning it must be called within a coroutine or another
+     * suspending function. It performs the deletion asynchronously.
+     *
+     * @param uid The unique identifier of the record/resource to delete.
+     * @throws Exception if any error occurs during the deletion process.  Consider more specific exceptions if possible.
+     * For example:
+     * @throws NotFoundException if a record with the given UID is not found.
+     * @throws DatabaseException if there is an issue communicating with the database.
+     * @throws PermissionDeniedException if the user doesn't have permission to delete.
+     * @throws IllegalArgumentException if the uid is invalid or empty.
+     *
+     * @see [suspend]
+     * @see [kotlinx.coroutines]
+     */
+    suspend fun deleteByUid(uid: String)
 }
