@@ -34,7 +34,7 @@ sealed class MediaUseCase {
      * @property repo The [MediaRepository] used to interact with the underlying data source.
      */
     data class ObserveByUid(private val repo: MediaRepository): MediaUseCase() {
-        operator fun invoke(uid: String) = repo.observeByUid(uid)
+        suspend operator fun invoke(uid: String) = repo.observeByUid(uid)
     }
 
     /**
@@ -45,7 +45,7 @@ sealed class MediaUseCase {
      * @property repo The [MediaRepository] instance used to interact with the media data source.
      */
     data class Insert(private val repo: MediaRepository): MediaUseCase() {
-        operator fun invoke(media: Media) = repo.insert(media)
+        suspend operator fun invoke(media: Media) = repo.insert(media)
     }
 
     /**
@@ -56,6 +56,17 @@ sealed class MediaUseCase {
      * @property repo The [MediaRepository] used for data access.
      */
     data class DeleteById(private val repo: MediaRepository): MediaUseCase() {
-        operator fun invoke(id: Long) = repo.deleteById(id)
+        suspend operator fun invoke(id: Long) = repo.deleteById(id)
+    }
+
+    /**
+     * [DeleteByUid] use case.
+     *
+     * This use case is responsible for deleting a media item from the repository based on its unique identifier (UID).
+     *
+     * @property repo The [MediaRepository] used to interact with the data layer.
+     */
+    data class DeleteByUid(private val repo: MediaRepository): MediaUseCase() {
+        suspend operator fun invoke(uid: String) = repo.deleteByUid(uid)
     }
 }
