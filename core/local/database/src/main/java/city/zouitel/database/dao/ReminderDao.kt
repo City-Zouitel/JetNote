@@ -19,13 +19,13 @@ import kotlinx.coroutines.flow.Flow
 interface ReminderDao {
 
     /**
-     * Observes all reminders associated with a specific user ID.
+     * Observes all reminders associated with a specific note uid.
      *
      * @param uid: The unique identifier of the user.
-     * @return A Flow emitting a list of reminders for the given user ID.
+     * @return A Flow emitting a list of reminders for the given note uid.
      */
     @Query("SELECT * FROM $TABLE_NAME WHERE $UUID = :uid")
-    fun observeAllById(uid: String): Flow<List<Reminder>>
+    fun observeByUid(uid: String): Flow<List<Reminder>>
 
     /**
      * Inserts a new reminder into the database.
@@ -41,13 +41,7 @@ interface ReminderDao {
      * @param id The ID of the record to updateById.
      */
     @Query("UPDATE $TABLE_NAME SET $PASSED = 1 WHERE $ID = :id")
-    suspend fun update(id: Int)
-
-    /**
-     * Deletes all rows from the reminder table.
-     */
-    @Query("DELETE FROM $TABLE_NAME")
-    suspend fun deleteAll()
+    suspend fun updateById(id: Int)
 
     /**
      * Deletes a row from the database table based on the provided ID.
@@ -55,5 +49,15 @@ interface ReminderDao {
      * @param id: The ID of the row to be deleted.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
-    suspend fun delete(id: Int)
+    suspend fun deleteById(id: Int)
+
+    /**
+     * Deletes a record from the [TABLE_NAME] table based on the provided UUID.
+     *
+     * @param uid The UUID of the record to delete.
+     * @throws Exception If any error occurs during the database operation.
+     * @return Unit. The function returns nothing explicitly, but it suspends until the database operation is complete.
+     */
+    @Query("DELETE FROM $TABLE_NAME WHERE $UUID = :uid")
+    suspend fun deleteByUid(uid: String)
 }
