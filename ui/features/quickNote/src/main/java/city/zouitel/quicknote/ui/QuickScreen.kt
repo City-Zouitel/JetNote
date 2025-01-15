@@ -52,9 +52,7 @@ import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import java.util.UUID
 
-data class QuickScreen(
-    val action: () -> (Unit)
-): Screen {
+data class QuickScreen(val action: () -> (Unit)): Screen {
     @Composable
     override fun Content() {
         val dataModel = getScreenModel<QuickDataScreenModel>()
