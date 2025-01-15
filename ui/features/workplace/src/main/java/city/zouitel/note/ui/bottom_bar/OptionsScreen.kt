@@ -10,6 +10,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -31,22 +32,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import city.zouitel.audios.ui.list.AudioListScreen
+import city.zouitel.domain.provider.SharedScreen
+import city.zouitel.note.providers.Rational
 import city.zouitel.note.ui.utils.PriorityColorsList.HIG
 import city.zouitel.note.ui.utils.PriorityColorsList.LOW
 import city.zouitel.note.ui.utils.PriorityColorsList.MED
 import city.zouitel.note.ui.utils.PriorityColorsList.NON
 import city.zouitel.note.ui.utils.PriorityColorsList.URG
-import city.zouitel.note.ui.utils.RationalScreen
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
-import city.zouitel.recoder.ui.RecorderScreen
-import city.zouitel.reminder.ui.ReminderScreen
 import city.zouitel.systemDesign.CommonBottomSheet
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonIcons.ADD_IMAGE_ICON
@@ -57,8 +57,6 @@ import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
 import city.zouitel.systemDesign.CommonOptionItem
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.systemDesign.SoundEffect
-import city.zouitel.tags.ui.TagsScreen
-import city.zouitel.tasks.ui.TasksScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.coroutines.delay
@@ -69,7 +67,7 @@ data class OptionsScreen(
     val titleState: TextFieldState?,
     val descriptionState: TextFieldState?,
     val priorityState: MutableState<String>,
-    val imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
+    val imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>
 ): Screen {
     @Composable
     override fun Content() {
@@ -90,77 +88,68 @@ data class OptionsScreen(
         val navBottomSheet = LocalBottomSheetNavigator.current
 
         val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
-        val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
         val scope = rememberCoroutineScope()
-
         val sound by lazy { SoundEffect() }
 
-        val recorderPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            rememberMultiplePermissionsState(
-                permissions = listOf(
-                    permission.RECORD_AUDIO,
-                    permission.READ_MEDIA_AUDIO
-                )
-            ) {
+        val tagsScreen = rememberScreen(SharedScreen.Tags(uid))
+        val tasksScreen = rememberScreen(SharedScreen.Tasks(uid))
+        val reminderScreen = rememberScreen(
+            SharedScreen.Reminder(uid, titleState?.text.toString(), descriptionState?.text.toString())
+        )
+        val audioListScreen = rememberScreen(SharedScreen.AudioList(uid))
+//        val recorderPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            rememberMultiplePermissionsState(
+//                permissions = listOf(
+//                    permission.RECORD_AUDIO,
+//                    permission.READ_MEDIA_AUDIO
+//                )
+//            ) {
+//                if (it.all { true }) {
+//                    navBottomSheet.show(RecorderScreen(uid) {})
+//                }
+//            }
+//        } else {
+//            rememberMultiplePermissionsState(listOf(permission.RECORD_AUDIO)
+//            ) {
+//                if (it.all { true }) {
+//                    navBottomSheet.show(RecorderScreen(uid) {})
+//                }
+//            }
+//        }
+        val audioPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            rememberMultiplePermissionsState(listOf(permission.READ_MEDIA_AUDIO)) {
                 if (it.all { true }) {
-                    navBottomSheet.show(RecorderScreen(uid) {})
+                    navBottomSheet.show(audioListScreen)
                 }
             }
         } else {
-            rememberMultiplePermissionsState(
-                permissions = listOf(
-                    permission.RECORD_AUDIO,
-                )
-            ) {
-                if (it.all { true }) {
-                    navBottomSheet.show(RecorderScreen(uid) {})
-                }
-            }
-        }
-        val readMediaPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            rememberMultiplePermissionsState(
-                permissions = listOf(
-                    permission.READ_MEDIA_AUDIO
-                )
-            ) {
-                if (it.all { true }) {
-                    navBottomSheet.show(AudioListScreen(uid))
-                }
-            }
-        } else {
-            rememberMultiplePermissionsState(
-                permissions = emptyList()
-            ) {
-                navBottomSheet.show(AudioListScreen(uid))
+            rememberMultiplePermissionsState(emptyList()) {
+                navBottomSheet.show(audioListScreen)
             }
         }
         val reminderPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            rememberMultiplePermissionsState(
-                permissions = listOf(
-                    permission.POST_NOTIFICATIONS,
-                )
-            ) {
-                navBottomSheet.show(
-                    ReminderScreen(
-                        uid = uid,
-                        title = titleState?.text.toString(),
-                        message = descriptionState?.text.toString()
-                    )
-                )
+            rememberMultiplePermissionsState(listOf(permission.POST_NOTIFICATIONS)) {
+                navBottomSheet.show(reminderScreen)
             }
         } else {
-            rememberMultiplePermissionsState(
-                permissions = listOf()
-            ) {
-                navBottomSheet.show(
-                    ReminderScreen(
-                        uid = uid,
-                        title = titleState?.text.toString(),
-                        message = descriptionState?.text.toString()
-                    )
-                )
+            rememberMultiplePermissionsState(emptyList()) {
+                navBottomSheet.show(reminderScreen)
             }
         }
+
+
+        val audioRational = rememberScreen(
+            Rational(
+                permissionState = audioPermissions,
+                permissionName = "audio record"
+            )
+        )
+        val alarmRational = rememberScreen(
+            Rational(
+                permissionState = reminderPermissions,
+                permissionName = "alarm manager"
+            )
+        )
 
         Navigator(CommonBottomSheet {
             LazyColumn {
@@ -184,19 +173,14 @@ data class OptionsScreen(
                             navBottomSheet.hide()
                             delay(200)
                         }.invokeOnCompletion {
-                            if (!readMediaPermissions.allPermissionsGranted) {
-                                if (readMediaPermissions.shouldShowRationale) {
-                                    navBottomSheet.show(
-                                        RationalScreen(
-                                            permissionState = reminderPermissions,
-                                            permissionName = "local media"
-                                        )
-                                    )
+                            if (!audioPermissions.allPermissionsGranted) {
+                                if (audioPermissions.shouldShowRationale) {
+                                    navBottomSheet.show(audioRational)
                                 } else {
-                                    readMediaPermissions.launchMultiplePermissionRequest()
+                                    audioPermissions.launchMultiplePermissionRequest()
                                 }
                             } else {
-                                navBottomSheet.show(AudioListScreen(uid))
+                                navBottomSheet.show(audioListScreen)
                             }
                         }
                     }
@@ -238,7 +222,7 @@ data class OptionsScreen(
                         icon = TAGS_ICON
                     ) {
                         sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
-                        navigator.push(TagsScreen(id = uid))
+                        navigator.push(tagsScreen)
                     }
                 }
                 item {
@@ -247,7 +231,7 @@ data class OptionsScreen(
                         icon = LIST_CHECK_ICON
                     ) {
                         sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
-                        navigator.push(TasksScreen(uid = uid))
+                        navigator.push(tasksScreen)
                     }
                 }
                 item {
@@ -262,23 +246,12 @@ data class OptionsScreen(
                         }.invokeOnCompletion {
                             if (!reminderPermissions.allPermissionsGranted) {
                                 if (reminderPermissions.shouldShowRationale) {
-                                    navBottomSheet.show(
-                                        RationalScreen(
-                                            permissionState = readMediaPermissions,
-                                            permissionName = "alarm manager"
-                                        )
-                                    )
+                                    navBottomSheet.show(alarmRational)
                                 } else {
                                     reminderPermissions.launchMultiplePermissionRequest()
                                 }
                             } else {
-                                navBottomSheet.show(
-                                    ReminderScreen(
-                                        uid = uid,
-                                        title = titleState?.text.toString(),
-                                        message = descriptionState?.text.toString()
-                                    )
-                                )
+                                navBottomSheet.show(reminderScreen)
                             }
                         }
                     }
@@ -299,7 +272,7 @@ data class OptionsScreen(
     private fun PriorityRow(onClick: (String) -> Unit) {
         val priorities = arrayOf(NON, LOW, MED, HIG, URG)
 
-        LazyRow(modifier = Modifier.animateContentSize()) {
+        LazyRow(modifier = Modifier.animateContentSize().padding(10.dp)) {
             items(priorities) { priority ->
                 if (priorityState.value == priority.priority) {
                     AnimatedVisibility(true) {
