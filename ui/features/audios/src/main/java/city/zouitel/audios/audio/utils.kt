@@ -1,12 +1,14 @@
 package city.zouitel.audios.audio
 
+import android.annotation.SuppressLint
 import city.zouitel.audios.model.Audio
 import city.zouitel.audios.state.SingleAudioUiState
 import java.util.concurrent.TimeUnit
 import kotlin.math.log2
 import kotlin.math.pow
 
-val Long.formatAsAudioDuration: String get() = TimeUnit.MILLISECONDS.let { timeUnit ->
+val Long.formatAsAudioDuration: String @SuppressLint("DefaultLocale")
+get() = TimeUnit.MILLISECONDS.let { timeUnit ->
     String.format(
         "%d:%d",
         timeUnit.toMinutes(this),
