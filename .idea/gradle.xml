@@ -32,6 +32,7 @@
             <option value="$PROJECT_DIR$/core/local/repository" />
             <option value="$PROJECT_DIR$/core/local/system" />
             <option value="$PROJECT_DIR$/core/network" />
+            <option value="$PROJECT_DIR$/core/network/connection" />
             <option value="$PROJECT_DIR$/core/network/generativeai" />
             <option value="$PROJECT_DIR$/core/network/repository" />
             <option value="$PROJECT_DIR$/domain" />
