@@ -46,9 +46,7 @@ class AssistantScreen: Screen {
 
         val haptic = LocalHapticFeedback.current
         val keyboard = LocalSoftwareKeyboardController.current
-//        val messages = remember { mutableStateListOf<Message>() }
         val messages by remember(viewModel, viewModel::observeAllMessages).collectAsState()
-//        var suspending = remember { mutableStateOf(false) }
         var textState by remember { mutableStateOf("") }
         val focus by lazy { FocusRequester() }
 
@@ -131,6 +129,7 @@ class AssistantScreen: Screen {
                         .background(Color.Transparent)
                         .padding(7.dp),
                     value = textState,
+                    enabled = true,
                     onValueChange = { textState = it },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                     keyboardActions = KeyboardActions(onSend = {
