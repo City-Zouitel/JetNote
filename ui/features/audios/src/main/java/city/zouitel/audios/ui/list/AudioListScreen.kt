@@ -1,9 +1,11 @@
 package city.zouitel.audios.ui.list
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
@@ -34,7 +36,6 @@ data class AudioListScreen(val noteId: String): Screen {
         AudioList(audioListModel = getScreenModel())
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun AudioList(audioListModel: AudioListScreenModel) {
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
