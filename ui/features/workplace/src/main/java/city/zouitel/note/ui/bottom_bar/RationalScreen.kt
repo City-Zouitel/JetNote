@@ -1,4 +1,4 @@
-package city.zouitel.note.ui.utils
+package city.zouitel.note.ui.bottom_bar
 
 import android.Manifest
 import android.content.Intent
@@ -36,8 +36,8 @@ data class RationalScreen(
         val context = LocalContext.current
         val navBottomSheet = LocalBottomSheetNavigator.current
 
-        Navigator(CommonBottomSheet({
-            Column(modifier =Modifier.padding(16.dp)) {
+        Navigator(CommonBottomSheet {
+            Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "Permission",
                     fontSize = TITLE_SIZE.sp,
@@ -76,6 +76,6 @@ data class RationalScreen(
                     }
                 )
             }
-        }))
+        })
     }
 }
