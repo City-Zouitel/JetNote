@@ -29,7 +29,7 @@ fun UndoRedo(
     dataStoreModel: DataStoreScreenModel,
     workspaceModel: WorkplaceScreenModel,
     titleState: TextFieldState?,
-    descriptionState: TextFieldState?,
+    descriptionState: TextFieldState?
 ) {
     val context = LocalContext.current
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
