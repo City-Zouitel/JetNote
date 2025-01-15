@@ -2,7 +2,10 @@ package city.zouitel.jetnote
 
 import android.app.Application
 import android.os.Build
-import city.zouitel.audios.di.audioPlayerKoinModule
+import cafe.adriel.voyager.core.registry.ScreenRegistry
+import city.zouitel.assistant.di.assistantScreenModule
+import city.zouitel.audios.di.audioPlayerDIModule
+import city.zouitel.audios.di.audioPlayerScreenModule
 import city.zouitel.base.di.baseKoinModule
 import city.zouitel.database.di.databaseKoinModule
 import city.zouitel.datastore.datastoreKoinModule
@@ -10,18 +13,23 @@ import city.zouitel.generativeai.di.generativeKoinModule
 import city.zouitel.init.initializerKoinModule
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.media.di.mediaKoinModule
-import city.zouitel.note.di.noteKoinModule
+import city.zouitel.note.di.workplaceDIModule
+import city.zouitel.note.di.workplaceScreenModule
 import city.zouitel.notifications.di.notificationKoinModule
 import city.zouitel.quicknote.di.quickNoteKoinModule
 import city.zouitel.recoder.di.recorderKoinModule
-import city.zouitel.reminder.di.reminderKoinModule
+import city.zouitel.reminder.di.reminderDIModule
+import city.zouitel.reminder.di.reminderScreenModule
 import city.zouitel.repository.di.localRepositoryKoinModule
 import city.zouitel.repository.di.networkRepositoryKoinModule
 import city.zouitel.rooted.di.rootedKoinModule
 import city.zouitel.screens.di.screensKoinModule
+import city.zouitel.screens.di.screensScreenModule
 import city.zouitel.systemDesign.di.commonSystemDesignKoinModule
 import city.zouitel.tags.di.tagsKoinModule
+import city.zouitel.tags.di.tagsScreenModule
 import city.zouitel.tasks.di.tasksKoinModule
+import city.zouitel.tasks.di.tasksScreenModule
 import city.zouitel.widget.di.widgetKoinModule
 import coil.ImageLoader
 import coil.ImageLoaderFactory
@@ -52,9 +60,9 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
                 localRepositoryKoinModule,
                 networkRepositoryKoinModule,
                 generativeKoinModule,
-                audioPlayerKoinModule,
+                audioPlayerDIModule,
                 linksKoinModule,
-                noteKoinModule,
+                workplaceDIModule,
                 quickNoteKoinModule,
                 recorderKoinModule,
                 tagsKoinModule,
@@ -66,18 +74,20 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
                 initializerKoinModule,
                 rootedKoinModule,
                 mediaKoinModule,
-                reminderKoinModule
+                reminderDIModule
             )
         }
 
-        /**
-         * Global Exception Handler.
-         */
-//        GlobalExceptionHandler.initialize(this, NoteActivity::class.java)
+        ScreenRegistry {
+            screensScreenModule()
+            workplaceScreenModule()
+            assistantScreenModule()
+            audioPlayerScreenModule()
+            reminderScreenModule()
+            tagsScreenModule()
+            tasksScreenModule()
+        }
 
-        /**
-         *
-         */
         Beetle.configure {
             enableAssignees = true
             enableLabels = true
