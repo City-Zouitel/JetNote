@@ -23,19 +23,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.cacheLink
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.note.model.Data
+import city.zouitel.note.providers.Options
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.utils.ColorsRow
 import city.zouitel.note.ui.utils.listOfTextColors
@@ -51,10 +52,7 @@ import city.zouitel.systemDesign.SoundEffect
 import city.zouitel.systemDesign.listOfBackgroundColors
 
 @SuppressLint("SimpleDateFormat")
-@OptIn(
-    ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class,
-)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun BottomBar(
     isNew: Boolean,
@@ -66,18 +64,24 @@ internal fun BottomBar(
     linkModel: LinkScreenModel,
     imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
     workspaceModel: WorkplaceScreenModel,
-    priorityState: MutableState<String>,
+    priorityState: MutableState<String>
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
     val navigator = LocalNavigator.current
     val navBottomSheet = LocalBottomSheetNavigator.current
 
-    val scope = rememberCoroutineScope()
     val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
-    val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
-
     val isMute = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
+    val optionsScreen = rememberScreen(Options(
+        uid = uid,
+        titleState = titleState,
+        descriptionState = descriptionState,
+        imageLaunch = imageLaunch,
+        priorityState = priorityState
+    ))
+
+    val dateState by lazy { mutableStateOf(Calendar.getInstance().time) }
     val sound by lazy { SoundEffect() }
 
     Column {
@@ -102,15 +106,7 @@ internal fun BottomBar(
                                 }
                             ) {
                                 sound.performSoundEffect(context, FOCUS_NAVIGATION, isMute.value)
-                                navBottomSheet.show(
-                                    OptionsScreen(
-                                        uid = uid,
-                                        titleState = titleState,
-                                        descriptionState = descriptionState,
-                                        imageLaunch = imageLaunch,
-                                        priorityState = priorityState,
-                                    )
-                                )
+                                navBottomSheet.show(optionsScreen)
                             }
                     )
                 }
