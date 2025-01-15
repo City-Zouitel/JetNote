@@ -51,7 +51,7 @@ import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.tags.model.Tag
 import city.zouitel.tags.model.NoteAndTag as InNoteAndTag
 
-data class TagsScreen(val id: String): Screen {
+data class TagsScreen(val uid: String): Screen {
 
     @Composable
     override fun Content() {
@@ -113,7 +113,7 @@ data class TagsScreen(val id: String): Screen {
                     .padding(top = 25.dp)
             ) {
                 item {
-                    id.let { _id ->
+                    uid.let { _id ->
                         ContextualFlowRow(
                             modifier = Modifier.animateContentSize(),
                             itemCount = observeTags.size,
