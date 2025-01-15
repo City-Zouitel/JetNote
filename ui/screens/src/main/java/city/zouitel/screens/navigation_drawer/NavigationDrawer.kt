@@ -34,12 +34,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import city.zouitel.assistant.ui.AssistantScreen
+import city.zouitel.domain.provider.SharedScreen
 import city.zouitel.logic.sharApp
 import city.zouitel.screens.about_screen.AboutScreen
-import city.zouitel.screens.main_screen.MainScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NoteScreens.ABOUT_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.ASSISTANT_SCREEN
@@ -48,7 +48,6 @@ import city.zouitel.screens.navigation_drawer.NoteScreens.REMOVED_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.SETTINGS_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.TAGS_SCREEN
 import city.zouitel.screens.settings_screen.SettingsScreen
-import city.zouitel.screens.tags_screen.HashTagsScreen
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants.APP_NAME
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
@@ -64,6 +63,7 @@ import city.zouitel.systemDesign.CommonIcons.SHARE_ICON
 import city.zouitel.systemDesign.CommonIcons.SPARKLES_ICON
 import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
 import city.zouitel.systemDesign.DataStoreScreenModel
+import city.zouitel.screens.tags_screen.HashTagsScreen
 import city.zouitel.tags.ui.TagScreenModel
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
@@ -84,6 +84,10 @@ fun NavigationDrawer(
     val scope = rememberCoroutineScope()
     var maxLines by remember { mutableIntStateOf(3) }
     val currentScreen = remember { mutableStateOf(MAIN_SCREEN) }
+
+    val assistantScreen = rememberScreen(SharedScreen.Assistant)
+    val mainScreen = rememberScreen(SharedScreen.MainScreen(true))
+    val removedScreen = rememberScreen(SharedScreen.MainScreen(false))
 
     DismissibleDrawerSheet(
         drawerState = drawerState,
@@ -111,7 +115,7 @@ fun NavigationDrawer(
                     onClick = {
                         scope.launch {
                             currentScreen.value = MAIN_SCREEN
-                            navigator.push(MainScreen(isHome = true))
+                            navigator.push(mainScreen)
                             drawerState.close()
                         }
                     }
@@ -126,7 +130,7 @@ fun NavigationDrawer(
                     onClick = {
                         scope.launch {
                             currentScreen.value = ASSISTANT_SCREEN
-                            navigator.push(AssistantScreen())
+                            navigator.push(assistantScreen)
                             drawerState.close()
                         }
                     }
@@ -238,7 +242,7 @@ fun NavigationDrawer(
                     onClick = {
                         scope.launch {
                             currentScreen.value = REMOVED_SCREEN
-                            navigator.push(MainScreen(false))
+                            navigator.push(removedScreen)
                             drawerState.close()
                         }
                     }
