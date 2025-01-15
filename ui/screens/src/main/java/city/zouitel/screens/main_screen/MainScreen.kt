@@ -37,6 +37,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -44,11 +46,11 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audios.ui.component.AudioScreenModel
 import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
+import city.zouitel.domain.provider.SharedScreen
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
-import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.screens.main_screen.utils.HomeSelectionTopAppBar
 import city.zouitel.screens.main_screen.utils.MainTopAppBar
 import city.zouitel.screens.main_screen.utils.RemovedSelectionTopAppBar
@@ -69,8 +71,10 @@ import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import com.skydoves.cloudy.cloudy
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-data class MainScreen(val isHome: Boolean): Screen {
+data class MainScreen(val isHome: Boolean = true): Screen {
 
     @Composable
     override fun Content() {
@@ -99,7 +103,7 @@ data class MainScreen(val isHome: Boolean): Screen {
         "UnusedMaterialScaffoldPaddingParameter",
         "UnusedMaterial3ScaffoldPaddingParameter"
     )
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, InternalVoyagerApi::class, ExperimentalUuidApi::class)
     @Composable
     private fun Main(
         mainModel: MainScreenModel,
@@ -158,6 +162,18 @@ data class MainScreen(val isHome: Boolean): Screen {
 
         val getBackgroundColor = MaterialTheme.colorScheme.surface.toArgb()
         val getTextColor = MaterialTheme.colorScheme.onSurface.toArgb()
+
+        val workplaceScreen = rememberScreen(
+            SharedScreen.Workplace(
+                Uuid.random().toString(),
+                true,
+                null,
+                null,
+                MaterialTheme.colorScheme.surface.toArgb(),
+                MaterialTheme.colorScheme.onSurface.toArgb(),
+                "NON"
+            )
+        )
 
         //undo snack-bar.
         val undo = UndoSnackbar(
@@ -225,19 +241,11 @@ data class MainScreen(val isHome: Boolean): Screen {
                                 Text("Compose")
                             },
                             icon = {
-                                Icon(
-                                    painter = painterResource(id = CommonIcons.PLUS_ICON),
-                                    null
-                                )
+                                Icon(painterResource(CommonIcons.PLUS_ICON), null)
                             },
                             onClick = {
                                 sound.performSoundEffect(context, CommonConstants.KEY_STANDARD, thereIsSoundEffect.value)
-                                navigator.push(
-                                    WorkplaceScreen(
-                                        backgroundColor = getBackgroundColor,
-                                        textColor = getTextColor
-                                    )
-                                )
+                                navigator.push(workplaceScreen)
                             },
                             expanded = scrollBehavior.state.collapsedFraction != 1f,
                             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -276,7 +284,6 @@ data class MainScreen(val isHome: Boolean): Screen {
                                 ) {
                                     dataModel.sendUiEvent(UiEvent.Update(it.dataEntity.copy(removed = 1)))
                                     // to.do cancel the alarm manager reminder.
-
                                     undo.invoke(entity.dataEntity)
                                 }
                             }
@@ -303,9 +310,7 @@ data class MainScreen(val isHome: Boolean): Screen {
                                     isHomeScreen = uiState.isHomeScreen,
                                     noteEntity = entity,
                                     mediaModel = mediaModel,
-                                ) {
-
-                                }
+                                ) {}
                             }
                         }
                     }
