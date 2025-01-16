@@ -5,17 +5,22 @@ package city.zouitel.jetnote
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.toArgb
+import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import city.zouitel.domain.provider.SharedScreen
 import city.zouitel.logic.asShortToast
-import city.zouitel.screens.about_screen.AboutScreen
-import city.zouitel.screens.main_screen.MainScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 internal interface IntentHandler: CoroutineScope {
 
     context (Context)
+    @OptIn(ExperimentalUuidApi::class)
     @SuppressLint("NotConstructor")
     @Composable
     fun IntentHandler(
@@ -23,6 +28,15 @@ internal interface IntentHandler: CoroutineScope {
         composer: (@Composable () -> Unit) -> Unit
     ) {
         val navigator = LocalNavigator.current
+        val workPlace = rememberScreen(SharedScreen.Workplace(
+            Uuid.random().toString(),
+            true,
+            null,
+            null,
+            MaterialTheme.colorScheme.surface.toArgb(),
+            MaterialTheme.colorScheme.onSurface.toArgb(),
+            "NON"
+        ))
 
         intent.apply {
             if (action == Intent.ACTION_SEND && type == "text/plain") {
@@ -35,14 +49,14 @@ internal interface IntentHandler: CoroutineScope {
             if (action == Intent.ACTION_VIEW) {
                 if (extras?.containsKey("new_note_shortcut") == true) {
                     getBooleanExtra("new_note_shortcut", false)
-                    launch { navigator?.push(listOf(MainScreen(true), AboutScreen())) }
+                    launch { navigator?.push(workPlace) }
                 }
-                if (extras?.containsKey("quick_note") == true) {
-                    getBooleanExtra("quick_note", false)
-                    launch {
-                        // TODO:
-                    }
-                }
+//                if (extras?.containsKey("quick_note") == true) {
+//                    getBooleanExtra("quick_note", false)
+//                    launch {
+//                        // TODO:
+//                    }
+//                }
                 if (extras?.containsKey("new_record") == true) {
                     getBooleanExtra("new_record", false)
                     launch {
