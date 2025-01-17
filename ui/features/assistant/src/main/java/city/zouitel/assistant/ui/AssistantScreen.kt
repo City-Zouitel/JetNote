@@ -28,18 +28,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.assistant.model.Message
 import dev.jeziellago.compose.markdowntext.MarkdownText
 
 class AssistantScreen: Screen {
+
     @Composable
     override fun Content() {
         val viewModel = getScreenModel<AssistantScreenModel>()
@@ -48,9 +51,18 @@ class AssistantScreen: Screen {
         val keyboard = LocalSoftwareKeyboardController.current
         val messages by remember(viewModel, viewModel::observeAllMessages).collectAsState()
         var textState by remember { mutableStateOf("") }
+        val connectivity by remember(viewModel, viewModel::networkStatus).collectAsStateWithLifecycle()
         val focus by lazy { FocusRequester() }
+        val placeholder = remember { mutableStateOf("...") }
 
-        LaunchedEffect(true) { focus.requestFocus() }
+        LaunchedEffect(true) {
+            focus.requestFocus()
+        }
+
+        when (connectivity) {
+            true -> placeholder.value = "Type something.."
+            false -> placeholder.value = "You are offline!"
+        }
 
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
 
@@ -76,21 +88,21 @@ class AssistantScreen: Screen {
                             .fillMaxWidth()
                             .background(MaterialTheme.colorScheme.surface)
                     ) {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         MarkdownText(
                             modifier = Modifier
                                 .padding(12.dp)
                                 .then(
                                     when {
                                         message.isRequest -> {
-                                            Modifier
-                                                .clip(
-                                                    RoundedCornerShape(
-                                                        topStart = 48f,
-                                                        topEnd = 0f,
-                                                        bottomStart = 48f,
-                                                        bottomEnd = 48f
-                                                    )
+                                            Modifier.clip(
+                                                RoundedCornerShape(
+                                                    topStart = 48f,
+                                                    topEnd = 0f,
+                                                    bottomStart = 48f,
+                                                    bottomEnd = 48f
                                                 )
+                                            )
                                                 .background(Color.Gray)
                                         }
 
@@ -129,7 +141,7 @@ class AssistantScreen: Screen {
                         .background(Color.Transparent)
                         .padding(7.dp),
                     value = textState,
-                    enabled = true,
+                    enabled = connectivity,
                     onValueChange = { textState = it },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                     keyboardActions = KeyboardActions(onSend = {
@@ -137,7 +149,9 @@ class AssistantScreen: Screen {
                         textState = ""
                         keyboard?.hide()
                     }),
-                    placeholder = { Text("Type Something..") },
+                    placeholder = {
+                            Text(modifier = Modifier.animateContentSize(),text = placeholder.value)
+                                  },
                     shape = RoundedCornerShape(26.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.background,
