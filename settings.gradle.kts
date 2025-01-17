@@ -36,8 +36,7 @@ include(
     ":core:local:datastore",
     ":core:local:system",
     ":core:network:repository",
-    ":core:network:generativeai",
-    ":core:network:connection"
+    ":core:network:generativeai"
 )
 include(":domain")
 include(
