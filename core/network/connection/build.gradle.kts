@@ -5,3 +5,8 @@ plugins {
 android {
     namespace = "city.zouitel.connection"
 }
+
+dependencies {
+    //Modules.
+    implementation(projects.core.network.repository)
+}
