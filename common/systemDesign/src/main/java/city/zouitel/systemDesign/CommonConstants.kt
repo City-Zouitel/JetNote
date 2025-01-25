@@ -1,7 +1,7 @@
 package city.zouitel.systemDesign
 
 object CommonConstants {
-    const val APP_VERSION = "7.3.0"
+    const val APP_VERSION = "7.4.0"
     const val APP_NAME = "JetNote"
     const val NONE = "unspecified"
 
