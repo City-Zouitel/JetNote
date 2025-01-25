@@ -6,18 +6,16 @@ import city.zouitel.database.dao.AudioDao
 import city.zouitel.database.dao.DataDao
 import city.zouitel.database.dao.LinkDao
 import city.zouitel.database.dao.MediaDao
-import city.zouitel.database.dao.NoteAndAudioDao
 import city.zouitel.database.dao.NoteAndTagDao
 import city.zouitel.database.dao.NoteDao
 import city.zouitel.database.dao.ReminderDao
 import city.zouitel.database.dao.TagDao
 import city.zouitel.database.dao.TaskDao
 import city.zouitel.database.dao.WidgetDao
-import city.zouitel.database.model.AudioEntity
+import city.zouitel.database.model.Audio
 import city.zouitel.database.model.DataEntity
 import city.zouitel.database.model.Link
 import city.zouitel.database.model.Media
-import city.zouitel.database.model.NoteAndAudioEntity
 import city.zouitel.database.model.NoteAndTagEntity
 import city.zouitel.database.model.Reminder
 import city.zouitel.database.model.TagEntity
@@ -32,8 +30,7 @@ import city.zouitel.database.model.Task
         NoteAndTagEntity::class,
         Task::class,
         Link::class,
-        AudioEntity::class,
-        NoteAndAudioEntity::class,
+        Audio::class,
         Media::class,
         Reminder::class
     ],
@@ -48,7 +45,6 @@ abstract class Database: RoomDatabase() {
     abstract fun getTaskDao(): TaskDao
     abstract fun getLinkDao(): LinkDao
     abstract fun getAudioDao(): AudioDao
-    abstract fun getNoteAndAudioDao(): NoteAndAudioDao
     abstract fun getMediaDao(): MediaDao
     abstract fun getReminderDao(): ReminderDao
 }
