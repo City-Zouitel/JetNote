@@ -14,8 +14,8 @@ class AudioRepository(
         return@withContext localMediaDataSource.loadAudioFiles(query)
     }
 
-    suspend fun loadAudioByContentId(id: Long): Audio? = withContext(ioDispatcher) {
-        return@withContext localMediaDataSource.loadAudioById(id)
+    suspend fun loadAudioByUri(uri: String): Audio? = withContext(ioDispatcher) {
+        return@withContext localMediaDataSource.loadAudioByUri(uri)
     }
 
     suspend fun loadAudioAmplitudes(
