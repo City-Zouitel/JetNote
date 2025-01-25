@@ -24,7 +24,7 @@ dependencies {
     api(projects.ui.features.camera)
     api(projects.ui.features.recorder)
     api(projects.ui.features.tasks)
-    api(projects.ui.features.audios)
+    api(projects.ui.features.player.audio)
     api(projects.ui.features.reminder)
     api(projects.ui.features.workplace)
     api(projects.ui.features.quickNote)
