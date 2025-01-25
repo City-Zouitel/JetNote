@@ -13,7 +13,7 @@ ksp {
 
 dependencies {
     //Modules.
-    implementation(projects.core.network.repository)
+    implementation(projects.core.network.networkRepo)
 
     //Gemini.
     implementation(libs.generativeai)
