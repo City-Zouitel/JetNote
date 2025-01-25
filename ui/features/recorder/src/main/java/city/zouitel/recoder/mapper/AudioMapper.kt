@@ -1,8 +1,7 @@
 package city.zouitel.recoder.mapper
 
-import city.zouitel.recoder.mapper.base.Mapper
-import city.zouitel.recoder.model.Audio as InAudio
 import city.zouitel.domain.model.Audio as OutAudio
+import city.zouitel.recoder.model.Audio as InAudio
 
 class  AudioMapper {
 
