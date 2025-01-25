@@ -19,7 +19,7 @@ dependencies {
     implementation(projects.ui.features.reminder)
     implementation(projects.ui.features.recorder)
     implementation(projects.ui.features.tasks)
-    implementation(projects.ui.features.audios)
+    implementation(projects.ui.features.player.audio)
     implementation(projects.ui.features.tags)
     implementation(projects.ui.features.camera)
     implementation(projects.ui.features.links)
