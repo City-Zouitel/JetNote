@@ -27,10 +27,10 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import city.zouitel.audios.state.SingleAudioUiState
+import city.zouitel.audios.state.ItemUiState
 import city.zouitel.systemDesign.CommonBottomSheet
 
-data class AudioListScreen(val noteId: String): Screen {
+data class AudioListScreen(val uid: String): Screen {
     @Composable
     override fun Content() {
         AudioList(audioListModel = getScreenModel())
@@ -41,8 +41,8 @@ data class AudioListScreen(val noteId: String): Screen {
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         val navigator = LocalNavigator.current
 
-        LaunchedEffect(Unit) {
-            audioListModel.updateId(noteId)
+        LaunchedEffect(true) {
+            audioListModel.updateId(uid)
                 .updateBottomSheetNavigator(bottomSheetNavigator)
                 .updateNavigator(navigator)
         }
@@ -50,21 +50,19 @@ data class AudioListScreen(val noteId: String): Screen {
         val uiState by remember(audioListModel, audioListModel::audioListUiState).collectAsState()
 
         Navigator(
-            CommonBottomSheet({
-                LazyColumn(
-                    modifier = Modifier.animateContentSize()
-                ) {
+            CommonBottomSheet {
+                LazyColumn(modifier = Modifier.animateContentSize()) {
                     items(uiState.audioFiles) {
                         AudioItem(itemState = it, audioListModel = audioListModel)
                     }
                 }
-            })
+            }
         )
     }
 
     @Composable
     private fun AudioItem(
-        itemState: SingleAudioUiState,
+        itemState: ItemUiState,
         audioListModel: AudioListScreenModel
     ) {
         Surface(
