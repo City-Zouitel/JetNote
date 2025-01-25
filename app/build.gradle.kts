@@ -32,12 +32,13 @@ dependencies {
     implementation(projects.core.local.datastore)
     implementation(projects.core.local.repository)
     implementation(projects.core.local.system)
-    implementation(projects.core.network.repository)
+    implementation(projects.core.network.networkRepo)
     implementation(projects.core.network.generativeai)
     implementation(projects.domain)
     implementation(projects.init)
     implementation(projects.services.notifications)
     implementation(projects.services.shortcuts)
+    implementation(projects.services.playback)
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
     implementation(projects.security.rooted)
@@ -71,4 +72,8 @@ dependencies {
     //Coil
     implementation(libs.coil.compose)
     implementation(libs.coil.gif)
+
+    //Media3.
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.session)
 }
