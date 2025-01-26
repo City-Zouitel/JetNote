@@ -1,8 +1,8 @@
-package city.zouitel.repository.repositoryImpl
+package city.zouitel.networkRepo.repositoryImpl
 
 import city.zouitel.domain.repository.MessageRepository
-import city.zouitel.repository.datasource.MessageDataSource
-import city.zouitel.repository.mapper.MessageMapper
+import city.zouitel.networkRepo.datasource.MessageDataSource
+import city.zouitel.networkRepo.mapper.MessageMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import city.zouitel.domain.model.Message as OutMessage
