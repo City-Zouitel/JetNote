@@ -1,4 +1,4 @@
-package city.zouitel.repository.model
+package city.zouitel.networkRepo.model
 
 import androidx.annotation.Keep
 
