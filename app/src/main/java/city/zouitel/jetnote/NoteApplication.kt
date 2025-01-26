@@ -4,10 +4,10 @@ import android.app.Application
 import android.os.Build
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import city.zouitel.assistant.di.assistantScreenModule
-import city.zouitel.audios.di.audioPlayerDIModule
-import city.zouitel.audios.di.audioPlayerScreenModule
+import city.zouitel.audio.di.audioPlayerDIModule
+import city.zouitel.audio.di.audioPlayerScreenModule
 import city.zouitel.base.di.baseKoinModule
-import city.zouitel.database.di.databaseKoinModule
+import city.zouitel.database.di.databaseDIModule
 import city.zouitel.datastore.datastoreKoinModule
 import city.zouitel.generativeai.di.generativeKoinModule
 import city.zouitel.init.initializerKoinModule
@@ -16,12 +16,13 @@ import city.zouitel.media.di.mediaKoinModule
 import city.zouitel.note.di.workplaceDIModule
 import city.zouitel.note.di.workplaceScreenModule
 import city.zouitel.notifications.di.notificationKoinModule
+import city.zouitel.playback.di.playbackDIModule
 import city.zouitel.quicknote.di.quickNoteKoinModule
 import city.zouitel.recoder.di.recorderKoinModule
 import city.zouitel.reminder.di.reminderDIModule
 import city.zouitel.reminder.di.reminderScreenModule
-import city.zouitel.repository.di.localRepositoryKoinModule
-import city.zouitel.repository.di.networkRepositoryKoinModule
+import city.zouitel.repository.di.localRepoDIModule
+import city.zouitel.networkRepo.di.networkRepoDIModule
 import city.zouitel.rooted.di.rootedKoinModule
 import city.zouitel.screens.di.screensKoinModule
 import city.zouitel.screens.di.screensScreenModule
@@ -41,11 +42,10 @@ import com.karacca.beetle.Beetle
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
-import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
+class NoteApplication: Application(), ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
@@ -54,11 +54,11 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
             androidContext(this@NoteApplication)
             workManagerFactory()
             modules(
-                databaseKoinModule,
+                databaseDIModule,
                 baseKoinModule,
                 datastoreKoinModule,
-                localRepositoryKoinModule,
-                networkRepositoryKoinModule,
+                localRepoDIModule,
+                networkRepoDIModule,
                 generativeKoinModule,
                 audioPlayerDIModule,
                 linksKoinModule,
@@ -74,7 +74,8 @@ class NoteApplication: Application(), KoinComponent, ImageLoaderFactory {
                 initializerKoinModule,
                 rootedKoinModule,
                 mediaKoinModule,
-                reminderDIModule
+                reminderDIModule,
+                playbackDIModule
             )
         }
 
