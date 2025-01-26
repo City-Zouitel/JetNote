@@ -18,7 +18,7 @@ class LocalMediaDataSource (
 ) {
 
     private val contentResolver: ContentResolver get() = context.contentResolver
-    private val audioProjection: Array<String> get() = arrayOf(
+    private val projection: Array<String> get() = arrayOf(
         MediaStore.Audio.AudioColumns._ID,
         MediaStore.Audio.AudioColumns.DATE_ADDED,
         MediaStore.Audio.AudioColumns.DISPLAY_NAME,
@@ -27,11 +27,11 @@ class LocalMediaDataSource (
         MediaStore.Audio.AudioColumns.SIZE
     )
 
-    suspend fun loadAudioById(id: Long): Audio? = withContext(ioDispatcher) {
+    suspend fun loadAudioByUri(uri: String): Audio? = withContext(ioDispatcher) {
         val mediaContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
         val selection = MediaStore.Audio.Media._ID + "=?"
-        val selectionArgs = arrayOf(id.toString())
-        val cursor = contentResolver.query(mediaContentUri, audioProjection, selection, selectionArgs, null)
+        val selectionArgs = arrayOf(uri.substringAfterLast('/'))
+        val cursor = contentResolver.query(mediaContentUri, projection, selection, selectionArgs, null)
         return@withContext cursor?.use {
             if (it.moveToFirst()) it.toLocalAudio() else null
         }
@@ -46,7 +46,7 @@ class LocalMediaDataSource (
         val content = mutableListOf<Audio?>()
         val cursor = contentResolver.query(
             contentUri,
-            audioProjection,
+            projection,
             MediaStore.Audio.Media.DISPLAY_NAME + " LIKE '%$query%'",
             null,
             "${MediaStore.MediaColumns.DATE_ADDED} DESC"
@@ -68,7 +68,6 @@ class LocalMediaDataSource (
                 return null
             }
             return Audio(
-                id = contentId,
                 path = data,
                 title = getColumnIndex(MediaStore.Audio.AudioColumns.DISPLAY_NAME).let(::getString),
                 duration = getColumnIndex(MediaStore.Audio.AudioColumns.DURATION).let(::getLong),
