@@ -1,6 +1,6 @@
-package city.zouitel.repository.datasource
+package city.zouitel.networkRepo.datasource
 
-import city.zouitel.repository.model.Message
+import city.zouitel.networkRepo.model.Message
 import kotlinx.coroutines.flow.Flow
 
 interface MessageDataSource {
