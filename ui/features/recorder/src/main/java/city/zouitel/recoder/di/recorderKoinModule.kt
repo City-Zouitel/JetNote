@@ -14,5 +14,4 @@ val recorderKoinModule = module {
         MediaRecordScreenModel(get(named(REC_DIR)))
     }
     factoryOf(::AudioMapper)
-    factoryOf(::NoteAndAudioMapper)
 }
