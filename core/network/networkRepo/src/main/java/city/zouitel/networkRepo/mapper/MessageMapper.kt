@@ -1,6 +1,6 @@
-package city.zouitel.repository.mapper
+package city.zouitel.networkRepo.mapper
 
-import city.zouitel.repository.model.Message
+import city.zouitel.networkRepo.model.Message
 import city.zouitel.domain.model.Message as OutMessage
 
 class MessageMapper {
