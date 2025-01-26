@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import city.zouitel.applock.LockModeHandler
-import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.rooted.RootCheckerHandler
 import city.zouitel.screens.main_screen.MainScreen
 import city.zouitel.screenshot.ScreenshotHandler
@@ -24,7 +23,6 @@ import kotlin.coroutines.CoroutineContext
 
 class NoteActivity : AppCompatActivity(), KoinComponent, IntentHandler {
 
-    private val linkScreenModel: LinkScreenModel by inject()
     private val dataStoreModel: DataStoreScreenModel by inject()
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
