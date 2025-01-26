@@ -56,10 +56,8 @@ import androidx.compose.ui.util.fastLastOrNull
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import city.zouitel.audios.model.NoteAndAudio
-import city.zouitel.audios.ui.component.AudioScreenModel
-import city.zouitel.audios.ui.component.MiniAudioPlayer
-import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
+import city.zouitel.audio.ui.component.AudioScreenModel
+import city.zouitel.audio.ui.component.SmallAudioPlayer
 import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
@@ -87,7 +85,6 @@ fun NoteCard(
     dataStoreModel: DataStoreScreenModel,
     taskModel: TaskScreenModel,
     audioModel: AudioScreenModel,
-    noteAndAudioModel: NoteAndAudioScreenModel,
     linkModel: LinkScreenModel,
     isHomeScreen: Boolean,
     noteEntity: Note,
@@ -107,7 +104,6 @@ fun NoteCard(
             Card(
                 taskModel = taskModel,
                 audioModel = audioModel,
-                noteAndAudioModel = noteAndAudioModel,
                 dataStoreModel = dataStoreModel,
                 linkModel = linkModel,
                 noteEntity = noteEntity,
@@ -120,7 +116,6 @@ fun NoteCard(
         Card(
             taskModel = taskModel,
             audioModel = audioModel,
-            noteAndAudioModel = noteAndAudioModel,
             dataStoreModel = dataStoreModel,
             linkModel = linkModel,
             noteEntity = noteEntity,
@@ -138,7 +133,6 @@ private fun Card(
     dataStoreModel: DataStoreScreenModel,
     linkModel: LinkScreenModel,
     audioModel: AudioScreenModel,
-    noteAndAudioModel: NoteAndAudioScreenModel,
     noteEntity: Note,
     isHomeScreen: Boolean,
     mainModel: MainScreenModel,
@@ -155,8 +149,6 @@ private fun Card(
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val observeAllTasks by remember(taskModel, taskModel::observeAllTasks).collectAsState()
     val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
-    val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio)
-        .collectAsState()
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     var todoListState by remember { mutableStateOf(false) }
@@ -289,12 +281,8 @@ private fun Card(
         )
 
         //display media player.
-        observerAudios.filter {
-            observerNoteAndAudio.contains(
-                NoteAndAudio(note.uid, it.id)
-            )
-        }.fastLastOrNull { _audio ->
-            MiniAudioPlayer(dataStoreModel, audioModel, _audio)
+        observerAudios.filter { it?.uid == note.uid }.fastLastOrNull {
+            SmallAudioPlayer(dataStoreModel, audioModel, it!!)
             true
         }
 
