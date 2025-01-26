@@ -57,15 +57,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.fastLastOrNull
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import city.zouitel.audios.model.NoteAndAudio
-import city.zouitel.audios.ui.component.AudioScreenModel
-import city.zouitel.audios.ui.component.BasicAudioScreen
-import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
+import city.zouitel.audio.ui.component.AudioScreenModel
+import city.zouitel.audio.ui.component.BasicAudioScreen
 import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
@@ -123,7 +120,6 @@ data class WorkplaceScreen(
             linkModel = getScreenModel(),
             dataStoreModel = getScreenModel(),
             audioModel = getScreenModel(),
-            noteAndAudioModel = getScreenModel(),
             mediaModel = getScreenModel(),
             reminderModel = getScreenModel(),
             alarmModel = getScreenModel(),
@@ -142,7 +138,6 @@ data class WorkplaceScreen(
         linkModel: LinkScreenModel,
         dataStoreModel: DataStoreScreenModel,
         audioModel: AudioScreenModel,
-        noteAndAudioModel: NoteAndAudioScreenModel,
         mediaModel: MediaScreenModel,
         reminderModel: ReminderScreenModel,
         alarmModel: AlarmManagerScreenModel,
@@ -150,6 +145,7 @@ data class WorkplaceScreen(
     ) {
         LaunchedEffect(true) {
             linkModel.initializeUid(uid)
+            audioModel.initializeUid(uid)
         }
 
         val context = LocalContext.current
@@ -172,8 +168,7 @@ data class WorkplaceScreen(
             taskModel::getAllTaskList
         ).collectAsState()
         val observerLinks by remember(linkModel, linkModel::observeByUid).collectAsState()
-        val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
-        val observerNoteAndAudio by remember(noteAndAudioModel, noteAndAudioModel::allNoteAndAudio).collectAsState()
+        val observerAudios by remember(audioModel, audioModel::observeByUid).collectAsState()
         val observeAllReminders by remember(reminderModel, reminderModel::observeAllById).collectAsState()
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
         val priorityState = remember { mutableStateOf(priority) }
@@ -279,15 +274,14 @@ data class WorkplaceScreen(
                 //display the audio player.
                 item {
                     Spacer(modifier = Modifier.height(18.dp))
-
-                    observerAudios.filter {
-                        observerNoteAndAudio.contains(
-                            NoteAndAudio(uid, it.id)
-                        )
-                    }.fastLastOrNull { _audio ->
-                        Navigator(screen = BasicAudioScreen(uid, _audio))
-                        true
+                    when {
+                        observerAudios == null -> {}
+                        observerAudios?.id == 0L -> {}
+                        else -> {
+                            Navigator(screen = BasicAudioScreen(observerAudios!!))
+                        }
                     }
+
                 }
 
                 // Link display.
