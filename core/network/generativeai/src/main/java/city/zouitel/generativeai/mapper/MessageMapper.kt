@@ -1,7 +1,7 @@
 package city.zouitel.generativeai.mapper
 
 import city.zouitel.generativeai.model.Message
-import city.zouitel.repository.model.Message as OutMessage
+import city.zouitel.networkRepo.model.Message as OutMessage
 
 class MessageMapper {
 
