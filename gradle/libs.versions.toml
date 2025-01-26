@@ -4,8 +4,8 @@ kotlin = "2.0.0"
 compileSdk-version = "35"
 minSdk-version = "26"
 targetSdk-version = "35"
-code-version = "730"
-name-version = "7.3.0"
+code-version = "740"
+name-version = "7.4.0"
 compose-version = "1.5.14"
 
 #Android.
@@ -84,7 +84,7 @@ url-preview = "1.0.1"
 beetle = "2.0.1"
 sqlcipher = "4.5.4"
 #waveslider = "0.0.3"
-audiowaveform = "1.1.2"
+#audiowaveform = "1.1.2"
 amplituda = "2.2.2"
 #android-startup = "1.1.0"
 enigma = "1.0.0.8"
@@ -208,7 +208,7 @@ beetle = { module = "com.karacca:beetle", version.ref = "beetle" }
 sketchbook = { module = "io.getstream:sketchbook", version.ref = "sketchbook" }
 sqlcipher = { module = "net.zetetic:android-database-sqlcipher", version.ref = "sqlcipher" }
 #waveslider = { module = "com.github.galaxygoldfish:waveslider", version.ref = "waveslider" }
-audiowaveform = { module = "com.github.lincollincol:compose-audiowaveform", version.ref = "audiowaveform" }
+#audiowaveform = { module = "com.github.lincollincol:compose-audiowaveform", version.ref = "audiowaveform" }
 amplituda = { module = "com.github.lincollincol:amplituda", version.ref = "amplituda" }
 #android-startup = { module = "io.github.idisfkj:android-startup", version.ref = "android-startup" }
 enigma = { module = "gradle.plugin.chrisney:enigma", version.ref = "enigma" }
