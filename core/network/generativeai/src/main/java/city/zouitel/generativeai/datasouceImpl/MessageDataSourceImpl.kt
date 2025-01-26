@@ -3,12 +3,12 @@ package city.zouitel.generativeai.datasouceImpl
 import city.zouitel.generativeai.dao.MessageDao
 import city.zouitel.generativeai.mapper.MessageMapper
 import city.zouitel.generativeai.model.Message
-import city.zouitel.repository.datasource.MessageDataSource
+import city.zouitel.networkRepo.datasource.MessageDataSource
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.content
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import city.zouitel.repository.model.Message as OutMessage
+import city.zouitel.networkRepo.model.Message as OutMessage
 
 class MessageDataSourceImpl(
     private val generativeModel: GenerativeModel,
