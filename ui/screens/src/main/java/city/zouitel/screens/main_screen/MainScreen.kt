@@ -37,15 +37,13 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import city.zouitel.audios.ui.component.AudioScreenModel
-import city.zouitel.audios.ui.component.NoteAndAudioScreenModel
+import city.zouitel.audio.ui.component.AudioScreenModel
 import city.zouitel.domain.provider.SharedScreen
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.logic.events.UiEvent
@@ -91,7 +89,6 @@ data class MainScreen(val isHome: Boolean = true): Screen {
             taskModel = getScreenModel(),
             dataModel = getScreenModel(),
             audioModel = getScreenModel(),
-            noteAndAudioModel = getScreenModel(),
             linkModel = getScreenModel(),
             datastoreModel = getScreenModel(),
             mediaModel = getScreenModel(),
@@ -103,7 +100,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
         "UnusedMaterialScaffoldPaddingParameter",
         "UnusedMaterial3ScaffoldPaddingParameter"
     )
-    @OptIn(ExperimentalMaterial3Api::class, InternalVoyagerApi::class, ExperimentalUuidApi::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalUuidApi::class)
     @Composable
     private fun Main(
         mainModel: MainScreenModel,
@@ -113,7 +110,6 @@ data class MainScreen(val isHome: Boolean = true): Screen {
         taskModel: TaskScreenModel,
         dataModel: DataScreenModel,
         audioModel: AudioScreenModel,
-        noteAndAudioModel: NoteAndAudioScreenModel,
         linkModel: LinkScreenModel,
         mediaModel: MediaScreenModel,
         navigationDrawerModel: NavigationDrawerScreenModel,
@@ -275,7 +271,6 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                                     dataStoreModel = datastoreModel,
                                     taskModel = taskModel,
                                     audioModel = audioModel,
-                                    noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
                                     homeModel = mainModel,
                                     isHomeScreen = uiState.isHomeScreen,
@@ -304,7 +299,6 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                                     dataStoreModel = datastoreModel,
                                     taskModel = taskModel,
                                     audioModel = audioModel,
-                                    noteAndAudioModel = noteAndAudioModel,
                                     linkModel = linkModel,
                                     homeModel = mainModel,
                                     isHomeScreen = uiState.isHomeScreen,
