@@ -1,5 +1,11 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":ui:features:player:waveform")
+
+
+include(":ui:features:player:audio")
+
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
@@ -35,7 +41,7 @@ include(
     ":core:local:repository",
     ":core:local:datastore",
     ":core:local:system",
-    ":core:network:repository",
+    ":core:network:networkRepo",
     ":core:network:generativeai"
 )
 include(":domain")
@@ -45,13 +51,13 @@ include(
     ":ui:features:quickNote",
     ":ui:features:camera",
     ":ui:features:links",
-    ":ui:features:audios",
     ":ui:features:recorder",
     ":ui:features:reminder",
     ":ui:features:tags",
     ":ui:features:tasks",
     ":ui:features:widget",
     ":ui:features:media",
+    ":ui:features:player",
     ":ui:screens"
 )
 include(
@@ -60,7 +66,9 @@ include(
 )
 include(
     ":services:notifications",
-    ":services:shortcuts"
+    ":services:playback",
+    ":services:shortcuts",
+    ":services:tile"
 )
 include(":init")
 include(
