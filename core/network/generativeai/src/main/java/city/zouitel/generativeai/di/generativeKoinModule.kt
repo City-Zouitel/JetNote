@@ -9,7 +9,7 @@ import city.zouitel.generativeai.Constants.GEMINI_MODEL
 import city.zouitel.generativeai.Keys
 import city.zouitel.generativeai.datasouceImpl.MessageDataSourceImpl
 import city.zouitel.generativeai.mapper.MessageMapper
-import city.zouitel.repository.datasource.MessageDataSource
+import city.zouitel.networkRepo.datasource.MessageDataSource
 import com.google.ai.client.generativeai.GenerativeModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
