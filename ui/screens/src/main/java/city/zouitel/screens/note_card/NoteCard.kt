@@ -282,7 +282,9 @@ private fun Card(
 
         //display media player.
         observerAudios.filter { it?.uid == note.uid }.fastLastOrNull {
-            SmallAudioPlayer(dataStoreModel, audioModel, it!!)
+            it?.let { audio ->
+                SmallAudioPlayer(dataStoreModel, audioModel, audio)
+            }
             true
         }
 
@@ -313,13 +315,13 @@ private fun Card(
                 border = BorderStroke(0.dp, Color.Transparent),
                 onClick = { },
                 label = {
-                    labels[index].label?.let { Text(it, fontSize = 11.sp) }
+                    Text(labels.getOrNull(index)?.label ?: "", fontSize = 11.sp)
                 },
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = CIRCLE_ICON_18),
                         contentDescription = null,
-                        tint = Color(labels[index].color),
+                        tint = Color(labels.getOrNull(index)?.color ?: 0),
                         modifier = Modifier.size(10.dp)
                     )
                 },
