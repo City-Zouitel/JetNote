@@ -22,8 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import city.zouitel.logic.asLongToast
-import city.zouitel.logic.events.UiEvent
+import city.zouitel.domain.utils.Action
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.CROSS_CIRCLE_ICON
 import city.zouitel.systemDesign.CommonPopupTip
@@ -33,13 +32,12 @@ import city.zouitel.tags.ui.TagScreenModel
 @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 internal fun HashTagLayout(tagModel: TagScreenModel) {
-    val context = LocalContext.current
-    val observeAllTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
+    val observeAll by remember(tagModel, tagModel::observeAll).collectAsState()
     val uiState by remember(tagModel, tagModel::uiState).collectAsState()
 
     ContextualFlowRow(
         modifier = Modifier.animateContentSize(),
-        itemCount = observeAllTags.size
+        itemCount = observeAll.size
     ) { index ->
         ElevatedFilterChip(
             modifier = Modifier.padding(1.5.dp),
@@ -49,7 +47,7 @@ internal fun HashTagLayout(tagModel: TagScreenModel) {
                 Icon(
                     painter = painterResource(id = CIRCLE_ICON_18),
                     contentDescription = null,
-                    tint = Color(observeAllTags[index].color),
+                    tint = Color(observeAll.getOrNull(index)?.color ?: 0),
                     modifier = Modifier.size(10.dp)
                 )
             },
@@ -58,51 +56,49 @@ internal fun HashTagLayout(tagModel: TagScreenModel) {
                     painterResource(CROSS_CIRCLE_ICON),
                     null,
                     modifier = Modifier.clickable {
-//                        tagModel.deleteTag(observeAllTags[index])
-                        context.apply { "Dug! In process.".asLongToast() }
+                        tagModel.sendAction(Action.DeleteById(observeAll.getOrNull(index)?.id ?: 0))
+//                        context.apply { "Bug! In process.".asLongToast() }
                     }
                 )
             },
             label = {
-                observeAllTags[index].label?.let { tag ->
-                    CommonPopupTip(
-                        color = {
-                            tagModel.sendUiEvent(
-                                UiEvent.Update(
-                                    data = Tag(
-                                        id = uiState.currentId,
-                                        label = uiState.currentLabel,
-                                        color = it
-                                    )
+                CommonPopupTip(
+                    color = {
+                        tagModel.sendAction(
+                            Action.Insert(
+                                data = Tag(
+                                    id = uiState.currentId,
+                                    label = uiState.currentLabel,
+                                    color = it
                                 )
                             )
-                            tagModel
-                                .updateId()
-                                .updateColorDialogState()
-                                .updateColor()
-                                .updateLabel()
+                        )
+                        tagModel
+                            .updateId()
+                            .updateColorDialogState()
+                            .updateColor()
+                            .updateLabel()
 
-                        }
-                    ) { window ->
-                        Surface(
-                            color = Color.Transparent,
-                            modifier = Modifier.combinedClickable(
-                                onLongClick = {
+                    }
+                ) { window ->
+                    Surface(
+                        color = Color.Transparent,
+                        modifier = Modifier.combinedClickable(
+                            onLongClick = {
 
-                                    tagModel.updateId(observeAllTags[index].id)
-                                        .updateLabel(observeAllTags[index].label ?: "")
-                                        .updateColor(observeAllTags[index].color)
-                                    window.showAlignTop()
+                                tagModel.updateId(observeAll.getOrNull(index)?.id ?: 0)
+                                    .updateLabel(observeAll.getOrNull(index)?.label ?: "")
+                                    .updateColor(observeAll.getOrNull(index)?.color ?: 0)
+                                window.showAlignTop()
 
-                                },
-                            ) {
-                                tagModel.updateId(observeAllTags[index].id)
-                                    .updateLabel(observeAllTags[index].label ?: "")
-                                    .updateColor(observeAllTags[index].color)
-                            }
+                            },
                         ) {
-                            Text(tag)
+                            tagModel.updateId(observeAll.getOrNull(index)?.id ?: 0)
+                                .updateLabel(observeAll.getOrNull(index)?.label ?: "")
+                                .updateColor(observeAll.getOrNull(index)?.color ?: 0)
                         }
+                    ) {
+                        Text(observeAll.getOrNull(index)?.label ?: "")
                     }
                 }
             },
