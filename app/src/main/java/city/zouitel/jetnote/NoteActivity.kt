@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import city.zouitel.applock.LockModeHandler
+import city.zouitel.audio.player.PlaybackManager
 import city.zouitel.rooted.RootCheckerHandler
 import city.zouitel.screens.main_screen.MainScreen
 import city.zouitel.screenshot.ScreenshotHandler
@@ -24,6 +25,7 @@ import kotlin.coroutines.CoroutineContext
 class NoteActivity : AppCompatActivity(), KoinComponent, IntentHandler {
 
     private val dataStoreModel: DataStoreScreenModel by inject()
+    private val playerManager: PlaybackManager by inject()
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +59,7 @@ class NoteActivity : AppCompatActivity(), KoinComponent, IntentHandler {
         WidgetReceiver.updateBroadcast(this)
         // Cancel the performUiEvent when the activity is destroyed
         activityScope.cancel()
+        playerManager.releaseController()
     }
 
     override fun onResume() {
