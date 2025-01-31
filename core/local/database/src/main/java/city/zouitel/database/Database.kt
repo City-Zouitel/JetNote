@@ -16,18 +16,18 @@ import city.zouitel.database.model.Audio
 import city.zouitel.database.model.DataEntity
 import city.zouitel.database.model.Link
 import city.zouitel.database.model.Media
-import city.zouitel.database.model.NoteAndTagEntity
+import city.zouitel.database.model.NoteAndTag
 import city.zouitel.database.model.Reminder
-import city.zouitel.database.model.TagEntity
+import city.zouitel.database.model.Tag
 import city.zouitel.database.model.Task
 
 @Database(
-    version = 4,
+    version = 1,
     autoMigrations = [],
     entities = [
         DataEntity::class,
-        TagEntity::class,
-        NoteAndTagEntity::class,
+        Tag::class,
+        NoteAndTag::class,
         Task::class,
         Link::class,
         Audio::class,
