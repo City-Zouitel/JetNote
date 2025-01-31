@@ -47,7 +47,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.screens.R
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
-import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
@@ -63,8 +62,7 @@ class AboutScreen: Screen {
         About(
             datastoreModel = getScreenModel(),
             tagModel = getScreenModel(),
-            homeScreen = getScreenModel(),
-            navigationDrawerModel = getScreenModel()
+            homeScreen = getScreenModel()
         )
     }
 
@@ -76,8 +74,7 @@ class AboutScreen: Screen {
     private fun About(
         datastoreModel: DataStoreScreenModel,
         tagModel: TagScreenModel,
-        homeScreen: MainScreenModel,
-        navigationDrawerModel: NavigationDrawerScreenModel
+        homeScreen: MainScreenModel
     ) {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
@@ -92,8 +89,7 @@ class AboutScreen: Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = homeScreen,
-                    navigationDrawerModel = navigationDrawerModel
+                    homeScreen = homeScreen
                 )
             },
             modifier = Modifier.navigationBarsPadding()
