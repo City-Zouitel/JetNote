@@ -32,10 +32,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import city.zouitel.logic.events.UiEvent
+import city.zouitel.domain.utils.Action
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
-import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
 import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.CommonTopAppBar
 import city.zouitel.systemDesign.DataStoreScreenModel
@@ -49,8 +48,7 @@ class HashTagsScreen: Screen {
         Tags(
             datastoreModel = getScreenModel(),
             tagModel = getScreenModel(),
-            mainModel = getScreenModel(),
-            navigationDrawerModel = getScreenModel()
+            mainModel = getScreenModel()
         )
     }
 
@@ -66,12 +64,10 @@ class HashTagsScreen: Screen {
     private fun Tags(
         datastoreModel: DataStoreScreenModel,
         tagModel: TagScreenModel,
-        mainModel: MainScreenModel,
-        navigationDrawerModel: NavigationDrawerScreenModel
+        mainModel: MainScreenModel
     ) {
         val keyboardManager = LocalFocusManager.current
 
-        val observeTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
         val uiState by remember(tagModel, tagModel::uiState).collectAsState()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val topAppBarState = rememberTopAppBarState()
@@ -91,8 +87,7 @@ class HashTagsScreen: Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = mainModel,
-                    navigationDrawerModel = navigationDrawerModel
+                    homeScreen = mainModel
                 )
             },
             modifier = Modifier.navigationBarsPadding()
@@ -130,27 +125,17 @@ class HashTagsScreen: Screen {
                             placeholder = "#Tag..",
                             imeAction = ImeAction.Done,
                             keyboardActions = KeyboardActions(onDone = {
-                                if (observeTags.any { it.id == uiState.currentId })
-                                    tagModel.sendUiEvent(
-                                        UiEvent.Update(
-                                            data = Tag(
-                                                id = uiState.currentId,
-                                                label = uiState.currentLabel,
-                                                color = uiState.currentColor
-                                            )
-                                        )
-                                    ) else {
-                                    tagModel.sendUiEvent(
-                                        UiEvent.Insert(
-                                            Tag(
-                                                label = uiState.currentLabel,
-                                                color = uiState.currentColor
-                                            )
+                                tagModel.sendAction(
+                                    Action.Insert(
+                                        data = Tag(
+                                            id = uiState.currentId,
+                                            label = uiState.currentLabel,
+                                            color = uiState.currentColor
                                         )
                                     )
-                                }
+                                )
                                 tagModel.updateColor().updateId().updateLabel()
-                            }),
+                            })
                         )
                     }
                 }
