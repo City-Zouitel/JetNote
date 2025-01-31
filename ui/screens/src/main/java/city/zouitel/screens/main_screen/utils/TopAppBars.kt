@@ -104,8 +104,8 @@ internal fun HomeSelectionTopAppBar(
     val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isMute).collectAsState()
     val newUid by lazy { Uuid.random().toString() }
     val observeNotesAndLabels =
-        remember(noteAndTagModel, noteAndTagModel::getAllNotesAndTags).collectAsState()
-    val observeLabels = remember(tagModel, tagModel::getAllLTags).collectAsState()
+        remember(noteAndTagModel, noteAndTagModel::observeAll).collectAsState()
+    val observeLabels = remember(tagModel, tagModel::observeAll).collectAsState()
 
     val observeTodoList =
         remember(taskModel, taskModel::getAllTaskList).collectAsState()
@@ -205,8 +205,8 @@ internal fun HomeSelectionTopAppBar(
                                                     )
                                                 }
                                                 .forEach {
-                                                    noteAndTagModel.sendUiEvent(
-                                                        UiEvent.Insert(NoteAndTag(newUid, it.id))
+                                                    noteAndTagModel.sendAction(
+                                                        Action.Insert(NoteAndTag(newUid, it.id))
                                                     )
                                                 }
 
