@@ -1,5 +1,6 @@
 package city.zouitel.note.ui.utils
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -17,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +29,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 
+@SuppressLint("WrongConstant")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun TextField(
@@ -39,6 +42,8 @@ internal fun TextField(
     imeAction: ImeAction = ImeAction.Default,
     keyboardAction: KeyboardActionHandler = KeyboardActionHandler {  }
 ) {
+    val context = LocalContext.current
+
     Box(
         modifier = Modifier.padding(top = 30.dp)
     ) {
@@ -60,7 +65,8 @@ internal fun TextField(
                         val data = content.clipEntry.clipData
                         for (index in 0 until data.itemCount) {
                             val item = data.getItemAt(index)
-                            receiver.invoke(item.uri)
+                            val uri = item.uri
+                            receiver.invoke(uri)
                         }
                     }
                     content
