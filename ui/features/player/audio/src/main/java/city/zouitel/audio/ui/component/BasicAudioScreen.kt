@@ -47,6 +47,7 @@ data class BasicAudioScreen(val audio: Audio): Screen {
         }
 
         LaunchedEffect(true) {
+            audioModel.initializeController()
             audioModel.initializeUid(audio.uid)
         }
 
