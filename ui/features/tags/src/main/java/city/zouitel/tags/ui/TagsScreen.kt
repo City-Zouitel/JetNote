@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ElevatedFilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -43,13 +44,13 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import city.zouitel.logic.events.UiEvent
+import city.zouitel.domain.utils.Action
 import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonIcons.FULL_LABEL_ICON
 import city.zouitel.systemDesign.CommonIcons.OUTLINE_LABEL_ICON
 import city.zouitel.systemDesign.CommonTextField
+import city.zouitel.tags.model.NoteAndTag
 import city.zouitel.tags.model.Tag
-import city.zouitel.tags.model.NoteAndTag as InNoteAndTag
 
 data class TagsScreen(val uid: String): Screen {
 
@@ -58,27 +59,24 @@ data class TagsScreen(val uid: String): Screen {
 
         Tags(
             tagModel = getScreenModel(),
-            noteAndTagModel = getScreenModel(),
+            noteAndTagModel = getScreenModel()
         )
     }
 
-    @OptIn(
-        ExperimentalComposeUiApi::class,
-        ExperimentalLayoutApi::class
-    )
+    @OptIn(ExperimentalComposeUiApi::class, ExperimentalLayoutApi::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     private fun Tags(
         tagModel: TagScreenModel,
-        noteAndTagModel: NoteAndTagScreenModel,
+        noteAndTagModel: NoteAndTagScreenModel
     ) {
         val keyboardManager = LocalFocusManager.current
         val navigator = LocalNavigator.current
 
-        val observeTags by remember(tagModel, tagModel::getAllLTags).collectAsState()
+        val observeTags by remember(tagModel, tagModel::observeAll).collectAsState()
         val observeNoteAndTag by remember(
             noteAndTagModel,
-            noteAndTagModel::getAllNotesAndTags
+            noteAndTagModel::observeAll
         ).collectAsState()
         val uiState by remember(tagModel, tagModel::uiState).collectAsState()
         var maxLines by remember { mutableIntStateOf(3) }
@@ -99,10 +97,7 @@ data class TagsScreen(val uid: String): Screen {
                         backgroundColor = MaterialTheme.colorScheme.outlineVariant
                     ),
                     onClick = { navigator?.pop() }) {
-                    Icon(
-                        painter = painterResource(CommonIcons.DONE_ICON),
-                        contentDescription = null
-                    )
+                    Icon(painterResource(CommonIcons.DONE_ICON), null)
                 }
             }
         ) {
@@ -113,68 +108,76 @@ data class TagsScreen(val uid: String): Screen {
                     .padding(top = 25.dp)
             ) {
                 item {
-                    uid.let { _id ->
-                        ContextualFlowRow(
-                            modifier = Modifier.animateContentSize(),
-                            itemCount = observeTags.size,
-                            maxLines = maxLines,
-                            overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
-                                expandIndicator = {
-                                    ElevatedFilterChip(
-                                        selected = true,
-                                        onClick = { maxLines += 2 },
-                                        label = {
-                                            Text("+${totalItemCount - shownItemCount}")
-                                        }
+                    ContextualFlowRow(
+                        modifier = Modifier.animateContentSize(),
+                        itemCount = observeTags.size,
+                        maxLines = maxLines,
+                        overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
+                            expandIndicator = {
+                                ElevatedFilterChip(
+                                    selected = true,
+                                    onClick = { maxLines += 2 },
+                                    label = {
+                                        Text(
+                                            text = "+${totalItemCount - shownItemCount}",
+                                            color = MaterialTheme.colorScheme.onPrimary
+                                        )
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primary
                                     )
-                                },
-                                collapseIndicator = {
-                                    ElevatedFilterChip(
-                                        selected = true,
-                                        onClick = { maxLines = 3 },
-                                        label = {
-                                            Icon(
-                                                modifier = Modifier.size(15.dp),
-                                                painter = painterResource(CommonIcons.CROSS_ICON),
-                                                contentDescription = null
-                                            )
-                                        }
+                                )
+                            },
+                            collapseIndicator = {
+                                ElevatedFilterChip(
+                                    selected = true,
+                                    onClick = { maxLines = 3 },
+                                    label = {
+                                        Icon(
+                                            modifier = Modifier.size(15.dp),
+                                            painter = painterResource(CommonIcons.CROSS_ICON),
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.onErrorContainer
+                                        )
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.errorContainer
+                                    )
+                                )
+                            }
+                        )
+                    ) { index ->
+                        val noteAndTag = NoteAndTag(uid, observeTags.getOrNull(index)?.id ?: 0)
+
+                        ElevatedFilterChip(
+                            modifier = Modifier.padding(2.dp),
+                            selected = true,
+                            onClick = {
+                                val act = when {
+                                    observeNoteAndTag.contains(noteAndTag) -> Action.DeleteById(noteAndTag.id)
+                                    else -> Action.Insert(noteAndTag)
+                                }
+                                noteAndTagModel.sendAction(act)
+                            },
+                            leadingIcon = {
+                                if (observeNoteAndTag.contains(noteAndTag)) {
+                                    Icon(
+                                        painterResource(FULL_LABEL_ICON), null,
+                                        tint = if (observeTags[indexInLine].color == Color.Transparent.toArgb()) {
+                                            MaterialTheme.colorScheme.surfaceTint
+                                        } else Color(observeTags[index].color)
+                                    )
+                                } else {
+                                    Icon(
+                                        painterResource(OUTLINE_LABEL_ICON), null,
+                                        tint = if (observeTags[index].color == Color.Transparent.toArgb()) {
+                                            MaterialTheme.colorScheme.surfaceTint
+                                        } else Color(observeTags[index].color)
                                     )
                                 }
-                            )
-                        ) { index ->
-                            val noteAndTag = InNoteAndTag(noteUid = _id, labelId = observeTags[index].id)
-
-                            ElevatedFilterChip(
-                                modifier = Modifier.padding(2.dp),
-                                selected = true,
-                                onClick = {
-                                    val uiEvent = when {
-                                        observeNoteAndTag.contains(noteAndTag) -> UiEvent.Delete(noteAndTag)
-                                        else -> UiEvent.Insert(noteAndTag)
-                                    }
-                                    noteAndTagModel.sendUiEvent(uiEvent)
-                                },
-                                leadingIcon = {
-                                    if (observeNoteAndTag.contains(noteAndTag)) {
-                                        Icon(
-                                            painterResource(FULL_LABEL_ICON), null,
-                                            tint = if (observeTags[indexInLine].color == Color.Transparent.toArgb()) {
-                                                MaterialTheme.colorScheme.surfaceTint
-                                            } else Color(observeTags[index].color)
-                                        )
-                                    } else {
-                                        Icon(
-                                            painterResource(OUTLINE_LABEL_ICON), null,
-                                            tint = if (observeTags[index].color == Color.Transparent.toArgb()) {
-                                                MaterialTheme.colorScheme.surfaceTint
-                                            } else Color(observeTags[index].color)
-                                        )
-                                    }
-                                },
-                                label = { observeTags[index].label?.let { Text(it) } }
-                            )
-                        }
+                            },
+                            label = { Text(observeTags[index].label) }
+                        )
                     }
                 }
 
@@ -189,26 +192,15 @@ data class TagsScreen(val uid: String): Screen {
                         placeholder = "Tag..",
                         imeAction = ImeAction.Done,
                         keyboardAction = {
-                            if (observeTags.any { it.id == uiState.currentId }) {
-                                tagModel.sendUiEvent(
-                                    UiEvent.Update(
-                                        data = Tag(
-                                            id = uiState.currentId,
-                                            label = uiState.currentLabel,
-                                            color = uiState.currentColor
-                                        )
+                            tagModel.sendAction(
+                                Action.Insert(
+                                    data = Tag(
+                                        id = uiState.currentId,
+                                        label = fieldState.text.toString(),
+                                        color = uiState.currentColor
                                     )
                                 )
-                            } else {
-                                tagModel.sendUiEvent(
-                                    UiEvent.Insert(
-                                        data = Tag(
-                                            label = fieldState.text.toString(),
-                                            color = uiState.currentColor
-                                        )
-                                    )
-                                )
-                            }
+                            )
                             tagModel.updateColor().updateId()
                             fieldState.clearText()
                         }
