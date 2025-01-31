@@ -160,9 +160,9 @@ data class WorkplaceScreen(
 
         val observeNotesAndLabels by remember(
             noteAndTagModel,
-            noteAndTagModel::getAllNotesAndTags
+            noteAndTagModel::observeAll
         ).collectAsState()
-        val observeLabels by remember(tagModel, tagModel::getAllLTags).collectAsState()
+        val observeLabels by remember(tagModel, tagModel::observeAll).collectAsState()
         val observeTodoList by remember(
             taskModel,
             taskModel::getAllTaskList
@@ -173,7 +173,7 @@ data class WorkplaceScreen(
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
         val priorityState = remember { mutableStateOf(priority) }
 
-        val filteredObservedTags by remember {
+        val filteredTags by remember {
             derivedStateOf {
                 observeLabels.filter {
                     observeNotesAndLabels.contains(NoteAndTag(uid, it.id))
@@ -308,11 +308,11 @@ data class WorkplaceScreen(
                                     modifier = Modifier
                                         .animateContentSize()
                                         .combinedClickable(onLongClick = {
+                                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                             reminderModel.sendAction(
                                                 Action.DeleteById(observeAllReminders[index].id)
                                             )
                                             alarmModel.cancelAlarm(observeAllReminders[index].id)
-                                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                         }) {},
                                     text = DateFormat.format(
                                         "yy/MM/dd HH:mm",
@@ -340,10 +340,10 @@ data class WorkplaceScreen(
                     }
                 }
 
-                // display all added tags.
+                // display the tags.
                 item {
                     ContextualFlowRow(
-                        itemCount = filteredObservedTags.size,
+                        itemCount = filteredTags.size,
                         modifier = Modifier
                             .animateContentSize()
                             .padding(5.dp)
@@ -357,12 +357,23 @@ data class WorkplaceScreen(
                                 Icon(
                                     painter = painterResource(id = CommonIcons.CIRCLE_ICON_18),
                                     contentDescription = null,
-                                    tint = Color(filteredObservedTags[index].color),
+                                    tint = Color(filteredTags.getOrNull(index)?.color ?: 0),
                                     modifier = Modifier.size(10.dp)
                                 )
                             },
                             label = {
-                                filteredObservedTags[index].label?.let { it1 -> Text(it1) }
+                                Text(
+                                    modifier = Modifier
+                                        .combinedClickable(onLongClick = {
+                                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                            noteAndTagModel.sendAction(
+                                                Action.DeleteById(
+                                                    filteredTags.getOrNull(index)?.id ?: 0
+                                                )
+                                            )
+                                        }) {},
+                                    text = filteredTags.getOrNull(index)?.label ?: ""
+                                )
                             }
                         )
                     }
