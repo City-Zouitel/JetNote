@@ -14,6 +14,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +47,10 @@ fun SmallAudioPlayer(
     var isPlaying by remember { mutableStateOf(false) }
     val playbackIconState =
         if (isPlaying) CommonIcons.PAUSE_ICON_24 else CommonIcons.PLAY_ICON_24
+
+    LaunchedEffect(true) {
+        audioModel.initializeController()
+    }
 
     Card(
         modifier = Modifier.padding(10.dp),
