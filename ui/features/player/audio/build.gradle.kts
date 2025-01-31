@@ -23,7 +23,6 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     //Sliders.
-//    implementation(libs.audiowaveform)
     implementation(libs.amplituda)
 
     //Media3.
