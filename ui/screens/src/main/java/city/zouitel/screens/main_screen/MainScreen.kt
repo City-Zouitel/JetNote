@@ -54,7 +54,6 @@ import city.zouitel.screens.main_screen.utils.MainTopAppBar
 import city.zouitel.screens.main_screen.utils.RemovedSelectionTopAppBar
 import city.zouitel.screens.main_screen.utils.UndoSnackbar
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
-import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
 import city.zouitel.screens.note_card.NoteCard
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
@@ -91,8 +90,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
             audioModel = getScreenModel(),
             linkModel = getScreenModel(),
             datastoreModel = getScreenModel(),
-            mediaModel = getScreenModel(),
-            navigationDrawerModel = getScreenModel()
+            mediaModel = getScreenModel()
         )
     }
 
@@ -111,8 +109,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
         dataModel: DataScreenModel,
         audioModel: AudioScreenModel,
         linkModel: LinkScreenModel,
-        mediaModel: MediaScreenModel,
-        navigationDrawerModel: NavigationDrawerScreenModel,
+        mediaModel: MediaScreenModel
     ) {
         val context = LocalContext.current
         val navigator = LocalNavigator.currentOrThrow
@@ -186,8 +183,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = mainModel,
-                    navigationDrawerModel = navigationDrawerModel
+                    homeScreen = mainModel
                 )
             }
         ) {
