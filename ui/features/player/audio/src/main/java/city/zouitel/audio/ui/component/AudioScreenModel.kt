@@ -40,17 +40,14 @@ class AudioScreenModel (
             }
         }
 
-
     private val _observeByUid: MutableStateFlow<Audio?> = MutableStateFlow(null)
     val observeByUid: StateFlow<Audio?> = _observeByUid
         .withFlow(null)
-
 
     private var currentAudio = MutableStateFlow<Audio?>(null)
 
     fun initializeUid(uid: String) {
         screenModelScope.launch(Dispatchers.IO) {
-            player.initializeController()
             _observeByUid_(uid).collect {
                 runCatching {
                     _observeByUid.value = mapper.fromDomain(it)
@@ -60,6 +57,10 @@ class AudioScreenModel (
                 }
             }
         }
+    }
+
+    fun initializeController() {
+        player.initializeController()
     }
 
     fun playbackState() {
@@ -125,10 +126,5 @@ class AudioScreenModel (
         screenModelScope.launch {
             _deleteById(id)
         }
-    }
-
-    override fun onDispose() {
-        super.onDispose()
-        player.releaseController()
     }
 }
