@@ -3,8 +3,6 @@ package city.zouitel.database.utils
 internal object Constants {
 
     const val NOTES = "notes_table"
-    const val LABELS = "labels_table"
-    const val AUDIOS = "audios_table"
 
     const val DATABASE = "jet_note_database"
 
