@@ -44,6 +44,7 @@ dependencies {
     implementation(projects.security.rooted)
     implementation(projects.security.appLock)
     implementation(projects.security.screenshot)
+//    implementation(projects.ui.features.player.audio)
     api(projects.ui.screens)
 
     //Lifecycle.
