@@ -3,62 +3,44 @@ package city.zouitel.tags.ui
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.domain.usecase.TagUseCase
-import city.zouitel.logic.events.UiEvent
-import city.zouitel.logic.events.UiEventHandler
+import city.zouitel.domain.utils.Action
+import city.zouitel.domain.utils.withAsync
+import city.zouitel.logic.withFlow
 import city.zouitel.tags.mapper.TagMapper
 import city.zouitel.tags.model.Tag
 import city.zouitel.tags.state.UiState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import city.zouitel.tags.model.Tag as InTag
 
+@Suppress("DeferredResultUnused")
 class TagScreenModel(
-    getAllTags: TagUseCase.GetAllTags,
-    private val add: TagUseCase.AddTag,
-    private val update: TagUseCase.UpdateTag,
-    private val delete: TagUseCase.DeleteTag,
+    private val _observeAll_: TagUseCase.ObserveAll,
+    private val insert: TagUseCase.Insert,
+    private val deleteById: TagUseCase.DeleteById,
     private val mapper: TagMapper
-): ScreenModel, UiEventHandler<Tag> {
+): ScreenModel {
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
-    val uiState: StateFlow<UiState>
-        get() = _uiState
-            .stateIn(
-                screenModelScope,
-                SharingStarted.WhileSubscribed(),
-                UiState()
-            )
+    val uiState: StateFlow<UiState> = _uiState
+            .withFlow(UiState())
 
-    private val _getAllTags: MutableStateFlow<List<Tag>> = MutableStateFlow(emptyList())
-    val getAllLTags: StateFlow<List<InTag>>
-        get() = _getAllTags
-            .stateIn(
-                screenModelScope,
-                SharingStarted.WhileSubscribed(),
-                emptyList()
-            )
+    private val _observeAll: MutableStateFlow<List<Tag>> = MutableStateFlow(emptyList())
+    val observeAll: StateFlow<List<InTag>>
+        get() = _observeAll
+            .withFlow(emptyList()) {
+                withAsync {
+                    _observeAll_().collect { tags -> _observeAll.value = mapper.fromDomain(tags) }
+                }
+            }
 
-    init {
-        performUiEvent {
-            getAllTags.invoke().collect { tags -> _getAllTags.value = mapper.fromDomain(tags) }
-        }
-    }
-
-    override fun sendUiEvent(event: UiEvent<InTag>) {
-        when (event) {
-            is UiEvent.Insert -> performUiEvent { add.invoke(mapper.toDomain(event.data)) }
-            is UiEvent.Delete -> performUiEvent { /*delete.invoke(mapper.toDomain(event.data))*/ }
-            is UiEvent.Update -> performUiEvent { update.invoke(mapper.toDomain(event.data)) }
+    fun sendAction(act: Action) {
+        when (act) {
+            is Action.Insert<*> -> withAsync { insert(mapper.toDomain(act.data as Tag)) }
+            is Action.DeleteById -> withAsync { deleteById(act.id as Long) }
             else -> throw Exception("Not implemented")
         }
-    }
-
-    override fun performUiEvent(action: suspend () -> Unit) {
-        screenModelScope.launch(Dispatchers.IO) { action.invoke() }
     }
 
     fun updateId(id: Long = 0L): TagScreenModel {
