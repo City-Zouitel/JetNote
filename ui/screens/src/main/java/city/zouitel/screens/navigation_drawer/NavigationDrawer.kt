@@ -18,6 +18,7 @@ import androidx.compose.material3.ElevatedFilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,6 +49,7 @@ import city.zouitel.screens.navigation_drawer.NoteScreens.REMOVED_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.SETTINGS_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.TAGS_SCREEN
 import city.zouitel.screens.settings_screen.SettingsScreen
+import city.zouitel.screens.tags_screen.HashTagsScreen
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants.APP_NAME
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
@@ -63,7 +65,6 @@ import city.zouitel.systemDesign.CommonIcons.SHARE_ICON
 import city.zouitel.systemDesign.CommonIcons.SPARKLES_ICON
 import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
 import city.zouitel.systemDesign.DataStoreScreenModel
-import city.zouitel.screens.tags_screen.HashTagsScreen
 import city.zouitel.tags.ui.TagScreenModel
 import com.karacca.beetle.Beetle
 import kotlinx.coroutines.launch
@@ -73,13 +74,12 @@ import kotlinx.coroutines.launch
 fun NavigationDrawer(
     tagModel: TagScreenModel,
     dataStoreModel: DataStoreScreenModel,
-    navigationDrawerModel: NavigationDrawerScreenModel,
     drawerState: DrawerState,
     homeScreen: MainScreenModel
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
-    val observeLabels by remember(tagModel, tagModel::getAllLTags).collectAsState()
+    val observeAllTags by remember(tagModel, tagModel::observeAll).collectAsState()
     val isMute by remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val scope = rememberCoroutineScope()
     var maxLines by remember { mutableIntStateOf(3) }
@@ -157,7 +157,7 @@ fun NavigationDrawer(
             item {
                 ContextualFlowRow(
                     modifier = Modifier.animateContentSize(),
-                    itemCount = observeLabels.size,
+                    itemCount = observeAllTags.size,
                     maxLines = maxLines,
                     overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
                         expandIndicator = {
@@ -166,8 +166,14 @@ fun NavigationDrawer(
                                 shape = CircleShape,
                                 onClick = { maxLines += 1 },
                                 label = {
-                                    Text("+${totalItemCount - shownItemCount}")
-                                }
+                                    Text(
+                                        text = "+ more",
+                                        color = MaterialTheme.colorScheme.onPrimary
+                                    )
+                                },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primary
+                                )
                             )
                         },
                         collapseIndicator = {
@@ -180,9 +186,13 @@ fun NavigationDrawer(
                                         Icon(
                                             modifier = Modifier.size(15.dp),
                                             painter = painterResource(CommonIcons.CROSS_ICON),
-                                            contentDescription = null
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.onErrorContainer
                                         )
-                                    }
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.errorContainer
+                                    )
                                 )
                             }
                         }
@@ -193,8 +203,8 @@ fun NavigationDrawer(
                         onClick = {
                             scope.launch {
                                 sound.performSoundEffect(context, KEY_CLICK, isMute)
-                                homeScreen.updateSearchTag(observeLabels[index])
-                                homeScreen.updateSearchTitle(observeLabels[index].label ?: "")
+                                homeScreen.updateSearchTag(observeAllTags.getOrNull(index))
+                                homeScreen.updateSearchTitle(observeAllTags.getOrNull(index)?.label ?: "")
                                 drawerState.close()
                             }
                         },
@@ -206,11 +216,11 @@ fun NavigationDrawer(
                             )
                         },
                         label = {
-                            observeLabels[index].label?.let { Text(it, fontSize = 11.sp) }
+                            observeAllTags.getOrNull(index)?.label.let { Text(it ?: "", fontSize = 11.sp) }
                         },
                         shape = CircleShape,
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedLeadingIconColor = Color(observeLabels[index].color)
+                            selectedLeadingIconColor = Color(observeAllTags.getOrNull(index)?.color ?: 0)
                         )
                     )
                     Spacer(Modifier.width(2.dp))
