@@ -31,7 +31,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.assistant.ui.ApiKeyScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
-import city.zouitel.screens.navigation_drawer.NavigationDrawerScreenModel
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants.DARK
 import city.zouitel.systemDesign.CommonConstants.DEFAULT_ORDER
@@ -57,8 +56,7 @@ class SettingsScreen: Screen {
         Settings(
             tagModel = getScreenModel(),
             datastoreModel = getScreenModel(),
-            mainScreen = getScreenModel(),
-            navigationDrawerModel = getScreenModel()
+            mainScreen = getScreenModel()
         )
     }
 
@@ -70,7 +68,6 @@ class SettingsScreen: Screen {
     @Composable
     private fun Settings(
         tagModel: TagScreenModel,
-        navigationDrawerModel: NavigationDrawerScreenModel,
         mainScreen: MainScreenModel,
         datastoreModel: DataStoreScreenModel
     ) {
@@ -101,8 +98,7 @@ class SettingsScreen: Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = mainScreen,
-                    navigationDrawerModel = navigationDrawerModel
+                    homeScreen = mainScreen
                 )
             },
             modifier = Modifier.navigationBarsPadding()
