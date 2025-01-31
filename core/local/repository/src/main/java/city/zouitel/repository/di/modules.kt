@@ -93,9 +93,10 @@ val localRepoDIModule = module {
     factoryOf(LinkUseCase::DeleteById)
     factoryOf(LinkUseCase::DeleteByUid)
 
-    factoryOf(NoteAndTagUseCase::AddNoteAndTag)
-    factoryOf(NoteAndTagUseCase::DeleteNoteAndTag)
-    factoryOf(NoteAndTagUseCase::GetAllNotesAndTags)
+    factoryOf(NoteAndTagUseCase::ObserveAll)
+    factoryOf(NoteAndTagUseCase::Insert)
+    factoryOf(NoteAndTagUseCase::DeleteByUid)
+    factoryOf(NoteAndTagUseCase::DeleteById)
 
     factoryOf(NoteUseCase::GetAllNotesById)
     factoryOf(NoteUseCase::GetAllNotesByName)
@@ -104,10 +105,9 @@ val localRepoDIModule = module {
     factoryOf(NoteUseCase::GetAllNotesByPriority)
     factoryOf(NoteUseCase::GetAllRemovedNotes)
 
-    factoryOf(TagUseCase::AddTag)
-    factoryOf(TagUseCase::DeleteTag)
-    factoryOf(TagUseCase::UpdateTag)
-    factoryOf(TagUseCase::GetAllTags)
+    factoryOf(TagUseCase::ObserveAll)
+    factoryOf(TagUseCase::Insert)
+    factoryOf(TagUseCase::DeleteById)
 
     factoryOf(TaskUseCase::ObserveAll)
     factoryOf(TaskUseCase::ObserveByUid)
