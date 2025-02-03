@@ -11,9 +11,8 @@ import city.zouitel.database.dao.NoteDao
 import city.zouitel.database.dao.ReminderDao
 import city.zouitel.database.dao.TagDao
 import city.zouitel.database.dao.TaskDao
-import city.zouitel.database.dao.WidgetDao
 import city.zouitel.database.model.Audio
-import city.zouitel.database.model.DataEntity
+import city.zouitel.database.model.Data
 import city.zouitel.database.model.Link
 import city.zouitel.database.model.Media
 import city.zouitel.database.model.NoteAndTag
@@ -25,7 +24,7 @@ import city.zouitel.database.model.Task
     version = 1,
     autoMigrations = [],
     entities = [
-        DataEntity::class,
+        Data::class,
         Tag::class,
         NoteAndTag::class,
         Task::class,
@@ -41,7 +40,6 @@ abstract class Database: RoomDatabase() {
     abstract fun getLabelDao(): TagDao
     abstract fun getNoteAndLabelDao(): NoteAndTagDao
     abstract fun getEntityDao(): NoteDao
-    abstract fun getWidgetEntityDao(): WidgetDao
     abstract fun getTaskDao(): TaskDao
     abstract fun getLinkDao(): LinkDao
     abstract fun getAudioDao(): AudioDao
