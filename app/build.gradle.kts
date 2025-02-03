@@ -39,12 +39,12 @@ dependencies {
     implementation(projects.services.notifications)
     implementation(projects.services.shortcuts)
     implementation(projects.services.playback)
+    implementation(projects.services.tile)
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
     implementation(projects.security.rooted)
     implementation(projects.security.appLock)
     implementation(projects.security.screenshot)
-//    implementation(projects.ui.features.player.audio)
     api(projects.ui.screens)
 
     //Lifecycle.
