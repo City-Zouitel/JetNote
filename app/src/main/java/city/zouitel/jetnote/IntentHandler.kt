@@ -35,7 +35,7 @@ internal interface IntentHandler: CoroutineScope {
             null,
             MaterialTheme.colorScheme.surface.toArgb(),
             MaterialTheme.colorScheme.onSurface.toArgb(),
-            "NON"
+            0
         ))
 
         intent.apply {
