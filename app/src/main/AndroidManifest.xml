@@ -82,17 +82,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="city.zouitel.quicknote.QuickTileService"
-            android:exported="true"
-            android:icon="@drawable/plus_24"
-            android:label="Quick Note"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-        </service>
-
         <provider
             android:authorities="${applicationId}.androidx-startup"
             android:name="androidx.startup.InitializationProvider"
