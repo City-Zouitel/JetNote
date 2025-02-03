@@ -1,29 +1,29 @@
 package city.zouitel.note.mapper
 
+import city.zouitel.note.model.Data
 import city.zouitel.domain.model.Data as OutData
-import city.zouitel.note.model.Data as InData
 
 class DataMapper {
 
-    fun toDomain(data: InData) = OutData(
+    fun toDomain(data: Data) = OutData(
         uid = data.uid,
         title = data.title,
         description = data.description,
         priority = data.priority,
-        color = data.color,
+        background = data.background,
         textColor = data.textColor,
         date = data.date,
-        removed = data.removed
+        archived = data.archived
     )
 
-    fun fromDomain(data: OutData) = InData(
+    fun fromDomain(data: OutData) = Data(
         uid = data.uid,
         title = data.title,
         description = data.description,
         priority = data.priority,
-        color = data.color,
+        background = data.background,
         textColor = data.textColor,
         date = data.date,
-        removed = data.removed
+        archived = data.archived
     )
 }
