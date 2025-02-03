@@ -82,4 +82,10 @@ object CommonIcons {
     val CLIP_ICON = R.drawable.clip_24
     val SPARKLES_ICON = R.drawable.sparkles_24
     val EXCLAMATION_ICON = R.drawable.exclamation_24
+    val INBOX_ICON = R.drawable.inbox_24
+    val INBOX_IN_ICON = R.drawable.inbox_in_24
+    val INBOX_OUT_ICON = R.drawable.inbox_out_24
+    val INBOX_FULL_ICON = R.drawable.inbox_full_24
+    val HOME_BLANK_ICON = R.drawable.house_blank_24
+    val CROSS_SMALL_ICON = R.drawable.cross_small_24
 }
