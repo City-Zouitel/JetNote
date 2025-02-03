@@ -45,7 +45,7 @@ import java.io.File
 ////    navController: NavController,
 //    title: String,
 //    description: String,
-//    color: Int?,
+//    background: Int?,
 //    priority: String,
 //    uid: String,
 //    textColor: Int,
@@ -153,7 +153,7 @@ import java.io.File
 ////                                            uid + "/" +
 ////                                            title + "/" +
 ////                                            description + "/" +
-////                                            color + "/" +
+////                                            background + "/" +
 ////                                            textColor + "/" +
 ////                                            priority + "/" +
 ////                                            audioDuration + "/" +
