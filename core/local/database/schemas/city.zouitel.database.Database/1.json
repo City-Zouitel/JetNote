@@ -2,65 +2,67 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b3e592510aebd6f3271e5a2e86695391",
+    "identityHash": "82a2505f4eae0d64789ca84738af7319",
     "entities": [
       {
-        "tableName": "notes_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`universally_unique_identifier` TEXT NOT NULL, `title` TEXT, `description` TEXT, `priority` TEXT NOT NULL, `color` INTEGER NOT NULL, `text_color` INTEGER NOT NULL, `date` TEXT NOT NULL, `removed` INTEGER NOT NULL, `reminding` INTEGER NOT NULL, PRIMARY KEY(`universally_unique_identifier`))",
+        "tableName": "note_data_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`universally_unique_identifier` TEXT NOT NULL DEFAULT '', `title` TEXT NOT NULL DEFAULT '', `description` TEXT NOT NULL DEFAULT '', `priority` INTEGER NOT NULL DEFAULT 0, `color` INTEGER NOT NULL DEFAULT 0, `text_color` INTEGER NOT NULL DEFAULT 0, `date` TEXT NOT NULL DEFAULT '', `archived` INTEGER NOT NULL DEFAULT false, PRIMARY KEY(`universally_unique_identifier`))",
         "fields": [
           {
             "fieldPath": "uid",
             "columnName": "universally_unique_identifier",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "description",
             "columnName": "description",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "priority",
             "columnName": "priority",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
-            "fieldPath": "color",
+            "fieldPath": "background",
             "columnName": "color",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "textColor",
             "columnName": "text_color",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "date",
             "columnName": "date",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
-            "fieldPath": "removed",
-            "columnName": "removed",
+            "fieldPath": "archived",
+            "columnName": "archived",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "reminding",
-            "columnName": "reminding",
-            "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "false"
           }
         ],
         "primaryKey": {
@@ -73,27 +75,29 @@
         "foreignKeys": []
       },
       {
-        "tableName": "labels_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `label` TEXT, `color` INTEGER NOT NULL DEFAULT 0x0000)",
+        "tableName": "tags_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 0, `label` TEXT NOT NULL DEFAULT '', `color` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "identifier",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "label",
             "columnName": "label",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "color",
             "columnName": "color",
             "affinity": "INTEGER",
             "notNull": true,
-            "defaultValue": "0x0000"
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
@@ -107,17 +111,17 @@
       },
       {
         "tableName": "note_and_label",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteUid` TEXT NOT NULL, `labelId` INTEGER NOT NULL, PRIMARY KEY(`noteUid`, `labelId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `id` INTEGER NOT NULL, PRIMARY KEY(`uid`, `id`))",
         "fields": [
           {
-            "fieldPath": "noteUid",
-            "columnName": "noteUid",
+            "fieldPath": "uid",
+            "columnName": "uid",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "labelId",
-            "columnName": "labelId",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -125,8 +129,8 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "noteUid",
-            "labelId"
+            "uid",
+            "id"
           ]
         },
         "indices": [],
@@ -134,58 +138,41 @@
       },
       {
         "tableName": "tasks_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT, `is_task_done` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER NOT NULL DEFAULT 0, `universally_unique_identifier` TEXT NOT NULL DEFAULT '', `title` TEXT DEFAULT null, `is_task_done` INTEGER NOT NULL DEFAULT false, PRIMARY KEY(`identifier`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "identifier",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "universally_unique_identifier",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "item",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": false,
+            "defaultValue": "null"
           },
           {
             "fieldPath": "isDone",
             "columnName": "is_task_done",
             "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "identifier"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "note_and_task",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteUid` TEXT NOT NULL, `taskId` INTEGER NOT NULL, PRIMARY KEY(`noteUid`, `taskId`))",
-        "fields": [
-          {
-            "fieldPath": "noteUid",
-            "columnName": "noteUid",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "taskId",
-            "columnName": "taskId",
-            "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "false"
           }
         ],
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "noteUid",
-            "taskId"
+            "identifier"
           ]
         },
         "indices": [],
@@ -193,76 +180,62 @@
       },
       {
         "tableName": "links_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `host` TEXT NOT NULL, `imageLink` TEXT, `title` TEXT, `description` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER NOT NULL DEFAULT 0, `universally_unique_identifier` TEXT NOT NULL DEFAULT '', `uniform_resource_locator` TEXT NOT NULL DEFAULT '', `title` TEXT NOT NULL DEFAULT '', `description` TEXT NOT NULL DEFAULT '', `imageLink` TEXT NOT NULL DEFAULT '', `link_icon` TEXT NOT NULL DEFAULT '', PRIMARY KEY(`identifier`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "identifier",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "universally_unique_identifier",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "url",
-            "columnName": "url",
+            "columnName": "uniform_resource_locator",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "host",
-            "columnName": "host",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "image",
-            "columnName": "imageLink",
-            "affinity": "TEXT",
-            "notNull": false
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "description",
             "columnName": "description",
             "affinity": "TEXT",
-            "notNull": false
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "identifier"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "note_and_link",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteUid` TEXT NOT NULL, `linkId` INTEGER NOT NULL, PRIMARY KEY(`noteUid`, `linkId`))",
-        "fields": [
-          {
-            "fieldPath": "noteUid",
-            "columnName": "noteUid",
-            "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
-            "fieldPath": "linkId",
-            "columnName": "linkId",
-            "affinity": "INTEGER",
-            "notNull": true
+            "fieldPath": "image",
+            "columnName": "imageLink",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "link_icon",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           }
         ],
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "noteUid",
-            "linkId"
+            "identifier"
           ]
         },
         "indices": [],
@@ -270,76 +243,62 @@
       },
       {
         "tableName": "audios_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `media_path` TEXT NOT NULL, `uri` TEXT NOT NULL, `media_size` INTEGER NOT NULL, `media_duration` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 0, `universally_unique_identifier` TEXT NOT NULL DEFAULT '', `title` TEXT NOT NULL DEFAULT '', `media_path` TEXT NOT NULL DEFAULT '', `uniform_resource_identifier` TEXT NOT NULL DEFAULT '', `media_size` INTEGER NOT NULL DEFAULT 0, `media_duration` INTEGER NOT NULL DEFAULT 0)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "identifier",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "universally_unique_identifier",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "path",
             "columnName": "media_path",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "uri",
-            "columnName": "uri",
+            "columnName": "uniform_resource_identifier",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "size",
             "columnName": "media_size",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           },
           {
             "fieldPath": "duration",
             "columnName": "media_duration",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
           }
         ],
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
             "identifier"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "note_and_audio",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteUid` TEXT NOT NULL, `audioId` INTEGER NOT NULL, PRIMARY KEY(`noteUid`, `audioId`))",
-        "fields": [
-          {
-            "fieldPath": "noteUid",
-            "columnName": "noteUid",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "audioId",
-            "columnName": "audioId",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "noteUid",
-            "audioId"
           ]
         },
         "indices": [],
@@ -347,58 +306,41 @@
       },
       {
         "tableName": "media_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `is video` INTEGER NOT NULL, `media_path` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 0, `universally_unique_identifier` TEXT NOT NULL DEFAULT '', `is_this_media-a_video` INTEGER NOT NULL DEFAULT false, `uniform_resource_identifier` TEXT NOT NULL DEFAULT '')",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "identifier",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "universally_unique_identifier",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
           },
           {
             "fieldPath": "isVideo",
-            "columnName": "is video",
+            "columnName": "is_this_media-a_video",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "false"
           },
           {
-            "fieldPath": "path",
-            "columnName": "media_path",
+            "fieldPath": "uri",
+            "columnName": "uniform_resource_identifier",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": true,
+            "defaultValue": "''"
           }
         ],
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
             "identifier"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "note_and_media",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`noteUid` TEXT NOT NULL, `mediaId` INTEGER NOT NULL, PRIMARY KEY(`noteUid`, `mediaId`))",
-        "fields": [
-          {
-            "fieldPath": "noteUid",
-            "columnName": "noteUid",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "mediaId",
-            "columnName": "mediaId",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "noteUid",
-            "mediaId"
           ]
         },
         "indices": [],
@@ -450,7 +392,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b3e592510aebd6f3271e5a2e86695391')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '82a2505f4eae0d64789ca84738af7319')"
     ]
   }
 }
