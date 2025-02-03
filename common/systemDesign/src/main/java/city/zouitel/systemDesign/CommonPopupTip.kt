@@ -1,9 +1,9 @@
 package city.zouitel.systemDesign
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -11,7 +11,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Fill
@@ -21,11 +21,14 @@ import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonHighlightAnimation
 import com.skydoves.balloon.BalloonSizeSpec
-import com.skydoves.balloon.compose.*
+import com.skydoves.balloon.compose.Balloon
+import com.skydoves.balloon.compose.BalloonWindow
+import com.skydoves.balloon.compose.rememberBalloonBuilder
 
 @Composable
 fun CommonPopupTip(
     message: String,
+    background: Int = MaterialTheme.colorScheme.primary.toArgb(),
     window : @Composable (BalloonWindow) -> Unit
 ) {
     val builder = rememberBalloonBuilder {
@@ -36,7 +39,7 @@ fun CommonPopupTip(
         setHeight(BalloonSizeSpec.WRAP)
         setPadding(5)
         setCornerRadius(8f)
-        setBackgroundColor(backgroundColor)
+        setBackgroundColor(background)
         setBalloonAnimation(BalloonAnimation.ELASTIC)
         setBalloonHighlightAnimation(BalloonHighlightAnimation.SHAKE)
         setAutoDismissDuration(5000)
@@ -47,7 +50,7 @@ fun CommonPopupTip(
         balloonContent = {
             Text(
                 text = message,
-                color = MaterialTheme.colorScheme.surface
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         modifier = Modifier
@@ -56,7 +59,6 @@ fun CommonPopupTip(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CommonPopupTip(
     color: (Int) -> Unit,
@@ -73,22 +75,22 @@ fun CommonPopupTip(
         setBackgroundColor(backgroundColor)
         setBalloonAnimation(BalloonAnimation.ELASTIC)
         setBalloonHighlightAnimation(BalloonHighlightAnimation.NONE)
-        setAutoDismissDuration(7000)
+        setAutoDismissDuration(5000)
     }
 
     Balloon(
         builder = builder,
         balloonContent = {
             LazyVerticalGrid(
-                GridCells.Fixed(5),
-                modifier = Modifier.size(100.dp),
+                columns = GridCells.Fixed(5),
+                modifier = Modifier.size(125.dp)
             ) {
                 items(listOfBackgroundColors) {
                     Spacer(modifier = Modifier.width(3.dp))
-
                     Canvas(
                         modifier = Modifier
-                            .size(20.dp)
+                            .size(25.dp)
+                            .padding(1.dp)
                             .clickable {
                                 color.invoke(it.toArgb())
                             }
@@ -98,12 +100,7 @@ fun CommonPopupTip(
                             startAngle = 1f,
                             sweepAngle = 360f,
                             useCenter = true,
-                            style =
-//                            if (getColorOfPriority(uiState.priority) == it.toArgb()) {
-//                                Stroke(width = 5f, cap = StrokeCap.Round)
-//                            } else {
-                                Fill
-//                            }
+                            style = Fill
                         )
                     }
                     Spacer(modifier = Modifier.width(3.dp))
