@@ -3,6 +3,7 @@ package city.zouitel.domain.utils
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
 context(ScreenModel)
@@ -24,4 +25,6 @@ context(ScreenModel)
  * @see kotlinx.coroutines.Deferred
  * @see screenModelScope
  */
-fun withAsync(scope: suspend CoroutineScope.() -> Unit) = screenModelScope.async(block = scope)
+fun withAsync(scope: suspend CoroutineScope.() -> Unit): Deferred<Unit> {
+    return screenModelScope.async(block = scope)
+}
