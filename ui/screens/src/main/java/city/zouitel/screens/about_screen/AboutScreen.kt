@@ -89,7 +89,7 @@ class AboutScreen: Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = homeScreen
+                    mainModel = homeScreen
                 )
             },
             modifier = Modifier.navigationBarsPadding()
