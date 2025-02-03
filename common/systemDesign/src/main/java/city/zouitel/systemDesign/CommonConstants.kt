@@ -1,7 +1,7 @@
 package city.zouitel.systemDesign
 
 object CommonConstants {
-    const val APP_VERSION = "7.5.0"
+    const val APP_VERSION = "7.6.0"
     const val APP_NAME = "JetNote"
     const val NONE = "unspecified"
 
@@ -28,7 +28,7 @@ object CommonConstants {
     const val UNDO = "Undo"
     const val REDO = "Redo"
 
-    const val TRASH_MESSAGE = "Moved To Trash."
+    const val ARCHIVED_MESSAGE = "Moved To Archive."
 
     const val KEY_CLICK = 0
     const val KEY_STANDARD = 5
