@@ -19,8 +19,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.logic.events.UiEvent
+import city.zouitel.domain.utils.Action
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonBottomSheet
@@ -35,24 +34,19 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
 
         Erase(
             dataStoreModel = getScreenModel(),
-            dataModel = getScreenModel(),
-            mainModel = getScreenModel(),
-            linkModel = getScreenModel()
+            dataModel = getScreenModel()
         )
     }
 
     @Composable
     private fun Erase(
         dataStoreModel: DataStoreScreenModel,
-        dataModel: DataScreenModel,
-        mainModel: MainScreenModel,
-        linkModel: LinkScreenModel,
+        dataModel: DataScreenModel
     ) {
         val context = LocalContext.current
         val navBottom = LocalBottomSheetNavigator.current
 
         val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
-        val observerRemovedNotes = remember(mainModel, mainModel::allTrashedNotes).collectAsState()
         val scope = rememberCoroutineScope()
 
         Navigator(CommonBottomSheet {
@@ -61,7 +55,7 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
                 item {
                     Text(
                         modifier = Modifier.padding(7.dp),
-                        text = "Empty Notes?",
+                        text = "Erase Notes?",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -85,12 +79,7 @@ data class EraseScreen(val onConfirm: () -> Unit): Screen {
                                     CommonConstants.KEY_CLICK,
                                     thereIsSoundEffect.value
                                 )
-                                dataModel.sendUiEvent(UiEvent.DeleteAll())
-                                observerRemovedNotes.value.forEach { entity ->
-                                    entity.tagEntities.forEach {
-
-                                    }
-                                }
+                                dataModel.sendAction(Action.Erase)
                             }.invokeOnCompletion {
                                 navBottom.hide()
                             }
