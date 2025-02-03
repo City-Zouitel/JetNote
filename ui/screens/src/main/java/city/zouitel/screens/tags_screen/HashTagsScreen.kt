@@ -39,6 +39,7 @@ import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.CommonTopAppBar
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tags.model.Tag
+import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
 
 class HashTagsScreen: Screen {
@@ -48,6 +49,7 @@ class HashTagsScreen: Screen {
         Tags(
             datastoreModel = getScreenModel(),
             tagModel = getScreenModel(),
+            noteAndTagModel = getScreenModel(),
             mainModel = getScreenModel()
         )
     }
@@ -64,6 +66,7 @@ class HashTagsScreen: Screen {
     private fun Tags(
         datastoreModel: DataStoreScreenModel,
         tagModel: TagScreenModel,
+        noteAndTagModel: NoteAndTagScreenModel,
         mainModel: MainScreenModel
     ) {
         val keyboardManager = LocalFocusManager.current
@@ -87,7 +90,7 @@ class HashTagsScreen: Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = mainModel
+                    mainModel = mainModel
                 )
             },
             modifier = Modifier.navigationBarsPadding()
@@ -110,7 +113,7 @@ class HashTagsScreen: Screen {
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
                     item {
-                        HashTagLayout(tagModel = tagModel)
+                        HashTagLayout(tagModel, noteAndTagModel)
                     }
 
                     item {
