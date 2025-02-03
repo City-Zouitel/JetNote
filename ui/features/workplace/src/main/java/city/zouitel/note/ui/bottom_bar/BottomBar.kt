@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.rememberScreen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
+import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.links.ui.cacheLink
-import city.zouitel.logic.events.UiEvent
 import city.zouitel.note.model.Data
 import city.zouitel.note.providers.Options
 import city.zouitel.note.ui.DataScreenModel
@@ -64,7 +64,7 @@ internal fun BottomBar(
     linkModel: LinkScreenModel,
     imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
     workspaceModel: WorkplaceScreenModel,
-    priorityState: MutableState<String>
+    priorityState: MutableState<Int>
 ) {
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
@@ -124,38 +124,19 @@ internal fun BottomBar(
                     contentDescription = "Add/Edit",
                     modifier = Modifier.clickable {
                         sound.performSoundEffect(context, CommonConstants.KEY_STANDARD, isMute.value)
-
-                        if (isNew) {
-                            dataModel.sendUiEvent(
-                                UiEvent.Insert(
+                            dataModel.sendAction(
+                                Action.Insert(
                                     Data(
                                         uid = uid,
                                         title = titleState?.text.toString(),
                                         description = descriptionState?.text.toString(),
                                         priority = priorityState.value,
                                         date = dateState.value.toString(),
-                                        color = uiState.backgroundColor,
+                                        background = uiState.backgroundColor,
                                         textColor = uiState.textColor
                                     )
                                 )
                             )
-                        } else {
-                            dataModel.sendUiEvent(
-                                UiEvent.Update(
-                                    Data(
-                                        uid = uid,
-                                        title = titleState?.text.toString(),
-                                        description = descriptionState?.text.toString(),
-                                        priority = priorityState.value,
-                                        date = dateState.value.toString(),
-                                        removed = 0,
-                                        color = uiState.backgroundColor,
-                                        textColor = uiState.textColor
-                                    )
-                                )
-                            )
-                        }
-
                         linkModel.findUrlLink(descriptionState?.text?.toString())?.map {
                             cacheLink(it, uid)
                         }
