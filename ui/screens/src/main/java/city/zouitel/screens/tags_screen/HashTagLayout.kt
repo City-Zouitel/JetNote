@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.domain.utils.Action
@@ -27,11 +26,12 @@ import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.CROSS_CIRCLE_ICON
 import city.zouitel.systemDesign.CommonPopupTip
 import city.zouitel.tags.model.Tag
+import city.zouitel.tags.ui.NoteAndTagScreenModel
 import city.zouitel.tags.ui.TagScreenModel
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
-internal fun HashTagLayout(tagModel: TagScreenModel) {
+internal fun HashTagLayout(tagModel: TagScreenModel, noteAndTagModel: NoteAndTagScreenModel) {
     val observeAll by remember(tagModel, tagModel::observeAll).collectAsState()
     val uiState by remember(tagModel, tagModel::uiState).collectAsState()
 
@@ -57,7 +57,7 @@ internal fun HashTagLayout(tagModel: TagScreenModel) {
                     null,
                     modifier = Modifier.clickable {
                         tagModel.sendAction(Action.DeleteById(observeAll.getOrNull(index)?.id ?: 0))
-//                        context.apply { "Bug! In process.".asLongToast() }
+                        noteAndTagModel.sendAction(Action.DeleteById(observeAll.getOrNull(index)?.id ?: 0))
                     }
                 )
             },
@@ -85,12 +85,10 @@ internal fun HashTagLayout(tagModel: TagScreenModel) {
                         color = Color.Transparent,
                         modifier = Modifier.combinedClickable(
                             onLongClick = {
-
                                 tagModel.updateId(observeAll.getOrNull(index)?.id ?: 0)
                                     .updateLabel(observeAll.getOrNull(index)?.label ?: "")
                                     .updateColor(observeAll.getOrNull(index)?.color ?: 0)
                                 window.showAlignTop()
-
                             },
                         ) {
                             tagModel.updateId(observeAll.getOrNull(index)?.id ?: 0)
