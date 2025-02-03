@@ -46,7 +46,7 @@ class AppWidget: GlanceAppWidget(), Screen {
         val context = LocalContext.current
         val widgetModel = getScreenModel<WidgetScreenModel>()
         val mediaModel = getScreenModel<MediaScreenModel>()
-        val notes: List<WidgetNote>? by remember(widgetModel, widgetModel::allNotesById).collectAsState()
+        val notes: List<WidgetNote>? by remember(widgetModel, widgetModel::observeByDefault).collectAsState()
         val observeMedias by remember(mediaModel, mediaModel::observeAll).collectAsStateWithLifecycle()
 
         LazyColumn(
@@ -61,19 +61,19 @@ class AppWidget: GlanceAppWidget(), Screen {
                 Column {
                     Row(
                         modifier = GlanceModifier
-                            .background(ColorProvider(Color(entity.dataEntity.color)))
+                            .background(ColorProvider(Color(entity.dataEntity.background)))
                             .fillMaxWidth()
                             .cornerRadius(15.dp)
                     ) {
 //                        if (filteredMedias.isNotEmpty()) {
 //                            HorizontalPager(
 //                                state = pagerState,
-//                                modifier = GlanceModifier.background(ColorProvider(Color(entity.dataEntity.color))) as Modifier
+//                                modifier = GlanceModifier.background(ColorProvider(Color(entity.data.background))) as Modifier
 //                            ) { index ->
 //                                BadgedBox(
 //                                    modifier = GlanceModifier
 //                                        .fillMaxWidth()
-//                                        .background(Color(entity.dataEntity.color)) as Modifier,
+//                                        .background(Color(entity.data.background)) as Modifier,
 //                                    badge = {
 //                                        if (filteredMedias.count() > 1) {
 //                                            Badge(
