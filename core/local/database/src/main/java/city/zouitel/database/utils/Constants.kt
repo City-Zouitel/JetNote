@@ -1,9 +1,6 @@
 package city.zouitel.database.utils
 
 internal object Constants {
-
-    const val NOTES = "notes_table"
-
     const val DATABASE = "jet_note_database"
 
     const val ID = "identifier"
@@ -14,7 +11,7 @@ internal object Constants {
     const val PRIORITY = "priority"
     const val DATE = "date"
     const val UUID = "universally_unique_identifier"
-    const val REMOVED = "removed"
+    const val ARCHIVED = "archived"
     const val URL = "uniform_resource_locator"
     const val URI = "uniform_resource_identifier"
     const val PATH = "media_path"
@@ -32,8 +29,6 @@ internal object Constants {
     const val DEFAULT_NUM = "0"
     const val DEFAULT_BOOLEAN = "false"
     const val DEFAULT_TXT = ""
-
-    const val NON = "non_specified"
 
     const val PASS = "crypticpass.bin"
 }
