@@ -5,3 +5,8 @@ plugins {
 android {
     namespace = "city.zouitel.tile"
 }
+
+dependencies {
+    //Modules.
+    implementation(projects.ui.features.quickNote)
+}
