@@ -2,9 +2,9 @@ package city.zouitel.logic
 
 object Constants {
 
-    const val URG = "URG"
-    const val HIG = "HIG"
-    const val MED = "MED"
-    const val LOW = "LOW"
-    const val NON = "NON"
+    const val URG = 4
+    const val HIG = 3
+    const val MED = 2
+    const val LOW = 1
+    const val NON = 1
 }
