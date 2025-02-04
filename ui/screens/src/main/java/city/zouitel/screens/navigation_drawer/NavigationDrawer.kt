@@ -43,9 +43,9 @@ import city.zouitel.logic.sharApp
 import city.zouitel.screens.about_screen.AboutScreen
 import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.navigation_drawer.NoteScreens.ABOUT_SCREEN
+import city.zouitel.screens.navigation_drawer.NoteScreens.ARCHIVE_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.ASSISTANT_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.MAIN_SCREEN
-import city.zouitel.screens.navigation_drawer.NoteScreens.REMOVED_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.SETTINGS_SCREEN
 import city.zouitel.screens.navigation_drawer.NoteScreens.TAGS_SCREEN
 import city.zouitel.screens.settings_screen.SettingsScreen
@@ -54,12 +54,13 @@ import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants.APP_NAME
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonConstants.TITLE_SIZE
-import city.zouitel.systemDesign.CommonIcons
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonIcons.COMMENT_EXCLAMATION
+import city.zouitel.systemDesign.CommonIcons.CROSS_SMALL_ICON
+import city.zouitel.systemDesign.CommonIcons.HOME_BLANK_ICON
 import city.zouitel.systemDesign.CommonIcons.HOME_ICON
+import city.zouitel.systemDesign.CommonIcons.INBOX_ICON
 import city.zouitel.systemDesign.CommonIcons.INTERROGATION_ICON
-import city.zouitel.systemDesign.CommonIcons.REMOVE_ICON
 import city.zouitel.systemDesign.CommonIcons.SETTINGS_ICON
 import city.zouitel.systemDesign.CommonIcons.SHARE_ICON
 import city.zouitel.systemDesign.CommonIcons.SPARKLES_ICON
@@ -75,12 +76,14 @@ fun NavigationDrawer(
     tagModel: TagScreenModel,
     dataStoreModel: DataStoreScreenModel,
     drawerState: DrawerState,
-    homeScreen: MainScreenModel
+    mainModel: MainScreenModel
 ) {
     val context = LocalContext.current
     val navigator = LocalNavigator.currentOrThrow
     val observeAllTags by remember(tagModel, tagModel::observeAll).collectAsState()
     val isMute by remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
+    val homeScreen by remember(mainModel, mainModel::observeDefaults).collectAsState()
+    val archiveScreen by remember(mainModel, mainModel::observeArchives).collectAsState()
     val scope = rememberCoroutineScope()
     var maxLines by remember { mutableIntStateOf(3) }
     val currentScreen = remember { mutableStateOf(MAIN_SCREEN) }
@@ -110,7 +113,7 @@ fun NavigationDrawer(
             item {
                 NavigationDrawerItem(
                     label = { Text(text = MAIN_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
-                    icon = { Icon(painterResource(HOME_ICON), null) },
+                    icon = { Icon(painterResource(if(homeScreen.isEmpty()) HOME_BLANK_ICON else HOME_ICON), null) },
                     selected = currentScreen.value == MAIN_SCREEN,
                     onClick = {
                         scope.launch {
@@ -185,7 +188,7 @@ fun NavigationDrawer(
                                     label = {
                                         Icon(
                                             modifier = Modifier.size(15.dp),
-                                            painter = painterResource(CommonIcons.CROSS_ICON),
+                                            painter = painterResource(CROSS_SMALL_ICON),
                                             contentDescription = null,
                                             tint = MaterialTheme.colorScheme.onErrorContainer
                                         )
@@ -203,8 +206,8 @@ fun NavigationDrawer(
                         onClick = {
                             scope.launch {
                                 sound.performSoundEffect(context, KEY_CLICK, isMute)
-                                homeScreen.updateSearchTag(observeAllTags.getOrNull(index))
-                                homeScreen.updateSearchTitle(observeAllTags.getOrNull(index)?.label ?: "")
+                                mainModel.updateSearchTag(observeAllTags.getOrNull(index))
+                                mainModel.updateSearchTitle(observeAllTags.getOrNull(index)?.label ?: "")
                                 drawerState.close()
                             }
                         },
@@ -246,12 +249,12 @@ fun NavigationDrawer(
 
             item {
                 NavigationDrawerItem(
-                    label = { Text(text = REMOVED_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
-                    icon = { Icon(painterResource(REMOVE_ICON), null) },
-                    selected = currentScreen.value == REMOVED_SCREEN,
+                    label = { Text(text = ARCHIVE_SCREEN.screen, fontSize = TITLE_SIZE.sp) },
+                    icon = { Icon(painterResource(INBOX_ICON), null) },
+                    selected = currentScreen.value == ARCHIVE_SCREEN,
                     onClick = {
                         scope.launch {
-                            currentScreen.value = REMOVED_SCREEN
+                            currentScreen.value = ARCHIVE_SCREEN
                             navigator.push(removedScreen)
                             drawerState.close()
                         }
