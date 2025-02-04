@@ -46,7 +46,7 @@ class AppWidget: GlanceAppWidget(), Screen {
         val context = LocalContext.current
         val widgetModel = getScreenModel<WidgetScreenModel>()
         val mediaModel = getScreenModel<MediaScreenModel>()
-        val notes: List<WidgetNote>? by remember(widgetModel, widgetModel::observeByDefault).collectAsState()
+        val notes: List<WidgetNote>? by remember(widgetModel, widgetModel::allNotesById).collectAsState()
         val observeMedias by remember(mediaModel, mediaModel::observeAll).collectAsStateWithLifecycle()
 
         LazyColumn(
@@ -55,13 +55,13 @@ class AppWidget: GlanceAppWidget(), Screen {
             items(
                 items = notes ?: emptyList()
             ) { entity ->
-                val filteredMedias = observeMedias.filter { it.uid == entity.dataEntity.uid }
+                val filteredMedias = observeMedias.filter { it.uid == entity.data.uid }
                 val pagerState = rememberPagerState { filteredMedias.size }
 
                 Column {
                     Row(
                         modifier = GlanceModifier
-                            .background(ColorProvider(Color(entity.dataEntity.background)))
+                            .background(ColorProvider(Color(entity.data.background)))
                             .fillMaxWidth()
                             .cornerRadius(15.dp)
                     ) {
@@ -107,19 +107,19 @@ class AppWidget: GlanceAppWidget(), Screen {
 
                         Column {
                             Text(
-                                text = entity.dataEntity.title ?: "",
+                                text = entity.data.title ?: "",
                                 style = androidx.glance.text.TextStyle(
                                     fontSize = 19.sp,
-                                    color = ColorProvider(Color(entity.dataEntity.textColor))
+                                    color = ColorProvider(Color(entity.data.textColor))
                                 ),
                                 modifier = GlanceModifier.padding(3.dp)
                             )
 
                             Text(
-                                text = entity.dataEntity.description ?: "",
+                                text = entity.data.description ?: "",
                                 style = androidx.glance.text.TextStyle(
                                     fontSize = 15.sp,
-                                    color = ColorProvider(Color(entity.dataEntity.textColor))
+                                    color = ColorProvider(Color(entity.data.textColor))
                                 ),
                                 modifier = GlanceModifier
                                     .padding(
