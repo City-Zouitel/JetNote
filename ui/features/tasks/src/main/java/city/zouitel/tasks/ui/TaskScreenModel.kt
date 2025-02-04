@@ -49,7 +49,6 @@ class TaskScreenModel(
         when(act) {
             is Action.Insert<*> -> withAsync { insert(mapper.toDomain(act.data as Task)) }
             is Action.DeleteById -> withAsync { deleteById(act.id as Long) }
-            is Action.DeleteByUid -> withAsync { deleteByUid(act.uid) }
             else -> throw Exception("Action is not implemented $act")
         }
     }
