@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -39,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.assistant.model.Message
+import city.zouitel.systemDesign.CommonIcons.WIFI_SLASH_ICON
 import dev.jeziellago.compose.markdowntext.MarkdownText
 
 class AssistantScreen: Screen {
@@ -143,6 +146,9 @@ class AssistantScreen: Screen {
                     value = textState,
                     enabled = connectivity,
                     onValueChange = { textState = it },
+                    trailingIcon = {
+                        Icon(painterResource(WIFI_SLASH_ICON), null)
+                    },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                     keyboardActions = KeyboardActions(onSend = {
                         viewModel.insertMessage(Message(isRequest = true, prompt = textState))
