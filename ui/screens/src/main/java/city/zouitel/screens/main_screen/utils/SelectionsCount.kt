@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import city.zouitel.screens.main_screen.MainScreenModel
-import city.zouitel.systemDesign.CommonIcons
+import city.zouitel.systemDesign.CommonIcons.CROSS_SMALL_ICON
 import city.zouitel.systemDesign.CommonPopupTip
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -26,7 +26,7 @@ internal fun SelectionsCount(
 
     CommonPopupTip(message = "Cancel") {
         Icon(
-            painter = painterResource(id = CommonIcons.CROSS_ICON),
+            painter = painterResource(CROSS_SMALL_ICON),
             contentDescription = null,
             modifier = Modifier.combinedClickable(
                 onLongClick = {
