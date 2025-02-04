@@ -88,4 +88,5 @@ object CommonIcons {
     val INBOX_FULL_ICON = R.drawable.inbox_full_24
     val HOME_BLANK_ICON = R.drawable.house_blank_24
     val CROSS_SMALL_ICON = R.drawable.cross_small_24
+    val WIFI_SLASH_ICON = R.drawable.wifi_slash_24
 }
