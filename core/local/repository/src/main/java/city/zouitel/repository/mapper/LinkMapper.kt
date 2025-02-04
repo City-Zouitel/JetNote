@@ -8,7 +8,6 @@ import city.zouitel.domain.model.Link as OutLink
  * [OutLink] (domain layer representation) objects.
  */
 class LinkMapper {
-
     /**
      * Converts a list of [Link] entities to a list of corresponding domain [Link] models.
      *
