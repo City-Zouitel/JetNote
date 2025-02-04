@@ -13,8 +13,8 @@ class NoteMapper(
 
     private fun fromDomain(data: OutNote): Note = with(data){
         Note(
-            dataEntity = dataMapper.fromDomain(dataEntity),
-            tagEntities = tagEntities.map { tagMapper.fromDomain(it) },
+            dataEntity = dataMapper.fromDomain(this.data),
+            tagEntities = tags.map { tagMapper.fromDomain(it) },
         )
     }
 }
