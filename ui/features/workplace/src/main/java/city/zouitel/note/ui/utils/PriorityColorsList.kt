@@ -2,10 +2,10 @@ package city.zouitel.note.ui.utils
 
 import androidx.compose.ui.graphics.Color
 
-enum class PriorityColorsList(val priority: String, val color: Color) {
-    NON("NON", Color(0xffc0c0c0)),
-    LOW("LOW", Color(0xff32cd32)),
-    MED("MED", Color(0xffffef00)),
-    HIG("HIG", Color(0xffffa500)),
-    URG("URG", Color(0xffff2800));
+enum class PriorityColorsList(val priority: Int, val color: Color) {
+    NON(0, Color(0xffc0c0c0)),
+    LOW(1, Color(0xff32cd32)),
+    MED(2, Color(0xffffef00)),
+    HIG(3, Color(0xffffa500)),
+    URG(4, Color(0xffff2800));
 }
