@@ -1,15 +1,18 @@
 package city.zouitel.note.model
 
 import androidx.annotation.Keep
+import city.zouitel.domain.utils.Constants.DEFAULT_BOOLEAN
+import city.zouitel.domain.utils.Constants.DEFAULT_INT
+import city.zouitel.domain.utils.Constants.DEFAULT_TXT
 
 @Keep
 data class Data(
-    var uid: String = "",
-    var title: String = "",
-    var description: String = "",
-    var priority: Int = 0,
-    var background: Int = 0,
-    var textColor: Int = 0x000000,
-    var date: String = "",
-    var archived: Boolean = false
+    var uid: String = DEFAULT_TXT,
+    var title: String = DEFAULT_TXT,
+    var description: String = DEFAULT_TXT,
+    var priority: Int = DEFAULT_INT,
+    var background: Int = DEFAULT_INT,
+    var textColor: Int = DEFAULT_INT,
+    var date: String = DEFAULT_TXT,
+    var archived: Boolean = DEFAULT_BOOLEAN
 )
