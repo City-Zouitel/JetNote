@@ -11,6 +11,6 @@ data class Options(
     val uid: String,
     val titleState: TextFieldState?,
     val descriptionState: TextFieldState?,
-    val priorityState: MutableState<String>,
+    val priorityState: MutableState<Int>,
     val imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>
 ): ScreenProvider
