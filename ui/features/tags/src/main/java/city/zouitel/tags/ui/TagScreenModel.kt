@@ -18,7 +18,6 @@ import city.zouitel.tags.model.Tag as InTag
 class TagScreenModel(
     private val _observeAll_: TagUseCase.ObserveAll,
     private val insert: TagUseCase.Insert,
-    private val deleteById: TagUseCase.DeleteById,
     private val mapper: TagMapper
 ): ScreenModel {
 
@@ -38,7 +37,6 @@ class TagScreenModel(
     fun sendAction(act: Action) {
         when (act) {
             is Action.Insert<*> -> withAsync { insert(mapper.toDomain(act.data as Tag)) }
-            is Action.DeleteById -> withAsync { deleteById(act.id as Long) }
             else -> throw Exception("Not implemented")
         }
     }
