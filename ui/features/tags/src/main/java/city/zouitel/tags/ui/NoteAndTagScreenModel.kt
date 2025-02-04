@@ -10,6 +10,7 @@ import city.zouitel.tags.model.NoteAndTag
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+@Suppress("DeferredResultUnused")
 class NoteAndTagScreenModel(
     private val _observeAll_: NoteAndTagUseCase.ObserveAll,
     private val insert: NoteAndTagUseCase.Insert,
