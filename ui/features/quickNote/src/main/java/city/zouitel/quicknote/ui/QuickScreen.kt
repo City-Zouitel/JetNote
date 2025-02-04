@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,7 +49,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.logic.events.UiEvent
 import city.zouitel.quicknote.model.QuickData
-import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
 import java.util.UUID
 
@@ -58,15 +58,14 @@ data class QuickScreen(val action: () -> (Unit)): Screen {
         val dataModel = getScreenModel<QuickDataScreenModel>()
         val linkModel = getScreenModel<LinkScreenModel>()
 
-        Quick(dataModel, linkModel, action = action)
+        Quick(dataModel, action = action)
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @Composable
     fun Quick(
         dataModel: QuickDataScreenModel,
-        linkModel: LinkScreenModel,
-        action:() -> (Unit)
+        action: () -> Unit
     ) {
         val uid = UUID.randomUUID().toString()
 
@@ -75,11 +74,9 @@ data class QuickScreen(val action: () -> (Unit)): Screen {
         val backgroundColorState = rememberSaveable { mutableIntStateOf(backgroundColor) }
         val textColor = contentColorFor(MaterialTheme.colorScheme.surface).toArgb()
         val textColorState = rememberSaveable { mutableIntStateOf(textColor) }
-        val priorityState = remember { mutableStateOf(CommonConstants.NON) }
+        val priorityState = remember { mutableStateOf(4) }
 
         val focusRequester = FocusRequester()
-
-//        val observerLinks by remember(linkModel, linkModel::observeAll).collectAsState()
 
         LaunchedEffect(Unit) {
             kotlin.runCatching {
@@ -137,6 +134,11 @@ data class QuickScreen(val action: () -> (Unit)): Screen {
                                 keyboardActions = KeyboardActions(
                                     onDone = {
                                     }
+                                ),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = Color.Transparent,
+                                    unfocusedBorderColor = Color.Transparent,
+                                    cursorColor = Color(textColorState.intValue)
                                 )
                             )
                         }
@@ -174,7 +176,7 @@ data class QuickScreen(val action: () -> (Unit)): Screen {
                                             QuickData(
                                                 description = descriptionState.value,
                                                 uid = uid,
-                                                color = backgroundColorState.intValue,
+                                                background = backgroundColorState.intValue,
                                                 textColor = textColorState.intValue,
                                                 priority = priorityState.value
                                             )
