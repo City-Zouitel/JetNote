@@ -98,7 +98,7 @@ class SettingsScreen: Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = mainScreen
+                    mainModel = mainScreen
                 )
             },
             modifier = Modifier.navigationBarsPadding()
@@ -126,7 +126,7 @@ class SettingsScreen: Screen {
                     item {
                         PreferenceItem(
                             title = "Dark Mode",
-                            description = "This mode is a system-wide setting that shifts the color scheme of your Android app's UI to darker colors.\nIt's designed to Reduce eye strain, improve accessibility, save battery life, and enhance user experience.",
+                            description = "This mode is a system-wide setting that shifts the background scheme of your Android app's UI to darker colors.\nIt's designed to Reduce eye strain, improve accessibility, save battery life, and enhance user experience.",
                             checked = themeState == DARK,
                             onChecked = {
                                 sound.performSoundEffect(context, KEY_CLICK, isMute)
