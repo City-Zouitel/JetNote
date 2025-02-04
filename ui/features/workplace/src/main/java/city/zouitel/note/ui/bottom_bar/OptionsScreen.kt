@@ -25,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -66,7 +65,7 @@ data class OptionsScreen(
     val uid: String,
     val titleState: TextFieldState?,
     val descriptionState: TextFieldState?,
-    val priorityState: MutableState<String>,
+    val priorityState: MutableState<Int>,
     val imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>
 ): Screen {
     @Composable
@@ -269,7 +268,7 @@ data class OptionsScreen(
     }
 
     @Composable
-    private fun PriorityRow(onClick: (String) -> Unit) {
+    private fun PriorityRow(onClick: (Int) -> Unit) {
         val priorities = arrayOf(NON, LOW, MED, HIG, URG)
 
         LazyRow(modifier = Modifier.animateContentSize().padding(10.dp)) {
@@ -287,7 +286,7 @@ data class OptionsScreen(
                             ),
                         ) {
                             Text(
-                                text = priority.priority,
+                                text = priority.name,
                                 fontSize = 14.sp,
                                 color = MaterialTheme.colorScheme.background
                             )
