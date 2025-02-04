@@ -46,6 +46,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import city.zouitel.domain.utils.Action
 import city.zouitel.systemDesign.CommonIcons
+import city.zouitel.systemDesign.CommonIcons.CROSS_SMALL_ICON
 import city.zouitel.systemDesign.CommonIcons.FULL_LABEL_ICON
 import city.zouitel.systemDesign.CommonIcons.OUTLINE_LABEL_ICON
 import city.zouitel.systemDesign.CommonTextField
@@ -135,7 +136,7 @@ data class TagsScreen(val uid: String): Screen {
                                     label = {
                                         Icon(
                                             modifier = Modifier.size(15.dp),
-                                            painter = painterResource(CommonIcons.CROSS_ICON),
+                                            painter = painterResource(CROSS_SMALL_ICON),
                                             contentDescription = null,
                                             tint = MaterialTheme.colorScheme.onErrorContainer
                                         )
