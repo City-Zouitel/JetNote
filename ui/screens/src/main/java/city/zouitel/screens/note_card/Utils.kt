@@ -27,7 +27,7 @@ internal val DrawScope.prioritizedNotePath: (Data) -> Unit get() = {
     ) {
 
         drawRoundRect(
-            color = Color(it.color),
+            color = Color(it.background),
             size = size,
             cornerRadius = CornerRadius(15.dp.toPx())
         )
@@ -55,14 +55,14 @@ internal val DrawScope.normalNotePath: (Data) -> Unit get() = {
         }
     ) {
         drawRoundRect(
-            color = Color(it.color),
+            color = Color(it.background),
             size = size,
             cornerRadius = CornerRadius(15.dp.toPx())
         )
     }
 }
 
-private val getColorOfPriority: (color: String) -> Int = {
+private val getColorOfPriority: (color: Int) -> Int = {
     when (it) {
         URG -> 0xffff2800.toInt()
         HIG -> 0xffffa500.toInt()
