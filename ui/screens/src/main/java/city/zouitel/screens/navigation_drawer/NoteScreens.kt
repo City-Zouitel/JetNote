@@ -5,6 +5,6 @@ enum class NoteScreens(val screen: String) {
     ASSISTANT_SCREEN("Assistant"),
     TAGS_SCREEN("Tags"),
     SETTINGS_SCREEN("Settings"),
-    REMOVED_SCREEN("Removed"),
+    ARCHIVE_SCREEN("Archive"),
     ABOUT_SCREEN("About")
 }
