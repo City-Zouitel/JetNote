@@ -12,7 +12,6 @@ import city.zouitel.database.datasourceImpl.NoteDataSourceImpl
 import city.zouitel.database.datasourceImpl.ReminderDataSourceImpl
 import city.zouitel.database.datasourceImpl.TagDataSourceImpl
 import city.zouitel.database.datasourceImpl.TaskDataSourceImpl
-import city.zouitel.database.datasourceImpl.WidgetDataSourceImpl
 import city.zouitel.database.mapper.AudioMapper
 import city.zouitel.database.mapper.DataMapper
 import city.zouitel.database.mapper.LinkMapper
@@ -22,7 +21,6 @@ import city.zouitel.database.mapper.NoteMapper
 import city.zouitel.database.mapper.ReminderMapper
 import city.zouitel.database.mapper.TagMapper
 import city.zouitel.database.mapper.TaskMapper
-import city.zouitel.database.mapper.WidgetMapper
 import city.zouitel.database.utils.Constants
 import city.zouitel.repository.datasource.AudioDataSource
 import city.zouitel.repository.datasource.DataDataSource
@@ -33,7 +31,6 @@ import city.zouitel.repository.datasource.NoteDataSource
 import city.zouitel.repository.datasource.ReminderDataSource
 import city.zouitel.repository.datasource.TagDataSource
 import city.zouitel.repository.datasource.TaskDataSource
-import city.zouitel.repository.datasource.WidgetDataSource
 import net.sqlcipher.database.SupportFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
@@ -42,7 +39,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val databaseDIModule = module {
-
     //DataSource.
     singleOf(::DataDataSourceImpl) bind DataDataSource::class
     singleOf(::NoteDataSourceImpl) bind NoteDataSource::class
@@ -51,7 +47,6 @@ val databaseDIModule = module {
     singleOf(::NoteAndTagDataSourceImpl) bind NoteAndTagDataSource::class
     singleOf(::TaskDataSourceImpl) bind TaskDataSource::class
     singleOf(::AudioDataSourceImpl) bind AudioDataSource::class
-    singleOf(::WidgetDataSourceImpl) bind WidgetDataSource::class
     singleOf(::MediaDataSourceImpl) bind MediaDataSource::class
     singleOf(::ReminderDataSourceImpl) bind ReminderDataSource::class
 
@@ -60,7 +55,6 @@ val databaseDIModule = module {
     single { get<Database>().getLabelDao() }
     single { get<Database>().getNoteAndLabelDao() }
     single { get<Database>().getEntityDao() }
-    single { get<Database>().getWidgetEntityDao() }
     single { get<Database>().getTaskDao() }
     single { get<Database>().getLinkDao() }
     single { get<Database>().getAudioDao() }
@@ -78,9 +72,6 @@ val databaseDIModule = module {
     factoryOf(::ReminderMapper)
     factory {
         NoteMapper(get(), get())
-    }
-    factory {
-        WidgetMapper(get(), get())
     }
 
     //Database.
