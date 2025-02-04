@@ -65,11 +65,9 @@ import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.note.model.Note
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.screens.main_screen.MainScreenModel
-import city.zouitel.screens.main_screen.OptionsScreen
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonConstants.LIST
-import city.zouitel.systemDesign.CommonConstants.NON
 import city.zouitel.systemDesign.CommonIcons.ANGLE_DOWN_ICON
 import city.zouitel.systemDesign.CommonIcons.ANGLE_UP_ICON
 import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
@@ -78,7 +76,6 @@ import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import kotlinx.coroutines.launch
 
 @Composable
 fun NoteCard(
@@ -185,16 +182,16 @@ private fun Card(
                             isNew = false,
                             title = note.title,
                             description = note.description,
-                            backgroundColor = note.color,
+                            backgroundColor = note.background,
                             textColor = note.textColor,
                             priority = note.priority
                         )
                     )
                 } else if (!isHomeScreen && !uiState.isSelection) {
-                    scope.launch {
-                        mainModel.updateSelectedNote(note)
-                        navBottomSheet.show(OptionsScreen())
-                    }
+//                    scope.launch {
+//                        mainModel.updateSelectedNote(note.uid)
+//                        navBottomSheet.show(OptionsScreen())
+//                    }
                 } else {
                     when {
                         !uiState.selectedNotes.contains(note) -> uiState.selectedNotes.add(note)
@@ -205,7 +202,7 @@ private fun Card(
                     mainModel.updateSelection(false)
                 }
             }.drawBehind {
-                if (note.priority.equals(NON, true)) {
+                if (note.priority == 0) {
                     normalNotePath(note)
                 } else {
                     prioritizedNotePath(note)
@@ -231,12 +228,12 @@ private fun Card(
         if (filteredMedia.isNotEmpty()) {
             HorizontalPager(
                 state = mediaCount,
-                modifier = Modifier.background(Color(note.color))
+                modifier = Modifier.background(Color(note.background))
             ) { index ->
                 BadgedBox(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(note.color)),
+                        .background(Color(note.background)),
                     badge = {
                         if (filteredMedia.count() > 1) {
                             Badge(
