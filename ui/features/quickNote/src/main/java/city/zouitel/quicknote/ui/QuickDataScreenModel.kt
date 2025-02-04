@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class QuickDataScreenModel(
-    private val add: DataUseCase.AddData,
+    private val add: DataUseCase.Insert,
     private val mapper: QuickDataMapper
 ): ScreenModel, UiEventHandler<QuickData> {
 
