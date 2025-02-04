@@ -95,7 +95,6 @@ class LinkScreenModel(
     fun sendAction(act: Action) {
         when(act) {
             is Action.DeleteById -> withAsync { deleteById(act.id as Int) }
-            is Action.DeleteByUid -> withAsync { deleteByUid(act.uid) }
             else -> throw NotImplementedError("Action not implemented: $act")
         }
     }
