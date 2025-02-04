@@ -19,7 +19,7 @@ val workplaceDIModule = module {
     factoryOf(::DataMapper)
     factoryOf(::WorkplaceScreenModel)
     factory {
-        DataScreenModel(get(), get(), get(), get(), get())
+        DataScreenModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 }
 
