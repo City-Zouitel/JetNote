@@ -49,9 +49,9 @@ import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
+import city.zouitel.screens.main_screen.utils.ArchiveSelectionTopAppBar
 import city.zouitel.screens.main_screen.utils.HomeSelectionTopAppBar
 import city.zouitel.screens.main_screen.utils.MainTopAppBar
-import city.zouitel.screens.main_screen.utils.ArchiveSelectionTopAppBar
 import city.zouitel.screens.main_screen.utils.undoSnackbar
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.note_card.NoteCard
@@ -137,12 +137,12 @@ data class MainScreen(val isHome: Boolean = true): Screen {
             mainModel.observeArchives.collectAsState()
         }
 
-        val observerRemovedNotes = remember(mainModel, mainModel::observeArchives).collectAsState()
+        val observerArchivedNotes = remember(mainModel, mainModel::observeArchives).collectAsState()
 
         val filteredObserverLocalNotes by remember(observerNotes.value) {
             derivedStateOf {
                 observerNotes.value.filter {
-                    it.dataEntity.title?.contains(uiState.searchTitle, true) != false || it.tagEntities.contains(uiState.searchTag)
+                    it.data.title.contains(uiState.searchTitle, true) || it.tags.contains(uiState.searchTag)
                 }
             }
         }
@@ -173,7 +173,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
             dataModule = dataModel,
             scaffoldState = scaffoldState,
             scope = coroutineScope,
-            removedNotesState = observerRemovedNotes
+            archivedNotesState = observerArchivedNotes
         )
 
         ModalNavigationDrawer(
@@ -261,7 +261,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                         ) {
                             items(
                                 items = filteredObserverLocalNotes,
-                                key = { it.dataEntity.uid }
+                                key = { it.data.uid }
                             ) { entity ->
                                 NoteCard(
                                     dataStoreModel = datastoreModel,
@@ -273,9 +273,9 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                                     noteEntity = entity,
                                     mediaModel = mediaModel,
                                 ) {
-                                    dataModel.sendAction(Action.Archive(it.dataEntity.uid))
+                                    dataModel.sendAction(Action.Archive(it.data.uid))
                                     // to.do cancel the alarm manager reminder.
-                                    undo.invoke(entity.dataEntity)
+                                    undo.invoke(entity.data)
                                 }
                             }
                         }
@@ -289,7 +289,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                         ) {
                             items(
                                 items = filteredObserverLocalNotes,
-                                key = { it.dataEntity.uid }
+                                key = { it.data.uid }
                             ) { entity ->
                                 NoteCard(
                                     dataStoreModel = datastoreModel,
