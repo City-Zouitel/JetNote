@@ -21,7 +21,7 @@ class WorkplaceScreenModel: ScreenModel {
             WorkplaceUiState()
         )
 
-    fun updatePriority(priority: String): WorkplaceScreenModel {
+    fun updatePriority(priority: Int): WorkplaceScreenModel {
         screenModelScope.launch {
             _uiState.value = _uiState.value.copy(priority = priority)
         }
