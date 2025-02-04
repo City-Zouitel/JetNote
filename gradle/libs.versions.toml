@@ -4,8 +4,8 @@ kotlin = "2.0.0"
 compileSdk-version = "35"
 minSdk-version = "26"
 targetSdk-version = "35"
-code-version = "750"
-name-version = "7.5.0"
+code-version = "760"
+name-version = "7.6.0"
 compose-version = "1.5.14"
 
 #Android.
@@ -21,13 +21,13 @@ workmanager = "2.10.0"
 biometric = "1.2.0-alpha05"
 
 #Compose.
-activity-compose = "1.9.3"
-compose-bom = "2024.12.01"
+activity-compose = "1.10.0"
+compose-bom = "2025.01.01"
 appcompat = "1.7.0"
 material = "1.12.0"
 compose-constraintlayout = "1.1.0"
-foundation = "1.7.6"
-ui = "1.7.6"
+foundation = "1.7.7"
+ui = "1.7.7"
 
 #Plugins.
 ksp = "2.0.21-1.0.25"
