@@ -1,15 +1,16 @@
 package city.zouitel.quicknote.model
 
-import city.zouitel.systemDesign.CommonConstants.NON
+import city.zouitel.domain.utils.Constants.DEFAULT_BOOLEAN
+import city.zouitel.domain.utils.Constants.DEFAULT_INT
+import city.zouitel.domain.utils.Constants.DEFAULT_TXT
 
 data class QuickData(
-    var uid: String = "",
-    var title: String? = null,
-    var description: String? = null,
-    var priority: String = NON,
-    var color: Int = 0,
-    var textColor: Int = 0x000000,
-    var date: String = "",
-    var removed: Int = 0,
-    var reminding: Long = 0L,
+    var uid: String = DEFAULT_TXT,
+    var title: String = DEFAULT_TXT,
+    var description: String = DEFAULT_TXT,
+    var priority: Int = DEFAULT_INT,
+    var background: Int = DEFAULT_INT,
+    var textColor: Int = DEFAULT_INT,
+    var date: String = DEFAULT_TXT,
+    var archived: Boolean = DEFAULT_BOOLEAN
 )
