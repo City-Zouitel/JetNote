@@ -45,14 +45,14 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import city.zouitel.audio.ui.component.AudioScreenModel
 import city.zouitel.domain.provider.SharedScreen
+import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.logic.events.UiEvent
 import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.screens.main_screen.utils.HomeSelectionTopAppBar
 import city.zouitel.screens.main_screen.utils.MainTopAppBar
-import city.zouitel.screens.main_screen.utils.RemovedSelectionTopAppBar
-import city.zouitel.screens.main_screen.utils.UndoSnackbar
+import city.zouitel.screens.main_screen.utils.ArchiveSelectionTopAppBar
+import city.zouitel.screens.main_screen.utils.undoSnackbar
 import city.zouitel.screens.navigation_drawer.NavigationDrawer
 import city.zouitel.screens.note_card.NoteCard
 import city.zouitel.screens.utils.sound
@@ -126,18 +126,18 @@ data class MainScreen(val isHome: Boolean = true): Screen {
             when (
                 remember(datastoreModel, datastoreModel::getOrdination).collectAsState().value
             ) {
-                NAME_ORDER -> mainModel.allNotesByName.collectAsState()
-                OLDEST_ORDER -> mainModel.allNotesByOldest.collectAsState()
-                NEWEST_ORDER -> mainModel.allNotesByNewest.collectAsState()
-                PRIORITY_ORDER -> mainModel.allNotesByPriority.collectAsState()
-                REMINDING_ORDER -> mainModel.allRemindingNotes.collectAsState()
-                else -> mainModel.allNotesById.collectAsState()
+                NAME_ORDER -> mainModel.observeNames.collectAsState()
+                OLDEST_ORDER -> mainModel.observeOldest.collectAsState()
+                NEWEST_ORDER -> mainModel.observeNewest.collectAsState()
+                PRIORITY_ORDER -> mainModel.observePriorities.collectAsState()
+                REMINDING_ORDER -> mainModel.observeArchives.collectAsState()
+                else -> mainModel.observeDefaults.collectAsState()
             }
         } else {
-            mainModel.allTrashedNotes.collectAsState()
+            mainModel.observeArchives.collectAsState()
         }
 
-        val observerRemovedNotes = remember(mainModel, mainModel::allTrashedNotes).collectAsState()
+        val observerRemovedNotes = remember(mainModel, mainModel::observeArchives).collectAsState()
 
         val filteredObserverLocalNotes by remember(observerNotes.value) {
             derivedStateOf {
@@ -164,12 +164,12 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                 null,
                 MaterialTheme.colorScheme.surface.toArgb(),
                 MaterialTheme.colorScheme.onSurface.toArgb(),
-                "NON"
+                0
             )
         )
 
         //undo snack-bar.
-        val undo = UndoSnackbar(
+        val undo = undoSnackbar(
             dataModule = dataModel,
             scaffoldState = scaffoldState,
             scope = coroutineScope,
@@ -183,7 +183,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                     dataStoreModel = datastoreModel,
                     tagModel = tagModel,
                     drawerState = drawerState,
-                    homeScreen = mainModel
+                    mainModel = mainModel
                 )
             }
         ) {
@@ -209,7 +209,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                         }
 
                         !uiState.isHomeScreen && uiState.isSelection -> {
-                            RemovedSelectionTopAppBar(
+                            ArchiveSelectionTopAppBar(
                                 datastoreModel = datastoreModel,
                                 mainModel = mainModel,
                                 dataModel = dataModel
@@ -273,7 +273,7 @@ data class MainScreen(val isHome: Boolean = true): Screen {
                                     noteEntity = entity,
                                     mediaModel = mediaModel,
                                 ) {
-                                    dataModel.sendUiEvent(UiEvent.Update(it.dataEntity.copy(removed = 1)))
+                                    dataModel.sendAction(Action.Archive(it.dataEntity.uid))
                                     // to.do cancel the alarm manager reminder.
                                     undo.invoke(entity.dataEntity)
                                 }
