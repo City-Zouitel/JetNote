@@ -7,14 +7,14 @@ import city.zouitel.domain.model.Note as OutNote
 
 class WidgetMapper(
     private val dataMapper: DataMapper,
-    private val tagMapper: TagMapper,
+    private val tagMapper: TagMapper
 ) {
     fun fromDomain(notes: List<OutNote>) = notes.map { fromDomain(it) }
 
-    fun fromDomain(data: OutNote): WidgetNote = with(data){
+    private fun fromDomain(note: OutNote): WidgetNote = with(note){
         WidgetNote(
-            dataEntity = dataMapper.fromDomain(dataEntity),
-            tagEntities = tagEntities.map { tagMapper.fromDomain(it) },
+            data = dataMapper.fromDomain(this@with.data),
+            tags = tags.map { tagMapper.fromDomain(it) }
         )
     }
 }
