@@ -1,5 +1,6 @@
 package city.zouitel.applock
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@SuppressLint("ContextCastToActivity")
 @Composable
 fun LockModeHandler(datastoreModel: DataStoreScreenModel) {
     val lifecycleOwner = LocalLifecycleOwner.current
