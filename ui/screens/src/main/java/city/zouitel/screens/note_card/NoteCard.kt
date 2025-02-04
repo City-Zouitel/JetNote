@@ -135,8 +135,8 @@ private fun Card(
     mainModel: MainScreenModel,
     mediaModel: MediaScreenModel,
 ) {
-    val note = noteEntity.dataEntity
-    val labels = noteEntity.tagEntities
+    val note = noteEntity.data
+    val labels = noteEntity.tags
 
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
