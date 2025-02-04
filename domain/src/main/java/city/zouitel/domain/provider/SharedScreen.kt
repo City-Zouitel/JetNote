@@ -11,7 +11,7 @@ sealed class SharedScreen: ScreenProvider {
         val description: String?,
         val backgroundColor: Int,
         val textColor: Int,
-        val priority: String
+        val priority: Int
     ): SharedScreen()
     data object Assistant: SharedScreen()
     data class AudioList(val uid: String): SharedScreen()
