@@ -23,6 +23,7 @@ import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
+import city.zouitel.systemDesign.CommonIcons.CROSS_SMALL_ICON
 import city.zouitel.systemDesign.CommonTextField
 import city.zouitel.systemDesign.DataStoreScreenModel
 
@@ -54,7 +55,7 @@ internal fun SearchField(
             onValueChange = { mainModel.updateSearchTitle(it) },
             receiver = {},
             modifier = Modifier.fillMaxWidth(.9f),
-            placeholder = if (uiState.isHomeScreen) "Notes.." else "Removes..",
+            placeholder = if (uiState.isHomeScreen) "Notes.." else "Archives..",
             imeAction = ImeAction.Search,
             keyboardActions = KeyboardActions {
                 keyboardController?.hide()
@@ -63,7 +64,7 @@ internal fun SearchField(
         )
         if (uiState.searchTitle.isNotEmpty() || uiState.searchTag != null) {
             Icon(
-                painter = painterResource(id = CommonIcons.CROSS_ICON),
+                painter = painterResource(CROSS_SMALL_ICON),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(top = 20.dp)
