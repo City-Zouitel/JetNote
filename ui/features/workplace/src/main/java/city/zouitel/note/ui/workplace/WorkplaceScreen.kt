@@ -95,7 +95,7 @@ data class WorkplaceScreen(
     val description: String? = null,
     val backgroundColor: Int = 0,
     val textColor: Int = 0,
-    val priority: String = "NON"
+    val priority: Int = 0
 ): Screen {
 
     @Composable
