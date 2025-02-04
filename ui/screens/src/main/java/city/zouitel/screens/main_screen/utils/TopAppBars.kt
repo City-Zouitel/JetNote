@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import city.zouitel.domain.utils.Action
-import city.zouitel.logic.events.UiEvent
 import city.zouitel.logic.sharNote
 import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
@@ -30,6 +29,9 @@ import city.zouitel.screens.main_screen.MainScreenModel
 import city.zouitel.screens.utils.sound
 import city.zouitel.systemDesign.CommonConstants
 import city.zouitel.systemDesign.CommonIcons
+import city.zouitel.systemDesign.CommonIcons.ERASER_ICON
+import city.zouitel.systemDesign.CommonIcons.INBOX_IN_ICON
+import city.zouitel.systemDesign.CommonIcons.INBOX_OUT_ICON
 import city.zouitel.systemDesign.CommonPopupTip
 import city.zouitel.systemDesign.CommonRow
 import city.zouitel.systemDesign.DataStoreScreenModel
@@ -49,7 +51,7 @@ internal fun MainTopAppBar(
     datastoreModel: DataStoreScreenModel,
     mainModel: MainScreenModel,
     scrollBehavior: TopAppBarScrollBehavior,
-    drawerState: DrawerState,
+    drawerState: DrawerState
 ) {
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
@@ -57,19 +59,14 @@ internal fun MainTopAppBar(
         navigationIcon = {
             Row {
                 AnimatedVisibility(uiState.searchTitle.isEmpty() && uiState.searchTag == null) {
-                    CommonRow(
-                        Modifier.padding(start = 10.dp, end = 10.dp),
-                    ) {
+                    CommonRow(Modifier.padding(start = 10.dp, end = 10.dp)) {
                         Open_Drawer(datastoreModel, drawerState)
                     }
                 }
             }
         },
         title = {
-            SearchField(
-                dataStoreModel = datastoreModel,
-                mainModel = mainModel
-            )
+            SearchField(datastoreModel, mainModel)
         },
         actions = {
             AnimatedVisibility(uiState.searchTitle.isEmpty() && uiState.searchTag == null) {
@@ -85,7 +82,9 @@ internal fun MainTopAppBar(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class,
     ExperimentalUuidApi::class
 )
 @Composable
@@ -98,25 +97,22 @@ internal fun HomeSelectionTopAppBar(
     taskModel: TaskScreenModel,
     undo: (Data) -> Unit
 ) {
-
     val context = LocalContext.current
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
     val thereIsSoundEffect = remember(datastoreModel, datastoreModel::isMute).collectAsState()
     val newUid by lazy { Uuid.random().toString() }
-    val observeNotesAndLabels =
-        remember(noteAndTagModel, noteAndTagModel::observeAll).collectAsState()
+    val observeNoteAndTags = remember(noteAndTagModel, noteAndTagModel::observeAll).collectAsState()
     val observeLabels = remember(tagModel, tagModel::observeAll).collectAsState()
 
-    val observeTodoList =
-        remember(taskModel, taskModel::getAllTaskList).collectAsState()
+    val observeTasks = remember(taskModel, taskModel::getAllTaskList).collectAsState()
 
     TopAppBar(
         navigationIcon = {
             Row {
                 // remove a note.
-                CommonPopupTip(message = "Remove") {
+                CommonPopupTip(message = "Archive Note") {
                     Icon(
-                        painter = painterResource(id = CommonIcons.REMOVE_ICON),
+                        painter = painterResource(INBOX_IN_ICON),
                         contentDescription = null,
                         modifier = Modifier
                             .padding(7.dp)
@@ -126,20 +122,8 @@ internal fun HomeSelectionTopAppBar(
                                 }
                             ) {
                                 sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-                                uiState.selectedNotes.forEach {
-                                    dataModel.sendUiEvent(
-                                        UiEvent.Update(
-                                            Data(
-                                                title = it.title,
-                                                description = it.description,
-                                                priority = it.priority,
-                                                uid = it.uid,
-                                                color = it.color,
-                                                textColor = it.textColor,
-                                                removed = 1
-                                            )
-                                        )
-                                    )
+                                uiState.selectedNotes.map {
+                                    dataModel.sendAction(Action.Archive(it.uid))
 
                                     // to.do cancel the alarm manager reminder.
                                     undo.invoke(it)
@@ -197,22 +181,22 @@ internal fun HomeSelectionTopAppBar(
                                             // copy each label.
                                             observeLabels.value
                                                 .filter {
-                                                    observeNotesAndLabels.value.contains(
+                                                    observeNoteAndTags.value.contains(
                                                         NoteAndTag(
                                                             uiState.selectedNotes.single().uid,
                                                             it.id
                                                         )
                                                     )
                                                 }
-                                                .forEach {
+                                                .map {
                                                     noteAndTagModel.sendAction(
                                                         Action.Insert(NoteAndTag(newUid, it.id))
                                                     )
                                                 }
 
                                             // copy each todo item.
-                                            observeTodoList.value
-                                                .forEach { todo ->
+                                            observeTasks.value
+                                                .map { todo ->
                                                     Random.nextLong()
                                                         .let {
                                                             taskModel.sendAction(
@@ -245,7 +229,7 @@ internal fun HomeSelectionTopAppBar(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun RemovedSelectionTopAppBar(
+internal fun ArchiveSelectionTopAppBar(
     datastoreModel: DataStoreScreenModel,
     mainModel: MainScreenModel,
     dataModel: DataScreenModel
@@ -261,7 +245,7 @@ internal fun RemovedSelectionTopAppBar(
                     // wipe notes.
                     CommonPopupTip(message = "Erase Notes") {
                         Icon(
-                            painter = painterResource(id = CommonIcons.ERASER_ICON),
+                            painter = painterResource(ERASER_ICON),
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(7.dp)
@@ -269,7 +253,9 @@ internal fun RemovedSelectionTopAppBar(
                                     onLongClick = { it.showAlignBottom() }
                                 ) {
                                     sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-                                    uiState.selectedNotes.forEach { dataModel.sendUiEvent(UiEvent.Delete(it)) }
+
+                                    uiState.selectedNotes.map { dataModel.sendAction(Action.DeleteByUid(it.uid)) }
+
                                     mainModel.clearSelectionNotes()
                                     mainModel.updateSelection(false)
                                 }
@@ -277,7 +263,7 @@ internal fun RemovedSelectionTopAppBar(
                     }
                     CommonPopupTip(message = "Rollback Notes") {
                         Icon(
-                            painter = painterResource(id = CommonIcons.UNDO_ICON),
+                            painter = painterResource(INBOX_OUT_ICON),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(25.dp)
@@ -287,8 +273,8 @@ internal fun RemovedSelectionTopAppBar(
                                     }
                                 ) {
                                     sound.performSoundEffect(context, CommonConstants.KEY_CLICK, thereIsSoundEffect.value)
-                                    uiState.selectedNotes.forEach {
-                                        dataModel.sendUiEvent(UiEvent.Update(it.copy(removed = 0)))
+                                    uiState.selectedNotes.map {
+                                        dataModel.sendAction(Action.Rollback(it.uid))
                                     }
                                     mainModel.clearSelectionNotes()
                                     mainModel.updateSelection(false)
@@ -300,10 +286,8 @@ internal fun RemovedSelectionTopAppBar(
         },
         title = {},
         actions = {
-            CommonRow(
-                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-            ) {
-                SelectionsCount(mainModel = mainModel)
+            CommonRow(modifier = Modifier.padding(start = 10.dp, end = 10.dp)) {
+                SelectionsCount(mainModel)
             }
         }
     )
