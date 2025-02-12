@@ -2,13 +2,13 @@ package city.zouitel.database.di
 
 import androidx.room.Room
 import city.zouitel.database.Database
-import city.zouitel.database.Encryption
 import city.zouitel.database.datasourceImpl.AudioDataSourceImpl
 import city.zouitel.database.datasourceImpl.DataDataSourceImpl
 import city.zouitel.database.datasourceImpl.LinkDataSourceImpl
 import city.zouitel.database.datasourceImpl.MediaDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteAndTagDataSourceImpl
 import city.zouitel.database.datasourceImpl.NoteDataSourceImpl
+import city.zouitel.database.datasourceImpl.RecordDataSourceImpl
 import city.zouitel.database.datasourceImpl.ReminderDataSourceImpl
 import city.zouitel.database.datasourceImpl.TagDataSourceImpl
 import city.zouitel.database.datasourceImpl.TaskDataSourceImpl
@@ -18,6 +18,7 @@ import city.zouitel.database.mapper.LinkMapper
 import city.zouitel.database.mapper.MediaMapper
 import city.zouitel.database.mapper.NoteAndTagMapper
 import city.zouitel.database.mapper.NoteMapper
+import city.zouitel.database.mapper.RecordMapper
 import city.zouitel.database.mapper.ReminderMapper
 import city.zouitel.database.mapper.TagMapper
 import city.zouitel.database.mapper.TaskMapper
@@ -28,10 +29,10 @@ import city.zouitel.repository.datasource.LinkDataSource
 import city.zouitel.repository.datasource.MediaDataSource
 import city.zouitel.repository.datasource.NoteAndTagDataSource
 import city.zouitel.repository.datasource.NoteDataSource
+import city.zouitel.repository.datasource.RecordDataSource
 import city.zouitel.repository.datasource.ReminderDataSource
 import city.zouitel.repository.datasource.TagDataSource
 import city.zouitel.repository.datasource.TaskDataSource
-import net.sqlcipher.database.SupportFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -49,6 +50,7 @@ val databaseDIModule = module {
     singleOf(::AudioDataSourceImpl) bind AudioDataSource::class
     singleOf(::MediaDataSourceImpl) bind MediaDataSource::class
     singleOf(::ReminderDataSourceImpl) bind ReminderDataSource::class
+    singleOf(::RecordDataSourceImpl) bind RecordDataSource::class
 
     //Dao's.
     single { get<Database>().getNoteDao() }
@@ -60,6 +62,7 @@ val databaseDIModule = module {
     single { get<Database>().getAudioDao() }
     single { get<Database>().getMediaDao() }
     single { get<Database>().getReminderDao() }
+    single { get<Database>().getRecordDao() }
 
     //Mappers
     factoryOf(::DataMapper)
@@ -70,6 +73,7 @@ val databaseDIModule = module {
     factoryOf(::NoteAndTagMapper)
     factoryOf(::MediaMapper)
     factoryOf(::ReminderMapper)
+    factoryOf(::RecordMapper)
     factory {
         NoteMapper(get(), get())
     }
@@ -81,7 +85,7 @@ val databaseDIModule = module {
             Database::class.java,
             Constants.DATABASE
         )
-            .openHelperFactory(SupportFactory(Encryption(androidContext()).getCrypticPass()))
+//            .openHelperFactory(SupportFactory(Encryption(androidContext()).getCrypticPass()))
             .fallbackToDestructiveMigration()
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
