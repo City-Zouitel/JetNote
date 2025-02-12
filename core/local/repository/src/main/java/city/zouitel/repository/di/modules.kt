@@ -6,6 +6,7 @@ import city.zouitel.domain.repository.LinkRepository
 import city.zouitel.domain.repository.MediaRepository
 import city.zouitel.domain.repository.NoteAndTagRepository
 import city.zouitel.domain.repository.NoteRepository
+import city.zouitel.domain.repository.RecordRepo
 import city.zouitel.domain.repository.ReminderRepo
 import city.zouitel.domain.repository.RootRepository
 import city.zouitel.domain.repository.TagRepository
@@ -16,6 +17,7 @@ import city.zouitel.domain.usecase.LinkUseCase
 import city.zouitel.domain.usecase.MediaUseCase
 import city.zouitel.domain.usecase.NoteAndTagUseCase
 import city.zouitel.domain.usecase.NoteUseCase
+import city.zouitel.domain.usecase.RecordUseCase
 import city.zouitel.domain.usecase.ReminderUseCase
 import city.zouitel.domain.usecase.RootUseCase
 import city.zouitel.domain.usecase.TagUseCase
@@ -26,6 +28,7 @@ import city.zouitel.repository.mapper.LinkMapper
 import city.zouitel.repository.mapper.MediaMapper
 import city.zouitel.repository.mapper.NoteAndTagMapper
 import city.zouitel.repository.mapper.NoteMapper
+import city.zouitel.repository.mapper.RecordMapper
 import city.zouitel.repository.mapper.ReminderMapper
 import city.zouitel.repository.mapper.RootMapper
 import city.zouitel.repository.mapper.TagMapper
@@ -36,6 +39,7 @@ import city.zouitel.repository.repositoryImpl.LinkRepositoryImpl
 import city.zouitel.repository.repositoryImpl.MediaRepoImpl
 import city.zouitel.repository.repositoryImpl.NoteAndTagRepositoryImpl
 import city.zouitel.repository.repositoryImpl.NoteRepositoryImpl
+import city.zouitel.repository.repositoryImpl.RecordRepoImpl
 import city.zouitel.repository.repositoryImpl.ReminderRepoImpl
 import city.zouitel.repository.repositoryImpl.RootRepositoryImpl
 import city.zouitel.repository.repositoryImpl.TagRepositoryImpl
@@ -57,6 +61,7 @@ val localRepoDIModule = module {
     factoryOf(::RootMapper)
     factoryOf(::MediaMapper)
     factoryOf(::ReminderMapper)
+    factoryOf(::RecordMapper)
     factory {
         NoteMapper(get(), get())
     }
@@ -72,6 +77,7 @@ val localRepoDIModule = module {
     singleOf(::RootRepositoryImpl) bind RootRepository::class
     singleOf(::TagRepositoryImpl) bind TagRepository::class
     singleOf(::TaskRepositoryImpl) bind TaskRepository::class
+    singleOf(::RecordRepoImpl) bind RecordRepo::class
 
     //UseCases.
     factoryOf(DataUseCase::Insert)
@@ -127,4 +133,9 @@ val localRepoDIModule = module {
     factoryOf(ReminderUseCase::UpdateById)
     factoryOf(ReminderUseCase::DeleteById)
     factoryOf(ReminderUseCase::DeleteByUid)
+
+    factoryOf(RecordUseCase::ObserveAll)
+    factoryOf(RecordUseCase::ObserveByUid)
+    factoryOf(RecordUseCase::Insert)
+    factoryOf(RecordUseCase::Delete)
 }
