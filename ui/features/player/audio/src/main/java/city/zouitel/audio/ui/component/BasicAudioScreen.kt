@@ -2,7 +2,6 @@ package city.zouitel.audio.ui.component
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -64,51 +63,54 @@ data class BasicAudioScreen(val audio: Audio): Screen {
                     containerColor = Color(.6f, .6f, .6f, .5f)
                 )
             ) {
-                Column {
-                    Row {
-                        CommonRow(
+                Row {
+                    CommonRow(
+                        modifier = Modifier
+                            .padding(start = 5.dp, end = 5.dp)
+                            .height(80.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(playbackIconState),
+                            null,
                             modifier = Modifier
-                                .padding(start = 5.dp, end = 5.dp)
-                                .height(80.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(playbackIconState),
-                                null,
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .clickable {
-                                        audioModel.playbackState()
-                                    },
-                                tint = Color.White
-                            )
+                                .padding(5.dp)
+                                .clickable {
+                                    audioModel.playbackState()
+                                },
+                            tint = Color.White
+                        )
 
-                            Waveform(
-                                modifier = Modifier.weight(1f),
-                                amplitudes = uiState.amplitudes,
-                                progress = uiState.progress,
-                                onProgressChange = { audioModel.updateProgress(it) },
-                                waveformAlignment = WaveformAlignment.Center,
-                                amplitudeType = AmplitudeType.Min,
-                                style = Fill,
-                                progressBrush = Brush.horizontalGradient(listOf(Color(0xFF136FC3), Color(0xFF76EF66))),
-                                spikePadding = 3.dp,
-                                spikeRadius = 3.dp,
-                                spikeWidth = 3.dp,
-                            )
-                        }
+                        Waveform(
+                            modifier = Modifier.weight(1f),
+                            amplitudes = uiState.amplitudes,
+                            progress = uiState.progress,
+                            onProgressChange = { audioModel.updateProgress(it) },
+                            waveformAlignment = WaveformAlignment.Center,
+                            amplitudeType = AmplitudeType.Min,
+                            style = Fill,
+                            progressBrush = Brush.horizontalGradient(
+                                listOf(
+                                    Color(0xFF136FC3),
+                                    Color(0xFF76EF66)
+                                )
+                            ),
+                            spikePadding = 3.dp,
+                            spikeRadius = 3.dp,
+                            spikeWidth = 3.dp,
+                        )
                     }
-                    Row {
-                        CommonRow(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Text(text = audio.nameWithoutFormat)
+                }
+                Row {
+                    CommonRow(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = audio.nameWithoutFormat)
 
-                            Text(
-                                modifier = Modifier.padding(end = 10.dp),
-                                text = audioModel.formatLong(audio.duration),
-                                color = Color.White
-                            )
-                        }
+                        Text(
+                            modifier = Modifier.padding(end = 10.dp),
+                            text = audioModel.formatLong(audio.duration),
+                            color = Color.White
+                        )
                     }
                 }
             }
