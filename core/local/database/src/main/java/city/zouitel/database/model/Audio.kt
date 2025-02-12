@@ -43,7 +43,7 @@ data class Audio(
     @ColumnInfo(PATH, defaultValue = DEFAULT_TXT) val path: String,
     @ColumnInfo(URI, defaultValue = DEFAULT_TXT) val uri: String,
     @ColumnInfo(SIZE, defaultValue = DEFAULT_NUM) val size: Long,
-    @ColumnInfo(DURATION, defaultValue = DEFAULT_NUM) val duration: Long,
+    @ColumnInfo(DURATION, defaultValue = DEFAULT_NUM) val duration: Long
 ) {
     companion object {
         const val TABLE_NAME = "audios_table"
