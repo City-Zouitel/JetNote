@@ -63,6 +63,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import city.zouitel.audio.ui.component.AudioScreenModel
 import city.zouitel.audio.ui.component.BasicAudioScreen
+import city.zouitel.audio.ui.record.RecordsScreen
 import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
@@ -281,7 +282,11 @@ data class WorkplaceScreen(
                             Navigator(screen = BasicAudioScreen(observerAudios!!))
                         }
                     }
+                }
 
+                //
+                item {
+                 Navigator(RecordsScreen(uid))
                 }
 
                 // Link display.
