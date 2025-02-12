@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "82a2505f4eae0d64789ca84738af7319",
+    "identityHash": "3e6a2177beb48f0a3cb92288b5667e11",
     "entities": [
       {
         "tableName": "note_data_table",
@@ -387,12 +387,61 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "records_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`identifier` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL DEFAULT 0, `universally_unique_identifier` TEXT NOT NULL DEFAULT '', `title` TEXT NOT NULL DEFAULT '', `media_path` TEXT NOT NULL DEFAULT '', `media_duration` INTEGER NOT NULL DEFAULT 0)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "identifier",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "uid",
+            "columnName": "universally_unique_identifier",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "media_path",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "media_duration",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "identifier"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '82a2505f4eae0d64789ca84738af7319')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e6a2177beb48f0a3cb92288b5667e11')"
     ]
   }
 }
