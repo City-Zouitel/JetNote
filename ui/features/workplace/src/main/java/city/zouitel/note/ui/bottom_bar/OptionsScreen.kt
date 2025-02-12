@@ -46,12 +46,14 @@ import city.zouitel.note.ui.utils.PriorityColorsList.MED
 import city.zouitel.note.ui.utils.PriorityColorsList.NON
 import city.zouitel.note.ui.utils.PriorityColorsList.URG
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
+import city.zouitel.recoder.ui.RecorderScreen
 import city.zouitel.systemDesign.CommonBottomSheet
 import city.zouitel.systemDesign.CommonConstants.KEY_CLICK
 import city.zouitel.systemDesign.CommonIcons.ADD_IMAGE_ICON
 import city.zouitel.systemDesign.CommonIcons.BELL_ICON
 import city.zouitel.systemDesign.CommonIcons.CASSETTE_ICON
 import city.zouitel.systemDesign.CommonIcons.LIST_CHECK_ICON
+import city.zouitel.systemDesign.CommonIcons.MIC_ICON
 import city.zouitel.systemDesign.CommonIcons.TAGS_ICON
 import city.zouitel.systemDesign.CommonOptionItem
 import city.zouitel.systemDesign.DataStoreScreenModel
@@ -96,25 +98,22 @@ data class OptionsScreen(
             SharedScreen.Reminder(uid, titleState?.text.toString(), descriptionState?.text.toString())
         )
         val audioListScreen = rememberScreen(SharedScreen.AudioList(uid))
-//        val recorderPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//            rememberMultiplePermissionsState(
-//                permissions = listOf(
-//                    permission.RECORD_AUDIO,
-//                    permission.READ_MEDIA_AUDIO
-//                )
-//            ) {
-//                if (it.all { true }) {
-//                    navBottomSheet.show(RecorderScreen(uid) {})
-//                }
-//            }
-//        } else {
-//            rememberMultiplePermissionsState(listOf(permission.RECORD_AUDIO)
-//            ) {
-//                if (it.all { true }) {
-//                    navBottomSheet.show(RecorderScreen(uid) {})
-//                }
-//            }
-//        }
+        val recorderPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            rememberMultiplePermissionsState(
+                permissions = listOf(
+                    permission.RECORD_AUDIO,
+                    permission.READ_MEDIA_AUDIO
+                )
+            ) {
+                if (it.all { true }) {
+                    navBottomSheet.show(RecorderScreen(uid))
+                }
+            }
+        } else {
+            rememberMultiplePermissionsState(emptyList()) {
+                    navBottomSheet.show(RecorderScreen(uid))
+            }
+        }
         val audioPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             rememberMultiplePermissionsState(listOf(permission.READ_MEDIA_AUDIO)) {
                 if (it.all { true }) {
@@ -192,28 +191,28 @@ data class OptionsScreen(
 //                        Toast.makeText(context, "Coming Soon.", Toast.LENGTH_SHORT).show()
 //                    }
 //                }
-//                item {
-//                    OptionItem(
-//                        name = "Record",
-//                        icon = MIC_ICON
-//                    ) {
-//                        sound.makeSound(context, KEY_CLICK, thereIsSoundEffect.value)
-//                        navBottomSheet.hide()
-//                        if (!recorderPermissions.allPermissionsGranted) {
-//                            if (recorderPermissions.shouldShowRationale) {
-//                                recorderRationalDialog.value = true
-//                            } else {
-//                                recorderPermissions.launchMultiplePermissionRequest()
-//                RationalScreen(
-//                    permissionState = readMediaPermissions,
-//                    permissionName = "audio record"
-//                )
-//                            }
-//                        } else {
-//                            navBottomSheet.show(RecorderScreen(uid) {})
-//                        }
-//                    }
-//                }
+                item {
+                    CommonOptionItem(
+                        name = "Record",
+                        icon = MIC_ICON
+                    ) {
+                        sound.performSoundEffect(context, KEY_CLICK, thereIsSoundEffect.value)
+                        scope.launch {
+                            navBottomSheet.hide()
+                            delay(200)
+                        }.invokeOnCompletion {
+                            if (!recorderPermissions.allPermissionsGranted) {
+                                if (recorderPermissions.shouldShowRationale) {
+                                    navBottomSheet.show(RecorderScreen(uid))
+                                } else {
+                                    recorderPermissions.launchMultiplePermissionRequest()
+                                }
+                            } else {
+                                navBottomSheet.show(RecorderScreen(uid))
+                            }
+                        }
+                    }
+                }
 
                 item {
                     CommonOptionItem(
