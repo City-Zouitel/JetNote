@@ -1,17 +1,31 @@
 package city.zouitel.recoder.di
 
-import city.zouitel.recoder.screenmodel.*
-import city.zouitel.recoder.mapper.*
+import androidx.media3.exoplayer.ExoPlayer
+import city.zouitel.recoder.mapper.RecordMapper
+import city.zouitel.recoder.ui.RecorderRepo
+import city.zouitel.recoder.ui.RecorderRepoImpl
+import city.zouitel.recoder.ui.RecorderScreenModel
 import city.zouitel.systemDesign.CommonConstants.REC_DIR
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val recorderKoinModule = module {
 
-    factoryOf(::RecorderScreenModel)
-    factory {
-        MediaRecordScreenModel(get(named(REC_DIR)))
+    single {
+        RecorderRepoImpl(androidContext())
     }
-    factoryOf(::AudioMapper)
+
+    singleOf(::RecorderRepoImpl) bind RecorderRepo::class
+
+    factoryOf(::RecorderScreenModel)
+
+    single {
+        ExoPlayer.Builder(androidContext())
+            .setHandleAudioBecomingNoisy(true)
+            .build()
+    }
 }
