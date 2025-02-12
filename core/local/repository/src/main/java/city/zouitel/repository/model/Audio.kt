@@ -30,5 +30,5 @@ data class Audio(
     var path: String = DEFAULT_TXT,
     var uri: String = DEFAULT_TXT,
     var size: Long = DEFAULT_LONG,
-    var duration: Long = DEFAULT_LONG,
+    var duration: Long = DEFAULT_LONG
 )
