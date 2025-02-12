@@ -17,12 +17,12 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioScreenModel (
+class AudioScreenModel(
     observeAll: AudioUseCase.ObserveAll,
     private val _observeByUid_: AudioUseCase.ObserveByUid,
-    private val _deleteById: AudioUseCase.DeleteById,
+    private val delete: AudioUseCase.DeleteById,
     private val player: PlaybackManager,
-    private val repository: AudioRepository,
+    private val repo: AudioRepository,
     private val mapper: AudioMapper
 ): ScreenModel {
 
@@ -30,12 +30,12 @@ class AudioScreenModel (
     internal val uiState: StateFlow<UiState> = _uiState
         .withFlow(UiState())
 
-    private val _allAudios: MutableStateFlow<List<Audio?>> = MutableStateFlow(emptyList())
-    val allAudios: StateFlow<List<Audio?>> = _allAudios
+    private val _observeAll: MutableStateFlow<List<Audio?>> = MutableStateFlow(emptyList())
+    val observeAll: StateFlow<List<Audio?>> = _observeAll
         .withFlow(emptyList()) {
             screenModelScope.launch(Dispatchers.IO) {
-                observeAll.invoke().collect { audios ->
-                    _allAudios.value = mapper.fromDomain(audios)
+                observeAll().collect { audios ->
+                    this@AudioScreenModel._observeAll.value = mapper.fromDomain(audios)
                 }
             }
         }
@@ -86,11 +86,11 @@ class AudioScreenModel (
     private fun loadAudio(uri: String) {
         screenModelScope.launch {
             runCatching {
-                currentAudio.value = repository.loadAudioByUri(uri) ?: return@launch
+                currentAudio.value = repo.loadAudioByUri(uri) ?: return@launch
                 currentAudio.value?.let { player.setAudio(it) }
                 launch {
                     currentAudio.value?.let {
-                        val amplitudes = repository.loadAudioAmplitudes(it.path)
+                        val amplitudes = repo.loadAudioAmplitudes(it.path)
                         _uiState.value = _uiState.value.copy(amplitudes = amplitudes)
                     }
                 }
@@ -109,6 +109,8 @@ class AudioScreenModel (
             when(it) {
                 is PlaybackManager.Event.PositionChanged -> updatePlaybackProgress(it.position)
                 is PlaybackManager.Event.PlayingChanged -> updatePlayingState(it.isPlaying)
+                is PlaybackManager.Event.IsLoading -> updateLoadingState(it.isLoading)
+                is PlaybackManager.Event.CurrentPath -> {}
             }
         }
     }
@@ -122,9 +124,13 @@ class AudioScreenModel (
         _uiState.value = uiState.value.copy(isPlaying = isPlaying)
     }
 
+    private fun updateLoadingState(isLoading: Boolean) {
+        _uiState.value = uiState.value.copy(isLoading = isLoading)
+    }
+
     fun deleteById(id: Long) {
         screenModelScope.launch {
-            _deleteById(id)
+            delete(id)
         }
     }
 }
