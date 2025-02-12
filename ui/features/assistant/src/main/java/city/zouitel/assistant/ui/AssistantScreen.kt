@@ -63,8 +63,12 @@ class AssistantScreen: Screen {
         }
 
         when (connectivity) {
-            true -> placeholder.value = "Type something.."
-            false -> placeholder.value = "You are offline!"
+            true ->  {
+                placeholder.value = "Type something.."
+            }
+            false -> {
+                placeholder.value = "You are offline!"
+            }
         }
 
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -147,6 +151,7 @@ class AssistantScreen: Screen {
                     enabled = connectivity,
                     onValueChange = { textState = it },
                     trailingIcon = {
+                        if (!connectivity)
                         Icon(painterResource(WIFI_SLASH_ICON), null)
                     },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
