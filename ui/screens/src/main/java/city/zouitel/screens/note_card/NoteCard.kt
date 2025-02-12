@@ -145,7 +145,7 @@ private fun Card(
 
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val observeAllTasks by remember(taskModel, taskModel::observeAllTasks).collectAsState()
-    val observerAudios by remember(audioModel, audioModel::allAudios).collectAsState()
+    val observerAudios by remember(audioModel, audioModel::observeAll).collectAsState()
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     var todoListState by remember { mutableStateOf(false) }
