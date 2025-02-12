@@ -12,6 +12,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileNotFoundException
 
+@Suppress("DEPRECATION")
 class LocalMediaDataSource (
     private val context: Context,
     private val ioDispatcher: CoroutineDispatcher
