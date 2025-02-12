@@ -13,5 +13,4 @@ data class Audio(
     var duration: Long = 0L,
 ) {
     val nameWithoutFormat: String get() = title.substringBeforeLast('.')
-    val format: String get() = title.substringAfterLast('.')
 }
