@@ -13,11 +13,11 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.MediaSessionService
 import androidx.media3.session.SessionToken
 import city.zouitel.audio.model.Audio
+import city.zouitel.audio.model.Record
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
-import java.util.UUID
 
 class PlaybackManager (
     private val context: Context,
@@ -31,6 +31,7 @@ class PlaybackManager (
     val events: MutableSharedFlow<Event> = MutableSharedFlow()
 
     private var lastEmittedPosition: Long = 0
+    private var playlist: MutableList<MediaItem> = mutableListOf() // Use a list for multiple items
     private var currentMediaItem: MediaItem? = null
     private var controllerFuture: ListenableFuture<MediaController>? = null
     private val controller: MediaController?
@@ -39,27 +40,46 @@ class PlaybackManager (
     private var handler: Handler? = null
 
     private val playerPositionRunnable = object : Runnable {
-        override fun run() {
-            val playbackPosition = controller?.currentPosition ?: 0
-            // Emit only new player position
-            if(playbackPosition != lastEmittedPosition) {
-                sendEvent(Event.PositionChanged(playbackPosition))
-                lastEmittedPosition = playbackPosition
+            override fun run() {
+                val playbackPosition = controller?.currentPosition ?: 0
+
+                // Emit only new player position
+                if (playbackPosition != lastEmittedPosition) {
+                    sendEvent(Event.PositionChanged(playbackPosition))
+                    lastEmittedPosition = playbackPosition
+                }
+                sendEvent(Event.PlayingChanged(controller?.isPlaying ?: false))
+                sendEvent(Event.IsLoading(controller?.isLoading ?: false))
+                handler?.postDelayed(this, PLAYER_POSITION_UPDATE_TIME)
             }
-            handler?.postDelayed(this, PLAYER_POSITION_UPDATE_TIME)
-        }
     }
+
+
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         super.onIsPlayingChanged(isPlaying)
-        sendEvent(Event.PlayingChanged(isPlaying))
+        sendEvent(Event.CurrentPath(currentMediaItem?.mediaId ?: ""))
+    }
+
+    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+        super.onMediaItemTransition(mediaItem, reason)
+        val item = getMediaItem(currentMediaItem?.mediaId?.toUri() ?: Uri.EMPTY, "")
+        val index = playlist.indexOf(item)
+
+        if (index != -1 && mediaItem?.mediaId == currentMediaItem?.mediaId) {
+            controller?.seekTo(index, 0)
+            controller?.prepare()
+            controller?.play()
+        } else {
+            controller?.stop()
+        }
     }
 
     override fun onPlaybackStateChanged(playbackState: Int) {
         super.onPlaybackStateChanged(playbackState)
-        if(playbackState == Player.STATE_ENDED) {
-            controller?.pause()
-            controller?.seekTo(0)
+        if (playbackState == Player.STATE_ENDED) {
+            controller?.stop()
+            controller?.seekToDefaultPosition()
         }
     }
 
@@ -71,10 +91,10 @@ class PlaybackManager (
         setAudio(getMediaItem(uri, title))
     }
 
-    fun setAudio(mediaItem: MediaItem) {
+    private fun setAudio(mediaItem: MediaItem) {
         val controllerItemId = controller?.currentMediaItem?.mediaId
         currentMediaItem = mediaItem
-        if(controllerFuture?.isDone == false || controllerItemId == mediaItem.mediaId) {
+        if (controllerFuture?.isDone == false || controllerItemId == mediaItem.mediaId) {
             return
         }
         controller?.setMediaItem(mediaItem)
@@ -85,6 +105,50 @@ class PlaybackManager (
         controller?.stop()
         controller?.clearMediaItems()
         currentMediaItem = null
+    }
+
+    fun addAudio(audio: Audio) {
+        addAudio(audio.uri.toUri(), audio.nameWithoutFormat)
+    }
+
+    fun addRecord(record: Record) {
+        val mediaItem = getMediaItem(record.path.toUri(), record.path)
+        playlist.add(mediaItem)
+        controller?.addMediaItem(mediaItem)
+    }
+
+    fun addRecords(items: List<Record>) {
+        val records = items.map { getMediaItem(it.path.toUri(), it.title) }
+        playlist.addAll(records)
+        controller?.addMediaItems(records)
+    }
+
+    private fun addAudio(uri: Uri, title: String) {
+        addAudio(getMediaItem(uri, title))
+    }
+
+    private fun addAudio(mediaItem: MediaItem) {
+        playlist.add(mediaItem)
+        controller?.addMediaItem(mediaItem)
+    }
+
+    fun addAudios(mediaItems: List<MediaItem>) {
+        playlist.addAll(mediaItems)
+        controller?.addMediaItems(mediaItems)
+    }
+
+    fun removeRecord(record: Record) {
+        val mediaItem = getMediaItem(record.path.toUri(), record.title)
+        val index = playlist.indexOf(mediaItem)
+        if (index != -1) {
+            playlist.removeAt(index)
+            controller?.removeMediaItem(index)
+        }
+    }
+
+    fun clearPlaylist() {
+        playlist.clear()
+        controller?.clearMediaItems()
     }
 
     fun play() {
@@ -114,6 +178,9 @@ class PlaybackManager (
         controllerFuture = null
         handler?.removeCallbacks(playerPositionRunnable)
         handler = null
+
+        playlist.clear()
+        controller?.clearMediaItems()
     }
 
     private fun getMediaItem(uri: Uri, title: String): MediaItem {
@@ -124,7 +191,7 @@ class PlaybackManager (
             .setMediaUri(uri)
             .build()
         return MediaItem.Builder()
-            .setMediaId(UUID.randomUUID().toString())
+            .setMediaId(uri.toString())
             .setMediaMetadata(mmd)
             .setRequestMetadata(rmd)
             .build()
@@ -132,9 +199,35 @@ class PlaybackManager (
 
     private fun onControllerCreated() {
         currentMediaItem?.let(::setAudio)
+        // Add all media items to the controller
+        controller?.addMediaItems(playlist)
         handler = Handler(Looper.getMainLooper())
         handler?.postDelayed(playerPositionRunnable, PLAYER_POSITION_UPDATE_TIME)
         controller?.addListener(this)
+    }
+
+    fun playItem(record: Record) {
+        val mediaItem = getMediaItem(record.path.toUri(), record.title)
+        val index = playlist.indexOf(mediaItem)
+        currentMediaItem = mediaItem
+
+        if (index != -1) {
+            controller?.seekTo(
+                index,
+                if(record.path == currentMediaItem?.mediaId) lastEmittedPosition else 0
+            )
+            controller?.setMediaItem(mediaItem)
+            controller?.prepare()
+            controller?.play()
+        }
+    }
+
+    fun pauseItem(record: Record) {
+        if(record.path == currentMediaItem?.mediaId) {
+            controller?.pause()
+        } else {
+            playItem(record)
+        }
     }
 
     private fun sendEvent(event: Event) {
@@ -144,6 +237,7 @@ class PlaybackManager (
     sealed interface Event {
         data class PositionChanged(val position: Long) : Event
         data class PlayingChanged(val isPlaying: Boolean) : Event
+        data class IsLoading(val isLoading: Boolean): Event
+        data class CurrentPath(val path: String): Event
     }
-
 }
