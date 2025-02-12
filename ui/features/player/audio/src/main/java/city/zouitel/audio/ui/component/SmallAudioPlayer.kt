@@ -61,8 +61,7 @@ fun SmallAudioPlayer(
     ) {
         Row {
             CommonRow(
-                modifier = Modifier
-                    .padding(start = 5.dp, end = 5.dp)
+                modifier = Modifier.padding(start = 5.dp, end = 5.dp)
             ) {
                 if (currentLayout == LIST) {
                     Icon(
