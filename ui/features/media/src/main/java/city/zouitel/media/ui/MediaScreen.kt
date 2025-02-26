@@ -1,10 +1,14 @@
 package city.zouitel.media.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -21,17 +25,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import city.zouitel.domain.utils.Action
-import coil.request.ImageRequest
-import me.saket.telephoto.zoomable.coil.ZoomableAsyncImage
-import me.saket.telephoto.zoomable.rememberZoomableImageState
-import me.saket.telephoto.zoomable.rememberZoomableState
+import city.zouitel.video.VideoPlayer
+import coil.compose.AsyncImage
 
 data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -52,10 +56,11 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
         val context = LocalContext.current
         val vibe = LocalHapticFeedback.current
 
-        val observeMedias by remember(mediaModel, mediaModel::observeByUid).collectAsStateWithLifecycle()
-
+        val observeMedias by remember(
+            mediaModel,
+            mediaModel::observeByUid
+        ).collectAsStateWithLifecycle()
         val pagerState = rememberPagerState { observeMedias.size }
-        val zoomState = rememberZoomableState()
 
         if (observeMedias.isNotEmpty()) {
             Card(
@@ -67,7 +72,8 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
                 ) { index ->
                     BadgedBox(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxWidth()
+                            .height(220.dp)
                             .background(Color(backgroundColor)),
                         badge = {
                             if (observeMedias.count() > 1) {
@@ -89,21 +95,39 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
                                     vibe.performHapticFeedback(HapticFeedbackType.LongPress)
                                     mediaModel.sendAction(Action.DeleteById(observeMedias[index].id))
                                 }
-                            ) { /*do nothing..*/ }
+                            ) {}
                         ) {
-                            runCatching {
-                                ZoomableAsyncImage(
-                                    state = rememberZoomableImageState(zoomState),
-                                    model = ImageRequest.Builder(context)
-                                        .data(observeMedias[index].uri)
-                                        .build(),
-                                    contentDescription = null
-                                )
+                            when(observeMedias[index].isVideo) {
+                                true -> {
+                                    VideoPlayer(observeMedias[index].uri.toUri()) {
+                                        context.startActivity(videoDisplay(observeMedias[index].uri.toUri()))
+                                    }
+                                }
+                                else -> {
+                                    AsyncImage(
+                                        model = observeMedias[index].uri,
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier.clickable {
+                                            context.startActivity(imageDisplay(observeMedias[index].uri.toUri()))
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun imageDisplay(uri: Uri) = Intent(Intent.ACTION_VIEW).apply {
+        setDataAndType(uri, "image/*")
+        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    }
+
+    private fun videoDisplay(uri: Uri) = Intent(Intent.ACTION_VIEW).apply {
+        setDataAndType(uri, "video/*")
+        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
     }
 }
