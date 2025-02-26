@@ -19,9 +19,6 @@ dependencies {
     //AndroidX.
     implementation(libs.constraintlayout)
 
-    //Accompanist.
-    implementation(libs.accompanist.permissions)
-
     //Sliders.
     implementation(libs.amplituda)
 
