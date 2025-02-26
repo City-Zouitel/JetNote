@@ -1,6 +1,5 @@
 package city.zouitel.source
 
-import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -8,14 +7,12 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
-fun Project.configureAndroidLibrary(
-    common: CommonExtension<*, *, *, *, *, *>,
-) {
+fun Project.configureAndroidLibrary(common: CommonExtension<*, *, *, *, *, *>) {
     common.apply {
-        compileSdk = libs.findVersion("compileSdk-version").get().requiredVersion.toInt()
+        compileSdk = libs.compileSdk //libs.findVersion("compileSdk-version").get().requiredVersion.toInt()
 
         defaultConfig {
-            minSdk = libs.findVersion("minSdk-version").get().requiredVersion.toInt()
+            minSdk = libs.minSdk//libs.findVersion("minSdk-version").get().requiredVersion.toInt()
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
 
@@ -47,7 +44,7 @@ fun Project.configureAndroidLibrary(
         dependencies {
             androidDependencies(libs)
             androidTestDependencies(libs)
-            androidKoinDependencies(libs)
+            koinDependencies(libs)
         }
     }
 }
