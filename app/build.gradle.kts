@@ -42,6 +42,7 @@ dependencies {
     implementation(projects.services.tile)
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
+    implementation(projects.common.permissions)
     implementation(projects.security.rooted)
     implementation(projects.security.appLock)
     implementation(projects.security.screenshot)
@@ -55,17 +56,8 @@ dependencies {
     //WorkManager.
     implementation(libs.workmanager)
 
-    //Accompanist.
-    implementation(libs.accompanist.systemuicontroller)
-
-    //Baha-UrlPreview.
-    implementation(libs.url.preview)
-
     //Beetle.
     implementation(libs.beetle)
-
-    //Global Exception.
-//    implementation(libs.globalexception)
 
     //Koin.
     implementation(libs.koin.worker)
