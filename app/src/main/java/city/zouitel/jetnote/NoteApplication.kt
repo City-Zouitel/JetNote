@@ -13,16 +13,17 @@ import city.zouitel.generativeai.di.generativeKoinModule
 import city.zouitel.init.initializerKoinModule
 import city.zouitel.links.di.linksKoinModule
 import city.zouitel.media.di.mediaKoinModule
+import city.zouitel.networkRepo.di.networkRepoDIModule
 import city.zouitel.note.di.workplaceDIModule
 import city.zouitel.note.di.workplaceScreenModule
 import city.zouitel.notifications.di.notificationKoinModule
+import city.zouitel.permissions.permissionsDIModule
 import city.zouitel.playback.di.playbackDIModule
 import city.zouitel.quicknote.di.quickNoteKoinModule
 import city.zouitel.recoder.di.recorderKoinModule
 import city.zouitel.reminder.di.reminderDIModule
 import city.zouitel.reminder.di.reminderScreenModule
 import city.zouitel.repository.di.localRepoDIModule
-import city.zouitel.networkRepo.di.networkRepoDIModule
 import city.zouitel.rooted.di.rootedKoinModule
 import city.zouitel.screens.di.screensKoinModule
 import city.zouitel.screens.di.screensScreenModule
@@ -75,7 +76,8 @@ class NoteApplication: Application(), ImageLoaderFactory {
                 rootedKoinModule,
                 mediaKoinModule,
                 reminderDIModule,
-                playbackDIModule
+                playbackDIModule,
+                permissionsDIModule
             )
         }
 
