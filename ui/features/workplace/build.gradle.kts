@@ -29,12 +29,6 @@ dependencies {
     //AndroidX.
     implementation(libs.constraintlayout)
 
-    //Accompanist.
-    implementation(libs.accompanist.permissions)
-    implementation(libs.accompanist.systemuicontroller)
-//    implementation(libs.accompanist.navigation.animation)
-//    implementation(libs.accompanist.flowlayout)
-
     //Sketchbook.
     implementation (libs.sketchbook)
 
@@ -43,9 +37,6 @@ dependencies {
     //Cloudy.
     implementation(libs.compose.cloudy)
 
-    //Baha-UrlPreview.
-    implementation(libs.url.preview)
-
     //Coil.
     implementation(libs.coil.compose)
     implementation(libs.coil.svg)
@@ -53,4 +44,5 @@ dependencies {
 
     //
     implementation("io.github.khubaibkhan4:mediaplayer-kmp:2.0.5")
+    implementation(project(":common:permissions"))
 }
