@@ -10,6 +10,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import city.zouitel.applock.LockModeHandler
 import city.zouitel.audio.player.PlaybackManager
+import city.zouitel.permissions.PermissionScreenModel
 import city.zouitel.rooted.RootCheckerHandler
 import city.zouitel.screens.main_screen.MainScreen
 import city.zouitel.screenshot.ScreenshotHandler
@@ -26,11 +27,14 @@ class NoteActivity : AppCompatActivity(), KoinComponent, IntentHandler {
 
     private val dataStoreModel: DataStoreScreenModel by inject()
     private val playerManager: PlaybackManager by inject()
+    private val permissionModel: PermissionScreenModel by inject()
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        permissionModel.activityBind(this)
+
         setContent {
             Navigator(RootCheckerHandler())
             LockModeHandler(dataStoreModel)
