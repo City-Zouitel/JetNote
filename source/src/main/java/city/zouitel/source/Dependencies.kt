@@ -23,26 +23,28 @@ fun DependencyHandlerScope.androidUiTestDependencies(libs: VersionCatalog) {
     add("debugImplementation", (libs.findLibrary("ui-test-manifest").get()))
 }
 
-fun DependencyHandlerScope.androidComposeDependencies(libs: VersionCatalog) {
+fun DependencyHandlerScope.composeDependencies(libs: VersionCatalog) {
     add("implementation", platform(libs.findLibrary("compose-bom").get()))
     add("implementation", libs.findLibrary("activity-compose").get())
     add("implementation", libs.findLibrary("compose-ui").get())
     add("implementation", libs.findLibrary("ui-graphics").get())
     add("implementation", libs.findLibrary("ui-tooling").get())
     add("implementation", libs.findLibrary("material3").get())
-//    add("implementation", libs.findLibrary("compose-navigation").get())
     add("implementation", libs.findLibrary("compose-constraintlayout").get())
     add("implementation", libs.findLibrary("compose-foundation").get())
-
-    // TODO: add bundles.
 }
 
-fun DependencyHandlerScope.androidKoinDependencies(libs: VersionCatalog) {
+fun DependencyHandlerScope.composeBundlesDependencies(libs: VersionCatalog) {
+    add("implementation", libs.findBundle("compose").get())
+    add("androidTestImplementation", libs.findBundle("composeTest").get())
+}
+
+fun DependencyHandlerScope.koinDependencies(libs: VersionCatalog) {
     add("implementation", libs.findLibrary("koin-core").get())
     add("implementation", libs.findLibrary("koin-android").get())
 }
 
-fun DependencyHandlerScope.androidComposeKoinDependencies(libs: VersionCatalog) {
+fun DependencyHandlerScope.composeKoinDependencies(libs: VersionCatalog) {
     add("implementation", libs.findLibrary("koin-compose").get())
 }
 
