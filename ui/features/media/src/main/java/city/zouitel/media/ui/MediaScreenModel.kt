@@ -16,7 +16,6 @@ class MediaScreenModel(
     private val _observeByUid_: MediaUseCase.ObserveByUid,
     private val insert: MediaUseCase.Insert,
     private val deleteById: MediaUseCase.DeleteById,
-    private val deleteByUid: MediaUseCase.DeleteByUid,
     private val mapper: MediaMapper
 ): ScreenModel {
 
