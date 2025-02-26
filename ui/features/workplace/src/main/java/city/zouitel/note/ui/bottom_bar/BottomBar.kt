@@ -62,7 +62,6 @@ internal fun BottomBar(
     dataStoreModel: DataStoreScreenModel,
     dataModel: DataScreenModel,
     linkModel: LinkScreenModel,
-    imageLaunch: ManagedActivityResultLauncher<PickVisualMediaRequest, List<@JvmSuppressWildcards Uri>>,
     workspaceModel: WorkplaceScreenModel,
     priorityState: MutableState<Int>
 ) {
@@ -77,7 +76,6 @@ internal fun BottomBar(
         uid = uid,
         titleState = titleState,
         descriptionState = descriptionState,
-        imageLaunch = imageLaunch,
         priorityState = priorityState
     ))
 
