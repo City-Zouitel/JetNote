@@ -24,6 +24,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/common/logic" />
+            <option value="$PROJECT_DIR$/common/permissions" />
             <option value="$PROJECT_DIR$/common/systemDesign" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/local" />
@@ -55,6 +56,7 @@
             <option value="$PROJECT_DIR$/ui/features/media" />
             <option value="$PROJECT_DIR$/ui/features/player" />
             <option value="$PROJECT_DIR$/ui/features/player/audio" />
+            <option value="$PROJECT_DIR$/ui/features/player/video" />
             <option value="$PROJECT_DIR$/ui/features/player/waveform" />
             <option value="$PROJECT_DIR$/ui/features/quickNote" />
             <option value="$PROJECT_DIR$/ui/features/recorder" />
