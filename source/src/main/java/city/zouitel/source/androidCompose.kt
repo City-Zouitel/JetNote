@@ -4,9 +4,7 @@ import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
-internal fun Project.configureAndroidCompose(
-    common: CommonExtension<*, *, *, *, *, *>
-) {
+internal fun Project.configureAndroidCompose(common: CommonExtension<*, *, *, *, *, *>) {
     common.apply {
         buildFeatures {
             compose = true
@@ -18,8 +16,9 @@ internal fun Project.configureAndroidCompose(
         }
 
         dependencies {
-            androidComposeDependencies(libs)
-            androidComposeKoinDependencies(libs)
+            composeDependencies(libs)
+            composeKoinDependencies(libs)
+            composeBundlesDependencies(libs)
         }
 
         testOptions {
