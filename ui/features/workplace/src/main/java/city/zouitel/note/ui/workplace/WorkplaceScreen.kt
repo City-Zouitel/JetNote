@@ -214,7 +214,6 @@ data class WorkplaceScreen(
                     dataStoreModel = dataStoreModel,
                     dataModel = dataModel,
                     linkModel = linkModel,
-                    imageLaunch = chooseImageLauncher,
                     workspaceModel = workspaceModel,
                     priorityState = priorityState
                 )
@@ -226,7 +225,7 @@ data class WorkplaceScreen(
                     .fillMaxSize()
             ) {
 
-                // display the image.
+                // medias display.
                 item {
                     Navigator(
                         MediaScreen(
