@@ -25,6 +25,7 @@ dependencies {
     api(projects.ui.features.recorder)
     api(projects.ui.features.tasks)
     api(projects.ui.features.player.audio)
+    api(projects.ui.features.player.video)
     api(projects.ui.features.reminder)
     api(projects.ui.features.workplace)
     api(projects.ui.features.quickNote)
@@ -43,10 +44,6 @@ dependencies {
     //LiveData.
     implementation(libs.lifecycle.livedata)
 
-    //Accompanist.
-    implementation(libs.accompanist.permissions)
-    implementation(libs.accompanist.systemuicontroller)
-
     //Sketchbook.
     implementation (libs.sketchbook)
 
@@ -61,9 +58,6 @@ dependencies {
 
     //License.
     implementation (libs.licenses)
-
-    //Baha-UrlPreview.
-    implementation(libs.url.preview)
 
     //Beetle.
     implementation(libs.beetle)
