@@ -49,15 +49,13 @@ data class AudioListScreen(val uid: String): Screen {
         }
 
 
-        Navigator(
-            CommonBottomSheet {
+        Navigator(CommonBottomSheet {
                 LazyColumn(modifier = Modifier.animateContentSize()) {
                     items(uiState.audioFiles) {
                         AudioItem(itemState = it, audioListModel = audioListModel)
                     }
                 }
-            }
-        )
+            })
     }
 
     @Composable
