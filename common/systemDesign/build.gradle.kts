@@ -16,13 +16,6 @@ dependencies {
     //AndroidX.
     implementation(libs.constraintlayout)
 
-    //Accompanist.
-    implementation(libs.accompanist.permissions)
-    implementation(libs.accompanist.systemuicontroller)
-
-    //Baha-UrlPreview.
-    implementation(libs.url.preview)
-
     //Balloon.
     implementation (libs.balloon.compose)
 }
