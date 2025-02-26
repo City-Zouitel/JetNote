@@ -1,5 +1,12 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":ui:features:player:video")
+
+
+include(":common:permissions")
+
+
+
 include(":ui:features:player:waveform")
 
 
