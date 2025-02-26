@@ -23,7 +23,4 @@ dependencies {
 
     //LiveData.
     implementation(libs.lifecycle.livedata)
-
-    //Accompanist.
-    implementation(libs.accompanist.systemuicontroller)
 }
