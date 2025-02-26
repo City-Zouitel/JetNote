@@ -89,4 +89,7 @@ object CommonIcons {
     val HOME_BLANK_ICON = R.drawable.house_blank_24
     val CROSS_SMALL_ICON = R.drawable.cross_small_24
     val WIFI_SLASH_ICON = R.drawable.wifi_slash_24
+    val WAVEFORM_ICON = R.drawable.waveform_path_24
+    val GALLERY_ICON = R.drawable.gallery_24
+    val VIDEO_CAMERA_ICON = R.drawable.video_camera_24
 }
