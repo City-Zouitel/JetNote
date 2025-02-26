@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -53,6 +54,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastLastOrNull
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
@@ -74,8 +76,8 @@ import city.zouitel.systemDesign.CommonIcons.CIRCLE_ICON_18
 import city.zouitel.systemDesign.CommonSwipeItem
 import city.zouitel.systemDesign.DataStoreScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
+import city.zouitel.video.SmallVideoPlayer
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 
 @Composable
 fun NoteCard(
@@ -233,6 +235,7 @@ private fun Card(
                 BadgedBox(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .height(220.dp)
                         .background(Color(note.background)),
                     badge = {
                         if (filteredMedia.count() > 1) {
@@ -250,13 +253,15 @@ private fun Card(
                         shape = AbsoluteRoundedCornerShape(15.dp),
                         elevation = CardDefaults.cardElevation()
                     ) {
-                        runCatching {
-                            AsyncImage(
-                                model = ImageRequest.Builder(context)
-                                    .data(filteredMedia[index].uri)
-                                    .build(),
-                                contentDescription = null
-                            )
+                        when(filteredMedia[index].isVideo) {
+                            true -> SmallVideoPlayer(filteredMedia[index].uri.toUri())
+                            else -> {
+                                AsyncImage(
+                                    model = filteredMedia[index].uri,
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
                         }
                     }
                 }
