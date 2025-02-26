@@ -5,11 +5,9 @@ import city.zouitel.recoder.mapper.RecordMapper
 import city.zouitel.recoder.ui.RecorderRepo
 import city.zouitel.recoder.ui.RecorderRepoImpl
 import city.zouitel.recoder.ui.RecorderScreenModel
-import city.zouitel.systemDesign.CommonConstants.REC_DIR
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
-import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -22,6 +20,7 @@ val recorderKoinModule = module {
     singleOf(::RecorderRepoImpl) bind RecorderRepo::class
 
     factoryOf(::RecorderScreenModel)
+    factoryOf(::RecordMapper)
 
     single {
         ExoPlayer.Builder(androidContext())
