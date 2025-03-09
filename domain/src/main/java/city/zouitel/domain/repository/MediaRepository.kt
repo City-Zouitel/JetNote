@@ -73,22 +73,7 @@ interface MediaRepository {
      */
     suspend fun deleteById(id: Long)
 
-    /**
-     * Deletes a record or resource associated with the given unique identifier (UID).
-     *
-     * This is a suspending function, meaning it must be called within a coroutine or another
-     * suspending function. It performs the deletion asynchronously.
-     *
-     * @param uid The unique identifier of the record/resource to delete.
-     * @throws Exception if any error occurs during the deletion process.  Consider more specific exceptions if possible.
-     * For example:
-     * @throws NotFoundException if a record with the given UID is not found.
-     * @throws DatabaseException if there is an issue communicating with the database.
-     * @throws PermissionDeniedException if the user doesn't have permission to delete.
-     * @throws IllegalArgumentException if the uid is invalid or empty.
-     *
-     * @see [suspend]
-     * @see [kotlinx.coroutines]
-     */
-    suspend fun deleteByUid(uid: String)
+    suspend fun deleteDrafts()
+
+    suspend fun getDrafts(): List<String>
 }
