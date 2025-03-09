@@ -8,15 +8,23 @@ import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.workplace.OptionsScreen
 import city.zouitel.note.ui.workplace.WorkplaceScreen
 import city.zouitel.note.ui.workplace.WorkplaceScreenModel
+import city.zouitel.note.worker.CopyMediaWorker
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.workmanager.dsl.worker
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val workplaceDIModule = module {
 
     factoryOf(::DataMapper)
-    factoryOf(::WorkplaceScreenModel)
     factory {
-        DataScreenModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
+        WorkplaceScreenModel(get())
+    }
+    factory {
+        DataScreenModel(get(), get(), get(), get(), get(), get())
+    }
+    worker {
+        CopyMediaWorker(androidContext(), get(), get(), get(), get())
     }
 }
 
