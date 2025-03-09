@@ -1,5 +1,6 @@
 package city.zouitel.jetnote
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,6 +11,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import city.zouitel.applock.LockModeHandler
 import city.zouitel.audio.player.PlaybackManager
+import city.zouitel.bin.BinScreenModel
 import city.zouitel.permissions.PermissionScreenModel
 import city.zouitel.rooted.RootCheckerHandler
 import city.zouitel.screens.main_screen.MainScreen
@@ -28,6 +30,7 @@ class NoteActivity : AppCompatActivity(), KoinComponent, IntentHandler {
     private val dataStoreModel: DataStoreScreenModel by inject()
     private val playerManager: PlaybackManager by inject()
     private val permissionModel: PermissionScreenModel by inject()
+    private val binModel: BinScreenModel by inject()
     private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +67,11 @@ class NoteActivity : AppCompatActivity(), KoinComponent, IntentHandler {
         // Cancel the performUiEvent when the activity is destroyed
         activityScope.cancel()
         playerManager.releaseController()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binModel.initBinWorker()
     }
 
     override fun onResume() {
