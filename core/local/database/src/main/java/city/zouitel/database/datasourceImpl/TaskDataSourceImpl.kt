@@ -68,7 +68,7 @@ class TaskDataSourceImpl(
     /**
      * Deletes an entity from the data source by its ID.
      *
-     * @param id The ID of the entity to deleteById.
+     * @param id The ID of the entity to delete.
      * @throws Exception if an error occurs during the deletion process.
      */
     override suspend fun deleteById(id: Long) {
@@ -86,5 +86,9 @@ class TaskDataSourceImpl(
      */
     override suspend fun deleteByUid(uid: String) {
         dao.deleteByUid(uid)
+    }
+
+    override suspend fun deleteDrafts() {
+        dao.deleteDrafts()
     }
 }
