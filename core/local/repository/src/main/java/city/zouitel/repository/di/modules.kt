@@ -96,6 +96,7 @@ val localRepoDIModule = module {
     factoryOf(NoteAndTagUseCase::Insert)
     factoryOf(NoteAndTagUseCase::DeleteByUid)
     factoryOf(NoteAndTagUseCase::DeleteById)
+    factoryOf(NoteAndTagUseCase::DeleteDrafts)
 
     factoryOf(NoteUseCase::ObserveByDefault)
     factoryOf(NoteUseCase::ObserveByName)
@@ -113,6 +114,7 @@ val localRepoDIModule = module {
     factoryOf(TaskUseCase::Insert)
     factoryOf(TaskUseCase::DeleteById)
     factoryOf(TaskUseCase::DeleteByUid)
+    factoryOf(TaskUseCase::DeleteDrafts)
 
     factoryOf(RootUseCase::RootUseCase)
 
@@ -126,13 +128,16 @@ val localRepoDIModule = module {
     factoryOf(MediaUseCase::ObserveByUid)
     factoryOf(MediaUseCase::Insert)
     factoryOf(MediaUseCase::DeleteById)
-    factoryOf(MediaUseCase::DeleteByUid)
+
+    factoryOf(MediaUseCase::GetDrafts)
+    factoryOf(MediaUseCase::DeleteDrafts)
 
     factoryOf(ReminderUseCase::ObserveByUid)
     factoryOf(ReminderUseCase::Insert)
     factoryOf(ReminderUseCase::UpdateById)
     factoryOf(ReminderUseCase::DeleteById)
     factoryOf(ReminderUseCase::DeleteByUid)
+    factoryOf(ReminderUseCase::DeleteDrafts)
 
     factoryOf(RecordUseCase::ObserveAll)
     factoryOf(RecordUseCase::ObserveByUid)
