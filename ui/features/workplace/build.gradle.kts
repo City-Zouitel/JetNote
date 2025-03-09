@@ -14,6 +14,7 @@ dependencies {
     //Modules.
     implementation(projects.common.systemDesign)
     implementation(projects.common.logic)
+    implementation(projects.common.permissions)
     implementation(projects.domain)
     implementation(projects.core.local.datastore)
     implementation(projects.ui.features.reminder)
@@ -42,7 +43,6 @@ dependencies {
     implementation(libs.coil.svg)
     implementation(libs.zoomable.coil)
 
-    //
-    implementation("io.github.khubaibkhan4:mediaplayer-kmp:2.0.5")
-    implementation(project(":common:permissions"))
+    //Koin.
+    implementation(libs.koin.worker)
 }
