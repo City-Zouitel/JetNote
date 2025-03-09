@@ -75,21 +75,38 @@ interface MediaDataSource {
     suspend fun deleteById(id: Long)
 
     /**
-     * Deletes a record or resource associated with the given unique identifier (UID).
+     * Deletes all draft messages from the local storage.
      *
-     * This is a suspending function, meaning it must be called within a coroutine or another
-     * suspending function. It performs the deletion asynchronously.
+     * This function asynchronously removes all messages that are marked as drafts.
+     * It's typically used when a user wants to clear all unfinished message compositions.
      *
-     * @param uid The unique identifier of the record/resource to delete.
-     * @throws Exception if any error occurs during the deletion process.  Consider more specific exceptions if possible.
-     * For example:
-     * @throws NotFoundException if a record with the given UID is not found.
-     * @throws DatabaseException if there is an issue communicating with the database.
-     * @throws PermissionDeniedException if the user doesn't have permission to delete.
-     * @throws IllegalArgumentException if the uid is invalid or empty.
+     * Note: This operation is performed locally and does not affect any server-side
+     * data.  It only removes the locally stored drafts.
      *
-     * @see [suspend]
-     * @see [kotlinx.coroutines]
+     * @throws Exception if there's an error during the deletion process, such as a database access issue.
+     *
+     * @see saveDraft
+     * @see getDrafts
      */
-    suspend fun deleteByUid(uid: String)
+    suspend fun deleteDrafts()
+
+    /**
+     * Retrieves a list of draft IDs.
+     *
+     * This function fetches a list of identifiers representing drafts.
+     * Each identifier is a unique string that can be used to retrieve
+     * the full draft content from a data source.
+     *
+     * This function is a suspending function, meaning it can be paused
+     * and resumed without blocking the main thread.  It is intended
+     * to be used within a coroutine scope.
+     *
+     * @return A list of strings, where each string is a unique identifier
+     *         for a draft. Returns an empty list if no drafts are found.
+     *
+     * @throws Exception If an error occurs while retrieving the drafts, such as network issues
+     *         or database errors. Specific exception types may vary depending on the underlying
+     *         implementation.
+     */
+    suspend fun getDrafts(): List<String>
 }
