@@ -57,4 +57,8 @@ sealed class NoteAndTagUseCase {
     data class DeleteById(private val repos: NoteAndTagRepository): NoteAndTagUseCase() {
         suspend operator fun invoke(id: Long) = repos.deleteById(id)
     }
+
+    data class DeleteDrafts(private val repo: NoteAndTagRepository): NoteAndTagUseCase() {
+        suspend operator fun invoke() = repo.deleteDrafts()
+    }
 }
