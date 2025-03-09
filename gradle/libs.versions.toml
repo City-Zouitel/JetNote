@@ -21,7 +21,7 @@ workmanager = "2.10.0"
 biometric = "1.2.0-alpha05"
 
 #Compose.
-activity-compose = "1.10.0"
+activity-compose = "1.10.1"
 compose-bom = "2025.02.00"
 appcompat = "1.7.0"
 material = "1.12.0"
