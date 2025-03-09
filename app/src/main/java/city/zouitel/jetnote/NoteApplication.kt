@@ -7,6 +7,7 @@ import city.zouitel.assistant.di.assistantScreenModule
 import city.zouitel.audio.di.audioPlayerDIModule
 import city.zouitel.audio.di.audioPlayerScreenModule
 import city.zouitel.base.di.baseKoinModule
+import city.zouitel.bin.binModules
 import city.zouitel.database.di.databaseDIModule
 import city.zouitel.datastore.datastoreKoinModule
 import city.zouitel.generativeai.di.generativeKoinModule
@@ -77,7 +78,8 @@ class NoteApplication: Application(), ImageLoaderFactory {
                 mediaKoinModule,
                 reminderDIModule,
                 playbackDIModule,
-                permissionsDIModule
+                permissionsDIModule,
+                binModules
             )
         }
 
