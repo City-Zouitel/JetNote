@@ -70,4 +70,8 @@ sealed class TaskUseCase {
     data class DeleteByUid(private val repo: TaskRepository): TaskUseCase() {
         suspend operator fun invoke(uid: String) = repo.deleteByUid(uid)
     }
+
+    data class DeleteDrafts(private val repo: TaskRepository): TaskUseCase() {
+        suspend operator fun invoke() = repo.deleteDrafts()
+    }
 }
