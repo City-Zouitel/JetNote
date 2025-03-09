@@ -1,18 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":ui:features:player:video")
-
-
-include(":common:permissions")
-
-
-
-include(":ui:features:player:waveform")
-
-
-include(":ui:features:player:audio")
-
-
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
@@ -43,6 +30,7 @@ dependencyResolutionManagement {
 rootProject.name = "JetNote"
 
 include(":app")
+include(":bin")
 include(
     ":core:local:database",
     ":core:local:repository",
@@ -65,11 +53,15 @@ include(
     ":ui:features:widget",
     ":ui:features:media",
     ":ui:features:player",
+    ":ui:features:player:audio",
+    ":ui:features:player:video",
+    ":ui:features:player:waveform",
     ":ui:screens"
 )
 include(
     ":common:systemDesign",
-    ":common:logic"
+    ":common:logic",
+    ":common:permissions"
 )
 include(
     ":services:notifications",
