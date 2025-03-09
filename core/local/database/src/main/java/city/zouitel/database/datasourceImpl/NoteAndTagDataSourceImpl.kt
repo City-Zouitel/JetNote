@@ -67,4 +67,8 @@ class NoteAndTagDataSourceImpl(
     override suspend fun deleteById(id: Long) {
         dao.deleteById(id)
     }
+
+    override suspend fun deleteDrafts() {
+        dao.deleteDrafts()
+    }
 }
