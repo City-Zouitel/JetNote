@@ -49,7 +49,7 @@ interface TaskDao {
     /**
      * Deletes a row from the table with the specified ID.
      *
-     * @param id The ID of the row to deleteById.
+     * @param id The ID of the row to delete.
      * @throws SQLiteException if an error occurs during the database operation.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
@@ -64,4 +64,7 @@ interface TaskDao {
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $UUID = :uid")
     suspend fun deleteByUid(uid: String)
+
+    @Query("DELETE FROM $TABLE_NAME WHERE $UUID NOT IN (SELECT $UUID FROM note_data_table)")
+    suspend fun deleteDrafts()
 }
