@@ -1,11 +1,7 @@
 package city.zouitel.note.ui.workplace
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.text.format.DateFormat
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -36,7 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,9 +63,7 @@ import city.zouitel.audio.ui.record.RecordsScreen
 import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
-import city.zouitel.media.model.Media
 import city.zouitel.media.ui.MediaScreen
-import city.zouitel.media.ui.MediaScreenModel
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.BottomBar
 import city.zouitel.note.ui.utils.TextField
@@ -84,10 +78,10 @@ import city.zouitel.tags.ui.TagScreenModel
 import city.zouitel.tasks.ui.TaskScreenModel
 import com.skydoves.cloudy.cloudy
 import java.util.Date
-import kotlin.random.Random
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
+@Suppress("DeferredResultUnused")
 @OptIn(ExperimentalUuidApi::class)
 data class WorkplaceScreen(
     val uid: String = Uuid.random().toString(),
@@ -121,7 +115,6 @@ data class WorkplaceScreen(
             linkModel = getScreenModel(),
             dataStoreModel = getScreenModel(),
             audioModel = getScreenModel(),
-            mediaModel = getScreenModel(),
             reminderModel = getScreenModel(),
             alarmModel = getScreenModel(),
             workspaceModel = workspaceModel
@@ -139,7 +132,6 @@ data class WorkplaceScreen(
         linkModel: LinkScreenModel,
         dataStoreModel: DataStoreScreenModel,
         audioModel: AudioScreenModel,
-        mediaModel: MediaScreenModel,
         reminderModel: ReminderScreenModel,
         alarmModel: AlarmManagerScreenModel,
         workspaceModel: WorkplaceScreenModel
@@ -148,11 +140,10 @@ data class WorkplaceScreen(
             linkModel.initializeUid(uid)
             audioModel.initializeUid(uid)
         }
-
-        val context = LocalContext.current
         val keyboardManager = LocalFocusManager.current
         val navBottomSheet = LocalBottomSheetNavigator.current
         val haptic = LocalHapticFeedback.current
+        val context = LocalContext.current
 
         val focus by lazy { FocusRequester() }
 
@@ -172,26 +163,12 @@ data class WorkplaceScreen(
         val observerAudios by remember(audioModel, audioModel::observeByUid).collectAsState()
         val observeAllReminders by remember(reminderModel, reminderModel::observeAllById).collectAsState()
         val uiState by remember(workspaceModel, workspaceModel::uiState).collectAsState()
-        val priorityState = remember { mutableStateOf(priority) }
+        val priorityState = remember { mutableIntStateOf(priority) }
 
         val filteredTags by remember {
             derivedStateOf {
                 observeLabels.filter {
                     observeNotesAndLabels.contains(NoteAndTag(uid, it.id))
-                }
-            }
-        }
-
-        val chooseImageLauncher = rememberLauncherForActivityResult(
-            ActivityResultContracts.PickMultipleVisualMedia()
-        ) { uris ->
-            uris.forEach { uri ->
-                context.contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-                Random.nextLong().let {
-                    mediaModel.sendAction(Action.Insert(Media(id = it,uid = uid, uri = uri.toString())))
                 }
             }
         }
@@ -239,7 +216,6 @@ data class WorkplaceScreen(
                 item {
                     TextField(
                         state = titleState,
-                        receiver = mediaInsert(mediaModel),
                         modifier = Modifier
                             .height(50.dp)
                             .focusRequester(focus)
@@ -253,14 +229,15 @@ data class WorkplaceScreen(
                         keyboardAction = {
                             keyboardManager.moveFocus(FocusDirection.Next)
                         }
-                    )
+                    ) {
+                        workspaceModel.handleContentReceiver(it, uid)
+                    }
                 }
 
                 // The Description.
                 item {
                     TextField(
                         state = descriptionState,
-                        receiver = mediaInsert(mediaModel),
                         modifier = Modifier
                             .height(200.dp)
                             .onFocusEvent {
@@ -268,7 +245,9 @@ data class WorkplaceScreen(
                             },
                         placeholder = "Note",
                         textColor = Color(uiState.textColor)
-                    )
+                    ) {
+                        workspaceModel.handleContentReceiver(it, uid)
+                    }
                 }
 
                 //display the audio player.
@@ -424,12 +403,6 @@ data class WorkplaceScreen(
                     )
                 }
             }
-        }
-    }
-
-    private fun mediaInsert(mediaModel: MediaScreenModel): (Uri) -> Unit = { uri ->
-        Random.nextLong().let {
-            mediaModel.sendAction(Action.Insert(Media(id = it, uri = uri.toString())))
         }
     }
 }
