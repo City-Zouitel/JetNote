@@ -69,4 +69,5 @@ interface NoteAndTagRepository {
      * @throws Exception If any other error occurs during the deletion process (e.g., database error).
      */
     suspend fun deleteById(id: Long)
+    suspend fun deleteDrafts()
 }
