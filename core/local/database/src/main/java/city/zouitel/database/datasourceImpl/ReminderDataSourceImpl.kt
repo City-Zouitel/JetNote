@@ -67,4 +67,8 @@ class ReminderDataSourceImpl(
     override suspend fun deleteByUid(uid: String) {
         dao.deleteByUid(uid)
     }
+
+    override suspend fun deleteDrafts() {
+        dao.deleteDrafts()
+    }
 }
