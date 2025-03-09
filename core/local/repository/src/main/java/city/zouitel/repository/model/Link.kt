@@ -1,8 +1,8 @@
 package city.zouitel.repository.model
 
 import androidx.annotation.Keep
-import city.zouitel.domain.utils.Constants.DEFAULT_INT
-import city.zouitel.domain.utils.Constants.DEFAULT_TXT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_INT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_TXT
 
 /**
  * Represents a link with associated metadata.
