@@ -4,9 +4,8 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.content.MediaType
+import androidx.compose.foundation.content.TransferableContent
 import androidx.compose.foundation.content.contentReceiver
-import androidx.compose.foundation.content.hasMediaType
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,15 +33,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun TextField(
     state: TextFieldState,
-    receiver: (Uri) -> Unit,
     modifier: Modifier,
     placeholder: String = "...",
     textSize: TextUnit = TextUnit(19f, TextUnitType.Sp),
     textColor: Color = Color.LightGray,
     imeAction: ImeAction = ImeAction.Default,
-    keyboardAction: KeyboardActionHandler = KeyboardActionHandler {  }
+    keyboardAction: KeyboardActionHandler = KeyboardActionHandler {  },
+    onReceive: (TransferableContent) -> Unit
 ) {
-    val context = LocalContext.current
 
     Box(
         modifier = Modifier.padding(top = 30.dp)
@@ -61,14 +59,7 @@ internal fun TextField(
                 .padding(10.dp)
                 .background(Color.Transparent)
                 .contentReceiver { content ->
-                    if(content.hasMediaType(MediaType.Image)) {
-                        val data = content.clipEntry.clipData
-                        for (index in 0 until data.itemCount) {
-                            val item = data.getItemAt(index)
-                            val uri = item.uri
-                            receiver.invoke(uri)
-                        }
-                    }
+                    onReceive(content)
                     content
                 },
             textStyle = TextStyle(

@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import city.zouitel.domain.usecase.LinkUseCase
-import city.zouitel.domain.utils.Constants.DEFAULT_INT
-import city.zouitel.domain.utils.Constants.DEFAULT_TXT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_INT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_TXT
 import city.zouitel.links.mapper.LinkMapper
 import city.zouitel.links.model.Link
 import city.zouitel.links.utils.Constants.ID
