@@ -1,8 +1,8 @@
 package city.zouitel.quicknote.model
 
-import city.zouitel.domain.utils.Constants.DEFAULT_BOOLEAN
-import city.zouitel.domain.utils.Constants.DEFAULT_INT
-import city.zouitel.domain.utils.Constants.DEFAULT_TXT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_BOOLEAN
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_INT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_TXT
 
 data class QuickData(
     var uid: String = DEFAULT_TXT,
