@@ -2,7 +2,7 @@
 
 package city.zouitel.links.ui
 
-import city.zouitel.domain.utils.Constants.DEFAULT_TXT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_TXT
 import city.zouitel.links.model.Link
 import com.devscion.metaprobekmp.MetaProbe
 import kotlinx.coroutines.CoroutineScope
