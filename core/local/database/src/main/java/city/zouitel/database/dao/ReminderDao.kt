@@ -60,4 +60,7 @@ interface ReminderDao {
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $UUID = :uid")
     suspend fun deleteByUid(uid: String)
+
+    @Query("DELETE FROM $TABLE_NAME WHERE $UUID NOT IN (SELECT $UUID FROM note_data_table)")
+    suspend fun deleteDrafts()
 }
