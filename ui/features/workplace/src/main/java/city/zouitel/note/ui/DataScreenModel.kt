@@ -20,12 +20,6 @@ class DataScreenModel(
     private val rollback: DataUseCase.Rollback,
     private val data: DataUseCase.Delete,
     private val erase: DataUseCase.Erase,
-    private val noteAndTags: NoteAndTagUseCase.DeleteByUid,
-    private val audio: AudioUseCase.DeleteByUid,
-    private val link: LinkUseCase.DeleteByUid,
-    private val media: MediaUseCase.DeleteByUid,
-    private val reminder: ReminderUseCase.DeleteByUid,
-    private val task: TaskUseCase.DeleteByUid,
     private val mapper: DataMapper
 ): ScreenModel {
 
@@ -34,15 +28,7 @@ class DataScreenModel(
             is Action.Insert<*> -> withAsync { insert(mapper.toDomain(act.data as Data)) }
             is Action.Archive -> withAsync { archive(act.uid) }
             is Action.Rollback -> withAsync { rollback(act.uid) }
-            is Action.DeleteByUid -> withAsync {
-                data(act.uid)
-                noteAndTags(act.uid)
-                audio(act.uid)
-                link(act.uid)
-                media(act.uid)
-                reminder(act.uid)
-                task(act.uid)
-            }
+            is Action.DeleteByUid -> withAsync { data(act.uid) }
             is Action.Erase -> withAsync { erase() }
             else -> throw NotImplementedError("This event is not implemented: $act")
         }
