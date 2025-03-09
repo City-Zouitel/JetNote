@@ -24,6 +24,10 @@ internal fun HideSystemUI(window: Window) {
     }
 }
 
+internal fun binInit() {
+
+}
+
     /*
     fun void() {
         mapOf(
