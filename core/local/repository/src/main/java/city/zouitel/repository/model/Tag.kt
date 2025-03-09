@@ -1,9 +1,9 @@
 package city.zouitel.repository.model
 
 import androidx.annotation.Keep
-import city.zouitel.domain.utils.Constants.DEFAULT_INT
-import city.zouitel.domain.utils.Constants.DEFAULT_LONG
-import city.zouitel.domain.utils.Constants.DEFAULT_TXT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_INT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_LONG
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_TXT
 
 /**
  * Represents a tag with an ID, label, and color.
