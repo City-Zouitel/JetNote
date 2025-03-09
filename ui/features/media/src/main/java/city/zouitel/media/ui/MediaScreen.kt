@@ -74,7 +74,13 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(220.dp)
-                            .background(Color(backgroundColor)),
+                            .background(Color(backgroundColor))
+                            .combinedClickable(
+                                onLongClick = {
+                                    vibe.performHapticFeedback(HapticFeedbackType.LongPress)
+                                    mediaModel.sendAction(Action.DeleteById(observeMedias[index].id))
+                                }
+                            ) {},
                         badge = {
                             if (observeMedias.count() > 1) {
                                 Badge(
@@ -89,27 +95,25 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
                     ) {
                         Card(
                             shape = AbsoluteRoundedCornerShape(15.dp),
-                            elevation = CardDefaults.cardElevation(),
-                            modifier = Modifier.combinedClickable(
-                                onLongClick = {
-                                    vibe.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    mediaModel.sendAction(Action.DeleteById(observeMedias[index].id))
-                                }
-                            ) {}
+                            elevation = CardDefaults.cardElevation()
                         ) {
-                            when(observeMedias[index].isVideo) {
+                            when (observeMedias[index].isVideo) {
                                 true -> {
                                     VideoPlayer(observeMedias[index].uri.toUri()) {
                                         context.startActivity(videoDisplay(observeMedias[index].uri.toUri()))
                                     }
                                 }
+
                                 else -> {
                                     AsyncImage(
                                         model = observeMedias[index].uri,
                                         contentDescription = null,
                                         contentScale = ContentScale.Crop,
-                                        modifier = Modifier.clickable {
-                                            context.startActivity(imageDisplay(observeMedias[index].uri.toUri()))
+                                        modifier = Modifier.combinedClickable(
+                                            onLongClick = {
+                                            }
+                                        ) {
+//                                            context.startActivity(imageDisplay(observeMedias[index].uri.toUri()))
                                         }
                                     )
                                 }
@@ -128,6 +132,6 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
 
     private fun videoDisplay(uri: Uri) = Intent(Intent.ACTION_VIEW).apply {
         setDataAndType(uri, "video/*")
-        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
     }
 }
