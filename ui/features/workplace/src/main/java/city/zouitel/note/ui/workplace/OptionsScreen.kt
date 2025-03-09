@@ -132,39 +132,7 @@ data class OptionsScreen(
                     uri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
-                val mimeType = context.contentResolver.getType(uri)
-                when {
-                    mimeType?.startsWith("image/") == true -> {
-                        Random.nextLong().let {
-                            mediaModel.sendAction(
-                                Action.Insert(
-                                    Media(
-                                        it,
-                                        uid,
-                                        false,
-                                        uri.toString()
-                                    )
-                                )
-                            )
-                        }
-                    }
-
-                    mimeType?.startsWith("video/") == true -> {
-                        Random.nextLong().let {
-                            mediaModel.sendAction(
-                                Action.Insert(
-                                    Media(
-                                        it,
-                                        uid,
-                                        true,
-                                        uri.toString()
-                                    )
-                                )
-                            )
-                        }
-                    }
-                    else -> throw Exception("")
-                }
+                workspaceModel.handleResultContracts(uid, uri)
             }
             navBottomSheet.hide()
         }
@@ -345,7 +313,9 @@ data class OptionsScreen(
     private fun PriorityRow(onClick: (Int) -> Unit) {
         val priorities = arrayOf(NON, LOW, MED, HIG, URG)
 
-        LazyRow(modifier = Modifier.animateContentSize().padding(10.dp)) {
+        LazyRow(modifier = Modifier
+            .animateContentSize()
+            .padding(10.dp)) {
             items(priorities) { priority ->
                 if (priorityState.value == priority.priority) {
                     AnimatedVisibility(true) {
@@ -383,11 +353,16 @@ data class OptionsScreen(
         }
     }
 
+    // TODO: make it as workmanager.
     @SuppressLint("SimpleDateFormat")
     private fun createMediaUri(context: Context, pattern: String): Uri {
-        val fileName = SimpleDateFormat("yyyyMMddHHmmss").format(Date()) + ".$pattern"
-        val imagePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Medias")
-        if (!imagePath.exists()) imagePath.mkdirs()
+        val fileName = "${Random.nextLong()}.$pattern"
+        val imagePath = when(pattern) {
+            "jpg" -> Environment.DIRECTORY_PICTURES
+            "mp4" -> Environment.DIRECTORY_MOVIES
+            else -> Environment.DIRECTORY_DOWNLOADS
+        }?.let { context.getExternalFilesDir(it) }
+        if (!imagePath?.exists()!!) imagePath.mkdirs()
         val newFile = File(imagePath, fileName)
         return FileProvider.getUriForFile(context, "${context.packageName}.provider", newFile)
     }
