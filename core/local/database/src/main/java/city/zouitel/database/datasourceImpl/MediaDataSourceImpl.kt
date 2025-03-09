@@ -71,14 +71,46 @@ class MediaDataSourceImpl(
     /**
      * Deletes an entity from the data source by its ID.
      *
-     * @param id The ID of the entity to deleteById.
+     * @param id The ID of the entity to delete.
      * @throws Exception if there's an error during the deletion process. This should be replaced with a more specific exception if applicable.
      */
     override suspend fun deleteById(id: Long) {
-        dao.deleteById(id)
+        dao.delete(id)
     }
 
-    override suspend fun deleteByUid(uid: String) {
-        dao.deleteByUid(uid)
+    /**
+     * Deletes all drafts from the underlying data source.
+     *
+     * This function is a suspend function, meaning it can be safely called
+     * within a coroutine. It delegates the actual deletion operation to the
+     * data access object (DAO).
+     *
+     * @throws Exception if an error occurs during the deletion process. The
+     *         specific type of exception depends on the implementation of
+     *         the DAO.
+     */
+    override suspend fun deleteDrafts() {
+        dao.deleteDrafts()
+    }
+
+    /**
+     * Retrieves a list of drafts from the data source.
+     *
+     * This function fetches all stored drafts, which are represented as a list of Strings.
+     * The specific format and content of these strings are determined by the underlying
+     * data storage mechanism (e.g., a database table with a text column).
+     *
+     * This is a suspend function, meaning it should be called within a coroutine scope
+     * or another suspend function. This allows for efficient handling of potential
+     * I/O operations, such as database queries, without blocking the main thread.
+     *
+     * @return A [List] of [String] representing the drafts. An empty list is returned if no drafts are found.
+     *
+     * @throws Exception If any error occurs during the retrieval process. The specific type
+     *                   of exception depends on the underlying data source and the nature of
+     *                   the error.
+     */
+    override suspend fun getDrafts(): List<String> {
+        return dao.getDrafts()
     }
 }
