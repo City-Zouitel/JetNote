@@ -71,4 +71,8 @@ class NoteAndTagRepositoryImpl(
     override suspend fun deleteById(id: Long) {
         dataSource.deleteById(id)
     }
+
+    override suspend fun deleteDrafts() {
+        dataSource.deleteDrafts()
+    }
 }
