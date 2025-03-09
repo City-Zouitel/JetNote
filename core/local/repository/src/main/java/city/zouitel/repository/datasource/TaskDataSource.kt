@@ -85,4 +85,6 @@ interface TaskDataSource {
      * @see [kotlinx.coroutines]
      */
     suspend fun deleteByUid(uid: String)
+
+    suspend fun deleteDrafts()
 }
