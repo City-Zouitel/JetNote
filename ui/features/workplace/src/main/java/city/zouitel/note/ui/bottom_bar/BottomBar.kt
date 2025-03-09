@@ -118,7 +118,7 @@ internal fun BottomBar(
                 )
 
                 Icon(
-                    painter = painterResource(id = if (isNew) CommonIcons.DONE_ICON else CommonIcons.EDIT_ICON),
+                    painter = painterResource(if (isNew) CommonIcons.DONE_ICON else CommonIcons.EDIT_ICON),
                     contentDescription = "Add/Edit",
                     modifier = Modifier.clickable {
                         sound.performSoundEffect(context, CommonConstants.KEY_STANDARD, isMute.value)
