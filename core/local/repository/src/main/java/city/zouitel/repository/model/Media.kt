@@ -1,9 +1,9 @@
 package city.zouitel.repository.model
 
 import androidx.annotation.Keep
-import city.zouitel.domain.utils.Constants.DEFAULT_BOOLEAN
-import city.zouitel.domain.utils.Constants.DEFAULT_LONG
-import city.zouitel.domain.utils.Constants.DEFAULT_TXT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_BOOLEAN
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_LONG
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_TXT
 
 /**
  * Represents a media item, such as an image or video, stored locally.
