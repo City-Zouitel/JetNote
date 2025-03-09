@@ -1,8 +1,8 @@
 package city.zouitel.audio.model
 
 import androidx.annotation.Keep
-import city.zouitel.domain.utils.Constants.DEFAULT_LONG
-import city.zouitel.domain.utils.Constants.DEFAULT_TXT
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_LONG
+import city.zouitel.domain.utils.ModelConstants.DEFAULT_TXT
 
 @Keep
 data class Record(
