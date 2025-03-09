@@ -62,4 +62,8 @@ sealed class ReminderUseCase {
     data class DeleteByUid(val repo: ReminderRepo): ReminderUseCase() {
         suspend operator fun invoke(uid: String) = repo.deleteByUid(uid)
     }
+
+    data class DeleteDrafts(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke() = repo.deleteDrafts()
+    }
 }
