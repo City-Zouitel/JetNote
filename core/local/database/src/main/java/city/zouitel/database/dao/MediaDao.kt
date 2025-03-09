@@ -7,6 +7,7 @@ import androidx.room.Query
 import city.zouitel.database.model.Media
 import city.zouitel.database.model.Media.Companion.TABLE_NAME
 import city.zouitel.database.utils.Constants.ID
+import city.zouitel.database.utils.Constants.URI
 import city.zouitel.database.utils.Constants.UUID
 import kotlinx.coroutines.flow.Flow
 
@@ -63,21 +64,54 @@ interface MediaDao {
     /**
      * Deletes a row from the table with the specified ID.
      *
-     * @param id The ID of the row to deleteById.
+     * @param id The ID of the row to delete.
      * @return The number of rows deleted. Usually 1 if successful, 0 if no row with the given ID exists.
      *
      * @throws SQLiteException if an error occurs during the database operation.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun delete(id: Long)
 
     /**
-     * Deletes a record from the [TABLE_NAME] table based on the provided UUID.
+     * Retrieves a list of URIs representing drafts.
      *
-     * @param uid The UUID of the record to deleteById.
-     * @throws Exception If any error occurs during the database operation.
-     * @return Unit. The function returns nothing explicitly, but it suspends until the database operation is complete.
+     * Drafts are defined as notes that exist in the main notes table
+     * (represented by $TABLE_NAME and $URI) but do not have corresponding
+     * entries in the 'note_data_table'. This indicates that these notes have
+     * been created but have not yet had their detailed data saved.
+     *
+     * This function uses a SQL subquery to identify drafts:
+     *   - `SELECT $URI FROM $TABLE_NAME`: Selects the URI column from the main notes table.
+     *   - `WHERE $UUID NOT IN (SELECT $UUID FROM note_data_table)`: Filters the results to only include notes whose UUIDs are not present in the 'note_data_table'.
+     *
+     * @return A list of Strings, where each String is the URI of a draft note.
+     *
+     * @see TABLE_NAME
+     * @see URI
+     * @see UUID
+     * @see note_data_table
      */
-    @Query("DELETE FROM $TABLE_NAME WHERE $UUID = :uid")
-    suspend fun deleteByUid(uid: String)
+    @Query("SELECT $URI FROM $TABLE_NAME WHERE $UUID NOT IN (SELECT $UUID FROM note_data_table)")
+    suspend fun getDrafts(): List<String>
+
+    /**
+     * Deletes draft notes from the database.
+     *
+     * This function removes notes that are considered drafts, meaning they
+     * are present in the main table (`TABLE_NAME`) but are not linked to any
+     * existing note data in the `note_data_table`. This effectively cleans up
+     * incomplete or abandoned notes that were not properly saved.
+     *
+     * The deletion is performed using a SQL `DELETE` query with a subquery
+     * to identify drafts. The subquery selects the UUIDs from the `note_data_table`,
+     * and the outer query then deletes any records from `TABLE_NAME` whose UUID
+     * is not present in that result set.
+     *
+     * This function should be called within a coroutine scope because it's a
+     * suspend function.
+     *
+     * @throws SQLiteException If an error occurs while executing the database query.
+     */
+    @Query("DELETE FROM $TABLE_NAME WHERE $UUID NOT IN (SELECT $UUID FROM note_data_table)")
+    suspend fun deleteDrafts()
 }
