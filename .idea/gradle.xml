@@ -22,6 +22,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/bin" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/common/logic" />
             <option value="$PROJECT_DIR$/common/permissions" />
