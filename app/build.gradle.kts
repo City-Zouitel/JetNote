@@ -47,6 +47,7 @@ dependencies {
     implementation(projects.security.appLock)
     implementation(projects.security.screenshot)
     api(projects.ui.screens)
+    implementation(projects.bin)
 
     //Lifecycle.
     implementation(libs.lifecycle.compose.viewmodel)
