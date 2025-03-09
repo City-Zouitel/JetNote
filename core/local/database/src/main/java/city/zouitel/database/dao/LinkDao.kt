@@ -66,7 +66,7 @@ interface LinkDao {
     /**
      * Deletes a row from the table with the specified ID.
      *
-     * @param id The ID of the row to deleteById.
+     * @param id The ID of the row to delete.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
     suspend fun deleteById(id: Int)
@@ -74,7 +74,7 @@ interface LinkDao {
     /**
      * Deletes a record from the [TABLE_NAME] table based on the provided UUID.
      *
-     * @param uid The UUID of the record to deleteById.
+     * @param uid The UUID of the record to delete.
      * @throws Exception If any error occurs during the database operation.
      * @return Unit. The function returns nothing explicitly, but it suspends until the database operation is complete.
      */
