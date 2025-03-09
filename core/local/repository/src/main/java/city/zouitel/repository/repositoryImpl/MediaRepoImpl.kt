@@ -82,14 +82,11 @@ class MediaRepoImpl(
         dataSource.deleteById(id)
     }
 
-    /**
-     * Deletes a record from the data source using the provided unique identifier (UID).
-     *
-     * This function delegates the deletion operation to the underlying [dataSource].
-     *
-     * @param uid The unique identifier of the record to be deleted.
-     */
-    override suspend fun deleteByUid(uid: String) {
-        dataSource.deleteByUid(uid)
+    override suspend fun deleteDrafts() {
+        dataSource.deleteDrafts()
+    }
+
+    override suspend fun getDrafts(): List<String> {
+        return dataSource.getDrafts()
     }
 }
