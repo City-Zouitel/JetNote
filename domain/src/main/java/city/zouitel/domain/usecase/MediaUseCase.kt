@@ -59,14 +59,11 @@ sealed class MediaUseCase {
         suspend operator fun invoke(id: Long) = repo.deleteById(id)
     }
 
-    /**
-     * [DeleteByUid] use case.
-     *
-     * This use case is responsible for deleting a media item from the repository based on its unique identifier (UID).
-     *
-     * @property repo The [MediaRepository] used to interact with the data layer.
-     */
-    data class DeleteByUid(private val repo: MediaRepository): MediaUseCase() {
-        suspend operator fun invoke(uid: String) = repo.deleteByUid(uid)
+    data class GetDrafts(private val repo: MediaRepository): MediaUseCase() {
+        suspend operator fun invoke() = repo.getDrafts()
+    }
+
+    data class DeleteDrafts(private val repo: MediaRepository): MediaUseCase() {
+        suspend operator fun invoke() = repo.deleteDrafts()
     }
 }
