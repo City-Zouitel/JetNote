@@ -70,4 +70,8 @@ class ReminderRepoImpl(
     override suspend fun deleteByUid(uid: String) {
         dataSource.deleteByUid(uid)
     }
+
+    override suspend fun deleteDrafts() {
+        dataSource.deleteDrafts()
+    }
 }
