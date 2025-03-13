@@ -36,8 +36,8 @@ sealed class ReminderUseCase {
      *
      * @param repo The repo used to access and modify reminder data.
      */
-    data class UpdateById(val repo: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(id: Int) = repo.updateById(id)
+    data class Update(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(id: Int) = repo.update(id)
     }
 
     /**
@@ -47,22 +47,18 @@ sealed class ReminderUseCase {
      *
      * @property repo The repo used to access reminder data.
      */
-    data class DeleteById(val repo: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(id: Int) = repo.deleteById(id)
+    data class Delete(val repo: ReminderRepo): ReminderUseCase() {
+        suspend operator fun invoke(id: Int) = repo.delete(id)
     }
 
     /**
-     *  UseCase for deleting a reminder by its unique identifier (UID).
+     * Data class representing the use case for deleting draft reminders.
      *
-     *  This use case encapsulates the logic for deleting a reminder from the data layer.
-     *  It interacts with the [ReminderRepo] to perform the deletion operation.
+     * This use case encapsulates the logic for deleting all reminders that are marked as drafts.
+     * It interacts with the [ReminderRepo] to perform the actual deletion operation.
      *
-     *  @property repo The [ReminderRepo] instance responsible for data layer operations.
+     * @property repo The [ReminderRepo] instance used to interact with the reminder data source.
      */
-    data class DeleteByUid(val repo: ReminderRepo): ReminderUseCase() {
-        suspend operator fun invoke(uid: String) = repo.deleteByUid(uid)
-    }
-
     data class DeleteDrafts(val repo: ReminderRepo): ReminderUseCase() {
         suspend operator fun invoke() = repo.deleteDrafts()
     }
