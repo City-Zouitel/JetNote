@@ -64,6 +64,7 @@ import city.zouitel.domain.utils.Action
 import city.zouitel.links.ui.LinkCard
 import city.zouitel.links.ui.LinkScreenModel
 import city.zouitel.media.ui.MediaScreen
+import city.zouitel.note.model.Data
 import city.zouitel.note.ui.DataScreenModel
 import city.zouitel.note.ui.bottom_bar.BottomBar
 import city.zouitel.note.ui.utils.TextField
@@ -96,15 +97,10 @@ data class WorkplaceScreen(
     @Composable
     override fun Content() {
         val workspaceModel = getScreenModel<WorkplaceScreenModel>()
-        val reminderModel = getScreenModel<ReminderScreenModel>()
 
-        LaunchedEffect(!isNew) {
+        LaunchedEffect(isNew) {
             workspaceModel.updateTextColor(textColor)
                 .updateBackgroundColor(backgroundColor)
-        }
-
-        LaunchedEffect(Unit) {
-            reminderModel.initializeReminders(uid)
         }
 
         Workplace(
@@ -139,6 +135,9 @@ data class WorkplaceScreen(
         LaunchedEffect(true) {
             linkModel.initializeUid(uid)
             audioModel.initializeUid(uid)
+            reminderModel.initializeUid(uid)
+
+            dataModel.sendAction(Action.Insert(Data(uid = uid)))
         }
         val keyboardManager = LocalFocusManager.current
         val navBottomSheet = LocalBottomSheetNavigator.current
