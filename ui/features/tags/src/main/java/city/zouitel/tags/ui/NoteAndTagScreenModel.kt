@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 class NoteAndTagScreenModel(
     private val _observeAll_: NoteAndTagUseCase.ObserveAll,
     private val insert: NoteAndTagUseCase.Insert,
-    private val deleteById: NoteAndTagUseCase.DeleteById,
+    private val delete: NoteAndTagUseCase.Delete,
     private val mapper: NoteAndTagMapper
 ): ScreenModel {
 
@@ -30,7 +30,7 @@ class NoteAndTagScreenModel(
     fun sendAction(act: Action) {
         when (act) {
             is Action.Insert<*> -> withAsync { insert(mapper.toDomain(act.data as NoteAndTag)) }
-            is Action.DeleteById -> withAsync { deleteById(act.id as Long) }
+            is Action.DeleteById -> withAsync { delete(act.id as Long) }
             else -> throw Exception("Not implemented")
         }
     }
