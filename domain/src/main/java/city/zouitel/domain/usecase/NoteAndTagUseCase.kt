@@ -35,18 +35,6 @@ sealed class NoteAndTagUseCase {
     }
 
     /**
-     *  UseCase for deleting a note and its associated tags by the note's unique identifier (UID).
-     *
-     *  This use case leverages the [NoteAndTagRepository] to perform the deletion operation.
-     *  It's designed to be invoked as a suspending function, suitable for use within coroutines.
-     *
-     *  @property repos The [NoteAndTagRepository] instance responsible for interacting with the data layer.
-     */
-    data class DeleteByUid(private val repos: NoteAndTagRepository): NoteAndTagUseCase() {
-        suspend operator fun invoke(uid: String) = repos.deleteByUid(uid)
-    }
-
-    /**
      * Deletes a Note and its associated Tags by the Note's ID.
      *
      * This use case interacts with the [NoteAndTagRepository] to remove a note
@@ -54,10 +42,16 @@ sealed class NoteAndTagUseCase {
      *
      * @property repos The repository responsible for handling note and tag data persistence.
      */
-    data class DeleteById(private val repos: NoteAndTagRepository): NoteAndTagUseCase() {
-        suspend operator fun invoke(id: Long) = repos.deleteById(id)
+    data class Delete(private val repos: NoteAndTagRepository): NoteAndTagUseCase() {
+        suspend operator fun invoke(id: Long) = repos.delete(id)
     }
 
+    /**
+     * This class represents a use case for deleting all draft notes.
+     * It interacts with the [NoteAndTagRepository] to perform the deletion operation.
+     *
+     * @property repo The [NoteAndTagRepository] instance used for data access.
+     */
     data class DeleteDrafts(private val repo: NoteAndTagRepository): NoteAndTagUseCase() {
         suspend operator fun invoke() = repo.deleteDrafts()
     }
