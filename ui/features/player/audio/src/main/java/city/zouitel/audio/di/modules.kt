@@ -31,7 +31,7 @@ val audioPlayerDIModule = module {
 
     factory { AudioScreenModel(get(), get(), get(), get(), get(), get()) }
     factory { AudioListScreenModel(get(), get(), get()) }
-    factory { RecordScreenModel(androidContext(), get(), get(), get(), get(), get()) }
+    factory { RecordScreenModel(get(), get(), get(), get(), get()) }
 
     factoryOf(::AudioMapper)
     factoryOf(::RecordMapper)
