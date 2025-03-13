@@ -55,22 +55,19 @@ sealed class TaskUseCase {
      *
      * @property repo The [TaskRepository] responsible for interacting with the data source.
      */
-    data class DeleteById(private val repo: TaskRepository): TaskUseCase() {
-        suspend operator fun invoke(id: Long) = repo.deleteById(id)
+    data class Delete(private val repo: TaskRepository): TaskUseCase() {
+        suspend operator fun invoke(id: Long) = repo.delete(id)
     }
 
     /**
-     * [TaskUseCase] for deleting a task from the repository by its unique ID (UID).
+     * `DeleteDrafts` is a use case class responsible for deleting all draft tasks from the repository.
      *
-     * This use case encapsulates the logic for deleting a task by its UID.
-     * It interacts with the [TaskRepository] to perform the actual deletion.
+     * This class encapsulates the logic for deleting draft tasks, providing a clean and testable way
+     * to perform this operation. It leverages the `TaskRepository` to interact with the data layer.
      *
-     * @property repo The [TaskRepository] instance used to access and modify task data.
+     * @property repo The `TaskRepository` instance used to access and modify task data.
+     * @constructor Creates a `DeleteDrafts` instance with the specified `TaskRepository`.
      */
-    data class DeleteByUid(private val repo: TaskRepository): TaskUseCase() {
-        suspend operator fun invoke(uid: String) = repo.deleteByUid(uid)
-    }
-
     data class DeleteDrafts(private val repo: TaskRepository): TaskUseCase() {
         suspend operator fun invoke() = repo.deleteDrafts()
     }
