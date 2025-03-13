@@ -34,8 +34,7 @@ class LinkScreenModel(
     application: Application,
     private val _observeAll_: LinkUseCase.ObserveAll,
     private val _observeByUid_: LinkUseCase.ObserveByUid,
-    private val deleteById: LinkUseCase.DeleteById,
-    private val deleteByUid: LinkUseCase.DeleteByUid,
+    private val delete: LinkUseCase.Delete,
     private val mapper: LinkMapper
 ): ScreenModel {
 
@@ -94,7 +93,7 @@ class LinkScreenModel(
 
     fun sendAction(act: Action) {
         when(act) {
-            is Action.DeleteById -> withAsync { deleteById(act.id as Int) }
+            is Action.DeleteById -> withAsync { delete(act.id as Int) }
             else -> throw NotImplementedError("Action not implemented: $act")
         }
     }
