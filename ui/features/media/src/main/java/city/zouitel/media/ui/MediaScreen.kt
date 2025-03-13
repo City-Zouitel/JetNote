@@ -53,7 +53,7 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun Media(mediaModel: MediaScreenModel) {
-        val context = LocalContext.current
+//        val context = LocalContext.current
         val vibe = LocalHapticFeedback.current
 
         val observeMedias by remember(
@@ -77,8 +77,7 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
                             .background(Color(backgroundColor))
                             .combinedClickable(
                                 onLongClick = {
-                                    vibe.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    mediaModel.sendAction(Action.DeleteById(observeMedias[index].id))
+
                                 }
                             ) {},
                         badge = {
@@ -99,8 +98,13 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
                         ) {
                             when (observeMedias[index].isVideo) {
                                 true -> {
-                                    VideoPlayer(observeMedias[index].uri.toUri()) {
-                                        context.startActivity(videoDisplay(observeMedias[index].uri.toUri()))
+                                    VideoPlayer(
+                                        uri = observeMedias[index].uri.toUri(),
+                                        onLongClock = {
+                                            vibe.performHapticFeedback(HapticFeedbackType.LongPress)
+                                            mediaModel.sendAction(Action.DeleteById(observeMedias[index].id))
+                                        }) {
+//                                        context.startActivity(videoDisplay(observeMedias[index].uri.toUri()))
                                     }
                                 }
 
@@ -111,6 +115,8 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
                                         contentScale = ContentScale.Crop,
                                         modifier = Modifier.combinedClickable(
                                             onLongClick = {
+                                                vibe.performHapticFeedback(HapticFeedbackType.LongPress)
+                                                mediaModel.sendAction(Action.DeleteById(observeMedias[index].id))
                                             }
                                         ) {
 //                                            context.startActivity(imageDisplay(observeMedias[index].uri.toUri()))
@@ -125,13 +131,13 @@ data class MediaScreen(val uid: String, val backgroundColor: Int = 0): Screen {
         }
     }
 
-    private fun imageDisplay(uri: Uri) = Intent(Intent.ACTION_VIEW).apply {
-        setDataAndType(uri, "image/*")
-        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-    }
-
-    private fun videoDisplay(uri: Uri) = Intent(Intent.ACTION_VIEW).apply {
-        setDataAndType(uri, "video/*")
-        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
-    }
+//    private fun imageDisplay(uri: Uri) = Intent(Intent.ACTION_VIEW).apply {
+//        setDataAndType(uri, "image/*")
+//        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+//    }
+//
+//    private fun videoDisplay(uri: Uri) = Intent(Intent.ACTION_VIEW).apply {
+//        setDataAndType(uri, "video/*")
+//        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+//    }
 }
