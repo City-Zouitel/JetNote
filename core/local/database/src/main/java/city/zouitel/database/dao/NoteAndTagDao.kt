@@ -47,23 +47,27 @@ interface NoteAndTagDao {
     suspend fun insert(noteAndLabel: NoteAndTag)
 
     /**
-     * Deletes a row from the table with the specified unique ID.
-     *
-     * @param uid The unique ID (uid) of the row to delete.
-     * @throws Exception If any database operation fails.
-     */
-    @Query("DELETE FROM $TABLE_NAME WHERE uid = :uid")
-    suspend fun deleteByUid(uid: String)
-
-    /**
      * Deletes a row from the [TABLE_NAME] table based on the provided ID.
      *
      * @param id The ID of the row to delete.
      * @throws Exception if any error occurs during the deletion process.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE id = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun delete(id: Long)
 
+    /**
+     * Deletes draft notes from the database.
+     *
+     * This function removes all rows from the table specified by [TABLE_NAME] where the 'uid' column
+     * does not exist in the 'UUID' column of the 'note_data_table'.  In other words, it deletes notes
+     * that are present in the main notes table ('note_data_table') and considered *drafts*. Draft notes are those
+     * that exist only in the table specified by `TABLE_NAME` (likely a temporary storage table) and are not yet saved as real notes.
+     *
+     * This is typically used to clean up temporary or unsaved note entries that have been superseded by
+     * a proper note in the `note_data_table`.
+     *
+     * @throws Exception Any database-related exception that might occur during the delete operation.
+     */
     @Query("DELETE FROM $TABLE_NAME WHERE uid NOT IN (SELECT $UUID FROM note_data_table)")
     suspend fun deleteDrafts()
 }
