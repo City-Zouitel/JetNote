@@ -28,6 +28,7 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
@@ -43,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -89,7 +91,7 @@ fun NoteCard(
     noteEntity: Note,
     homeModel: MainScreenModel,
     mediaModel: MediaScreenModel,
-    onSwipeNote: (Note) -> Unit,
+    onSwipeNote: (Note) -> Unit
 ) {
     val currentLayout by remember(dataStoreModel, dataStoreModel::getLayout).collectAsState()
 
@@ -108,7 +110,7 @@ fun NoteCard(
                 noteEntity = noteEntity,
                 isHomeScreen = isHomeScreen,
                 mainModel = homeModel,
-                mediaModel = mediaModel,
+                mediaModel = mediaModel
             )
         }
     } else {
@@ -120,7 +122,7 @@ fun NoteCard(
             noteEntity = noteEntity,
             isHomeScreen = isHomeScreen,
             mainModel = homeModel,
-            mediaModel = mediaModel,
+            mediaModel = mediaModel
         )
     }
 }
@@ -135,7 +137,7 @@ private fun Card(
     noteEntity: Note,
     isHomeScreen: Boolean,
     mainModel: MainScreenModel,
-    mediaModel: MediaScreenModel,
+    mediaModel: MediaScreenModel
 ) {
     val note = noteEntity.data
     val labels = noteEntity.tags
@@ -143,7 +145,6 @@ private fun Card(
     val context = LocalContext.current
     val haptic = LocalHapticFeedback.current
     val navigator = LocalNavigator.current
-    val navBottomSheet = LocalBottomSheetNavigator.current
 
     val thereIsSoundEffect = remember(dataStoreModel, dataStoreModel::isMute).collectAsState()
     val observeAllTasks by remember(taskModel, taskModel::observeAllTasks).collectAsState()
@@ -151,7 +152,6 @@ private fun Card(
     val uiState by remember(mainModel, mainModel::uiState).collectAsState()
 
     var todoListState by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
 
     val observerLinks by remember(linkModel, linkModel::observeAll).collectAsState()
     val filteredLinks = observerLinks.filter { it.uid == note.uid }
@@ -211,20 +211,21 @@ private fun Card(
                 }
             },
         shape = AbsoluteRoundedCornerShape(15.dp),
-        border =
-        if (uiState.selectedNotes.contains(note)) {
+        border = if (uiState.selectedNotes.contains(note)) {
             when (isHomeScreen) {
                 true -> BorderStroke(3.dp, Color.Cyan)
                 false -> BorderStroke(3.dp, Color.Red)
             }
         } else {
-            BorderStroke(0.dp, Color.Transparent)
+            when (note.background == MaterialTheme.colorScheme.surface.toArgb()) {
+                true -> BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface)
+                false -> BorderStroke(0.dp, Color.Transparent)
+            }
         },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp
         ),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
-
     ) {
         // Media display.
         if (filteredMedia.isNotEmpty()) {
@@ -269,14 +270,14 @@ private fun Card(
         }
 
         Text(
-            text = note.title ?: "",
+            text = note.title,
             fontSize = 19.sp,
             color = Color(note.textColor),
             modifier = Modifier.padding(3.dp)
         )
 
         Text(
-            text = note.description ?: "",
+            text = note.description,
             fontSize = 15.sp,
             color = Color(note.textColor),
             modifier = Modifier.padding(start = 3.dp, end = 3.dp, bottom = 7.dp)
