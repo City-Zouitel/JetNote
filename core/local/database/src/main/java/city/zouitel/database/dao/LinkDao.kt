@@ -47,7 +47,7 @@ interface LinkDao {
      * Inserts a [Link] into the database, or updates it if a matching row already exists.
      *
      * This function utilizes Room's `@Upsert` annotation, which provides a convenient way to
-     * either insert a new entity or updateById an existing one based on the entity's primary key.
+     * either insert a new entity or update an existing one based on the entity's primary key.
      * If a [Link] with the same primary key (as defined in the [Link] entity class) already
      * exists in the database, it will be updated with the new values provided in the [link]
      * parameter. Otherwise, a new row will be inserted.
@@ -69,15 +69,26 @@ interface LinkDao {
      * @param id The ID of the row to delete.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
-    suspend fun deleteById(id: Int)
+    suspend fun delete(id: Int)
 
     /**
-     * Deletes a record from the [TABLE_NAME] table based on the provided UUID.
+     * Deletes draft notes from the database.
      *
-     * @param uid The UUID of the record to delete.
-     * @throws Exception If any error occurs during the database operation.
-     * @return Unit. The function returns nothing explicitly, but it suspends until the database operation is complete.
+     * This function removes notes that are considered drafts, meaning they
+     * are present in the main table (`TABLE_NAME`) but are not linked to any
+     * existing note data in the `note_data_table`. This effectively cleans up
+     * incomplete or abandoned notes that were not properly saved.
+     *
+     * The deletion is performed using a SQL `DELETE` query with a subquery
+     * to identify drafts. The subquery selects the UUIDs from the `note_data_table`,
+     * and the outer query then deletes any records from `TABLE_NAME` whose UUID
+     * is not present in that result set.
+     *
+     * This function should be called within a coroutine scope because it's a
+     * suspend function.
+     *
+     * @throws SQLiteException If an error occurs while executing the database query.
      */
-    @Query("DELETE FROM $TABLE_NAME WHERE $UUID = :uid")
-    suspend fun deleteByUid(uid: String)
+    @Query("DELETE FROM $TABLE_NAME WHERE $UUID NOT IN (SELECT $UUID FROM note_data_table)")
+    suspend fun deleteDrafts()
 }
