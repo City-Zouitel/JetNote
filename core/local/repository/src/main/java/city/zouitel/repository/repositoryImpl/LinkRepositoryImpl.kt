@@ -70,18 +70,18 @@ class LinkRepositoryImpl(
      * @param id The unique identifier of the record to delete.
      * @throws Exception If any error occurs during the deletion process. (Add specific exceptions if known, e.g., DatabaseException)
      */
-    override suspend fun deleteById(id: Int) {
-        dataSource.deleteById(id)
+    override suspend fun delete(id: Int) {
+        dataSource.delete(id)
     }
 
     /**
-     * Deletes a record from the data source using the provided unique identifier (UID).
+     * Deletes all draft messages from the data source.
      *
-     * This function delegates the deletion operation to the underlying [dataSource].
-     *
-     * @param uid The unique identifier of the record to be deleted.
+     * This function clears the storage of any messages that were saved as drafts,
+     * meaning they were created but not yet sent.  After calling this function,
+     * no draft messages should remain in the underlying data source.
      */
-    override suspend fun deleteByUid(uid: String) {
-        dataSource.deleteByUid(uid)
+    override suspend fun deleteDrafts() {
+        dataSource.deleteDrafts()
     }
 }
