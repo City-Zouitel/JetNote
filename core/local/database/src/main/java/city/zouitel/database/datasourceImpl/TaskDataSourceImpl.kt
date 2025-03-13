@@ -71,23 +71,21 @@ class TaskDataSourceImpl(
      * @param id The ID of the entity to delete.
      * @throws Exception if an error occurs during the deletion process.
      */
-    override suspend fun deleteById(id: Long) {
-        dao.deleteById(id)
+    override suspend fun delete(id: Long) {
+        dao.delete(id)
     }
 
     /**
-     * Deletes a record from the data source with the specified unique ID (UID).
+     * Deletes all drafts from the underlying data source.
      *
-     * This function suspends the coroutine execution while the deletion operation is performed.
-     * It delegates the actual deletion to the underlying [dao] (Data Access Object).
-     *
-     * @param uid The unique identifier (UID) of the record to be deleted.
-     * @throws Exception if there is an error during the deletion process (specific exceptions depend on DAO implementation).
-     */
-    override suspend fun deleteByUid(uid: String) {
-        dao.deleteByUid(uid)
-    }
+     * This function is a suspend function, meaning it can be safely called
+     * within a coroutine. It delegates the actual deletion operation to the
+     * data access object (DAO).
 
+     * @throws Exception if an error occurs during the deletion process. The
+     *         specific type of exception depends on the implementation of
+     *         the DAO.
+     */
     override suspend fun deleteDrafts() {
         dao.deleteDrafts()
     }
