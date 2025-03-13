@@ -1,6 +1,5 @@
 package city.zouitel.audio.ui.record
 
-import android.content.Context
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import city.zouitel.audio.mapper.RecordMapper
@@ -19,7 +18,6 @@ import java.io.File
 
 @Suppress("DeferredResultUnused")
 class RecordScreenModel(
-    private val context: Context,
     private val observeAll: RecordUseCase.ObserveAll,
     private val _observeByUid_: RecordUseCase.ObserveByUid,
     private val delete: RecordUseCase.Delete,
