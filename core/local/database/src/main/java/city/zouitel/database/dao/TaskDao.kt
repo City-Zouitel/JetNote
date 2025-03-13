@@ -53,18 +53,26 @@ interface TaskDao {
      * @throws SQLiteException if an error occurs during the database operation.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun delete(id: Long)
 
     /**
-     * Deletes a record from the [TABLE_NAME] table based on the provided UUID.
+     * Deletes draft notes from the database.
      *
-     * @param uid The UUID of the record to delete.
-     * @throws Exception If any error occurs during the database operation.
-     * @return Unit. The function returns nothing explicitly, but it suspends until the database operation is complete.
+     * This function removes notes that are considered drafts, meaning they
+     * are present in the main table (`TABLE_NAME`) but are not linked to any
+     * existing note data in the `note_data_table`. This effectively cleans up
+     * incomplete or abandoned notes that were not properly saved.
+     *
+     * The deletion is performed using a SQL `DELETE` query with a subquery
+     * to identify drafts. The subquery selects the UUIDs from the `note_data_table`,
+     * and the outer query then deletes any records from `TABLE_NAME` whose UUID
+     * is not present in that result set.
+     *
+     * This function should be called within a coroutine scope because it's a
+     * suspend function.
+     *
+     * @throws SQLiteException If an error occurs while executing the database query.
      */
-    @Query("DELETE FROM $TABLE_NAME WHERE $UUID = :uid")
-    suspend fun deleteByUid(uid: String)
-
     @Query("DELETE FROM $TABLE_NAME WHERE $UUID NOT IN (SELECT $UUID FROM note_data_table)")
     suspend fun deleteDrafts()
 }
