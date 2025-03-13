@@ -18,7 +18,7 @@ import city.zouitel.notifications.reciver.NotificationReceiver
 @Suppress("DeferredResultUnused")
 class AlarmManagerScreenModel(
     private val context: Context,
-    private val updateById: ReminderUseCase.UpdateById
+    private val update: ReminderUseCase.Update
 ): ScreenModel {
 
     private val intent = Intent(context , NotificationReceiver::class.java)
@@ -68,7 +68,7 @@ class AlarmManagerScreenModel(
 
     fun sendAction(act: Action) {
         when(act) {
-            is Action.UpdateById -> withAsync { updateById(act.id as Int) }
+            is Action.UpdateById -> withAsync { update(act.id as Int) }
             else -> throw NotImplementedError("Action not implemented: $act")
         }
     }
