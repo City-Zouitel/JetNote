@@ -87,7 +87,7 @@ class AudioRepoImpl(
      * This function delegates the deletion operation to the underlying [dataSource].
      *
      * @param id The unique identifier of the entity to be deleted.
-     * @throws Exception if any error occurs during the deletion process within the data source. The specific exception depends on the implementation of `dataSource.deleteById()`.
+     * @throws Exception if any error occurs during the deletion process within the data source. The specific exception depends on the implementation of `dataSource.delete()`.
      */
     override suspend fun deleteById(id: Long) {
         dataSource.deleteById(id)
