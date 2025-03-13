@@ -48,5 +48,5 @@ interface TagRepository {
      * @throws NoSuchElementException If no entity is found with the given [id].
      * @throws Exception If any other error occurs during the deletion process (e.g., database error).
      */
-    suspend fun deleteById(id: Long)
+    suspend fun delete(id: Long)
 }
