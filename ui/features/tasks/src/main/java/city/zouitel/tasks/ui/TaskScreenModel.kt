@@ -18,8 +18,7 @@ class TaskScreenModel(
     private val observeAll: TaskUseCase.ObserveAll,
     private val observeByUid: TaskUseCase.ObserveByUid,
     private val insert: TaskUseCase.Insert,
-    private val deleteById: TaskUseCase.DeleteById,
-    private val deleteByUid: TaskUseCase.DeleteByUid,
+    private val delete: TaskUseCase.Delete,
     private val mapper: TaskMapper
 ): ScreenModel {
 
@@ -48,7 +47,7 @@ class TaskScreenModel(
     fun sendAction(act: Action) {
         when(act) {
             is Action.Insert<*> -> withAsync { insert(mapper.toDomain(act.data as Task)) }
-            is Action.DeleteById -> withAsync { deleteById(act.id as Long) }
+            is Action.DeleteById -> withAsync { delete(act.id as Long) }
             else -> throw Exception("Action is not implemented $act")
         }
     }
