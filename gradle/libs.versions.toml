@@ -1,5 +1,5 @@
 [versions]
-agp = "8.5.2"
+agp = "8.9.0"
 kotlin = "2.1.0"
 compileSdk-version = "35"
 minSdk-version = "26"
