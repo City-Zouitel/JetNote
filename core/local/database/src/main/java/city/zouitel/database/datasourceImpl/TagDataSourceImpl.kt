@@ -58,7 +58,7 @@ class TagDataSourceImpl(
      * @param id The ID of the entity to delete.
      * @throws Exception if an error occurs during the deletion process.
      */
-    override suspend fun deleteById(id: Long) {
-        dao.deleteById(id)
+    override suspend fun delete(id: Long) {
+        dao.delete(id)
     }
 }
