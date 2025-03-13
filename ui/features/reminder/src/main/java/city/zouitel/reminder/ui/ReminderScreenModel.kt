@@ -14,15 +14,14 @@ import kotlinx.coroutines.flow.StateFlow
 class ReminderScreenModel(
     private val observeByUid: ReminderUseCase.ObserveByUid,
     private val insert: ReminderUseCase.Insert,
-    private val deleteById: ReminderUseCase.DeleteById,
-    private val deleteByUid: ReminderUseCase.DeleteByUid,
+    private val delete: ReminderUseCase.Delete,
     private val mapper: ReminderMapper
 ): ScreenModel {
 
     private val _observeAllById = MutableStateFlow<List<Reminder>>(emptyList())
     val observeAllById: StateFlow<List<Reminder>> = _observeAllById.withFlow(emptyList())
 
-    fun initializeReminders(uid: String) {
+    fun initializeUid(uid: String) {
         withAsync {
             observeByUid(uid).collect { _observeAllById.value = mapper.fromDomain(it) }
         }
@@ -31,7 +30,7 @@ class ReminderScreenModel(
     fun sendAction(act: Action) {
         when(act) {
             is Action.Insert<*> -> withAsync { insert(mapper.toDomain(act.data as Reminder)) }
-            is Action.DeleteById -> withAsync { deleteById(act.id as Int) }
+            is Action.DeleteById -> withAsync { delete(act.id as Int) }
             else -> throw NotImplementedError("Action not implemented: $act")
         }
     }
