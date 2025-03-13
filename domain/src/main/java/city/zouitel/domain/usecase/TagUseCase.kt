@@ -36,14 +36,14 @@ sealed class TagUseCase {
     }
 
     /**
-     * [DeleteById] is a use case that deletes a tag from the data source by its unique identifier.
+     * [Delete] is a use case that deletes a tag from the data source by its unique identifier.
      *
      * This class encapsulates the logic for deleting a tag, interacting with the [TagRepository] to perform
      * the actual deletion. It is designed to be executed within a coroutine scope.
      *
      * @property repo The [TagRepository] instance used to interact with the data source for tag operations.
      */
-    class DeleteById(private val repo: TagRepository): TagUseCase() {
-        suspend operator fun invoke(id: Long) = repo.deleteById(id)
+    class Delete(private val repo: TagRepository): TagUseCase() {
+        suspend operator fun invoke(id: Long) = repo.delete(id)
     }
 }
