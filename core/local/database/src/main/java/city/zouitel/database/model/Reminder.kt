@@ -4,6 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import city.zouitel.database.model.Reminder.Companion.TABLE_NAME
+import city.zouitel.database.utils.Constants.DEFAULT_BOOLEAN
+import city.zouitel.database.utils.Constants.DEFAULT_NUM
+import city.zouitel.database.utils.Constants.DEFAULT_TXT
 import city.zouitel.database.utils.Constants.ID
 import city.zouitel.database.utils.Constants.PASSED
 import city.zouitel.database.utils.Constants.TIME
@@ -23,10 +26,10 @@ import city.zouitel.database.utils.Constants.UUID
 @Entity(tableName = TABLE_NAME)
 data class Reminder(
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = ID, defaultValue = "0") val id: Int,
-    @ColumnInfo(name = UUID, defaultValue = "") val uid: String,
-    @ColumnInfo(name = TIME, defaultValue = "0") val atTime: Long,
-    @ColumnInfo(name = PASSED, defaultValue = "false") val isPassed: Boolean
+    @ColumnInfo(name = ID, defaultValue = DEFAULT_NUM) val id: Int,
+    @ColumnInfo(name = UUID, defaultValue = DEFAULT_TXT) val uid: String,
+    @ColumnInfo(name = TIME, defaultValue = DEFAULT_NUM) val atTime: Long,
+    @ColumnInfo(name = PASSED, defaultValue = DEFAULT_BOOLEAN) val isPassed: Boolean
 ) {
     companion object {
         const val TABLE_NAME = "reminders_table"
