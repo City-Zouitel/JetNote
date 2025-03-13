@@ -46,5 +46,5 @@ interface TagDao {
      * @throws SQLiteException if an error occurs during the database operation.
      */
     @Query("DELETE FROM $TABLE_NAME WHERE $ID = :id")
-    suspend fun deleteById(id: Long)
+    suspend fun delete(id: Long)
 }
