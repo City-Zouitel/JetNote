@@ -2,7 +2,9 @@ package city.zouitel.video
 
 import android.net.Uri
 import androidx.annotation.OptIn
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -17,9 +19,10 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 
+@ExperimentalFoundationApi
 @OptIn(UnstableApi::class)
 @Composable
-fun VideoPlayer(uri: Uri, onClick:() -> Unit) {
+fun VideoPlayer(uri: Uri, onLongClock:() -> Unit, onClick:() -> Unit) {
     val context = LocalContext.current
     val exoPlayer = remember(context, uri) { // Add uri as a key
         ExoPlayer.Builder(context).build().apply {
@@ -45,25 +48,29 @@ fun VideoPlayer(uri: Uri, onClick:() -> Unit) {
     }
 
     AndroidView(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Black),
+        modifier = Modifier.fillMaxWidth(),
         factory = {
             PlayerView(context).apply {
                 player = exoPlayer
                 useController = true
 
-                this.setShowBuffering(PlayerView.SHOW_BUFFERING_WHEN_PLAYING) // Show buffering indicator
+                setShowBuffering(PlayerView.SHOW_BUFFERING_WHEN_PLAYING) // Show buffering indicator
+                setBackgroundColor(android.graphics.Color.BLACK)
 
                 // Customize the controller
-                this.setShowFastForwardButton(false)  // Remove fast forward
-                this.setShowRewindButton(false) // remove rewind
-                this.setShowNextButton(false) // remove next button
-                this.setShowPreviousButton(false) // remove prev button
-                this.setControllerAnimationEnabled(false)
-                this.setFullscreenButtonClickListener {
+                setShowFastForwardButton(false)  // Remove fast forward
+                setShowRewindButton(false) // remove rewind
+                setShowNextButton(false) // remove next button
+                setShowPreviousButton(false) // remove prev button
+                setControllerAnimationEnabled(false)
+                setFullscreenButtonClickListener {
                     player?.pause()
                     onClick()
+                }
+                setOnLongClickListener {
+                    player?.pause()
+                    onLongClock()
+                    true
                 }
             }
         }, update = { playerView ->
