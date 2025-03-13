@@ -49,7 +49,7 @@ koin-gradle = "3.5.0"
 room = "2.6.1"
 
 #Datastore.
-datastore = "1.0.0"
+datastore = "1.1.3"
 datastore-security = "1.0.0"
 
 #Exo.
