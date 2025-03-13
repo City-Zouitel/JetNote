@@ -47,25 +47,13 @@ sealed class LinkUseCase {
     }
 
     /**
-     * `DeleteById` is a use case responsible for deleting a link from the repository by its unique identifier.
+     * `Delete` is a use case responsible for deleting a link from the repository by its unique identifier.
      *
      * This use case interacts with a [LinkRepository] to perform the deletion operation.
      *
      * @property repo The [LinkRepository] instance used for data access.
      */
-    data class DeleteById(private val repo: LinkRepository) : LinkUseCase() {
-        suspend operator fun invoke(id: Int) = repo.deleteById(id)
-    }
-
-    /**
-     * [LinkUseCase] for deleting a link by its unique identifier (UID).
-     *
-     * This use case provides a way to remove a link from the data source based on its UID.
-     * It interacts with the [LinkRepository] to perform the deletion operation.
-     *
-     * @property repo The [LinkRepository] responsible for data access.
-     */
-    data class DeleteByUid(private val repo: LinkRepository) : LinkUseCase() {
-        suspend operator fun invoke(uid: String) = repo.deleteByUid(uid)
+    data class Delete(private val repo: LinkRepository) : LinkUseCase() {
+        suspend operator fun invoke(id: Int) = repo.delete(id)
     }
 }
